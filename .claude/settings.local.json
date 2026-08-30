@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(gh auth *)",
+      "Bash(git ls-remote *)",
+      "Read(//Users/Usuario1/**)",
+      "Bash(ssh -T git@github.com)",
+      "Bash(grep -n \"brand_profile:\\\\|Relationships:\\\\|^      [a-z_]*: {$\" src/integrations/supabase/types.ts)",
+      "Bash(python3 -c ' *)",
+      "Bash(git commit -m ' *)"
+    ]
+  }
+}

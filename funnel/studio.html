@@ -1,0 +1,1293 @@
+<title>Estudio de Funnel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300&family=JetBrains+Mono:wght@400;500;700&display=swap">
+
+<style>
+/* ═══════════════════════════════════════════════════════════════════
+   ESTUDIO DE FUNNEL · superficie interna, no la ve el cliente final.
+   Cromo denso y neutro para que el lienzo (la página real) mande.
+   ═══════════════════════════════════════════════════════════════════ */
+
+:root{
+  --ui-bg:#0B0A0E;
+  --ui-chrome:#121116;
+  --ui-panel:#17161C;
+  --ui-raise:#1E1D25;
+  --ui-line:#FFFFFF14;
+  --ui-line-2:#FFFFFF24;
+  --ui-tx:#EDEAE4;
+  --ui-tx-2:#EDEAE4a0;
+  --ui-tx-3:#EDEAE45c;
+  --oro:#D6A544;
+  --oro-hi:#F2D391;
+  --ok:#63C08A;
+  --warn:#E0A356;
+  --ui-sys:"Archivo","Helvetica Neue",Helvetica,Arial,sans-serif;
+  --ui-mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --ui-alma:"Newsreader",Georgia,serif;
+  --e:cubic-bezier(.22,.85,.28,1);
+  --rail-l:264px;
+  --rail-r:56px;
+  --panel-w:400px;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;background:var(--ui-bg);color:var(--ui-tx);
+  font-family:var(--ui-sys);font-size:14px;line-height:1.5;
+  -webkit-font-smoothing:antialiased;overflow:hidden;
+}
+button,input,select,textarea{font:inherit;color:inherit}
+button{background:none;border:0;cursor:pointer}
+:focus-visible{outline:2px solid var(--oro);outline-offset:2px;border-radius:5px}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-thumb{background:#FFFFFF1a;border-radius:9px;border:3px solid transparent;background-clip:content-box}
+::-webkit-scrollbar-thumb:hover{background:#FFFFFF2e;background-clip:content-box}
+::-webkit-scrollbar-track{background:transparent}
+
+.mono{font-family:var(--ui-mono)}
+.tnum{font-variant-numeric:tabular-nums}
+
+/* ── Estructura ──────────────────────────────────────────────────── */
+
+.app{display:grid;grid-template-rows:52px 1fr;height:100%}
+.mid{display:grid;grid-template-columns:var(--rail-l) 1fr var(--rail-r);min-height:0}
+body.panel-abierto .mid{grid-template-columns:var(--rail-l) 1fr calc(var(--rail-r) + var(--panel-w))}
+body.rail-oculto{--rail-l:0px}
+@media(max-width:1340px){
+  body.panel-abierto .mid{grid-template-columns:var(--rail-l) 1fr var(--rail-r)}
+  .panel{
+    position:fixed;top:52px;right:var(--rail-r);bottom:0;width:var(--panel-w);
+    border-left:1px solid var(--ui-line-2);z-index:60;
+    box-shadow:-34px 0 70px -34px #000;
+  }
+}
+@media(max-width:1040px){:root{--panel-w:min(360px,86vw)}}
+@media(max-width:900px){
+  body:not(.rail-fijo) .rail-l{display:none}
+  body:not(.rail-fijo){--rail-l:0px}
+}
+
+/* ── Barra superior ──────────────────────────────────────────────── */
+
+.top{
+  display:flex;align-items:center;gap:14px;padding-inline:14px;
+  background:var(--ui-chrome);border-bottom:1px solid var(--ui-line);
+}
+.top-marca{display:flex;align-items:center;gap:10px;flex:none}
+.top-marca svg{width:24px;height:24px}
+.top-marca b{font-size:.86rem;font-weight:800;letter-spacing:-.03em;line-height:1.05}
+.top-marca small{display:block;font-family:var(--ui-mono);font-size:.52rem;letter-spacing:.15em;
+  text-transform:uppercase;color:var(--oro);font-weight:500}
+.top-sep{width:1px;height:22px;background:var(--ui-line);flex:none}
+.top-nombre{font-size:.84rem;font-weight:600;letter-spacing:-.02em;color:var(--ui-tx-2)}
+.top-nombre b{color:var(--ui-tx)}
+.top-der{margin-left:auto;display:flex;align-items:center;gap:8px}
+
+.chip{
+  display:inline-flex;align-items:center;gap:7px;padding:6px 11px;border-radius:8px;
+  border:1px solid var(--ui-line);background:var(--ui-raise);
+  font-size:.74rem;font-weight:600;letter-spacing:-.01em;color:var(--ui-tx-2);
+  transition:border-color .22s var(--e),color .22s var(--e),background .22s var(--e);
+}
+.chip:hover{border-color:var(--ui-line-2);color:var(--ui-tx)}
+.chip.oro{background:var(--oro);color:#150F02;border-color:transparent}
+.chip.oro:hover{background:var(--oro-hi);color:#150F02}
+.chip[disabled]{opacity:.4;pointer-events:none}
+.chip svg{width:14px;height:14px;flex:none}
+
+.estado-guardado{font-family:var(--ui-mono);font-size:.6rem;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--ui-tx-3);white-space:nowrap}
+.estado-guardado.ok{color:var(--ok)}
+.estado-guardado.pend{color:var(--warn)}
+
+/* ── Riel izquierdo: el funnel ───────────────────────────────────── */
+
+.rail-l{
+  background:var(--ui-chrome);border-right:1px solid var(--ui-line);
+  display:flex;flex-direction:column;min-height:0;overflow:hidden;
+}
+body.rail-oculto .rail-l{display:none}
+.rail-l-h{padding:16px 14px 12px;border-bottom:1px solid var(--ui-line);display:flex;align-items:center;gap:8px}
+.rail-l-h h2{margin:0;font-family:var(--ui-mono);font-size:.6rem;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--ui-tx-3);font-weight:500}
+.rail-l-h .cuenta{margin-left:auto;font-family:var(--ui-mono);font-size:.62rem;color:var(--ui-tx-3)}
+.rail-l-body{flex:1;overflow-y:auto;padding:10px}
+.rail-l-f{padding:10px;border-top:1px solid var(--ui-line)}
+
+.pag{
+  display:grid;grid-template-columns:26px 1fr;gap:11px;align-items:start;
+  width:100%;text-align:left;padding:11px 11px;border-radius:11px;margin-bottom:5px;
+  border:1px solid transparent;position:relative;
+  transition:background .2s var(--e),border-color .2s var(--e);
+}
+.pag:hover{background:#FFFFFF08}
+.pag.act{background:#D6A5441a;border-color:#D6A54452}
+.pag.arrastrando{opacity:.4}
+.pag.sobre{box-shadow:inset 0 2px 0 var(--oro)}
+.pag-n{
+  width:26px;height:26px;border-radius:8px;display:grid;place-items:center;flex:none;
+  background:var(--ui-raise);border:1px solid var(--ui-line);
+  font-family:var(--ui-mono);font-size:.7rem;font-weight:700;color:var(--ui-tx-3);
+}
+.pag.act .pag-n{background:var(--oro);border-color:transparent;color:#150F02}
+.pag-b{min-width:0}
+.pag-nom{font-size:.82rem;font-weight:700;letter-spacing:-.02em;display:flex;align-items:center;gap:7px}
+.pag-nom span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pag-est{width:6px;height:6px;border-radius:50%;flex:none}
+.pag-est.listo{background:var(--ok)}
+.pag-est.esbozo{background:var(--ui-tx-3)}
+.pag-desc{font-size:.7rem;color:var(--ui-tx-3);line-height:1.4;margin-top:3px;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pag-barra{margin-top:8px;height:3px;border-radius:9px;background:#FFFFFF14;overflow:hidden}
+.pag-barra i{display:block;height:100%;background:var(--oro);border-radius:9px;transition:width .5s var(--e)}
+.pag-rec{font-family:var(--ui-mono);font-size:.58rem;color:var(--ui-tx-3);margin-top:5px;letter-spacing:.06em}
+.pag-rec.completo{color:var(--ok)}
+.pag-mano{position:absolute;right:7px;top:9px;color:var(--ui-tx-3);opacity:0;cursor:grab;padding:2px}
+.pag:hover .pag-mano{opacity:1}
+
+.btn-full{
+  width:100%;display:flex;align-items:center;justify-content:center;gap:8px;
+  padding:11px;border-radius:10px;border:1px dashed var(--ui-line-2);
+  font-size:.76rem;font-weight:600;color:var(--ui-tx-2);
+  transition:border-color .22s var(--e),color .22s var(--e),background .22s var(--e);
+}
+.btn-full:hover{border-color:var(--oro);color:var(--oro-hi);background:#D6A5440d}
+
+/* ── Lienzo ──────────────────────────────────────────────────────── */
+
+.lienzo{position:relative;min-width:0;display:flex;flex-direction:column;background:#08070B}
+.lienzo-h{
+  height:38px;display:flex;align-items:center;gap:10px;padding-inline:14px;
+  border-bottom:1px solid var(--ui-line);background:var(--ui-chrome);flex:none;
+}
+.lienzo-url{
+  flex:1;min-width:0;display:flex;align-items:center;gap:8px;
+  background:var(--ui-bg);border:1px solid var(--ui-line);border-radius:7px;
+  padding:4px 10px;font-family:var(--ui-mono);font-size:.66rem;color:var(--ui-tx-3);
+}
+.lienzo-url b{color:var(--ui-tx-2);font-weight:500}
+.lienzo-w{flex:1;min-height:0;overflow:auto;display:grid;place-items:start center;padding:0}
+.marco{
+  width:100%;height:100%;background:#0A0910;border:0;display:block;
+  transition:width .4s var(--e),box-shadow .4s var(--e),border-radius .4s var(--e);
+}
+.lienzo[data-vista="movil"] .lienzo-w{padding:26px 0 40px;place-items:start center}
+.lienzo[data-vista="movil"] .marco{
+  width:390px;height:844px;border-radius:26px;
+  box-shadow:0 0 0 8px #1A1922,0 0 0 9px #FFFFFF1a,0 40px 90px -30px #000;
+}
+.lienzo[data-vista="tablet"] .lienzo-w{padding:26px 0 40px}
+.lienzo[data-vista="tablet"] .marco{
+  width:834px;height:1000px;border-radius:16px;
+  box-shadow:0 0 0 8px #1A1922,0 0 0 9px #FFFFFF1a,0 40px 90px -30px #000;
+}
+
+.modo-edit{
+  position:absolute;left:50%;bottom:18px;transform:translateX(-50%);z-index:20;
+  display:none;align-items:center;gap:10px;padding:8px 8px 8px 15px;border-radius:999px;
+  background:#17161Cf2;border:1px solid var(--oro);backdrop-filter:blur(14px);
+  box-shadow:0 18px 50px -18px #000;
+}
+body.editando .modo-edit{display:flex}
+.modo-edit span{font-family:var(--ui-mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--oro-hi)}
+
+/* ── Riel derecho: herramientas ──────────────────────────────────── */
+
+.rail-r{
+  background:var(--ui-chrome);border-left:1px solid var(--ui-line);
+  display:grid;grid-template-columns:var(--rail-r) 1fr;min-height:0;
+}
+.tools{
+  display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 0;
+  border-right:1px solid var(--ui-line);
+}
+.tool{
+  width:38px;height:38px;border-radius:10px;display:grid;place-items:center;
+  color:var(--ui-tx-3);position:relative;
+  transition:background .2s var(--e),color .2s var(--e);
+}
+.tool:hover{background:#FFFFFF0d;color:var(--ui-tx)}
+.tool.act{background:#D6A5441f;color:var(--oro-hi)}
+.tool svg{width:19px;height:19px}
+.tool i{
+  position:absolute;top:5px;right:5px;width:6px;height:6px;border-radius:50%;
+  background:var(--warn);display:none;
+}
+.tool.avisa i{display:block}
+.tool-sep{width:22px;height:1px;background:var(--ui-line);margin:6px 0}
+.tool-tip{
+  position:absolute;right:calc(100% + 9px);top:50%;transform:translateY(-50%);
+  background:var(--ui-raise);border:1px solid var(--ui-line-2);border-radius:7px;
+  padding:5px 10px;font-size:.7rem;white-space:nowrap;pointer-events:none;
+  opacity:0;transition:opacity .18s var(--e);z-index:40;
+}
+.tool:hover .tool-tip{opacity:1}
+
+.panel{display:none;flex-direction:column;min-height:0;overflow:hidden;background:var(--ui-panel)}
+body.panel-abierto .panel{display:flex}
+.panel-h{
+  padding:14px 16px;border-bottom:1px solid var(--ui-line);display:flex;align-items:center;gap:10px;flex:none;
+}
+.panel-h h2{margin:0;font-size:.86rem;font-weight:700;letter-spacing:-.025em}
+.panel-h .x{margin-left:auto;color:var(--ui-tx-3);font-size:1.2rem;line-height:1;padding:2px 5px}
+.panel-h .x:hover{color:var(--ui-tx)}
+.panel-b{flex:1;overflow-y:auto;padding:16px}
+.panel-f{padding:12px 16px;border-top:1px solid var(--ui-line);display:flex;gap:8px;flex:none}
+.hoja{display:none}
+.hoja.act{display:block}
+
+.subt{
+  font-family:var(--ui-mono);font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--ui-tx-3);margin:0 0 12px;display:flex;align-items:center;gap:9px;
+}
+.subt::after{content:"";flex:1;height:1px;background:var(--ui-line)}
+.subt:not(:first-child){margin-top:26px}
+
+/* ── Recursos ────────────────────────────────────────────────────── */
+
+.res-sum{border:1px solid var(--ui-line);border-radius:13px;background:var(--ui-raise);padding:15px;margin-bottom:20px}
+.res-sum-t{display:flex;align-items:baseline;gap:9px;margin-bottom:12px}
+.res-sum-t b{font-family:var(--ui-mono);font-size:1.5rem;font-weight:700;letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+.res-sum-t span{font-size:.76rem;color:var(--ui-tx-3)}
+.res-sum.completo .res-sum-t b{color:var(--ok)}
+.barra{height:6px;border-radius:9px;background:#FFFFFF12;overflow:hidden}
+.barra i{display:block;height:100%;background:linear-gradient(90deg,var(--oro),var(--oro-hi));border-radius:9px;transition:width .6s var(--e)}
+.res-sum.completo .barra i{background:var(--ok)}
+.res-sum-n{margin:11px 0 0;font-size:.74rem;color:var(--ui-tx-3);line-height:1.5}
+.res-sum.completo .res-sum-n{color:var(--ok)}
+
+.res{border:1px solid var(--ui-line);border-radius:12px;background:var(--ui-raise);padding:13px;margin-bottom:9px}
+.res.lleno{border-color:#63C08A44;background:#63C08A0a}
+.res-h{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.res-h b{font-size:.79rem;font-weight:700;letter-spacing:-.02em;flex:1;min-width:0;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.res-t{font-family:var(--ui-mono);font-size:.53rem;letter-spacing:.11em;text-transform:uppercase;
+  border:1px solid var(--ui-line-2);border-radius:5px;padding:2px 6px;color:var(--ui-tx-3);flex:none}
+.res-t.imagen{color:#8FB4E8;border-color:#8FB4E840}
+.res-t.video{color:#E08FA8;border-color:#E08FA840}
+.res-t.link{color:var(--oro-hi);border-color:#D6A54455}
+.res-t.contador{color:#9DDCC4;border-color:#9DDCC440}
+.res-t.texto{color:#C7A9E8;border-color:#C7A9E840}
+.res-ok{color:var(--ok);width:15px;height:15px;flex:none;display:none}
+.res.lleno .res-ok{display:block}
+.res-nota{font-size:.7rem;color:var(--ui-tx-3);line-height:1.45;margin:0 0 10px}
+.res-usos{font-family:var(--ui-mono);font-size:.55rem;color:var(--ui-tx-3);letter-spacing:.08em}
+.res-in{display:flex;gap:6px;align-items:center}
+.inp{
+  flex:1;min-width:0;background:var(--ui-bg);border:1px solid var(--ui-line);border-radius:8px;
+  padding:8px 10px;font-family:var(--ui-mono);font-size:.7rem;color:var(--ui-tx);
+  transition:border-color .2s var(--e);
+}
+.inp:focus{border-color:var(--oro);outline:none}
+.inp::placeholder{color:var(--ui-tx-3)}
+.mini{
+  flex:none;padding:8px 10px;border-radius:8px;border:1px solid var(--ui-line);
+  font-size:.7rem;font-weight:600;color:var(--ui-tx-2);white-space:nowrap;
+  transition:border-color .2s var(--e),color .2s var(--e)}
+.mini:hover{border-color:var(--oro);color:var(--oro-hi)}
+.mini.rojo:hover{border-color:#E0776F;color:#E0776F}
+.res-prev{margin-top:9px;border-radius:8px;overflow:hidden;border:1px solid var(--ui-line);
+  aspect-ratio:16/9;background:#000 center/cover no-repeat;display:none}
+.res.lleno .res-prev[data-prev]{display:block}
+
+/* ── Editor ──────────────────────────────────────────────────────── */
+
+.ed-vacio{text-align:center;padding:36px 16px;color:var(--ui-tx-3);font-size:.78rem;line-height:1.6}
+.ed-vacio svg{width:34px;height:34px;margin:0 auto 14px;display:block;opacity:.4}
+.ed-sel{border:1px solid var(--oro);border-radius:11px;background:#D6A5440f;padding:11px 13px;margin-bottom:18px}
+.ed-sel .tag{font-family:var(--ui-mono);font-size:.6rem;letter-spacing:.1em;color:var(--oro-hi);text-transform:uppercase}
+.ed-sel .txt{font-size:.75rem;color:var(--ui-tx-2);margin-top:5px;line-height:1.45;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.ctrl{margin-bottom:15px}
+.ctrl-l{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+.ctrl-l label{font-size:.72rem;font-weight:600;color:var(--ui-tx-2)}
+.ctrl-l output{margin-left:auto;font-family:var(--ui-mono);font-size:.66rem;color:var(--oro-hi);font-variant-numeric:tabular-nums}
+input[type=range]{width:100%;-webkit-appearance:none;appearance:none;background:transparent;height:18px}
+input[type=range]::-webkit-slider-runnable-track{height:3px;background:#FFFFFF1a;border-radius:9px}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;
+  background:var(--oro);margin-top:-5.5px;cursor:pointer;border:0}
+input[type=range]::-moz-range-track{height:3px;background:#FFFFFF1a;border-radius:9px}
+input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;background:var(--oro);cursor:pointer;border:0}
+.seg{display:flex;gap:4px;background:var(--ui-bg);border:1px solid var(--ui-line);border-radius:9px;padding:3px}
+.seg button{flex:1;padding:6px 4px;border-radius:6px;font-size:.7rem;font-weight:600;color:var(--ui-tx-3);
+  transition:background .18s var(--e),color .18s var(--e)}
+.seg button.act{background:var(--oro);color:#150F02}
+.paleta{display:flex;flex-wrap:wrap;gap:6px}
+.paleta button{width:28px;height:28px;border-radius:8px;border:1px solid var(--ui-line-2);position:relative}
+.paleta button.act::after{content:"";position:absolute;inset:-3px;border-radius:10px;border:1.5px solid var(--oro)}
+
+/* ── Código ──────────────────────────────────────────────────────── */
+
+.cod{
+  background:var(--ui-bg);border:1px solid var(--ui-line);border-radius:11px;
+  padding:13px;overflow:auto;max-height:100%;
+  font-family:var(--ui-mono);font-size:.63rem;line-height:1.65;color:var(--ui-tx-2);
+  white-space:pre;tab-size:2;
+}
+.cod b{color:var(--oro-hi);font-weight:400}
+
+/* ── Kit de marca ────────────────────────────────────────────────── */
+
+.kit-col{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.tok{border:1px solid var(--ui-line);border-radius:11px;overflow:hidden;background:var(--ui-raise)}
+.tok-sw{height:52px;position:relative;cursor:pointer}
+.tok-sw input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;border:0;padding:0}
+.tok-b{padding:9px 10px}
+.tok-b b{display:block;font-size:.71rem;font-weight:700;letter-spacing:-.015em}
+.tok-b code{font-family:var(--ui-mono);font-size:.6rem;color:var(--ui-tx-3);text-transform:uppercase}
+.tok-b p{margin:5px 0 0;font-size:.63rem;color:var(--ui-tx-3);line-height:1.4}
+
+.tipo{border:1px solid var(--ui-line);border-radius:11px;background:var(--ui-raise);padding:14px;margin-bottom:8px}
+.tipo-m{color:var(--ui-tx);margin:0 0 9px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tipo-d{display:flex;flex-wrap:wrap;gap:6px}
+.tipo-d span{font-family:var(--ui-mono);font-size:.55rem;letter-spacing:.08em;color:var(--ui-tx-3);
+  border:1px solid var(--ui-line);border-radius:5px;padding:2px 6px}
+.kit-nota{font-size:.72rem;color:var(--ui-tx-3);line-height:1.55;margin:0 0 16px}
+
+/* ── Diálogo ─────────────────────────────────────────────────────── */
+
+.dlg{position:fixed;inset:0;z-index:200;display:none;place-items:center;padding:24px;background:#05040Ae0;backdrop-filter:blur(6px)}
+.dlg[open]{display:grid}
+.dlg-in{width:min(440px,100%);background:var(--ui-panel);border:1px solid var(--ui-line-2);border-radius:16px;overflow:hidden}
+.dlg-h{padding:16px 18px;border-bottom:1px solid var(--ui-line);font-size:.9rem;font-weight:700;letter-spacing:-.025em}
+.dlg-b{padding:18px;display:grid;gap:13px}
+.dlg-b label{font-size:.73rem;font-weight:600;color:var(--ui-tx-2);display:block;margin-bottom:6px}
+.dlg-f{padding:14px 18px;border-top:1px solid var(--ui-line);display:flex;gap:8px;justify-content:flex-end}
+
+.toast{
+  position:fixed;left:50%;bottom:22px;transform:translate(-50%,140%);z-index:300;
+  background:var(--ui-raise);border:1px solid var(--ui-line-2);border-radius:11px;
+  padding:11px 18px;font-size:.78rem;font-weight:600;box-shadow:0 18px 50px -18px #000;
+  transition:transform .45s var(--e);max-width:min(420px,90vw);
+}
+.toast.ver{transform:translate(-50%,0)}
+.toast.ok{border-color:#63C08A66;color:#8FD9AE}
+.toast.mal{border-color:#E0776F66;color:#E8A39D}
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important}
+}
+</style>
+
+<div class="app">
+
+  <!-- ═══ BARRA SUPERIOR ═══ -->
+  <header class="top">
+    <button class="tool" id="tRail" style="width:30px;height:30px" title="Mostrar u ocultar el funnel">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16"/></svg>
+    </button>
+    <div class="top-marca">
+      <svg viewBox="0 0 40 40" fill="none" aria-hidden="true">
+        <circle cx="20" cy="20" r="18.5" stroke="#D6A544" stroke-width="1.4"/>
+        <circle cx="20" cy="20" r="11" stroke="#D6A544" stroke-width="1.4" opacity=".55"/>
+        <circle cx="20" cy="20" r="4" fill="#D6A544"/>
+      </svg>
+      <div><b>Estudio de Funnel</b><small>Escalling™ · interno</small></div>
+    </div>
+    <div class="top-sep"></div>
+    <div class="top-nombre">Editando <b id="topPag">—</b></div>
+    <div class="top-der">
+      <span class="estado-guardado" id="estGuardado">local</span>
+      <button class="chip" id="bExportar" title="Descargar el HTML de esta página">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M12 3v13M7 12l5 5 5-5M4 21h16"/></svg>
+        Exportar
+      </button>
+      <button class="chip oro" id="bGuardar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M5 13l4.5 4.5L19 7"/></svg>
+        Guardar
+      </button>
+    </div>
+  </header>
+
+  <div class="mid">
+
+    <!-- ═══ RIEL IZQUIERDO · EL FUNNEL ═══ -->
+    <aside class="rail-l">
+      <div class="rail-l-h">
+        <h2>El funnel</h2>
+        <span class="cuenta" id="cuentaPags">—</span>
+      </div>
+      <div class="rail-l-body" id="listaPags"></div>
+      <div class="rail-l-f">
+        <button class="btn-full" id="bNuevaPag">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg>
+          Agregar página
+        </button>
+      </div>
+    </aside>
+
+    <!-- ═══ LIENZO ═══ -->
+    <main class="lienzo" id="lienzo" data-vista="pc">
+      <div class="lienzo-h">
+        <div class="lienzo-url">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+          marceloproano.com/<b id="urlSlug">—</b>
+        </div>
+        <span class="estado-guardado" id="anchoActual">—</span>
+      </div>
+      <div class="lienzo-w" id="lienzoW">
+        <iframe class="marco" id="marco" title="Vista previa de la página"></iframe>
+      </div>
+      <div class="modo-edit">
+        <span>Modo edición</span>
+        <button class="chip" id="bDeshacer">Deshacer</button>
+        <button class="chip oro" id="bSalirEdit">Terminar</button>
+      </div>
+    </main>
+
+    <!-- ═══ RIEL DERECHO · HERRAMIENTAS ═══ -->
+    <aside class="rail-r">
+      <nav class="tools">
+        <button class="tool act" data-vista="pc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span class="tool-tip">Versión PC</span></button>
+        <button class="tool" data-vista="tablet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M11 18h2"/></svg><span class="tool-tip">Versión tablet</span></button>
+        <button class="tool" data-vista="movil"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M11 18.5h2"/></svg><span class="tool-tip">Versión móvil</span></button>
+        <div class="tool-sep"></div>
+        <button class="tool" data-hoja="editor"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 20h4L20 8a2.8 2.8 0 0 0-4-4L4 16z"/><path d="M14.5 5.5l4 4"/></svg><span class="tool-tip">Editar texto</span></button>
+        <button class="tool" data-hoja="recursos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 7a2 2 0 0 1 2-2h4l2 2.5h8a2 2 0 0 1 2 2V17a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><i></i><span class="tool-tip">Ver recursos</span></button>
+        <button class="tool" data-hoja="codigo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l-6-6 6-6M15 6l6 6-6 6"/></svg><span class="tool-tip">Ver código</span></button>
+        <div class="tool-sep"></div>
+        <button class="tool" data-hoja="kit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="8.5" r="1.6" fill="currentColor" stroke="none"/><circle cx="8" cy="13" r="1.6" fill="currentColor" stroke="none"/><circle cx="16" cy="13" r="1.6" fill="currentColor" stroke="none"/></svg><span class="tool-tip">Kit de marca</span></button>
+      </nav>
+
+      <section class="panel">
+        <div class="panel-h">
+          <h2 id="panelTit">Panel</h2>
+          <button class="x" id="bCerrarPanel" aria-label="Cerrar panel">×</button>
+        </div>
+        <div class="panel-b">
+          <div class="hoja" id="hEditor"></div>
+          <div class="hoja" id="hRecursos"></div>
+          <div class="hoja" id="hCodigo"><pre class="cod" id="codPre"></pre></div>
+          <div class="hoja" id="hKit"></div>
+        </div>
+        <div class="panel-f" id="panelPie" style="display:none"></div>
+      </section>
+    </aside>
+  </div>
+</div>
+
+<div class="dlg" id="dlgPag">
+  <div class="dlg-in">
+    <div class="dlg-h">Agregar página al funnel</div>
+    <div class="dlg-b">
+      <div><label for="npNombre">Nombre de la página</label><input class="inp" id="npNombre" placeholder="Ej.: Webinar en vivo" style="width:100%"></div>
+      <div><label for="npDesc">¿Qué hace esta página?</label><input class="inp" id="npDesc" placeholder="Su trabajo en el funnel" style="width:100%"></div>
+      <p style="margin:0;font-size:.72rem;color:var(--ui-tx-3);line-height:1.5">
+        Se crea como esbozo con el Kit de Marca aplicado. Dime después qué quieres en ella y la construyo completa.
+      </p>
+    </div>
+    <div class="dlg-f">
+      <button class="chip" id="npCancel">Cancelar</button>
+      <button class="chip oro" id="npOk">Crear página</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script type="application/json" id="paginasFuente">/*__PAGINAS__*/</script>
+<!--ESTADO--><script type="application/json" id="estadoGuardado">null</script><!--/ESTADO-->
+
+<script>
+(() => {
+"use strict";
+
+const $  = (s,c=document) => c.querySelector(s);
+const $$ = (s,c=document) => [...c.querySelectorAll(s)];
+const esc = s => String(s).replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
+
+/* ═══ FUENTE Y ESTADO ═══════════════════════════════════════════════ */
+
+const FUENTE = JSON.parse($("#paginasFuente").textContent);   // {orden:[], paginas:{slug:{meta,html}}}
+const LS_KEY = "escalling-funnel-v1";
+
+/* El almacenamiento del navegador puede estar deshabilitado (incógnito, data:,
+   políticas del sitio). Nunca debe tumbar el estudio. */
+const guarda = {
+  ok: true,
+  leer(k, ses){ try{ return (ses?sessionStorage:localStorage).getItem(k); }
+                catch{ this.ok = false; return null; } },
+  poner(k, v, ses){ try{ (ses?sessionStorage:localStorage).setItem(k, v); return true; }
+                    catch{ this.ok = false; return false; } },
+  quitar(k, ses){ try{ (ses?sessionStorage:localStorage).removeItem(k); }catch{} },
+};
+
+const TOKENS = [
+  ["--ink",     "#0A0910", "Fondo",        "Obsidiana sesgada a violeta"],
+  ["--card",    "#141122", "Tarjeta",      "Superficie elevada"],
+  ["--bone",    "#F4EFE6", "Texto",        "Hueso cálido"],
+  ["--gold",    "#D6A544", "Acento",       "Oro de pan de oro"],
+  ["--gold-hi", "#F2D391", "Acento claro", "Frases destacadas"],
+  ["--violet",  "#5B4A9C", "Aura",         "Solo ambiental, nunca texto"],
+];
+
+const ESCALA = [
+  ["Display",   "clamp(2.7rem, 7.4vw, 5.3rem)", 900, "--sys",  "Titular de hero"],
+  ["Sección",   "clamp(2.05rem, 5.2vw, 3.7rem)", 800, "--sys",  "Titular de sección"],
+  ["El alma",   "clamp(2.05rem, 5.2vw, 3.7rem)", 300, "--alma", "La frase en itálica serif"],
+  ["Tarjeta",   "clamp(1.15rem, 2vw, 1.4rem)",   700, "--sys",  "Título de tarjeta"],
+  ["Lede",      "clamp(1.02rem, 1.55vw, 1.2rem)",400, "--sys",  "Párrafo de entrada"],
+  ["Cuerpo",    "0.94rem",                       400, "--sys",  "Texto corrido"],
+  ["Eyebrow",   "0.7rem",                        500, "--data", "Etiqueta sobre el titular"],
+  ["Dato",      "0.6rem",                        500, "--data", "Cifras y microcopy"],
+];
+
+const vacio = () => ({
+  v: 1,
+  ts: Date.now(),
+  orden: [...FUENTE.orden],
+  extra: {},                 // páginas creadas dentro del estudio
+  tokens: {},                // overrides del kit de marca
+  pags: {},                  // slug → {recursos:{}, textos:{}, estilos:{}}
+});
+
+const guardadoInline = (() => {
+  try { return JSON.parse($("#estadoGuardado").textContent); } catch { return null; }
+})();
+
+let ST = (() => {
+  let local = null;
+  try { local = JSON.parse(guarda.leer(LS_KEY) || "null"); } catch {}
+  const base = (local && guardadoInline)
+    ? (local.ts > guardadoInline.ts ? local : guardadoInline)
+    : (local || guardadoInline || vacio());
+  return Object.assign(vacio(), base);
+})();
+
+const pagEstado = slug => (ST.pags[slug] ||= {recursos:{}, textos:{}, estilos:{}});
+
+let sucio = false;
+const marcar = () => {
+  ST.ts = Date.now();
+  guarda.poner(LS_KEY, JSON.stringify(ST));
+  sucio = true;
+  const e = $("#estGuardado");
+  if(guarda.ok){ e.textContent = "sin publicar"; e.className = "estado-guardado pend"; }
+  else { e.textContent = "sin memoria"; e.className = "estado-guardado pend";
+         e.title = "Este navegador no permite guardar. Usa Exportar antes de cerrar."; }
+};
+
+/* ═══ UTILIDADES ════════════════════════════════════════════════════ */
+
+let toastT;
+function aviso(txt, tipo=""){
+  const t = $("#toast");
+  t.textContent = txt; t.className = "toast ver " + tipo;
+  clearTimeout(toastT); toastT = setTimeout(() => t.className = "toast " + tipo, 3400);
+}
+
+const metaDe = slug => FUENTE.paginas[slug]?.meta || ST.extra[slug]?.meta || {nombre:slug, slug, icono:"○", paso:0, descripcion:"", estado:"esbozo"};
+const htmlDe = slug => FUENTE.paginas[slug]?.html ?? ST.extra[slug]?.html ?? "";
+
+/** Ruta estable a un elemento, para guardar ediciones. */
+function rutaDe(el){
+  const p = [];
+  while(el && el.nodeType === 1 && el.tagName !== "BODY"){
+    const pa = el.parentElement;
+    if(!pa) break;
+    p.unshift([...pa.children].indexOf(el));
+    el = pa;
+  }
+  return p.join("-");
+}
+function porRuta(doc, ruta){
+  let el = doc.body;
+  if(ruta === "") return el;
+  for(const i of ruta.split("-")){
+    el = el?.children[+i];
+    if(!el) return null;
+  }
+  return el;
+}
+
+/* ═══ LIENZO ════════════════════════════════════════════════════════ */
+
+let ACT = ST.orden[0] || FUENTE.orden[0];
+const marco = $("#marco");
+
+function documentoDe(slug){
+  const html = htmlDe(slug);
+  const meta = metaDe(slug);
+  const sinKit = meta.kit === false;
+  const tokens = Object.entries(ST.tokens).map(([k,v]) => `${k}:${v}`).join(";");
+  return [
+    "<!doctype html>",
+    '<html lang="es"' + (sinKit ? " data-sin-kit" : "") + ">",
+    "<head>",
+    '<meta charset="utf-8">',
+    '<meta name="viewport" content="width=device-width, initial-scale=1">',
+    '<link rel="preconnect" href="https://fonts.googleapis.com">',
+    '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>',
+    '<link rel="stylesheet" href="' + FUENTE.fuentes + '">',
+    sinKit ? "" : "<style>" + FUENTE.kitCss + "</style>",
+    tokens ? "<style>:root{" + tokens + "}</style>" : "",
+    "</head><body>",
+    html,
+    "<script>" + FUENTE.kitJs + "<\/script>",
+    "</body></html>",
+  ].join("\n");
+}
+
+function cargar(slug){
+  ACT = slug;
+  $("#topPag").textContent = metaDe(slug).nombre;
+  $("#urlSlug").textContent = slug;
+  marco.srcdoc = documentoDe(slug);
+  pintarLista();
+}
+
+marco.addEventListener("load", () => {
+  const d = marco.contentDocument;
+  if(!d) return;
+  aplicarTodo(d);
+  if(document.body.classList.contains("editando")) armarEditor();
+  const hoja = $(".hoja.act")?.id;
+  if(hoja === "hRecursos") pintarRecursos();
+  if(hoja === "hCodigo") pintarCodigo();
+  pintarLista();
+  medirAncho();
+});
+
+function aplicarTodo(d){
+  const st = pagEstado(ACT);
+  const KIT = marco.contentWindow?.KIT;
+  for(const [id, val] of Object.entries(st.recursos)) if(val) KIT?.aplicarRecurso(id, val);
+  for(const [ruta, txt] of Object.entries(st.textos)){
+    const el = porRuta(d, ruta); if(el) el.textContent = txt;
+  }
+  for(const [ruta, css] of Object.entries(st.estilos)){
+    const el = porRuta(d, ruta); if(el) Object.assign(el.style, css);
+  }
+  KIT?.refrescar();
+}
+
+/* ═══ RIEL IZQUIERDO ════════════════════════════════════════════════ */
+
+function recursosDe(slug){
+  if(slug !== ACT) {
+    /* Página no cargada: usamos el inventario estático del build. */
+    const est = metaDe(slug).recursos;
+    const st = pagEstado(slug).recursos;
+    if(!est) return {total:null, llenos:0};
+    return {total: est.req, llenos: Math.min(est.req, Object.values(st).filter(Boolean).length)};
+  }
+  const KIT = marco.contentWindow?.KIT;
+  if(!KIT) return {total:null, llenos:0};
+  const lista = KIT.listarRecursos();
+  const req = lista.filter(r => !r.opcional);
+  const st = pagEstado(slug).recursos;
+  return {
+    total: req.length,
+    llenos: req.filter(r => st[r.id]).length,
+    opcTotal: lista.length - req.length,
+    opcLlenos: lista.filter(r => r.opcional && st[r.id]).length,
+    lista,
+  };
+}
+
+function pintarLista(){
+  const cont = $("#listaPags");
+  cont.innerHTML = ST.orden.map((slug, i) => {
+    const m = metaDe(slug);
+    const r = recursosDe(slug);
+    const pct = r.total ? Math.round(r.llenos / r.total * 100) : 0;
+    const completo = r.total !== null && r.total > 0 && r.llenos === r.total;
+    const listo = m.estado === "listo";
+    return `<button class="pag${slug===ACT?" act":""}" data-slug="${esc(slug)}" draggable="true">
+      <span class="pag-n">${i+1}</span>
+      <span class="pag-b">
+        <span class="pag-nom"><i class="pag-est ${listo?"listo":"esbozo"}"></i><span>${esc(m.nombre)}</span></span>
+        <span class="pag-desc">${esc(m.descripcion || "Sin descripción")}</span>
+        ${r.total ? `<span class="pag-barra"><i style="width:${pct}%"></i></span>
+        <span class="pag-rec${completo?" completo":""}">${completo?"✓ recursos completos":`${r.llenos}/${r.total} recursos`}</span>`
+        : `<span class="pag-rec">${listo?"sin recursos":"esbozo · esperando brief"}</span>`}
+      </span>
+      <span class="pag-mano"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 6h.01M8 12h.01M8 18h.01M16 6h.01M16 12h.01M16 18h.01"/></svg></span>
+    </button>`;
+  }).join("");
+  $("#cuentaPags").textContent = ST.orden.length + " págs";
+
+  $$(".pag", cont).forEach(b => {
+    b.addEventListener("click", () => { if(b.dataset.slug !== ACT) cargar(b.dataset.slug); });
+    b.addEventListener("dragstart", e => { arrastre = b.dataset.slug; b.classList.add("arrastrando"); e.dataTransfer.effectAllowed = "move"; });
+    b.addEventListener("dragend", () => { b.classList.remove("arrastrando"); $$(".pag").forEach(x => x.classList.remove("sobre")); });
+    b.addEventListener("dragover", e => { e.preventDefault(); b.classList.add("sobre"); });
+    b.addEventListener("dragleave", () => b.classList.remove("sobre"));
+    b.addEventListener("drop", e => {
+      e.preventDefault(); b.classList.remove("sobre");
+      const destino = b.dataset.slug;
+      if(!arrastre || arrastre === destino) return;
+      const o = ST.orden.filter(s => s !== arrastre);
+      o.splice(o.indexOf(destino), 0, arrastre);
+      ST.orden = o; marcar(); pintarLista();
+    });
+  });
+}
+let arrastre = null;
+
+/* ═══ VISTAS PC / TABLET / MÓVIL ════════════════════════════════════ */
+
+function medirAncho(){
+  const w = marco.getBoundingClientRect().width;
+  $("#anchoActual").textContent = Math.round(w) + " px";
+}
+addEventListener("resize", medirAncho);
+
+$$(".tool[data-vista]").forEach(b => b.addEventListener("click", () => {
+  $$(".tool[data-vista]").forEach(x => x.classList.remove("act"));
+  b.classList.add("act");
+  $("#lienzo").dataset.vista = b.dataset.vista;
+  requestAnimationFrame(medirAncho);
+}));
+
+/* ═══ PANELES ═══════════════════════════════════════════════════════ */
+
+const TITULOS = {editor:"Editar texto", recursos:"Recursos de la página", codigo:"Código de la página", kit:"Kit de marca"};
+const PINTAR  = {editor:pintarEditor, recursos:pintarRecursos, codigo:pintarCodigo, kit:pintarKit};
+
+function abrirHoja(id){
+  const ya = $(".hoja.act")?.id === "h" + id[0].toUpperCase() + id.slice(1);
+  if(ya && document.body.classList.contains("panel-abierto")) return cerrarPanel();
+  document.body.classList.add("panel-abierto");
+  $$(".tool[data-hoja]").forEach(t => t.classList.toggle("act", t.dataset.hoja === id));
+  $$(".hoja").forEach(h => h.classList.remove("act"));
+  $("#h" + id[0].toUpperCase() + id.slice(1)).classList.add("act");
+  $("#panelTit").textContent = TITULOS[id];
+  $("#panelPie").style.display = "none";
+  PINTAR[id]?.();
+  requestAnimationFrame(medirAncho);
+  if(id === "editor") entrarEdicion();
+}
+function cerrarPanel(){
+  document.body.classList.remove("panel-abierto");
+  $$(".tool[data-hoja]").forEach(t => t.classList.remove("act"));
+  $$(".hoja").forEach(h => h.classList.remove("act"));
+  requestAnimationFrame(medirAncho);
+}
+$$(".tool[data-hoja]").forEach(b => b.addEventListener("click", () => abrirHoja(b.dataset.hoja)));
+$("#bCerrarPanel").addEventListener("click", cerrarPanel);
+$("#tRail").addEventListener("click", () => {
+  const b = document.body;
+  if(innerWidth <= 900) b.classList.toggle("rail-fijo");
+  else b.classList.toggle("rail-oculto");
+  requestAnimationFrame(medirAncho);
+});
+
+/* ═══ RECURSOS ══════════════════════════════════════════════════════ */
+
+const ICONO_OK = '<svg class="res-ok" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M5 13l4.5 4.5L19 7"/></svg>';
+
+function pintarRecursos(){
+  const cont = $("#hRecursos");
+  const KIT = marco.contentWindow?.KIT;
+  if(!KIT){ cont.innerHTML = '<p class="ed-vacio">Cargando la página…</p>'; return; }
+
+  const lista = KIT.listarRecursos();
+  const st = pagEstado(ACT).recursos;
+  const req = lista.filter(r => !r.opcional);
+  const opc = lista.filter(r => r.opcional);
+  const reqL = req.filter(r => st[r.id]).length;
+  const opcL = opc.filter(r => st[r.id]).length;
+  const completo = req.length > 0 && reqL === req.length;
+  const pct = req.length ? Math.round(reqL/req.length*100) : 100;
+  const faltan = req.length - reqL;
+
+  /* total del funnel */
+  let tf = 0, lf = 0;
+  ST.orden.forEach(s => {
+    if(s === ACT){ tf += req.length; lf += reqL; }
+    else { const g = Object.values(pagEstado(s).recursos).filter(Boolean).length; lf += g; }
+  });
+
+  const fila = r => {
+    const val = st[r.id] || "";
+    const lleno = !!val;
+    const esFecha = r.tipo === "contador";
+    const esImg = r.tipo === "imagen";
+    return `<div class="res${lleno?" lleno":""}" data-id="${esc(r.id)}">
+      <div class="res-h">
+        <b>${esc(r.label)}</b>
+        <span class="res-t ${esc(r.tipo)}">${esc(r.tipo)}</span>
+        ${ICONO_OK}
+      </div>
+      ${r.nota ? `<p class="res-nota">${esc(r.nota)}</p>` : ""}
+      <div class="res-in">
+        <input class="inp" type="${esFecha?"datetime-local":"text"}" value="${esc(val)}"
+          placeholder="${esFecha?"":esImg?"Pega una URL o sube el archivo":"Pega aquí la URL"}" data-campo>
+        ${esImg ? `<button class="mini" data-subir>Subir</button>` : ""}
+        ${lleno ? `<button class="mini rojo" data-borrar>Quitar</button>` : ""}
+      </div>
+      ${esImg ? `<div class="res-prev" ${lleno?`data-prev style="background-image:url('${val.replace(/'/g,"%27")}')"`:""}></div>` : ""}
+      <div class="res-usos" style="margin-top:8px">Se usa en ${r.usos} ${r.usos===1?"lugar":"lugares"}${r.opcional?" · opcional":""}</div>
+    </div>`;
+  };
+
+  cont.innerHTML = `
+    <div class="res-sum${completo?" completo":""}">
+      <div class="res-sum-t"><b class="tnum">${reqL}/${req.length}</b><span>recursos obligatorios</span></div>
+      <div class="barra"><i style="width:${pct}%"></i></div>
+      <p class="res-sum-n">${
+        req.length === 0 ? "Esta página todavía no declara recursos."
+        : completo ? "✓ Página completa. Todos los recursos obligatorios están cargados."
+        : `Te ${faltan===1?"falta":"faltan"} <b>${faltan}</b> ${faltan===1?"recurso":"recursos"} para que la página esté completa.`
+      }</p>
+      ${opc.length ? `<p class="res-sum-n" style="margin-top:7px;color:var(--ui-tx-3)">Opcionales: ${opcL}/${opc.length} · mejoran la página pero no la bloquean.</p>` : ""}
+      <p class="res-sum-n" style="margin-top:10px;padding-top:10px;border-top:1px solid var(--ui-line);color:var(--ui-tx-3)">
+        En todo el funnel llevas <b>${lf}</b> recursos cargados.
+      </p>
+    </div>
+    ${req.length ? `<h3 class="subt">Obligatorios</h3>` + req.map(fila).join("") : ""}
+    ${opc.length ? `<h3 class="subt">Opcionales</h3>` + opc.map(fila).join("") : ""}
+  `;
+
+  $$(".res", cont).forEach(caja => {
+    const id = caja.dataset.id;
+    const campo = $("[data-campo]", caja);
+    const set = val => {
+      const st2 = pagEstado(ACT).recursos;
+      if(val) st2[id] = val; else delete st2[id];
+      marcar();
+      marco.contentWindow?.KIT?.aplicarRecurso(id, val || "");
+      pintarRecursos(); pintarLista(); avisarPendientes();
+    };
+    campo.addEventListener("change", () => set(campo.value.trim()));
+    $("[data-borrar]", caja)?.addEventListener("click", () => set(""));
+    $("[data-subir]", caja)?.addEventListener("click", () => subirImagen(set));
+  });
+
+  avisarPendientes();
+}
+
+function avisarPendientes(){
+  const KIT = marco.contentWindow?.KIT;
+  const t = $('.tool[data-hoja="recursos"]');
+  if(!KIT){ t.classList.remove("avisa"); return; }
+  const st = pagEstado(ACT).recursos;
+  const faltan = KIT.listarRecursos().filter(r => !r.opcional && !st[r.id]).length;
+  t.classList.toggle("avisa", faltan > 0);
+}
+
+/** Sube una imagen, la reescala y la guarda como data URI. */
+function subirImagen(cb){
+  const inp = document.createElement("input");
+  inp.type = "file"; inp.accept = "image/*";
+  inp.addEventListener("change", () => {
+    const f = inp.files?.[0]; if(!f) return;
+    const fr = new FileReader();
+    fr.onload = () => {
+      const img = new Image();
+      img.onload = () => {
+        const MAX = 1600;
+        const k = Math.min(1, MAX / Math.max(img.width, img.height));
+        const c = document.createElement("canvas");
+        c.width = Math.round(img.width*k); c.height = Math.round(img.height*k);
+        c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+        const png = /png|gif|webp/i.test(f.type) && f.size < 400e3;
+        const uri = c.toDataURL(png ? "image/png" : "image/jpeg", .84);
+        const kb = Math.round(uri.length*.75/1024);
+        if(kb > 2400) return aviso(`La imagen pesa ${kb} KB tras optimizar. Usa una más liviana o pega una URL.`, "mal");
+        cb(uri);
+        aviso(`Imagen cargada · ${c.width}×${c.height} · ${kb} KB`, "ok");
+      };
+      img.onerror = () => aviso("No se pudo leer esa imagen.", "mal");
+      img.src = fr.result;
+    };
+    fr.readAsDataURL(f);
+  });
+  inp.click();
+}
+
+/* ═══ EDITOR DE TEXTO Y BLOQUES ═════════════════════════════════════ */
+
+let sel = null, pila = [];
+
+function entrarEdicion(){ document.body.classList.add("editando"); armarEditor(); }
+function salirEdicion(){
+  document.body.classList.remove("editando");
+  const d = marco.contentDocument; if(!d) return;
+  $$("[contenteditable]", d).forEach(e => e.removeAttribute("contenteditable"));
+  d.getElementById("__ed")?.remove();
+  sel = null; pintarEditor();
+}
+$("#bSalirEdit").addEventListener("click", () => { salirEdicion(); cerrarPanel(); });
+
+const EDITABLES = "h1,h2,h3,h4,h5,p,li,span,a,b,strong,em,small,div,dt,dd,summary,q,button";
+
+function armarEditor(){
+  const d = marco.contentDocument; if(!d) return;
+  if(!d.getElementById("__ed")){
+    const s = d.createElement("style");
+    s.id = "__ed";
+    s.textContent = `
+      [data-ed-hover]{outline:1px dashed #D6A54488!important;outline-offset:2px;cursor:text!important}
+      [data-ed-sel]{outline:2px solid #D6A544!important;outline-offset:2px;
+        background:#D6A5440d!important;border-radius:3px}
+      *{animation-play-state:paused!important}`;
+    d.head.append(s);
+  }
+  d.addEventListener("mouseover", onHover, true);
+  d.addEventListener("mouseout",  onOut,   true);
+  d.addEventListener("click",     onClick, true);
+}
+function onHover(e){ if(!document.body.classList.contains("editando")) return;
+  const el = e.target.closest?.(EDITABLES); if(el && el !== sel) el.dataset.edHover = "1"; }
+function onOut(e){ e.target.closest?.(EDITABLES)?.removeAttribute("data-ed-hover"); }
+function onClick(e){
+  if(!document.body.classList.contains("editando")) return;
+  const el = e.target.closest?.(EDITABLES); if(!el) return;
+  e.preventDefault(); e.stopPropagation();
+  seleccionar(el);
+}
+
+function seleccionar(el){
+  const d = marco.contentDocument;
+  $$("[data-ed-sel]", d).forEach(x => { x.removeAttribute("data-ed-sel"); x.removeAttribute("contenteditable"); });
+  el.removeAttribute("data-ed-hover");
+  el.dataset.edSel = "1";
+  sel = el;
+
+  const soloTexto = ![...el.children].some(c => c.children.length || c.textContent.trim());
+  if(soloTexto){
+    el.contentEditable = "true";
+    el.addEventListener("input", onEscribe);
+    el.addEventListener("blur", () => el.removeEventListener("input", onEscribe), {once:true});
+  }
+  if(!document.body.classList.contains("panel-abierto") || $(".hoja.act")?.id !== "hEditor") abrirHoja("editor");
+  else pintarEditor();
+}
+
+let escT;
+function onEscribe(e){
+  const el = e.currentTarget, ruta = rutaDe(el);
+  clearTimeout(escT);
+  escT = setTimeout(() => {
+    const st = pagEstado(ACT).textos;
+    pila.push({tipo:"texto", ruta, antes: st[ruta]});
+    st[ruta] = el.textContent;
+    marcar();
+  }, 500);
+}
+
+const CTRLS = [
+  {k:"fontSize",      lab:"Tamaño de letra",  min:9,  max:120, paso:1,   uni:"px"},
+  {k:"fontWeight",    lab:"Grosor",           min:300,max:900, paso:100, uni:""},
+  {k:"letterSpacing", lab:"Espaciado",        min:-6, max:10,  paso:.1,  uni:"px"},
+  {k:"lineHeight",    lab:"Interlineado",     min:.8, max:2.4, paso:.02, uni:""},
+  {k:"paddingTop",    lab:"Espacio arriba",   min:0,  max:200, paso:2,   uni:"px"},
+  {k:"paddingBottom", lab:"Espacio abajo",    min:0,  max:200, paso:2,   uni:"px"},
+  {k:"maxWidth",      lab:"Ancho máximo",     min:200,max:1600,paso:10,  uni:"px"},
+];
+
+function pintarEditor(){
+  const cont = $("#hEditor");
+  if(!sel){
+    cont.innerHTML = `<div class="ed-vacio">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 20h4L20 8a2.8 2.8 0 0 0-4-4L4 16z"/><path d="M14.5 5.5l4 4"/></svg>
+      <b style="color:var(--ui-tx-2);display:block;margin-bottom:8px">Modo edición activo</b>
+      Haz clic en cualquier texto o bloque de la página.<br>Podrás escribir encima y ajustar tamaño, grosor y espacios.
+      <p style="margin-top:18px;font-size:.72rem">Los cambios se guardan solos en este navegador.<br>Pulsa <b style="color:var(--oro-hi)">Guardar</b> arriba para publicarlos.</p>
+    </div>`;
+    return;
+  }
+  const cs = marco.contentWindow.getComputedStyle(sel);
+  const num = v => parseFloat(v) || 0;
+  const guard = pagEstado(ACT).estilos[rutaDe(sel)] || {};
+
+  cont.innerHTML = `
+    <div class="ed-sel">
+      <div class="tag">&lt;${sel.tagName.toLowerCase()}&gt;${sel.className ? " ." + String(sel.className).split(" ").filter(Boolean).slice(0,2).join(".") : ""}</div>
+      <div class="txt">${esc((sel.textContent || "").trim().slice(0,120) || "(bloque sin texto)")}</div>
+    </div>
+
+    <h3 class="subt">Tipografía</h3>
+    ${CTRLS.slice(0,4).map(c => ctrlHTML(c, guard[c.k] ?? cs[c.k])).join("")}
+
+    <h3 class="subt">Color del texto</h3>
+    <div class="paleta" id="edPaleta">
+      ${TOKENS.map(([k,def,nom]) => {
+        const v = ST.tokens[k] || def;
+        return `<button data-color="${esc(v)}" title="${esc(nom)}" style="background:${esc(v)}"></button>`;
+      }).join("")}
+    </div>
+
+    <h3 class="subt">Alineación</h3>
+    <div class="seg" id="edAlin">
+      ${["left","center","right"].map(a =>
+        `<button data-alin="${a}" class="${(guard.textAlign||cs.textAlign)===a?"act":""}">${a==="left"?"Izquierda":a==="center"?"Centro":"Derecha"}</button>`).join("")}
+    </div>
+
+    <h3 class="subt">Tamaño del bloque</h3>
+    ${CTRLS.slice(4).map(c => ctrlHTML(c, guard[c.k] ?? (c.k==="maxWidth" ? (num(cs.maxWidth)||sel.getBoundingClientRect().width) : cs[c.k]))).join("")}
+
+    <button class="mini rojo" id="edReset" style="width:100%;margin-top:8px;padding:10px">Restaurar este elemento</button>
+  `;
+
+  $$("[data-ctrl]", cont).forEach(r => {
+    const k = r.dataset.ctrl, out = $(`output[data-for="${k}"]`, cont);
+    const c = CTRLS.find(x => x.k === k);
+    r.addEventListener("input", () => {
+      const v = k === "fontWeight" || k === "lineHeight" ? r.value : r.value + c.uni;
+      out.textContent = r.value + c.uni;
+      aplicarEstilo(k, v);
+    });
+  });
+  $$("#edPaleta button", cont).forEach(b => b.addEventListener("click", () => {
+    $$("#edPaleta button", cont).forEach(x => x.classList.remove("act"));
+    b.classList.add("act"); aplicarEstilo("color", b.dataset.color);
+  }));
+  $$("#edAlin button", cont).forEach(b => b.addEventListener("click", () => {
+    $$("#edAlin button", cont).forEach(x => x.classList.remove("act"));
+    b.classList.add("act"); aplicarEstilo("textAlign", b.dataset.alin);
+  }));
+  $("#edReset", cont).addEventListener("click", () => {
+    const ruta = rutaDe(sel), st = pagEstado(ACT);
+    delete st.estilos[ruta]; delete st.textos[ruta];
+    marcar(); marco.srcdoc = documentoDe(ACT); sel = null;
+    aviso("Elemento restaurado", "ok");
+  });
+}
+
+function ctrlHTML(c, valor){
+  const v = Math.round((parseFloat(valor) || 0) * 100) / 100;
+  return `<div class="ctrl">
+    <div class="ctrl-l"><label>${c.lab}</label><output data-for="${c.k}">${v}${c.uni}</output></div>
+    <input type="range" data-ctrl="${c.k}" min="${c.min}" max="${c.max}" step="${c.paso}" value="${v}">
+  </div>`;
+}
+
+function aplicarEstilo(k, v){
+  if(!sel) return;
+  const ruta = rutaDe(sel), st = pagEstado(ACT).estilos;
+  const previo = st[ruta] ? {...st[ruta]} : null;
+  pila.push({tipo:"estilo", ruta, antes: previo});
+  (st[ruta] ||= {})[k] = v;
+  sel.style[k] = v;
+  marcar();
+}
+
+$("#bDeshacer").addEventListener("click", deshacer);
+function deshacer(){
+  const u = pila.pop();
+  if(!u) return aviso("No hay nada que deshacer");
+  const st = pagEstado(ACT), d = marco.contentDocument;
+  if(u.tipo === "texto"){
+    if(u.antes === undefined) delete st.textos[u.ruta]; else st.textos[u.ruta] = u.antes;
+  } else {
+    if(u.antes === null) delete st.estilos[u.ruta]; else st.estilos[u.ruta] = u.antes;
+  }
+  marcar();
+  const y = marco.contentWindow.scrollY;
+  marco.srcdoc = documentoDe(ACT);
+  marco.addEventListener("load", () => marco.contentWindow.scrollTo(0, y), {once:true});
+  sel = null;
+}
+addEventListener("keydown", e => {
+  if((e.metaKey || e.ctrlKey) && e.key === "z"){ e.preventDefault(); deshacer(); }
+  if(e.key === "Escape" && document.body.classList.contains("editando")){ salirEdicion(); }
+});
+
+/* ═══ CÓDIGO ════════════════════════════════════════════════════════ */
+
+function htmlFinal(slug = ACT){
+  const d = marco.contentDocument;
+  if(slug !== ACT || !d) return documentoDe(slug);
+  const clon = d.documentElement.cloneNode(true);
+  clon.querySelector("#__ed")?.remove();
+  clon.querySelectorAll("[data-ed-sel],[data-ed-hover],[contenteditable]").forEach(e => {
+    e.removeAttribute("data-ed-sel"); e.removeAttribute("data-ed-hover"); e.removeAttribute("contenteditable");
+  });
+  clon.removeAttribute("data-kit-listo");           // marca de runtime, no va en el export
+  clon.querySelectorAll("[data-dup]").forEach(e => e.removeAttribute("data-dup"));
+  clon.querySelectorAll("[data-armado]").forEach(e => e.removeAttribute("data-armado"));
+  return "<!doctype html>\n" + clon.outerHTML;
+}
+
+function pintarCodigo(){
+  const html = htmlFinal();
+  const kb = Math.round(new Blob([html]).size / 1024);
+  $("#codPre").innerHTML = esc(html.length > 200000 ? html.slice(0,200000) + "\n\n… (recortado en la vista, la copia va completa)" : html);
+  const pie = $("#panelPie");
+  pie.style.display = "flex";
+  pie.innerHTML = `
+    <button class="chip oro" id="bCopiar" style="flex:1;justify-content:center">Copiar todo el código</button>
+    <button class="chip" id="bBajar">Descargar</button>
+    <span class="estado-guardado" style="align-self:center">${kb} KB</span>`;
+  $("#bCopiar").addEventListener("click", async () => {
+    try { await navigator.clipboard.writeText(html); aviso("Código copiado al portapapeles", "ok"); }
+    catch {
+      const ta = document.createElement("textarea");
+      ta.value = html; document.body.append(ta); ta.select();
+      document.execCommand("copy"); ta.remove();
+      aviso("Código copiado", "ok");
+    }
+  });
+  $("#bBajar").addEventListener("click", () => descargar(ACT + ".html", html));
+}
+
+/* ═══ KIT DE MARCA ══════════════════════════════════════════════════ */
+
+function pintarKit(){
+  const cont = $("#hKit");
+  cont.innerHTML = `
+    <p class="kit-nota">Estos son los tokens del funnel entero. Cambia un color aquí y cambia
+      en las ${ST.orden.length} páginas a la vez.</p>
+
+    <h3 class="subt">Colores</h3>
+    <div class="kit-col">
+      ${TOKENS.map(([k,def,nom,desc]) => {
+        const v = ST.tokens[k] || def;
+        return `<div class="tok">
+          <div class="tok-sw" style="background:${esc(v)}"><input type="color" value="${esc(v)}" data-token="${esc(k)}" aria-label="${esc(nom)}"></div>
+          <div class="tok-b"><b>${esc(nom)}</b><code>${esc(v)}</code><p>${esc(desc)}</p></div>
+        </div>`;
+      }).join("")}
+    </div>
+
+    <h3 class="subt">Escala tipográfica</h3>
+    ${ESCALA.map(([nom, size, peso, fam, uso]) => {
+      const ff = fam === "--alma" ? "Newsreader,Georgia,serif" : fam === "--data" ? "'JetBrains Mono',monospace" : "Archivo,sans-serif";
+      const it = fam === "--alma" ? "italic" : "normal";
+      const ls = fam === "--data" ? ".16em" : peso >= 800 ? "-.04em" : "-.01em";
+      const tt = fam === "--data" ? "uppercase" : "none";
+      return `<div class="tipo">
+        <p class="tipo-m" style="font:${it} ${peso} ${size}/1.06 ${ff};letter-spacing:${ls};text-transform:${tt};color:${fam==="--alma"?"var(--oro-hi)":"var(--ui-tx)"}">${esc(nom)}</p>
+        <div class="tipo-d">
+          <span>${esc(size)}</span><span>peso ${peso}</span>
+          <span>${fam === "--alma" ? "Newsreader itálica" : fam === "--data" ? "JetBrains Mono" : "Archivo"}</span>
+          <span>${esc(uso)}</span>
+        </div>
+      </div>`;
+    }).join("")}
+
+    <h3 class="subt">Las tres voces tipográficas</h3>
+    <div class="tipo"><p style="margin:0 0 6px;font:800 1.25rem/1.1 Archivo,sans-serif;letter-spacing:-.035em">Archivo — el sistema</p>
+      <p style="margin:0;font-size:.74rem;color:var(--ui-tx-3);line-height:1.5">Titulares, botones, cuerpo. Es la estructura, lo que sostiene.</p></div>
+    <div class="tipo"><p style="margin:0 0 6px;font:italic 300 1.4rem/1.1 Newsreader,Georgia,serif;color:var(--oro-hi)">Newsreader — el alma</p>
+      <p style="margin:0;font-size:.74rem;color:var(--ui-tx-3);line-height:1.5">Una frase por titular, nunca más. Es la firma de la marca: el alma irrumpiendo dentro del sistema.</p></div>
+    <div class="tipo"><p style="margin:0 0 6px;font:500 .8rem/1.1 'JetBrains Mono',monospace;letter-spacing:.18em;text-transform:uppercase;color:var(--oro)">JetBrains Mono — los datos</p>
+      <p style="margin:0;font-size:.74rem;color:var(--ui-tx-3);line-height:1.5">Eyebrows, cifras, contadores, etiquetas. Todo lo que se lee como un dato.</p></div>
+
+    <h3 class="subt">Componentes</h3>
+    <div class="tipo" style="display:flex;flex-wrap:wrap;gap:10px;align-items:center">
+      <span style="background:${esc(ST.tokens["--gold"]||"#D6A544")};color:#150F02;font-weight:700;font-size:.8rem;padding:11px 19px;border-radius:999px">Botón principal</span>
+      <span style="border:1px solid #D6A54455;font-weight:600;font-size:.78rem;padding:10px 17px;border-radius:999px">Secundario</span>
+      <span style="border:1px solid #D6A54455;color:${esc(ST.tokens["--gold-hi"]||"#F2D391")};font-family:var(--ui-mono);font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;padding:6px 13px;border-radius:999px">Badge</span>
+    </div>
+
+    <button class="mini rojo" id="kitReset" style="width:100%;margin-top:14px;padding:10px">Restaurar colores originales</button>
+  `;
+
+  $$("input[data-token]", cont).forEach(i => i.addEventListener("input", () => {
+    ST.tokens[i.dataset.token] = i.value;
+    marcar();
+    i.parentElement.style.background = i.value;
+    aplicarTokensEnVivo();
+    clearTimeout(i._t); i._t = setTimeout(pintarKit, 700);
+  }));
+  $("#kitReset", cont).addEventListener("click", () => {
+    ST.tokens = {}; marcar(); marco.srcdoc = documentoDe(ACT); pintarKit();
+    aviso("Colores del kit restaurados", "ok");
+  });
+}
+
+function aplicarTokensEnVivo(){
+  const d = marco.contentDocument; if(!d) return;
+  for(const [k,v] of Object.entries(ST.tokens)) d.documentElement.style.setProperty(k, v);
+}
+
+/* ═══ AGREGAR PÁGINA ════════════════════════════════════════════════ */
+
+const dlg = $("#dlgPag");
+$("#bNuevaPag").addEventListener("click", () => { dlg.setAttribute("open",""); $("#npNombre").value = ""; $("#npDesc").value = ""; $("#npNombre").focus(); });
+$("#npCancel").addEventListener("click", () => dlg.removeAttribute("open"));
+dlg.addEventListener("click", e => { if(e.target === dlg) dlg.removeAttribute("open"); });
+$("#npOk").addEventListener("click", () => {
+  const nombre = $("#npNombre").value.trim();
+  if(!nombre) return aviso("Ponle un nombre a la página", "mal");
+  const base = nombre.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
+  let slug = base || "pagina", n = 2;
+  while(ST.orden.includes(slug)) slug = base + "-" + n++;
+  const desc = $("#npDesc").value.trim();
+  const paso = ST.orden.length + 1;
+  ST.extra[slug] = {
+    meta: {nombre, slug, icono:"○", paso, descripcion: desc, estado:"esbozo"},
+    html: FUENTE.esbozo.replace(/__NOMBRE__/g, esc(nombre)).replace(/__PASO__/g, paso)
+                       .replace(/__ROL__/g, esc(desc || "Su trabajo dentro del funnel, por definir.")),
+  };
+  ST.orden.push(slug);
+  marcar(); dlg.removeAttribute("open"); cargar(slug);
+  aviso(`«${nombre}» agregada al funnel. Dime qué quieres en ella.`, "ok");
+});
+
+/* ═══ GUARDAR / EXPORTAR ════════════════════════════════════════════ */
+
+let API = null, APIdesc = null;
+(async () => {
+  try { API = await claude.use("artifact"); } catch {}
+  try { APIdesc = await claude.use("downloads"); } catch {}
+  const e = $("#estGuardado");
+  if(!API){ e.textContent = "solo local"; e.title = "Publicar no está disponible en esta vista. Todo se guarda en este navegador."; }
+})();
+
+async function descargar(nombre, texto){
+  if(APIdesc){
+    try { await APIdesc.save({filename:nombre, data:new Blob([texto],{type:"text/html"})});
+          return aviso("Archivo descargado", "ok"); }
+    catch(err){ if(err?.code !== "rejected") aviso("No se pudo descargar: " + (err?.code||""), "mal"); return; }
+  }
+  try{
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob([texto],{type:"text/html"}));
+    a.download = nombre; a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+    aviso("Archivo descargado", "ok");
+  } catch { aviso("La descarga no está disponible aquí. Usa «Copiar todo el código».", "mal"); }
+}
+
+$("#bExportar").addEventListener("click", () => descargar(ACT + ".html", htmlFinal()));
+
+$("#bGuardar").addEventListener("click", async () => {
+  const b = $("#bGuardar"); b.disabled = true;
+  try{
+    if(!API) { aviso("Guardado en este navegador. Publicar no está disponible en esta vista.", "ok"); return; }
+    const doc = await regenerar();
+    if(!doc){ aviso("No pude reconstruir el estudio para publicar. Tu trabajo sigue guardado en local.", "mal"); return; }
+    guarda.poner("funnel-vuelve", ACT, true);
+    await API.publish(doc);
+  } catch(err){
+    const c = err?.code;
+    if(c === "conflict") aviso("Alguien publicó una versión más nueva. Recarga y vuelve a intentar.", "mal");
+    else if(c === "not_writer" || c === "not_granted") aviso("No tienes permiso de publicar en este artifact.", "mal");
+    else if(c === "rate_limited") aviso("Vas muy rápido. Espera unos segundos y guarda de nuevo.", "mal");
+    else aviso("No se pudo publicar" + (c ? ` (${c})` : "") + ". Tu trabajo sigue en local.", "mal");
+  } finally { b.disabled = false; }
+});
+
+/** Reconstruye el documento del estudio con el estado embebido. */
+async function regenerar(){
+  try{
+    const r = await fetch(location.href, {cache:"no-store"});
+    if(!r.ok) return null;
+    let src = await r.text();
+    const bloque = "<!--ESTADO--><script type=\"application/json\" id=\"estadoGuardado\">"
+                 + JSON.stringify(ST).replace(/<\//g, "<\\/")
+                 + "<\/script><!--/ESTADO-->";
+    const re = /<!--ESTADO-->[\s\S]*?<!--\/ESTADO-->/;
+    if(!re.test(src)) return null;
+    return src.replace(re, () => bloque);
+  } catch { return null; }
+}
+
+/* ═══ ARRANQUE ══════════════════════════════════════════════════════ */
+
+const vuelve = guarda.leer("funnel-vuelve", true);
+if(vuelve && ST.orden.includes(vuelve)){ ACT = vuelve; guarda.quitar("funnel-vuelve", true); }
+if(guardadoInline && (!sucio)){ const e = $("#estGuardado"); e.textContent = "publicado"; e.className = "estado-guardado ok"; }
+
+cargar(ACT);
+addEventListener("beforeunload", e => { if(sucio && API){ e.preventDefault(); e.returnValue = ""; } });
+})();
+</script>

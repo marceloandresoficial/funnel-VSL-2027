@@ -1,0 +1,148 @@
+<!--PAGINA {"nombre":"Preparación","slug":"preparacion","icono":"◷","paso":4,"descripcion":"Precalienta la sesión. Sube la tasa de cierre antes de hablar."} -->
+<style>
+.prep-hero{padding-top:clamp(110px,15vw,150px)}
+.prep-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,4vw,56px);align-items:center}
+@media(max-width:900px){.prep-grid{grid-template-columns:1fr}}
+.check{list-style:none;margin:0;padding:0;display:grid;gap:14px}
+.check li{display:flex;gap:14px;align-items:flex-start;font-size:.97rem;color:var(--bone-mute);line-height:1.55}
+.check li::before{content:"";flex:none;width:20px;height:20px;border-radius:6px;margin-top:2px;
+  border:1px solid var(--line-hard);background:#D6A5440f;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23D6A544' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 13l4.5 4.5L19 7'/%3E%3C/svg%3E");
+  background-size:13px;background-repeat:no-repeat;background-position:center}
+.check li b{color:var(--bone);font-weight:600}
+.reglas{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);margin-top:52px}
+@media(max-width:800px){.reglas{grid-template-columns:1fr}}
+.regla{background:var(--ink);padding:clamp(26px,3.4vw,38px)}
+.regla h3{display:flex;align-items:center;gap:11px;font-size:1.02rem;font-weight:700;letter-spacing:-.025em;margin-bottom:22px}
+.regla h3 em{font-style:normal;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:.8rem;flex:none;font-family:var(--data)}
+.regla.si h3 em{background:var(--gold);color:#150F02}
+.regla.no h3 em{background:#F4EFE614;color:var(--bone-faint)}
+.regla ul{list-style:none;margin:0;padding:0;display:grid;gap:15px}
+.regla li{font-size:.92rem;line-height:1.55;color:var(--bone-mute)}
+.regla.no li{color:var(--bone-faint)}
+.tempo{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);margin-top:44px}
+.tempo-i{background:var(--ink);padding:20px 26px;display:grid;grid-template-columns:96px 1fr;gap:24px;align-items:baseline}
+@media(max-width:560px){.tempo-i{grid-template-columns:1fr;gap:6px}}
+.tempo-t{font-family:var(--data);font-size:.72rem;letter-spacing:.14em;color:var(--gold);text-transform:uppercase}
+.tempo-i h4{font-size:.98rem;font-weight:700;letter-spacing:-.02em;margin-bottom:4px}
+.tempo-i p{margin:0;font-size:.89rem;color:var(--bone-faint);line-height:1.5}
+</style>
+
+<nav class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="#top">
+      <svg class="brand-mark" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+        <circle cx="20" cy="20" r="18.5" stroke="#D6A544" stroke-width="1"/>
+        <circle cx="20" cy="20" r="11" stroke="#D6A544" stroke-width="1" opacity=".55"/>
+        <path d="M20 4v32M4 20h32" stroke="#D6A544" stroke-width="1" opacity=".28"/>
+        <circle cx="20" cy="20" r="4" fill="#D6A544"/>
+      </svg>
+      <span class="brand-txt">Marcelo Proaño<small>Escalling™</small></span>
+    </a>
+    <a class="cta" href="#" data-res="link-reagendar-prep" data-res-tipo="link" data-res-label="Reagendar la sesión" data-res-nota="Enlace de reprogramación de tu sistema de agenda.">
+      <span class="lbl">Reagendar</span> <span class="kw">SESIÓN</span>
+    </a>
+  </div>
+</nav>
+
+<header class="sect prep-hero aura" id="top">
+  <div class="wrap prep-grid">
+    <div>
+      <div class="badge rv"><i class="dot-live"></i> Antes de tu sesión</div>
+      <h1 class="h-display rv" style="--d:60ms">Doce minutos que <em class="alma">cambian la sesión.</em></h1>
+      <p class="lede rv" style="--d:120ms">
+        No es relleno. En este video te explico cómo funciona el diagnóstico, qué voy a preguntarte
+        y qué necesito de tu lado para que salgas con un plan y no con una charla linda.
+      </p>
+      <ul class="check rv" style="--d:180ms;margin-top:30px">
+        <li>Vas a saber <b>exactamente</b> qué esperar de los 45 minutos.</li>
+        <li>Vas a llegar con <b>tus números</b> ordenados y no improvisando.</li>
+        <li>Si no eres para esto, <b>lo vas a saber antes</b> de gastar la hora.</li>
+      </ul>
+    </div>
+
+    <div class="rv" style="--d:140ms">
+      <div class="player"
+           data-res="video-preparacion" data-res-tipo="video"
+           data-res-label="Video de preparación"
+           data-res-nota="10–12 min. Qué esperar de la sesión y qué traer preparado.">
+        <span class="player-art"></span>
+        <button class="player-btn" aria-label="Reproducir el video">
+          <span class="player-play">
+            <svg width="24" height="26" viewBox="0 0 20 22" fill="currentColor" aria-hidden="true"><path d="M19 9.27a2 2 0 0 1 0 3.46L3 21.99a2 2 0 0 1-3-1.73V1.74A2 2 0 0 1 3 .01z"/></svg>
+          </span>
+        </button>
+        <span class="player-meta"><strong>Cómo prepararte</strong><span>12 min · míralo completo</span></span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="sect">
+  <div class="wrap">
+    <div class="eyebrow rv">Trae esto contigo</div>
+    <h2 class="h-sect rv" style="--d:60ms">Tres datos. <em class="alma">Sin maquillar.</em></h2>
+    <p class="lede rv" style="--d:120ms">Con los números reales el diagnóstico es quirúrgico. Con números aproximados es una conversación agradable que no sirve para nada.</p>
+
+    <ol class="pasos rv" style="--d:180ms;margin-top:44px">
+      <li><b>01</b><div><h4>Tu facturación de los últimos 3 meses</h4><p>Mes por mes, en dólares. No el mejor mes de tu vida: los tres últimos, tal cual fueron.</p></div></li>
+      <li><b>02</b><div><h4>Tu precio actual y cómo lo cobras</h4><p>Por sesión, por paquete, por mes. Y cuántos clientes activos tienes ahora mismo.</p></div></li>
+      <li><b>03</b><div><h4>Tu número a 12 meses</h4><p>Cuánto quieres estar facturando en un año y qué cambiaría en tu vida si lo lograras. Sé concreto: «más» no es un número.</p></div></li>
+    </ol>
+
+    <div class="reglas rv">
+      <div class="regla si">
+        <h3><em>✓</em> Cómo llegar a la sesión</h3>
+        <ul>
+          <li>Diez minutos antes, en un lugar donde nadie te interrumpa.</li>
+          <li>Con la cámara encendida. Esto es una conversación, no un webinar.</li>
+          <li>Con papel al lado. Te vas a llevar tareas concretas.</li>
+          <li>Con la decisión tomada de decidir: si te encaja, empezamos ese día.</li>
+        </ul>
+      </div>
+      <div class="regla no">
+        <h3><em>✕</em> Lo que no va a pasar</h3>
+        <ul>
+          <li>No te voy a perseguir ni a rogarte. Si no encaja, te lo digo y quedamos bien.</li>
+          <li>No hay descuento por decidir rápido ni precio que sube por decidir lento.</li>
+          <li>No vas a salir con una promesa de facturación. Vas a salir con un plan.</li>
+          <li>No lo hablo con tu socio ni con tu pareja después. Ven con quien decida.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sect" style="padding-top:0">
+  <div class="wrap">
+    <div class="eyebrow rv">Los 45 minutos</div>
+    <h2 class="h-sect rv" style="--d:60ms;font-size:clamp(1.7rem,3.6vw,2.4rem)">Así se reparte el tiempo.</h2>
+
+    <div class="tempo rv" style="--d:120ms">
+      <div class="tempo-i"><div class="tempo-t">0 – 10 min</div><div><h4>Dónde estás hoy</h4><p>Tus números, tu oferta, tu mercado. Yo pregunto, tú respondes.</p></div></div>
+      <div class="tempo-i"><div class="tempo-t">10 – 25 min</div><div><h4>Dónde está el cuello de botella</h4><p>Te digo qué es exactamente lo que te tiene estancado. Casi nunca es lo que crees.</p></div></div>
+      <div class="tempo-i"><div class="tempo-t">25 – 40 min</div><div><h4>El plan de los primeros 60 días</h4><p>Qué harías primero, segundo y tercero. Esto te lo llevas aunque no trabajemos juntos.</p></div></div>
+      <div class="tempo-i"><div class="tempo-t">40 – 45 min</div><div><h4>Si encaja, cómo seguimos</h4><p>Y si no encaja, te lo digo de frente y te dejo el camino que sí te sirve.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="sect aura" style="border-top:1px solid var(--line)">
+  <div class="wrap wrap-sm" style="text-align:center">
+    <h2 class="h-sect rv">Nos vemos en la sesión.</h2>
+    <p class="lede center rv" style="--d:80ms">
+      Si te surge algo antes, escríbeme. Y si tienes que moverla, muévela con tiempo —
+      esa hora la reservo solo para ti.
+    </p>
+    <div class="rv" style="--d:140ms;margin-top:32px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+      <a class="cta" href="#" data-res="link-dm-prep" data-res-tipo="link" data-res-label="Contacto directo (DM o WhatsApp)" data-res-nota="Tu Instagram o un enlace wa.me.">Escríbeme por DM →</a>
+      <a class="cta-ghost" href="#" data-res="link-reagendar-prep" data-res-tipo="link" data-res-label="Reagendar la sesión">Reagendar la sesión</a>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-in"><div>© 2026 Edume Global™ · Escalling™</div></div>
+  </div>
+</footer>

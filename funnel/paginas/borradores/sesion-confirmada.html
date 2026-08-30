@@ -1,0 +1,112 @@
+<!--PAGINA {"nombre":"Sesión Confirmada","slug":"sesion-confirmada","icono":"✓","paso":3,"descripcion":"Página de gracias. Confirma la cita y baja la tasa de ausencias."} -->
+<style>
+.conf{min-height:100vh;display:grid;place-items:center;padding-block:clamp(90px,12vw,130px)}
+.conf-in{max-width:760px;width:100%;text-align:center}
+.tick{width:76px;height:76px;border-radius:50%;border:1px solid var(--line-hard);
+  display:grid;place-items:center;margin:0 auto 30px;color:var(--gold);position:relative}
+.tick::before{content:"";position:absolute;inset:-1px;border-radius:50%;
+  box-shadow:0 0 0 0 #D6A54455;animation:pulse 2.6s infinite}
+.tick svg{width:34px;height:34px}
+.tick path{stroke-dasharray:40;stroke-dashoffset:40;animation:trazo .9s var(--ease) .25s forwards}
+@keyframes trazo{to{stroke-dashoffset:0}}
+.cita{border:1px solid var(--line);border-radius:20px;background:var(--card);
+  margin-top:clamp(34px,4vw,48px);text-align:left;overflow:hidden}
+.cita-h{padding:16px 24px;border-bottom:1px solid var(--line-soft);background:var(--ink-2);
+  font-family:var(--data);font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold)}
+.cita-b{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1px;background:var(--line)}
+.cita-b div{background:var(--card);padding:22px 24px}
+.cita-b dt{font-family:var(--data);font-size:.58rem;letter-spacing:.16em;text-transform:uppercase;color:var(--bone-faint);margin:0 0 9px}
+.cita-b dd{margin:0;font-size:1.02rem;font-weight:700;letter-spacing:-.025em}
+.cita-f{padding:20px 24px;border-top:1px solid var(--line-soft);display:flex;flex-wrap:wrap;gap:12px}
+.antes{margin-top:clamp(56px,7vw,86px);text-align:left}
+.aviso-fuerte{margin-top:44px;border:1px solid var(--line-hard);border-radius:18px;
+  background:linear-gradient(180deg,#D6A5440e,transparent);padding:26px 28px;text-align:left}
+.aviso-fuerte h4{font-size:1.02rem;font-weight:700;letter-spacing:-.025em;margin-bottom:10px;color:var(--gold-hi)}
+.aviso-fuerte p{margin:0;font-size:.93rem;color:var(--bone-mute);line-height:1.6}
+</style>
+
+<nav class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="#top">
+      <svg class="brand-mark" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+        <circle cx="20" cy="20" r="18.5" stroke="#D6A544" stroke-width="1"/>
+        <circle cx="20" cy="20" r="11" stroke="#D6A544" stroke-width="1" opacity=".55"/>
+        <path d="M20 4v32M4 20h32" stroke="#D6A544" stroke-width="1" opacity=".28"/>
+        <circle cx="20" cy="20" r="4" fill="#D6A544"/>
+      </svg>
+      <span class="brand-txt">Marcelo Proaño<small>Escalling™</small></span>
+    </a>
+  </div>
+</nav>
+
+<main class="conf aura" id="top">
+  <div class="wrap conf-in">
+    <div class="tick rv">
+      <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M6 17l6.5 6.5L26 10"/>
+      </svg>
+    </div>
+
+    <h1 class="h-sect rv" style="--d:60ms">Listo. Tu sesión <em class="alma">está confirmada.</em></h1>
+    <p class="lede center rv" style="--d:120ms">
+      Te llegó un correo con el enlace. Si no lo ves en cinco minutos, revisa spam o promociones —
+      y muévelo a tu bandeja principal para que el recordatorio no se pierda.
+    </p>
+
+    <section class="cita rv" style="--d:180ms">
+      <div class="cita-h">Tu sesión de diagnóstico</div>
+      <dl class="cita-b">
+        <div><dt>Cuándo</dt><dd data-res="cita-fecha" data-res-tipo="texto" data-res-label="Fecha y hora de la sesión" data-res-nota="Si tu sistema de agenda inyecta la fecha, deja esto como está.">Según tu agenda</dd></div>
+        <div><dt>Duración</dt><dd>45 minutos</dd></div>
+        <div><dt>Dónde</dt><dd>Zoom · enlace por correo</dd></div>
+        <div><dt>Con quién</dt><dd>Marcelo, en persona</dd></div>
+      </dl>
+      <div class="cita-f">
+        <a class="cta-ghost" href="#" data-res="link-calendario" data-res-tipo="link"
+           data-res-label="Agregar al calendario"
+           data-res-nota="Enlace .ics o de Google Calendar que genere tu sistema de agenda.">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
+          Agregar al calendario
+        </a>
+        <a class="cta-ghost" href="#" data-res="link-reagendar" data-res-tipo="link"
+           data-res-label="Reagendar la sesión"
+           data-res-nota="Enlace de reprogramación de Calendly / TidyCal / el que uses.">
+          Reagendar
+        </a>
+      </div>
+    </section>
+
+    <div class="aviso-fuerte rv" style="--d:240ms">
+      <h4>Un pedido, y va en serio</h4>
+      <p>Reservo la hora completa y no vendo el espacio a nadie más. Si te surge algo, reagenda —
+        pero no faltes sin avisar. Quien falta sin avisar no vuelve a entrar a mi agenda, y prefiero
+        decírtelo ahora que sorprenderte después.</p>
+    </div>
+
+    <section class="antes">
+      <div class="eyebrow rv">Mientras tanto</div>
+      <h2 class="h-sect rv" style="--d:60ms;font-size:clamp(1.7rem,3.6vw,2.4rem)">Haz estas dos cosas <em class="alma">antes de la sesión.</em></h2>
+
+      <ol class="pasos rv" style="--d:120ms;margin-top:34px">
+        <li><b>01</b><div><h4>Mira el video de preparación</h4><p>Son 12 minutos. Llegar con ese contexto es la diferencia entre una sesión que te ordena el negocio y una que se va en explicarte lo básico.</p>
+          <p style="margin-top:14px"><a class="cta-ghost" href="#" data-res="link-preparacion" data-res-tipo="link" data-res-label="Enlace a la página de Preparación" data-res-nota="Apunta a la página «Preparación» de este mismo funnel.">Ver la preparación →</a></p></div></li>
+        <li><b>02</b><div><h4>Ten a mano tus números reales</h4><p>Cuánto facturaste los últimos tres meses, cuánto cobras por sesión o programa y cuántos clientes activos tienes hoy. Sin maquillar: con los números reales la sesión vale diez veces más.</p></div></li>
+      </ol>
+    </section>
+
+    <div class="rv" style="--d:180ms;margin-top:52px">
+      <p style="font-size:.88rem;color:var(--bone-faint);margin:0 0 16px">¿Algo urgente antes de la sesión?</p>
+      <a class="cta" href="#" data-res="link-dm" data-res-tipo="link"
+         data-res-label="Contacto directo (DM o WhatsApp)"
+         data-res-nota="Tu Instagram o un enlace wa.me para dudas previas.">
+        Escríbeme por DM →
+      </a>
+    </div>
+  </div>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-in"><div>© 2026 Edume Global™ · Escalling™</div></div>
+  </div>
+</footer>

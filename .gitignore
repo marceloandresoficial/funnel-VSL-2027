@@ -1,0 +1,16 @@
+# Proyecto Lovable con su propio repositorio
+holo-empire-boost/
+
+# Dependencias y builds
+node_modules/
+.vite/
+dist/
+
+# Sistema
+.DS_Store
+*.log
+
+# Secretos — nunca subir
+.env
+.env.*
+!.env.example

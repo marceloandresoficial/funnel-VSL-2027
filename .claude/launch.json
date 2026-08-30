@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "holo-empire-boost",
+      "runtimeExecutable": "/bin/zsh",
+      "runtimeArgs": ["-c", "cd '/Users/Usuario1/Edume Global Dropbox/Marcelo Proaño/Mac/Documents/Proyectos Claude/holo-empire-boost' && exec /Users/Usuario1/.local/node/bin/node node_modules/vite/bin/vite.js dev"],
+      "port": 8080
+    }
+  ]
+}

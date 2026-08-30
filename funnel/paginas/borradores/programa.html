@@ -1,0 +1,205 @@
+<!--PAGINA {"nombre":"Programa (Actual)","slug":"programa","icono":"◆","paso":5,"descripcion":"La oferta completa: qué incluye, las fases, la inversión."} -->
+<style>
+.pg-hero{padding-top:clamp(110px,15vw,160px);text-align:center}
+.pg-hero h1{max-width:16ch;margin-inline:auto}
+.incluye{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);margin-top:52px}
+.inc{background:var(--ink);padding:30px 26px}
+.inc-n{font-family:var(--data);font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:16px}
+.inc h3{font-size:1.08rem;font-weight:700;letter-spacing:-.025em;margin-bottom:9px}
+.inc p{margin:0;font-size:.9rem;color:var(--bone-mute);line-height:1.58}
+.inc-val{margin-top:16px;font-family:var(--data);font-size:.68rem;letter-spacing:.1em;color:var(--bone-ghost)}
+
+.fases{display:grid;gap:18px;margin-top:52px}
+.fase{border:1px solid var(--line);border-radius:22px;background:var(--card);padding:clamp(26px,3.5vw,44px);
+  display:grid;grid-template-columns:.85fr 1.15fr;gap:clamp(22px,3.5vw,52px);position:relative;overflow:hidden}
+@media(max-width:860px){.fase{grid-template-columns:1fr}}
+.fase::before{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;background:linear-gradient(180deg,var(--gold),transparent)}
+.fase-tag{font-family:var(--data);font-size:.63rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
+.fase h3{font-size:clamp(1.5rem,3vw,2.15rem);letter-spacing:-.04em;margin-bottom:10px}
+.fase-when{font-family:var(--data);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--bone-faint)}
+.fase p{margin:0 0 18px;font-size:.96rem;color:var(--bone-mute);line-height:1.62}
+.fase p b{color:var(--gold-hi);font-weight:600}
+.fase ul{list-style:none;margin:0;padding:0;display:grid;gap:9px}
+.fase li{display:flex;gap:11px;font-size:.92rem;color:var(--bone-mute);align-items:flex-start}
+.fase li::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--gold);flex:none;margin-top:9px}
+
+.inversion{border:1px solid var(--line-hard);border-radius:24px;overflow:hidden;
+  background:linear-gradient(180deg,#D6A5440e,var(--card));margin-top:52px}
+.inv-h{padding:26px 30px;border-bottom:1px solid var(--line);text-align:center}
+.inv-h .eyebrow{justify-content:center;margin:0}
+.inv-b{padding:clamp(30px,4vw,46px);text-align:center}
+.inv-precio{font-family:var(--data);font-weight:700;font-size:clamp(2.4rem,6vw,3.6rem);letter-spacing:-.05em;
+  line-height:1;background:linear-gradient(175deg,var(--bone) 30%,var(--gold));
+  -webkit-background-clip:text;background-clip:text;color:transparent;font-variant-numeric:tabular-nums}
+.inv-sub{font-family:var(--data);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--bone-faint);margin-top:14px}
+.inv-op{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1px;background:var(--line);border-top:1px solid var(--line)}
+.inv-op div{background:var(--card);padding:22px 20px;text-align:center}
+.inv-op dt{font-family:var(--data);font-size:.56rem;letter-spacing:.16em;text-transform:uppercase;color:var(--bone-faint);margin:0 0 8px}
+.inv-op dd{margin:0;font-family:var(--data);font-size:1.05rem;font-weight:700;letter-spacing:-.03em;color:var(--gold-hi)}
+</style>
+
+<nav class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="#top">
+      <svg class="brand-mark" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+        <circle cx="20" cy="20" r="18.5" stroke="#D6A544" stroke-width="1"/>
+        <circle cx="20" cy="20" r="11" stroke="#D6A544" stroke-width="1" opacity=".55"/>
+        <path d="M20 4v32M4 20h32" stroke="#D6A544" stroke-width="1" opacity=".28"/>
+        <circle cx="20" cy="20" r="4" fill="#D6A544"/>
+      </svg>
+      <span class="brand-txt">Marcelo Proaño<small>Escalling™</small></span>
+    </a>
+    <div class="nav-links">
+      <a href="#incluye">Qué incluye</a>
+      <a href="#fases">Las fases</a>
+      <a href="#inversion">Inversión</a>
+      <a href="#faq">Preguntas</a>
+    </div>
+    <a class="cta" href="#" data-res="cta-programa" data-res-tipo="link" data-res-label="Botón de aplicación al programa" data-res-nota="Tu Instagram, el formulario de aplicación o el enlace de agenda.">
+      <span class="lbl">Aplicar</span> <span class="kw">AHORA</span>
+    </a>
+  </div>
+</nav>
+
+<header class="sect pg-hero aura" id="top">
+  <div class="wrap">
+    <div class="badge rv"><i class="dot-live"></i> Grupo reducido cada mes</div>
+    <h1 class="h-display rv" style="--d:60ms">Imperio <em class="alma">Holístico™</em></h1>
+    <p class="lede center rv" style="--d:120ms">
+      Seis meses para convertir tu don en un negocio que no dependa de tu tiempo.
+      Game Plan uno a uno, el Motor de Contenido instalado y mi equipo detrás.
+      No es un curso: es un sistema que se construye contigo.
+    </p>
+    <div class="rv" style="--d:180ms;margin-top:34px">
+      <a class="cta lg" href="#" data-res="cta-programa" data-res-tipo="link" data-res-label="Botón de aplicación al programa">
+        Aplicar al programa →
+      </a>
+      <p style="font-size:.82rem;color:var(--bone-faint);margin:16px 0 0">Aplicar toma 5 minutos. Te contesto en 24 horas.</p>
+    </div>
+  </div>
+</header>
+
+<section class="sect" id="incluye" style="padding-top:0">
+  <div class="wrap">
+    <div class="eyebrow rv">Qué incluye</div>
+    <h2 class="h-sect rv" style="--d:60ms">Todo lo que necesitas. <em class="alma">Nada de relleno.</em></h2>
+
+    <div class="incluye rv" style="--d:120ms">
+      <div class="inc"><div class="inc-n">01 · El arranque</div><h3>Game Plan 1:1</h3><p>Una sesión larga conmigo donde definimos tu identidad como CEO, tu oferta y el plan de los primeros 60 días. Es la pieza que no se puede escalar, y por eso el grupo es chico.</p><div class="inc-val">90 min · con Marcelo</div></div>
+      <div class="inc"><div class="inc-n">02 · El acompañamiento</div><h3>Sesiones grupales semanales</h3><p>Estrategia, revisión de ofertas, revisión de contenido y hot seats. Todas quedan grabadas en tu portal.</p><div class="inc-val">Semanal · 6 meses</div></div>
+      <div class="inc"><div class="inc-n">03 · El sistema</div><h3>Motor de Contenido Escalling™</h3><p>Los 3 Pilares, las 5 Voces de Marca™ y el CTA de palabra clave. Ocho piezas por semana con estructura, no cuarenta improvisadas.</p><div class="inc-val">Plantillas + guiones</div></div>
+      <div class="inc"><div class="inc-n">04 · La conversión</div><h3>Sistema de DMs y diagnósticos</h3><p>Automatizaciones de palabra clave, guiones de conversación y el proceso de cierre por DM sin llamadas eternas.</p><div class="inc-val">Instalado contigo</div></div>
+      <div class="inc"><div class="inc-n">05 · El equipo</div><h3>Soporte de mi equipo</h3><p>Quince personas detrás: revisión de guiones, soporte técnico y seguimiento. No estás solo entre sesión y sesión.</p><div class="inc-val">Lun–vie</div></div>
+      <div class="inc"><div class="inc-n">06 · La comunidad</div><h3>Imperio Crew</h3><p>Terapeutas, numerólogas, constelodores y coaches holísticos en 20+ países construyendo lo mismo que tú. Las victorias son semanales.</p><div class="inc-val">Acceso permanente</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="sect" id="fases">
+  <div class="wrap">
+    <div class="eyebrow rv">El plan de los 6 meses</div>
+    <h2 class="h-sect rv" style="--d:60ms">Tres fases. <em class="alma">Un solo resultado.</em></h2>
+    <p class="lede rv" style="--d:120ms">Cada fase toca lo único que mueve la aguja en ese momento. Nada más.</p>
+
+    <div class="fases">
+      <article class="fase rv">
+        <div><div class="fase-tag">Fase 1 · CEO</div><h3>Identidad, oferta y caja</h3><div class="fase-when">Meses 1–2</div></div>
+        <div>
+          <p>El objetivo de los dos primeros meses es simple: que <b>el programa se pague solo</b>. Arrancamos con el Game Plan 1:1 y construimos tu Simple Oferta™: fácil de entender, fácil de comprar, fácil de entregar.</p>
+          <ul><li>Tu One Belief y el mensaje que solo tú puedes decir.</li><li>La oferta high ticket, con el precio que tu transformación vale.</li><li>Las primeras ventas por DM, sin llamadas eternas.</li></ul>
+        </div>
+      </article>
+      <article class="fase rv" style="--d:100ms">
+        <div><div class="fase-tag">Fase 2 · Sistema</div><h3>Contenido que vende dormido</h3><div class="fase-when">Meses 3–6</div></div>
+        <div>
+          <p>Con caja en la mano nos ponemos estratégicos. Instalamos el Motor de Contenido completo. <b>Ocho piezas por semana, cero improvisación.</b></p>
+          <ul><li>Tus 3 Pilares: problema, solución, programa y mentalidad.</li><li>El sistema de DMs que agenda diagnósticos mientras duermes.</li><li>Métricas semanales: qué pieza trajo qué conversación y qué venta.</li></ul>
+        </div>
+      </article>
+      <article class="fase rv" style="--d:200ms">
+        <div><div class="fase-tag">Fase 3 · Imperio</div><h3>Escalar sin complejidad</h3><div class="fase-when">De 6 meses en adelante</div></div>
+        <div>
+          <p>Ya con base, el foco pasa al <b>minimalismo rentable</b>: menos piezas, más precisión. Yo llevo tres anuncios corriendo hace un año y un VSL hace dos.</p>
+          <ul><li>Tráfico pago sobre lo que ya convierte orgánico.</li><li>Programa entregado por sistema, no por tu calendario.</li><li>LTV: el cliente que se queda y el caso que trae al siguiente.</li></ul>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="sect" id="inversion">
+  <div class="wrap wrap-sm">
+    <div class="eyebrow rv center">La inversión</div>
+    <h2 class="h-sect rv" style="--d:60ms;text-align:center">Sin letra chica.</h2>
+
+    <div class="inversion rv" style="--d:120ms">
+      <div class="inv-h"><div class="eyebrow">Imperio Holístico™ · 6 meses</div></div>
+      <div class="inv-b">
+        <div class="inv-precio" data-res="precio-programa" data-res-tipo="texto"
+             data-res-label="Precio del programa"
+             data-res-nota="Escribe el precio tal como quieres mostrarlo, p. ej. «$6.000 USD».">Consultar</div>
+        <div class="inv-sub">Pago único · o financiado</div>
+      </div>
+      <dl class="inv-op">
+        <div><dt>En un pago</dt><dd data-res="precio-unico" data-res-tipo="texto" data-res-label="Precio en un pago" data-res-nota="P. ej. «$6.000».">—</dd></div>
+        <div><dt>En 2 cuotas</dt><dd data-res="precio-2" data-res-tipo="texto" data-res-label="Precio en 2 cuotas" data-res-nota="P. ej. «2 × $3.250».">—</dd></div>
+        <div><dt>En 3 cuotas</dt><dd data-res="precio-3" data-res-tipo="texto" data-res-label="Precio en 3 cuotas" data-res-nota="P. ej. «3 × $2.300».">—</dd></div>
+      </dl>
+    </div>
+
+    <p class="lede center rv" style="--d:180ms">
+      La meta escrita de la Fase 1 es que el programa se pague solo en los primeros 60 días.
+      No es una promesa de facturación: es el objetivo con el que diseñamos las primeras semanas.
+    </p>
+
+    <div class="rv" style="--d:240ms;margin-top:32px;text-align:center">
+      <a class="cta lg" href="#" data-res="cta-programa" data-res-tipo="link" data-res-label="Botón de aplicación al programa">Aplicar al programa →</a>
+    </div>
+  </div>
+</section>
+
+<section class="sect" id="faq">
+  <div class="wrap">
+    <div class="eyebrow rv">Preguntas</div>
+    <h2 class="h-sect rv" style="--d:60ms">Respuestas honestas. <em class="alma">Sin vueltas.</em></h2>
+
+    <div class="faq rv" style="--d:120ms;margin-top:52px">
+      <details open><summary>¿Para quién es?</summary><div class="faq-a"><p>Para terapeutas, numerólogos, constelodores, reikistas, astrólogas, coaches holísticos y sanadores que <b>ya cobran por su trabajo</b>, aunque sea poco. Si nunca has cobrado, todavía no es tu momento.</p></div></details>
+      <details><summary>¿Hay garantía de resultados?</summary><div class="faq-a"><p>No vendo garantías de facturación, porque quien las promete está mintiendo o está a punto de romperlas. Garantizo el acompañamiento completo: el Game Plan, las sesiones, el sistema y mi equipo. Los resultados dependen de tu ejecución y de tu punto de partida.</p></div></details>
+      <details><summary>¿Cuánto tiempo semanal necesito?</summary><div class="faq-a"><p>Entre 5 y 8 horas las primeras semanas, y menos después. La mayor parte es grabar contenido y responder DMs — cosas que ya haces, pero con estructura.</p></div></details>
+      <details><summary>¿Necesito habilidades técnicas?</summary><div class="faq-a"><p>No. Necesitas saber grabarte con el celular y responder DMs. Las automatizaciones y las métricas las instalamos juntos.</p></div></details>
+      <details><summary>¿Qué pasa después de los 6 meses?</summary><div class="faq-a"><p>Te quedas en la Crew si quieres seguir escalando, o te vas con el sistema instalado. Ambas son respuestas correctas. No quiero gente atada a un programa que ya no necesita.</p></div></details>
+      <details><summary>¿Puedo pagar en cuotas?</summary><div class="faq-a"><p>Sí. Hay opción en uno, dos o tres pagos. Si el dinero es el obstáculo real, hablémoslo por DM antes de descartarlo.</p></div></details>
+    </div>
+  </div>
+</section>
+
+<section class="sect aura" style="border-top:1px solid var(--line)">
+  <div class="wrap wrap-sm" style="text-align:center">
+    <h2 class="h-sect rv">Deja de regalar tu don. <em class="alma">Empieza a dirigirlo.</em></h2>
+    <div class="countdown rv" style="--d:100ms;display:inline-block;text-align:left;margin-top:30px" data-cd data-ciclo="7"
+         data-res="contador-programa" data-res-tipo="contador" data-res-label="Fecha de cierre de cupos" data-res-nota="Deja vacío para el ciclo automático de 7 días.">
+      <div class="cd-label" style="text-align:center"><b>Cupos de este mes</b> · cierran en:</div>
+      <div class="cd center">
+        <div class="cd-u"><div class="cd-n" data-u="d">--</div><div class="cd-t">Días</div></div><div class="cd-sep">:</div>
+        <div class="cd-u"><div class="cd-n" data-u="h">--</div><div class="cd-t">Hrs</div></div><div class="cd-sep">:</div>
+        <div class="cd-u"><div class="cd-n" data-u="m">--</div><div class="cd-t">Min</div></div><div class="cd-sep">:</div>
+        <div class="cd-u"><div class="cd-n" data-u="s">--</div><div class="cd-t">Seg</div></div>
+      </div>
+    </div>
+    <div class="rv" style="--d:160ms;margin-top:36px">
+      <a class="cta lg" href="#" data-res="cta-programa" data-res-tipo="link" data-res-label="Botón de aplicación al programa">Aplicar al programa →</a>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-in"><div>© 2026 Edume Global™ · Escalling™ · Imperio Holístico™</div></div>
+    <p class="disclaimer">
+      Las cifras publicadas son reportadas por los propios clientes y corresponden a resultados individuales.
+      No constituyen promesa ni garantía de ingresos: cada resultado depende del punto de partida, del mercado
+      y de la ejecución de cada persona. Esta página no está afiliada ni respaldada por Instagram ni por Meta Platforms, Inc.
+    </p>
+  </div>
+</footer>

@@ -1,0 +1,55 @@
+{
+ "v": 1,
+ "ts": 1788103486718,
+ "orden": [
+  "vsl",
+  "vsl-retargeting",
+  "sesion-confirmada",
+  "preparacion",
+  "programa",
+  "bio-instagram"
+ ],
+ "extra": {},
+ "tokens": {},
+ "pags": {
+  "vsl-retargeting": {
+   "recursos": {},
+   "textos": {},
+   "estilos": {
+    "2-0-4": {
+     "paddingTop": "20px"
+    }
+   }
+  },
+  "sesion-confirmada": {
+   "recursos": {},
+   "textos": {},
+   "estilos": {}
+  },
+  "preparacion": {
+   "recursos": {},
+   "textos": {},
+   "estilos": {
+    "2-0-2": {
+     "fontWeight": "800",
+     "fontSize": "81px"
+    }
+   }
+  },
+  "programa": {
+   "recursos": {},
+   "textos": {},
+   "estilos": {}
+  },
+  "bio-instagram": {
+   "recursos": {},
+   "textos": {},
+   "estilos": {}
+  },
+  "vsl": {
+   "recursos": {},
+   "textos": {},
+   "estilos": {}
+  }
+ }
+}
