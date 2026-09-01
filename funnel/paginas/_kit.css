@@ -41,6 +41,10 @@
 }
 
 *,*::before,*::after{box-sizing:border-box}
+/* Ningún adorno que sangre a los lados puede mover la página en horizontal.
+   clip (no hidden) recorta sin volver la raíz un contenedor de scroll,
+   así que position:sticky sigue funcionando. */
+html{overflow-x:clip}
 
 body{
   margin:0;background:var(--ink);color:var(--bone);
@@ -172,7 +176,7 @@ h1,h2,h3,h4{font-family:var(--sys);font-weight:800;margin:0;text-wrap:balance;le
   background-size:cover;background-position:center;display:grid;place-items:center;
 }
 .ph::before{content:"";position:absolute;inset:0;
-  background-image:radial-gradient(circle at 1px 1px,#F4EFE61f 1px,transparent 0);background-size:7px 7px}
+  background:linear-gradient(150deg,#FFFFFF08,transparent 55%)}
 .ph>span{position:relative;font-family:var(--data);font-weight:700;font-size:.8em;letter-spacing:.06em;color:#F4EFE6;opacity:.5}
 .ph.cargada::before,.ph.cargada>span{display:none}
 .ph-48{width:48px;height:48px;font-size:14px;border-radius:10px}
@@ -291,4 +295,106 @@ h1,h2,h3,h4{font-family:var(--sys);font-weight:800;margin:0;text-wrap:balance;le
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
   .rv{opacity:1!important;transform:none!important;filter:none!important}
+}
+
+/* ── Estudio: resaltado, slots vacíos y bloques ocultos ──────────── */
+
+[data-latido]{
+  animation:latido 2.2s var(--ease);
+  outline-offset:4px;border-radius:6px;
+}
+@keyframes latido{
+  0%,100%{outline:2px solid transparent}
+  12%,60%{outline:2px solid var(--gold);box-shadow:0 0 0 9999px #D6A5440a}
+}
+
+/* Slots de recurso sin cargar, en modo recursos */
+:root[data-modo-recursos] [data-res]{cursor:pointer!important}
+:root[data-modo-recursos] [data-res-vacio]{
+  outline:1px dashed var(--gold);outline-offset:3px;border-radius:6px;
+  position:relative;min-height:22px;
+}
+:root[data-modo-recursos] [data-res-vacio]::after{
+  content:"+ cargar";position:absolute;top:4px;left:4px;z-index:40;
+  font-family:var(--data);font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;
+  background:var(--gold);color:#150F02;padding:3px 7px;border-radius:6px;
+  pointer-events:none;white-space:nowrap;
+}
+:root[data-modo-recursos] [data-res]:hover{outline:2px solid var(--gold);outline-offset:3px}
+
+[data-oculto]{display:none!important}
+
+/* Contenedor de incrustaciones (calendario, formulario, widget) */
+[data-res-tipo="embed"]{
+  min-height:120px;border-radius:18px;overflow:hidden;position:relative;
+  border:1px dashed var(--line-hard);background:var(--card);
+}
+[data-res-tipo="embed"].cargada{border-style:solid;min-height:0}
+[data-res-tipo="embed"] iframe{width:100%;min-height:620px;border:0;display:block;background:#fff}
+[data-res-tipo="embed"]:not(.cargada)::before{
+  content:"Incrustación pendiente";position:absolute;inset:0;display:grid;place-items:center;
+  font-family:var(--data);font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--bone-faint);
+}
+
+/* ── Estudio: overlay de redimensionado de bloques ───────────────── */
+
+#__redim{position:fixed;inset:0;z-index:99998;pointer-events:none;
+  font-family:var(--data);font-size:11px;line-height:1}
+#__redim .marco{position:absolute;border:1px solid #D6A54455;border-radius:5px;
+  transition:opacity .2s ease}
+#__redim.arrastrando .marco{border-color:#D6A544cc}
+#__redim .guia{position:fixed;display:none;transform:translate(-50%,-100%);
+  background:#D6A544;color:#150F02;font-weight:700;border-radius:7px;padding:4px 9px;
+  white-space:nowrap;pointer-events:none;box-shadow:0 4px 16px #0009;
+  font-variant-numeric:tabular-nums;z-index:2}
+#__redim .banda{position:absolute;left:0;right:0;pointer-events:auto;cursor:ns-resize;
+  background:repeating-linear-gradient(-45deg,#D6A54426 0 6px,transparent 6px 12px);
+  border-block:1px dashed #D6A54466;transition:background .18s ease}
+#__redim .banda:hover{background:repeating-linear-gradient(-45deg,#D6A54445 0 6px,transparent 6px 12px)}
+#__redim .tirador{position:absolute;left:50%;transform:translateX(-50%);
+  width:78px;height:16px;border-radius:9px;background:#D6A544;color:#150F02;
+  display:grid;place-items:center;font-weight:700;letter-spacing:.02em;
+  pointer-events:auto;cursor:ns-resize;box-shadow:0 3px 12px #0009;
+  transition:transform .15s ease,background .15s ease}
+#__redim .tirador:hover,#__redim .tirador.activo{background:#F2D391;transform:translateX(-50%) scaleY(1.22)}
+#__redim .tirador::before{content:"";position:absolute;left:50%;top:50%;
+  transform:translate(-50%,-50%);width:22px;height:2px;border-radius:2px;
+  background:#150F0255;box-shadow:0 -4px 0 #150F0255,0 4px 0 #150F0255}
+#__redim .valor{position:absolute;left:50%;transform:translateX(-50%);
+  background:#0A0910ee;color:#F2D391;border:1px solid #D6A54455;border-radius:6px;
+  padding:3px 8px;white-space:nowrap;font-variant-numeric:tabular-nums}
+
+/* ── Estudio: holograma de enfoque (solo mientras el cursor encima) ─ */
+
+#__holo{position:fixed;inset:0;z-index:99997;pointer-events:none}
+#__holo .caja{
+  position:absolute;border-radius:9px;
+  border:1.5px solid #D6A544cc;
+  box-shadow:0 0 0 4px #D6A5441a, 0 0 44px #D6A54455, inset 0 0 40px #D6A5440f;
+  overflow:hidden;
+  animation:holo-pulso 2.4s ease-in-out infinite;
+}
+@keyframes holo-pulso{
+  0%,100%{box-shadow:0 0 0 4px #D6A5441a,0 0 44px #D6A54455,inset 0 0 40px #D6A5440f}
+  50%    {box-shadow:0 0 0 7px #D6A5442e,0 0 66px #D6A54477,inset 0 0 54px #D6A5441f}
+}
+#__holo .destello{
+  position:absolute;top:-60%;left:-40%;width:45%;height:220%;
+  background:linear-gradient(100deg,transparent,#F2D39144 44%,#FFF8E44d 50%,#F2D39144 56%,transparent);
+  transform:rotate(14deg);
+  animation:holo-barrido 1.9s linear infinite;
+}
+@keyframes holo-barrido{from{left:-45%}to{left:105%}}
+#__holo .esq{
+  position:absolute;width:13px;height:13px;border:2px solid #F2D391;
+}
+#__holo .esq.ai{top:-1px;left:-1px;border-right:0;border-bottom:0;border-radius:8px 0 0 0}
+#__holo .esq.ad{top:-1px;right:-1px;border-left:0;border-bottom:0;border-radius:0 8px 0 0}
+#__holo .esq.bi{bottom:-1px;left:-1px;border-right:0;border-top:0;border-radius:0 0 0 8px}
+#__holo .esq.bd{bottom:-1px;right:-1px;border-left:0;border-top:0;border-radius:0 0 8px 0}
+
+@media(prefers-reduced-motion:reduce){
+  #__holo .destello{display:none}
+  #__holo .caja{animation:none}
 }

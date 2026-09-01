@@ -14,3 +14,13 @@ dist/
 .env
 .env.*
 !.env.example
+
+# Generados por ./build.sh — se reconstruyen exactos desde studio.html,
+# paginas/ y estado.json. No hace falta versionar 13 MB de base64 cada vez.
+funnel/artifact.html
+funnel/index.html
+Nuevo Sitio Web Edume Global 2027/artifact.html
+Nuevo Sitio Web Edume Global 2027/index.html
+
+# Registro de la sincronización automática
+.sync.log

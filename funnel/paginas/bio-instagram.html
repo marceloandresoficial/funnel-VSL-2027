@@ -1435,11 +1435,12 @@ const countIO = new IntersectionObserver((es,o) => {
     if(!e.isIntersecting) return;
     o.unobserve(e.target);
     const el = e.target, to = +el.dataset.count, sfx = el.dataset.suffix || "";
-    if(RM){ el.textContent = to + sfx; return; }
+    const cifra = v => el.hasAttribute("data-crudo") ? String(v) : v.toLocaleString("es-ES");
+    if(RM){ el.textContent = cifra(to) + sfx; return; }
     const t0 = performance.now(), dur = 1500;
     const step = t => {
       const p = Math.min(1,(t-t0)/dur), e2 = 1-Math.pow(1-p,3);
-      el.textContent = Math.round(to*e2) + (p===1 ? sfx : "");
+      el.textContent = cifra(Math.round(to*e2)) + (p===1 ? sfx : "");
       if(p<1) requestAnimationFrame(step);
     };
     requestAnimationFrame(step);

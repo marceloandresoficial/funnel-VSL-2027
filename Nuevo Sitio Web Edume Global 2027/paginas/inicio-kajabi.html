@@ -1,0 +1,231 @@
+<!--PAGINA {"nombre": "Inicio (Kajabi actual)", "slug": "inicio-kajabi", "icono": "⧉", "grupo": "Referencia", "descripcion": "La home de hoy, replicada al píxel. Sirve de patrón de comparación.", "origen": "https://www.edumeglobal.com/", "estado": "listo"} -->
+<style>
+/* ═══════════════════════════════════════════════════════════════════
+   INICIO · réplica de la home actual de Kajabi, medida punto por punto.
+   Lo que no está aquí está en el Kit: colores, botones, cabecera y pie.
+
+   Las imágenes siguen apuntando al CDN de Kajabi. Son huecos de recurso:
+   cuando las subas a GoHighLevel, cámbialas desde «Ver recursos» y esta
+   página deja de depender de Kajabi.
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* La fila interior del tema: 1045 px centrados dentro del contenedor. */
+.fila{max-width:1045px;margin-inline:auto;width:100%}
+
+/* ── 1 · Hero ────────────────────────────────────────────────────── */
+
+.hero{min-height:579px;display:flex;align-items:flex-start;padding-top:125px;padding-bottom:40px}
+.hero-in{text-align:center}
+.hero .h-mini{margin:0}
+.hero .h-hero{margin:38px auto 0;max-width:1045px}
+.hero-cta{margin-top:46px;display:flex;justify-content:center;line-height:1}
+.hero-pie{max-width:938px;margin:50px auto 0;font-size:14px;line-height:1.2}
+
+/* ── 2 · Los dos programas ───────────────────────────────────────── */
+
+.programas{display:grid;grid-template-columns:1fr 1fr}
+.programa{min-height:508px;padding:160px 100px;display:flex;flex-direction:column;
+  align-items:center;justify-content:flex-start;text-align:center}
+.programa--crema{background:var(--crema)}
+.programa--morado{background:var(--morado)}
+.programa>*{width:100%;max-width:528px}
+.programa .h-sect{margin:0}
+.programa .texto{margin:41px 0 0}
+.programa .btn{margin-top:23px}
+
+/* ── 3 · El fundador ─────────────────────────────────────────────── */
+
+.fundador{min-height:530px;display:flex;align-items:center}
+.fundador-fila{display:grid;grid-template-columns:400px 615px;gap:30px;
+  justify-content:center;align-items:center;width:100%}
+.fundador-foto{width:400px;height:500px;object-fit:contain;object-position:bottom}
+.fundador-txt .h-sect{margin:0}
+.fundador-txt .h-sub{margin:8px 0 0}
+.fundador-linea{border:0;border-top:1px solid #808080;margin:8px 0}
+.fundador-txt .texto{margin:0 0 16px}
+.fundador-txt .texto:last-of-type{margin-bottom:0}
+.fundador-txt .btn{margin-top:23px}
+
+/* ── 4 · Con quiénes hemos trabajado ─────────────────────────────── */
+
+.clientes{min-height:117px;display:flex;align-items:center;background-position:50% 100%}
+.clientes-fila{display:flex;gap:30px;align-items:center;justify-content:center;flex-wrap:wrap}
+.clientes img{width:185px;height:auto;flex:none}
+.clientes img.chico{width:78px}
+
+@media (max-width:900px){
+  .hero{min-height:577px}
+  .hero .h-hero{margin-top:30px}
+  .hero-cta{margin-top:34px}
+  .hero-pie{margin-top:32px;font-size:16px}
+
+  .programas{grid-template-columns:1fr}
+  .programa{min-height:0;padding:20px;padding-block:56px}
+  .programa .texto{margin-top:28px}
+
+  .fundador{padding-block:0}
+  .fundador-fila{grid-template-columns:1fr;gap:0}
+  /* La foto va a sangre, sin el margen del contenedor, como en el sitio actual. */
+  .fundador-foto{width:calc(100% + var(--gut)*2);max-width:none;height:auto;
+    margin-inline:calc(var(--gut)*-1)}
+  .fundador-txt{padding:0 20px 56px}
+  .fundador-txt .btn{margin-top:32px}
+
+  /* Tal cual el tema actual: la fila de clientes no se muestra en móvil. */
+  .clientes{display:none}
+}
+</style>
+
+<header class="cabecera">
+  <div class="contenedor cabecera-in">
+    <a class="marca" href="https://www.edumeglobal.com/" aria-label="Edume Global · Inicio">
+      <img data-res="logo-cabecera" data-res-tipo="imagen"
+           data-res-label="Logo de la cabecera"
+           data-res-nota="PNG horizontal, 1000×380. Hoy vive en el CDN de Kajabi."
+           src="https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production/file-uploads/themes/2153372673/settings_images/838c702-6d4-02f-07c-07bfa2245fba_Edume_Global_logo_Mesa_de_trabajo_1_1_.png"
+           alt="Edume Global" width="170" height="65">
+    </a>
+
+    <button class="menu-btn" aria-label="Abrir el menú" aria-expanded="false" aria-controls="menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round">
+        <path d="M4 7h16M4 12h16M4 17h16"/>
+      </svg>
+    </button>
+
+    <nav class="menu" id="menu">
+      <a href="https://www.edumeglobal.com/">Inicio</a>
+      <a href="https://www.edumeglobal.com/quienessomos">Quiénes somos</a>
+      <a href="https://www.edumeglobal.com/casosdeexito">Casos de Éxito</a>
+      <a class="btn btn-sm btn-violeta" data-res="cta-agenda" data-res-tipo="link"
+         data-res-label="Botón «¡Agenda tu Sesión!» de la cabecera"
+         data-res-nota="Hoy apunta al VSL de la Aceleradora en master.edumeglobal.com."
+         href="https://master.edumeglobal.com/f/vsl/demo-aceleradora/">¡Agenda tu Sesión!</a>
+      <a href="https://www.edumeglobal.com/login">Login</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ═══ 1 · Hero ═══════════════════════════════════════════════════ -->
+<section class="seccion hero oscura" id="top"
+         data-res="fondo-hero" data-res-tipo="imagen"
+         data-res-label="Foto de fondo del hero"
+         data-res-nota="La foto de la pérgola frente al mar. Sube tu versión a GHL y pega la URL."
+         style="background-image:url('https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production/file-uploads/themes/2153372673/settings_images/f7f74b5-aa6e-235-b5c6-781f654632eb_Dise_o_sin_t_tulo_15_.png')">
+  <div class="contenedor">
+    <div class="fila hero-in">
+      <h5 class="h-mini rv"><span class="marcado">Atención Coaches, Consultores y Formadores!!</span></h5>
+      <h2 class="h-hero rv" style="--d:80ms">Crece tu Negocio de Coaching o Formación con programas Premium vendiendo en piloto automático...</h2>
+      <div class="hero-cta rv" style="--d:160ms">
+        <a class="btn btn-lg btn-crema" href="https://master.edumeglobal.com/f/vsl/demo-aceleradora/">DESCUBRE EL SISTEMA PARA CRECER TU NEGOCIO</a>
+      </div>
+      <p class="hero-pie rv" style="--d:240ms">Ayudamos a coaches, formadores y consultores a multiplicar sus ingresos y tiempo libre gracias a nuestro Sistema Automatizado de Atracción de Clientes.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 2 · Los dos programas ══════════════════════════════════════ -->
+<section class="seccion programas">
+  <article class="programa programa--crema clara rv">
+    <h2 class="h-sect">Aceleradora 100K™</h2>
+    <p class="texto">Escala tu Negocio de Coaching y Formación a 6 Cifras Anuales con Programas de Alto Valor y un Sistema Automático de Ventas</p>
+    <a class="btn btn-lg btn-linea-negra" href="https://master.edumeglobal.com/f/vsl/demo-aceleradora/">Saber Más</a>
+  </article>
+
+  <article class="programa programa--morado oscura rv" style="--d:120ms">
+    <h2 class="h-sect">One Billion Mastermind</h2>
+    <p class="texto">Escala tu Negocio de Coaching y Formación a 7 Cifras Anuales con Sistemas, Procesos y un equipo de Alto Rendimiento que libere tu tiempo</p>
+    <a class="btn btn-lg btn-linea-blanca" href="https://www.edumeglobal.com/onebillion">Saber Más</a>
+  </article>
+</section>
+
+<!-- ═══ 3 · El fundador ════════════════════════════════════════════ -->
+<section class="seccion fundador oscura"
+         data-res="fondo-fundador" data-res-tipo="imagen"
+         data-res-label="Foto de fondo de la sección del fundador"
+         data-res-nota="Los arcos claros. Es la misma imagen que usa la fila de clientes."
+         style="background-image:url('https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production/file-uploads/themes/2153372673/settings_images/420a622-3f50-ae1-ea1f-6b05eeaeef_Dise_o_sin_t_tulo_16_.png')">
+  <div class="contenedor">
+    <div class="fundador-fila">
+      <img class="fundador-foto rv" data-res="foto-marcelo" data-res-tipo="imagen"
+           data-res-label="Foto recortada de Marcelo"
+           data-res-nota="PNG con fondo transparente, 1080×1350."
+           src="https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production/file-uploads/themes/2153372673/settings_images/fb1d67e-bbbd-fe55-13-56da25002_Carruseles_MA_1_.png"
+           alt="Marcelo Andrés, fundador de Edume Global" width="400" height="500">
+
+      <div class="fundador-txt rv" style="--d:120ms">
+        <h2 class="h-sect">Marcelo Andrés</h2>
+        <h4 class="h-sub">Fundador de Edume</h4>
+        <hr class="fundador-linea">
+        <p class="texto">Marcelo Andrés es ingeniero en Negocios Internacionales y egresado de Psicología, tiene un máster en Liderazgo Directivo y es Coach Profesional.</p>
+        <p class="texto">Con el objetivo de ayudar a un millón de personas y crear una comunidad global de emprendedores, Marcelo Andrés fundó EDUME y su propia marca personal.</p>
+        <p class="texto">Ya cuenta con más de 6 años trabajando en Ventas, Marketing y Estudio del Comportamiento Humano.</p>
+        <a class="btn btn-md btn-crema-claro" href="https://www.marceloandres.com/">SABER MÁS</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 4 · Con quiénes hemos trabajado ════════════════════════════ -->
+<section class="seccion clientes oscura"
+         data-res="fondo-clientes" data-res-tipo="imagen"
+         data-res-label="Fondo de la fila de clientes"
+         data-res-nota="Continúa la imagen de los arcos por debajo."
+         style="background-image:url('https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production/file-uploads/themes/2153372673/settings_images/ffb11af-edb-8463-8c6-875c052ede0_Dise_o_sin_t_tulo_16_.png')">
+  <div class="contenedor">
+    <div class="clientes-fila rv">
+      <img data-res="cliente-metropolitan" data-res-tipo="imagen"
+           data-res-label="Logo · Metropolitan Touring" data-res-nota="Versión gris, fondo transparente."
+           src="https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production/file-uploads/themes/2153372673/settings_images/41340f-812-6ba-3b73-8c868cc288aa_b6Is6Z4qSufgNzgDmDx0_Metropolitan-Touring_logo_gris.webp"
+           alt="Metropolitan Touring" loading="lazy">
+      <img data-res="cliente-consorcio" data-res-tipo="imagen"
+           data-res-label="Logo · Consorcio Pichincha" data-res-nota="Versión gris, fondo transparente."
+           src="https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production/file-uploads/themes/2153372673/settings_images/f8f6a1b-bd55-d77-ebb8-ff7a6f8a42_5d02170e-9878-4094-a7da-f354969da085.webp"
+           alt="Consorcio Pichincha" loading="lazy">
+      <img class="chico" data-res="cliente-difare" data-res-tipo="imagen"
+           data-res-label="Logo · Difare" data-res-nota="Versión gris, fondo transparente."
+           src="https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production/file-uploads/themes/2153372673/settings_images/b048e8e-56c7-67d-282d-38ce22a05db5_iFNynDBpQe6QzVAuh7ER_3_Difare_Grupo_gris.webp"
+           alt="Difare" loading="lazy">
+      <img data-res="cliente-mutualista" data-res-tipo="imagen"
+           data-res-label="Logo · Mutualista Pichincha" data-res-nota="Versión gris, fondo transparente."
+           src="https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production/file-uploads/themes/2153372673/settings_images/f76482b-deb-a67a-e101-7a2d5a8145c_P97QPICDRBazT0zpk0rr_MP_gris.webp"
+           alt="Mutualista Pichincha" loading="lazy">
+      <img data-res="cliente-usfq" data-res-tipo="imagen"
+           data-res-label="Logo · Universidad San Francisco" data-res-nota="Versión gris, fondo transparente."
+           src="https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production/file-uploads/themes/2153372673/settings_images/17f1cf0-e1e2-a1af-788-befb8ee0b188_yaZyrG6S5q82QNimoxp8_1_uni.webp"
+           alt="Universidad San Francisco de Quito" loading="lazy">
+    </div>
+  </div>
+</section>
+
+<!-- ═══ Pie ════════════════════════════════════════════════════════ -->
+<footer class="pie">
+  <div class="contenedor pie-in">
+    <a class="pie-marca" href="https://www.edumeglobal.com/" aria-label="Edume Global · Inicio">
+      <img data-res="logo-pie" data-res-tipo="imagen"
+           data-res-label="Logo del pie" data-res-nota="Cuadrado, 132×132."
+           src="https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production/file-uploads/themes/2149048594/settings_images/8133d80-1ccc-c7ea-51b7-83afa467a6e3_Disen_o_sin_ti_tulo_9_.png"
+           alt="Edume Global" width="50" height="50" loading="lazy">
+    </a>
+
+    <div class="pie-links">
+      <a href="https://www.edumeglobal.com/terminosycondiciones">Terminos y Condiciones</a>
+      <a href="https://www.edumeglobal.com/politicadeprivacidad">Políticas de Pivacidad</a>
+      <a href="https://www.edumeglobal.com/garantiadesatisfaccion">Garantía de Satisfacción</a>
+    </div>
+
+    <div class="pie-der">
+      <div class="pie-soc">
+        <a href="https://www.facebook.com/edumeglobal/" aria-label="Facebook" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 8.5V6.9c0-.7.2-1.1 1.2-1.1h1.5V3.1c-.3 0-1.2-.1-2.2-.1-2.2 0-3.6 1.3-3.6 3.7v1.8H9v3h2.4V21h3V11.5h2.4l.4-3z"/></svg>
+        </a>
+        <a href="https://www.instagram.com/edumeglobal/" aria-label="Instagram" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.2c3.2 0 3.6 0 4.9.1 1.2.1 1.8.3 2.2.4.6.2 1 .5 1.4.9.4.4.7.8.9 1.4.2.4.4 1 .4 2.2.1 1.3.1 1.7.1 4.9s0 3.6-.1 4.9c-.1 1.2-.3 1.8-.4 2.2-.2.6-.5 1-.9 1.4-.4.4-.8.7-1.4.9-.4.2-1 .4-2.2.4-1.3.1-1.7.1-4.9.1s-3.6 0-4.9-.1c-1.2-.1-1.8-.3-2.2-.4-.6-.2-1-.5-1.4-.9-.4-.4-.7-.8-.9-1.4-.2-.4-.4-1-.4-2.2C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.9c.1-1.2.3-1.8.4-2.2.2-.6.5-1 .9-1.4.4-.4.8-.7 1.4-.9.4-.2 1-.4 2.2-.4 1.3-.1 1.7-.1 4.8-.1zm0 6.8a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm0-1.8a4.8 4.8 0 1 1 0 9.6 4.8 4.8 0 0 1 0-9.6zm6.1-.2a1.1 1.1 0 1 1-2.2 0 1.1 1.1 0 0 1 2.2 0z"/></svg>
+        </a>
+        <a href="https://ec.linkedin.com/company/edume-global" aria-label="LinkedIn" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.9 21H3.6V9.2h3.3V21zM5.2 7.8A1.9 1.9 0 1 1 5.2 4a1.9 1.9 0 0 1 0 3.8zM21 21h-3.3v-5.7c0-1.4 0-3.1-1.9-3.1s-2.2 1.5-2.2 3v5.8H10.3V9.2h3.1v1.6h.1c.4-.8 1.5-1.7 3.1-1.7 3.3 0 3.9 2.2 3.9 5V21z"/></svg>
+        </a>
+      </div>
+      <div class="pie-cop">© 2026 · Marcelo Andrés International ·</div>
+    </div>
+  </div>
+</footer>

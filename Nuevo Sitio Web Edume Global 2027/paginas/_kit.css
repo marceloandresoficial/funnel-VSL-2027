@@ -1,0 +1,269 @@
+/* ═══════════════════════════════════════════════════════════════════
+   KIT DE MARCA · Edume Global™
+   Fuente única de tokens y componentes de TODAS las páginas del sitio.
+   Editar aquí cambia el sitio entero.
+
+   Medidas tomadas del sitio actual en Kajabi para que la migración no
+   cambie nada que no queramos cambiar.
+   ═══════════════════════════════════════════════════════════════════ */
+
+:root{
+  /* — Marca — */
+  --crema:#F5E2B8;        /* el acento: botón principal y bloque claro */
+  --crema-claro:#FFFCF2;  /* botón sobre foto */
+  --beige:#DAD2BC;        /* pie de página */
+  --morado:#3C096C;       /* bloque oscuro */
+  --violeta:#7F1BE9;      /* CTA de la cabecera y resaltados */
+  --violeta-hi:#6900D8;   /* resaltado sobre texto */
+
+  /* — Texto — */
+  --tinta:#161E2A;        /* titulares sobre claro */
+  --gris:#595959;         /* texto corrido */
+  --blanco:#FFFFFF;
+  --negro:#000000;
+
+  /* — Capa de lujo: los fondos que respiran — */
+  --marfil:#FBF8F2;       /* claro cálido, no blanco clínico */
+  --marfil-2:#F4EFE5;     /* superficie clara elevada */
+  --berenjena:#160A26;    /* oscuro profundo sesgado a violeta */
+  --berenjena-2:#1E0F33;  /* superficie oscura elevada */
+  --linea:#160A2614;
+  --linea-clara:#FFFFFF1F;
+  --sombra:0 24px 60px -28px #160A2659;
+
+  /* — Tipografías — */
+  --sys:"Montserrat","Helvetica Neue",Helvetica,Arial,sans-serif;  /* el sistema */
+  --alma:"Playfair Display",Georgia,"Times New Roman",serif;       /* el alma */
+
+  /* — Medidas — */
+  --maxw:1340px;
+  --gut:15px;
+  --aire:clamp(58px,6vw,98px);    /* respiración vertical de las secciones nuevas */
+  --hdr:105px;          /* alto de la cabecera, que va superpuesta */
+  --ease:cubic-bezier(.22,.85,.28,1);
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{overflow-x:clip;scroll-behavior:smooth}
+
+body{
+  margin:0;background:var(--blanco);color:var(--gris);
+  font-family:var(--sys);font-size:14px;line-height:1.2;font-weight:400;
+  -webkit-font-smoothing:antialiased;overflow-x:clip;
+}
+
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+:focus-visible{outline:2px solid var(--violeta);outline-offset:3px;border-radius:4px}
+
+h1,h2,h3,h4,h5,h6{font-family:var(--alma);font-weight:400;margin:0;line-height:1}
+
+/* ── Estructura ──────────────────────────────────────────────────── */
+
+.contenedor{max-width:var(--maxw);margin:0 auto;padding-inline:var(--gut);width:100%}
+.contenedor--full{max-width:none;padding-inline:0}
+
+.seccion{position:relative;background-size:cover;background-position:50% 50%;background-repeat:no-repeat}
+.seccion-in{position:relative;z-index:1;display:flex;flex-direction:column;justify-content:center;
+  min-height:inherit;padding-block:40px}
+
+/* Sobre foto el texto va en blanco; sobre claro, en tinta. */
+.oscura{color:var(--blanco)}
+.oscura h1,.oscura h2,.oscura h3,.oscura h4,.oscura h5{color:var(--blanco)}
+.clara{color:var(--gris)}
+.clara h1,.clara h2,.clara h3,.clara h4,.clara h5{color:var(--tinta)}
+
+/* ── Tipografía ──────────────────────────────────────────────────── */
+
+.h-hero{font-size:36px;line-height:1;letter-spacing:0}
+.h-sect{font-size:36px;line-height:1}
+.h-sub{font-size:24px;line-height:1}
+.h-mini{font-size:20px;line-height:1}
+.texto{font-size:14px;line-height:1.2;margin:0 0 16px}
+.texto:last-child{margin-bottom:0}
+
+/* El resaltado violeta del kicker: va sobre el texto, no sobre la caja. */
+.marcado{background:var(--violeta-hi);color:var(--blanco);box-decoration-break:clone;
+  -webkit-box-decoration-break:clone;padding:1px 4px}
+
+.centro{text-align:center}
+
+/* ── Botones ─────────────────────────────────────────────────────── */
+
+.btn{
+  display:inline-block;font-family:var(--sys);font-weight:700;letter-spacing:.25px;
+  text-align:center;border:2px solid transparent;border-radius:4px;cursor:pointer;
+  transition:transform .18s var(--ease),opacity .18s var(--ease),
+             background-color .18s var(--ease),color .18s var(--ease);
+}
+.btn:hover{transform:translateY(-1px);opacity:.92}
+.btn:active{transform:translateY(0)}
+
+.btn-sm{font-size:14.4px;line-height:1.5;padding:8px 16px}
+.btn-md{font-size:18px;line-height:1.5;padding:9.5px 30px}
+.btn-lg{font-size:16.8px;line-height:1.5;padding:12px 40px}
+
+.btn-violeta{background:var(--violeta);border-color:var(--violeta);color:var(--blanco)}
+.btn-crema{background:var(--crema);border-color:var(--crema);color:var(--negro)}
+.btn-crema-claro{background:var(--crema-claro);border-color:var(--crema-claro);color:var(--negro)}
+.btn-linea-negra{background:transparent;border-color:var(--negro);color:var(--negro);border-radius:5px}
+.btn-linea-negra:hover{background:var(--negro);color:var(--blanco);opacity:1}
+.btn-linea-blanca{background:transparent;border-color:var(--blanco);color:var(--blanco);border-radius:5px}
+.btn-linea-blanca:hover{background:var(--blanco);color:var(--morado);opacity:1}
+
+/* ── Cabecera · superpuesta sobre la primera sección ─────────────── */
+
+.cabecera{
+  position:absolute;top:0;left:0;right:0;z-index:20;height:var(--hdr);
+  display:flex;align-items:center;background:transparent;
+}
+.cabecera-in{display:flex;align-items:center;gap:28px;width:100%}
+.marca{flex:none}
+.marca img{width:170px;height:65px;object-fit:contain}
+.menu{margin-left:auto;display:flex;align-items:center;gap:26px}
+.menu a{font-size:16px;font-weight:400;color:var(--blanco);transition:opacity .18s var(--ease)}
+.menu a:hover{opacity:.72}
+.menu .btn{color:var(--blanco)}
+.menu-btn{display:none;margin-left:auto;width:34px;height:34px;color:var(--blanco);
+  align-items:center;justify-content:center}
+.menu-btn svg{width:24px;height:24px}
+
+/* ── Pie ─────────────────────────────────────────────────────────── */
+
+.pie{background:var(--beige);color:var(--gris);min-height:90px;display:flex;align-items:center}
+.pie-in{display:flex;align-items:center;gap:22px;flex-wrap:wrap;width:100%}
+.pie-marca img{width:50px;height:50px;object-fit:contain}
+.pie-links{display:flex;gap:22px;flex-wrap:wrap}
+.pie-links a{font-size:12px;transition:opacity .18s var(--ease)}
+.pie-links a:hover{opacity:.65}
+.pie-der{margin-left:auto;display:flex;align-items:center;gap:18px}
+.pie-soc{display:flex;gap:16px}
+.pie-soc a{display:grid;place-items:center;width:20px;height:20px;transition:opacity .18s var(--ease)}
+.pie-soc a:hover{opacity:.65}
+.pie-soc svg{width:18px;height:18px;fill:currentColor}
+.pie-cop{font-size:12px}
+
+/* ── Revelado al scroll ──────────────────────────────────────────── */
+/* Lo mismo que hacía AOS en el tema de Kajabi, sin la librería. */
+
+.rv{opacity:0;transform:translateY(18px);
+  transition:opacity .7s var(--ease) var(--d,0ms),transform .7s var(--ease) var(--d,0ms)}
+.rv.in{opacity:1;transform:none}
+
+@media (prefers-reduced-motion:reduce){
+  .rv{opacity:1;transform:none;transition:none}
+  html{scroll-behavior:auto}
+  .btn:hover{transform:none}
+}
+
+/* ── Móvil ───────────────────────────────────────────────────────── */
+
+@media (max-width:900px){
+  body{font-size:16px}
+  .h-hero,.h-sect{font-size:30px}
+  .h-sub{font-size:22px}
+  .h-mini{font-size:18px}
+  .texto{font-size:16px}
+
+  .menu{position:fixed;inset:0 0 auto;top:var(--hdr);flex-direction:column;align-items:stretch;
+    gap:0;background:var(--tinta);padding:10px 22px 26px;transform:translateY(-12px);
+    opacity:0;pointer-events:none;transition:opacity .22s var(--ease),transform .22s var(--ease)}
+  .menu[data-abierto]{opacity:1;transform:none;pointer-events:auto}
+  .menu a{padding:14px 0;border-bottom:1px solid #FFFFFF1F;text-align:left}
+  .menu .btn{margin-top:16px;border-bottom:0;text-align:center}
+  .menu-btn{display:flex}
+
+  .pie{padding-block:22px}
+  .pie-in{justify-content:center;text-align:center;gap:16px}
+  .pie-der{margin-left:0;width:100%;justify-content:center;flex-direction:column;gap:12px}
+  .pie-links{justify-content:center}
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   CAPA DE LUJO · componentes compartidos del sitio nuevo
+   Lo de arriba reproduce el sitio actual. Lo de aquí abajo es el
+   lenguaje nuevo: más aire, tipografía mayor, movimiento contenido.
+   ═══════════════════════════════════════════════════════════════════ */
+
+.aire{padding-block:var(--aire)}
+.marfil{background:var(--marfil);color:var(--gris)}
+.marfil h1,.marfil h2,.marfil h3,.marfil h4{color:var(--tinta)}
+.berenjena{background:var(--berenjena);color:#FFFFFFB8}
+.berenjena h1,.berenjena h2,.berenjena h3,.berenjena h4{color:var(--blanco)}
+
+/* ── Tipografía de la capa nueva ─────────────────────────────────── */
+
+.eyebrow{
+  font-family:var(--sys);font-size:11.5px;font-weight:700;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--violeta);
+  display:flex;align-items:center;gap:11px;margin:0 0 16px;
+}
+.eyebrow::before{content:"";width:26px;height:1px;background:currentColor;opacity:.55;flex:none}
+.eyebrow.centro{justify-content:center}
+.berenjena .eyebrow{color:var(--crema)}
+
+.display{font-size:clamp(36px,5.4vw,68px);line-height:1.04;letter-spacing:-.028em}
+.titular{font-size:clamp(28px,3.5vw,46px);line-height:1.08;letter-spacing:-.024em}
+.bajada{font-size:clamp(16px,1.1vw,17.5px);line-height:1.52;font-weight:400;max-width:56ch}
+.cuerpo{font-size:16px;line-height:1.55}
+.dato{font-variant-numeric:tabular-nums;font-weight:700;letter-spacing:-.02em}
+
+/* Una frase por titular en itálica serif: la firma de la marca. */
+em.alma{font-style:italic;color:var(--violeta)}
+.berenjena em.alma,.oscura em.alma{color:var(--crema)}
+
+/* ── Botones de la capa nueva: píldora, no rectángulo ────────────── */
+
+.btn-pill{border-radius:999px;padding:16px 34px;font-size:15px;letter-spacing:.02em}
+.btn-pill.btn-lg{padding:18px 42px;font-size:16px}
+.btn-fantasma{background:transparent;border-color:currentColor;opacity:.85}
+.btn-fantasma:hover{opacity:1}
+
+/* ── Cinta que se desliza ────────────────────────────────────────── */
+
+.mq{overflow:hidden;position:relative;
+  mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
+.mq-t{display:flex;width:max-content;gap:var(--hueco,20px);
+  animation:mq var(--sp,60s) linear infinite}
+.mq-t.rev{animation-direction:reverse}
+.mq:hover .mq-t{animation-play-state:paused}
+@keyframes mq{to{transform:translateX(calc(-50% - var(--hueco,20px)/2))}}
+
+/* ── Hueco de imagen sin cargar ──────────────────────────────────── */
+
+.ph{position:relative;overflow:hidden;border-radius:16px;display:grid;place-items:center;
+  background:linear-gradient(158deg,var(--berenjena-2),var(--berenjena));
+  background-size:cover;background-position:center}
+.ph::before{content:"";position:absolute;inset:0;
+  background:radial-gradient(120% 100% at 30% 10%,#7F1BE933,transparent 62%)}
+.ph>span{position:relative;font-family:var(--sys);font-weight:700;font-size:11px;
+  letter-spacing:.16em;text-transform:uppercase;color:#FFFFFF66;text-align:center;padding:10px}
+.ph.cargada::before,.ph.cargada>span{display:none}
+
+/* ── Tarjeta ─────────────────────────────────────────────────────── */
+
+.tarjeta{border-radius:20px;padding:30px 26px;background:var(--blanco);
+  border:1px solid var(--linea);box-shadow:var(--sombra);
+  transition:transform .45s var(--ease),box-shadow .45s var(--ease)}
+.tarjeta:hover{transform:translateY(-4px);box-shadow:0 34px 70px -30px #160A2666}
+.berenjena .tarjeta{background:var(--berenjena-2);border-color:var(--linea-clara);box-shadow:none}
+
+.rejilla{display:grid;grid-template-columns:repeat(auto-fit,minmax(var(--min,280px),1fr));gap:22px}
+
+/* ── Cifra grande ────────────────────────────────────────────────── */
+
+.cifra{text-align:center}
+.cifra b{display:block;font-family:var(--alma);font-size:clamp(33px,3.6vw,48px);
+  line-height:1;font-weight:400;color:var(--violeta);letter-spacing:-.02em}
+.berenjena .cifra b,.oscura .cifra b{color:var(--crema)}
+.cifra span{display:block;margin-top:9px;font-size:12.5px;font-weight:600;
+  letter-spacing:.04em;text-transform:none;opacity:.88;line-height:1.35}
+
+@media (max-width:900px){
+  .eyebrow{font-size:10px;margin-bottom:18px}
+  .bajada{font-size:16px}
+  .tarjeta{padding:28px 24px;border-radius:18px}
+  .btn-pill{padding:15px 28px}
+}

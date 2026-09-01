@@ -1,4 +1,4 @@
-<title>Estudio de Funnel</title>
+<title>Estudio del Sitio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300&family=JetBrains+Mono:wght@400;500;700&display=swap">
@@ -103,14 +103,6 @@ body.rail-oculto{--rail-l:0px}
 .estado-guardado.ok{color:var(--ok)}
 .estado-guardado.pend{color:var(--warn)}
 
-.cod-aviso{
-  display:none;gap:4px;flex-direction:column;margin-bottom:10px;padding:9px 11px;
-  border-radius:9px;background:#E0A3561A;border:1px solid #E0A35640;
-}
-.cod-aviso b{font-size:.72rem;font-weight:700;color:var(--warn)}
-.cod-aviso span{font-size:.7rem;line-height:1.45;color:var(--ui-tx-2)}
-.cod-aviso span b{font-weight:700;color:var(--ui-tx)}
-
 /* ── Riel izquierdo: el funnel ───────────────────────────────────── */
 
 .rail-l{
@@ -170,6 +162,14 @@ body.mapa-on .mapa{display:flex}
   border:1.5px solid var(--oro);border-radius:3px;background:#D6A5440D}
 .mapa-vacio{padding:30px 16px;text-align:center;font-size:.72rem;line-height:1.65;color:var(--ui-tx-3)}
 
+/* Cabecera de área: separa el sitio en zonas sin pesar en la lista. */
+.grupo-h{
+  font:600 .62rem/1 ui-monospace,SFMono-Regular,Menlo,monospace;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--ui-tx-3);
+  padding:16px 8px 8px;display:flex;align-items:center;gap:9px;
+}
+.grupo-h::after{content:"";flex:1;height:1px;background:var(--ui-line)}
+.rail-l-body>.grupo-h:first-child{padding-top:4px}
 .pag{
   display:grid;grid-template-columns:26px 1fr;gap:11px;align-items:start;
   width:100%;text-align:left;padding:11px 11px;border-radius:11px;margin-bottom:5px;
@@ -513,7 +513,7 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;bac
 
   <!-- ═══ BARRA SUPERIOR ═══ -->
   <header class="top">
-    <button class="tool" id="tRail" style="width:30px;height:30px" title="Mostrar u ocultar el funnel">
+    <button class="tool" id="tRail" style="width:30px;height:30px" title="Mostrar u ocultar el sitio">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16"/></svg>
     </button>
     <div class="top-marca">
@@ -522,7 +522,7 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;bac
         <circle cx="20" cy="20" r="11" stroke="#D6A544" stroke-width="1.4" opacity=".55"/>
         <circle cx="20" cy="20" r="4" fill="#D6A544"/>
       </svg>
-      <div><b>Estudio de Funnel</b><small>Escalling™ · interno</small></div>
+      <div><b>Estudio del Sitio</b><small>Edume Global™ · interno</small></div>
     </div>
     <div class="top-sep"></div>
     <div class="top-nombre">Editando <b id="topPag">—</b></div>
@@ -544,7 +544,7 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;bac
     <!-- ═══ RIEL IZQUIERDO · EL FUNNEL ═══ -->
     <aside class="rail-l">
       <div class="rail-l-h">
-        <h2>El funnel</h2>
+        <h2>El sitio</h2>
         <span class="cuenta" id="cuentaPags">—</span>
         <button class="mapa-tog" id="bMapa" title="Mapa visual de la página (M)">
           <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="3" y="3" width="18" height="7" rx="1.5"/><rect x="3" y="13" width="18" height="8" rx="1.5"/></svg>
@@ -582,7 +582,7 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;bac
       <div class="lienzo-h">
         <div class="lienzo-url">
           <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
-          marceloproano.com/<b id="urlSlug">—</b>
+          edumeglobal.com/<b id="urlSlug">—</b>
         </div>
         <span class="estado-guardado" id="anchoActual">—</span>
       </div>
@@ -624,10 +624,7 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;bac
           <div class="hoja" id="hRecursos"></div>
           <div class="hoja" id="hEstructura"></div>
           <div class="hoja" id="hHistorial"></div>
-          <div class="hoja" id="hCodigo">
-            <div class="cod-aviso" id="codAviso"></div>
-            <pre class="cod" id="codPre"></pre>
-          </div>
+          <div class="hoja" id="hCodigo"><pre class="cod" id="codPre"></pre></div>
           <div class="hoja" id="hKit"></div>
         </div>
         <div class="panel-f" id="panelPie" style="display:none"></div>
@@ -638,10 +635,10 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;bac
 
 <div class="dlg" id="dlgPag">
   <div class="dlg-in">
-    <div class="dlg-h">Agregar página al funnel</div>
+    <div class="dlg-h">Agregar página al sitio</div>
     <div class="dlg-b">
-      <div><label for="npNombre">Nombre de la página</label><input class="inp" id="npNombre" placeholder="Ej.: Webinar en vivo" style="width:100%"></div>
-      <div><label for="npDesc">¿Qué hace esta página?</label><input class="inp" id="npDesc" placeholder="Su trabajo en el funnel" style="width:100%"></div>
+      <div><label for="npNombre">Nombre de la página</label><input class="inp" id="npNombre" placeholder="Ej.: Quiénes somos" style="width:100%"></div>
+      <div><label for="npDesc">¿Qué hace esta página?</label><input class="inp" id="npDesc" placeholder="Su papel en el sitio" style="width:100%"></div>
       <p style="margin:0;font-size:.72rem;color:var(--ui-tx-3);line-height:1.5">
         Se crea como esbozo con el Kit de Marca aplicado. Dime después qué quieres en ella y la construyo completa.
       </p>
@@ -656,10 +653,10 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;bac
 
 <div class="dlg" id="dlgBorrar">
   <div class="dlg-in">
-    <div class="dlg-h">Quitar página del funnel</div>
+    <div class="dlg-h">Quitar página del sitio</div>
     <div class="dlg-b">
       <p style="margin:0;font-size:.84rem;line-height:1.55">
-        ¿Seguro que quieres quitar <b id="bpNombre">esta página</b> del funnel?
+        ¿Seguro que quieres quitar <b id="bpNombre">esta página</b> del sitio?
       </p>
       <p style="margin:0;font-size:.74rem;color:var(--ui-tx-3);line-height:1.5">
         Sus recursos y ediciones se conservan. Si la vuelves a agregar, reaparecen tal cual.
@@ -667,7 +664,7 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;bac
     </div>
     <div class="dlg-f">
       <button class="chip" id="bpCancel">Cancelar</button>
-      <button class="chip oro" id="bpOk" style="background:#E0776F">Quitar del funnel</button>
+      <button class="chip oro" id="bpOk" style="background:#E0776F">Quitar del sitio</button>
     </div>
   </div>
 </div>
@@ -688,7 +685,7 @@ const esc = s => String(s).replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">"
 /* ═══ FUENTE Y ESTADO ═══════════════════════════════════════════════ */
 
 const FUENTE = JSON.parse($("#paginasFuente").textContent);   // {orden:[], paginas:{slug:{meta,html}}}
-const LS_KEY = "escalling-funnel-v1";
+const LS_KEY = "edume-sitio-v1";
 
 /* El almacenamiento del navegador puede estar deshabilitado (incógnito, data:,
    políticas del sitio). Nunca debe tumbar el estudio. */
@@ -702,23 +699,24 @@ const guarda = {
 };
 
 const TOKENS = [
-  ["--ink",     "#0A0910", "Fondo",        "Obsidiana sesgada a violeta"],
-  ["--card",    "#141122", "Tarjeta",      "Superficie elevada"],
-  ["--bone",    "#F4EFE6", "Texto",        "Hueso cálido"],
-  ["--gold",    "#D6A544", "Acento",       "Oro de pan de oro"],
-  ["--gold-hi", "#F2D391", "Acento claro", "Frases destacadas"],
-  ["--violet",  "#5B4A9C", "Aura",         "Solo ambiental, nunca texto"],
+  ["--crema",       "#F5E2B8", "Crema",        "El acento: botón principal y bloque claro"],
+  ["--crema-claro", "#FFFCF2", "Crema claro",  "Botón sobre foto"],
+  ["--morado",      "#3C096C", "Morado",       "Bloque oscuro"],
+  ["--violeta",     "#7F1BE9", "Violeta",      "CTA de la cabecera y resaltados"],
+  ["--tinta",       "#161E2A", "Tinta",        "Titulares sobre claro"],
+  ["--gris",        "#595959", "Texto",        "Todo el texto corrido"],
+  ["--beige",       "#DAD2BC", "Beige",        "Pie de página"],
 ];
 
 const ESCALA = [
-  ["Display",   "clamp(2.7rem, 7.4vw, 5.3rem)", 900, "--sys",  "Titular de hero"],
-  ["Sección",   "clamp(2.05rem, 5.2vw, 3.7rem)", 800, "--sys",  "Titular de sección"],
-  ["El alma",   "clamp(2.05rem, 5.2vw, 3.7rem)", 300, "--alma", "La frase en itálica serif"],
-  ["Tarjeta",   "clamp(1.15rem, 2vw, 1.4rem)",   700, "--sys",  "Título de tarjeta"],
-  ["Lede",      "clamp(1.02rem, 1.55vw, 1.2rem)",400, "--sys",  "Párrafo de entrada"],
-  ["Cuerpo",    "0.94rem",                       400, "--sys",  "Texto corrido"],
-  ["Eyebrow",   "0.7rem",                        500, "--data", "Etiqueta sobre el titular"],
-  ["Dato",      "0.6rem",                        500, "--data", "Cifras y microcopy"],
+  ["Hero",     "36px", 400, "--alma", "Titular de la primera pantalla"],
+  ["Sección",  "36px", 400, "--alma", "Titular de sección"],
+  ["Subtítulo","24px", 400, "--alma", "Bajo el titular"],
+  ["Kicker",   "20px", 400, "--alma", "La línea de atención, resaltada"],
+  ["Botón",  "16.8px", 700, "--sys",  "Llamada a la acción grande"],
+  ["Menú",     "16px", 400, "--sys",  "Enlaces de la cabecera"],
+  ["Cuerpo",   "14px", 400, "--sys",  "Texto corrido"],
+  ["Pie",      "12px", 400, "--sys",  "Legales y copyright"],
 ];
 
 const vacio = () => ({
@@ -804,11 +802,6 @@ function porRuta(doc, ruta){
 let ACT = ST.orden[0] || FUENTE.orden[0];
 const marco = $("#marco");
 
-/* Publicar recarga el estudio. Si veníamos de Guardar, el panel del código
-   se vuelve a abrir solo, ya regenerado. */
-let hojaPendiente = guarda.leer("funnel-hoja", true);
-if(hojaPendiente) guarda.quitar("funnel-hoja", true);
-
 function documentoDe(slug){
   const html = htmlDe(slug);
   const meta = metaDe(slug);
@@ -824,6 +817,7 @@ function documentoDe(slug){
     '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>',
     '<link rel="stylesheet" href="' + FUENTE.fuentes + '">',
     sinKit ? "" : "<style>" + FUENTE.kitCss + "</style>",
+    FUENTE.fotosJs ? "<script>" + FUENTE.fotosJs + "<\/script>" : "",
     tokens ? "<style>:root{" + tokens + "}</style>" : "",
     "</head><body>",
     html,
@@ -849,7 +843,6 @@ marco.addEventListener("load", () => {
   const hoja = $(".hoja.act")?.id;
   if(hoja === "hRecursos") pintarRecursos();
   if(hoja === "hCodigo") pintarCodigo();
-  if(hojaPendiente){ const h = hojaPendiente; hojaPendiente = null; abrirHoja(h); }
   pintarLista();
   medirAncho();
   marco.contentWindow?.addEventListener("scroll", mirilla, {passive:true});
@@ -899,24 +892,30 @@ function recursosDe(slug){
 
 function pintarLista(){
   const cont = $("#listaPags");
+  let grupoAnt = null;
   cont.innerHTML = ST.orden.map((slug, i) => {
     const m = metaDe(slug);
+    /* Un sitio no es una secuencia: se lee por áreas. La cabecera aparece
+       solo cuando el área cambia, así el riel se mantiene ligero. */
+    const g = m.grupo || "";
+    const cab = g && g !== grupoAnt ? `<div class="grupo-h">${esc(g)}</div>` : "";
+    grupoAnt = g;
     const r = recursosDe(slug);
     const pct = r.total ? Math.round(r.llenos / r.total * 100) : 0;
     const completo = r.total !== null && r.total > 0 && r.llenos === r.total;
     const listo = m.estado === "listo";
-    return `<button class="pag${slug===ACT?" act":""}" data-slug="${esc(slug)}" draggable="true">
+    return cab + `<button class="pag${slug===ACT?" act":""}" data-slug="${esc(slug)}" draggable="true">
       <span class="pag-n">${i+1}</span>
       <span class="pag-b">
         <span class="pag-nom"><i class="pag-est ${listo?"listo":"esbozo"}"></i><span>${esc(m.nombre)}</span></span>
         <span class="pag-desc">${esc(m.descripcion || "Sin descripción")}</span>
         ${r.total ? `<span class="pag-barra"><i style="width:${pct}%"></i></span>
         <span class="pag-rec${completo?" completo":""}">${completo?"✓ recursos completos":`${r.llenos}/${r.total} recursos`}</span>`
-        : `<span class="pag-rec">${listo?"sin recursos":"esbozo · esperando brief"}</span>`}
+        : `<span class="pag-rec">${listo?"sin recursos":"esbozo · esperando enlace"}</span>`}
       </span>
       <span class="pag-acc">
         <span title="Arrastra para reordenar"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 6h.01M8 12h.01M8 18h.01M16 6h.01M16 12h.01M16 18h.01"/></svg></span>
-        <button data-borrar-pag title="Quitar del funnel"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+        <button data-borrar-pag title="Quitar del sitio"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
       </span>
     </button>`;
   }).join("");
@@ -946,10 +945,10 @@ function pintarLista(){
 }
 let arrastre = null;
 
-/* ── Quitar una página del funnel (reversible) ────────────────────── */
+/* ── Quitar una página del sitio (reversible) ─────────────────────── */
 let porBorrar = null;
 function pedirBorrar(slug){
-  if(ST.orden.length <= 1) return aviso("No puedes quedarte sin páginas en el funnel.", "mal");
+  if(ST.orden.length <= 1) return aviso("No puedes quedarte sin páginas en el sitio.", "mal");
   porBorrar = slug;
   $("#bpNombre").textContent = metaDe(slug).nombre;
   $("#dlgBorrar").setAttribute("open","");
@@ -1997,21 +1996,26 @@ function htmlFinal(slug = ACT){
   });
   clon.removeAttribute("data-kit-listo");           // marcas de runtime, no van en el export
   clon.removeAttribute("data-modo-recursos");
-  clon.querySelectorAll("[data-dup],[data-armado],[data-latido],[data-res-vacio]").forEach(e => {
-    e.removeAttribute("data-dup"); e.removeAttribute("data-armado");
+  /* data-dup se CONSERVA a propósito: la pista de la marquesina ya viaja
+     duplicada en el HTML, y sin esa marca el kit la volvería a duplicar al
+     cargar la página publicada. */
+  clon.querySelectorAll("[data-armado],[data-latido],[data-res-vacio]").forEach(e => {
+    e.removeAttribute("data-armado");
     e.removeAttribute("data-latido"); e.removeAttribute("data-res-vacio");
   });
   clon.querySelectorAll("[data-oculto]").forEach(e => e.remove());   // bloques ocultos: fuera
 
-  /* Los huecos sin imagen no se publican: el visitante ve solo lo que hay.
-     En el estudio siguen visibles para que puedas rellenarlos. */
-  clon.querySelectorAll(".cuenta, .portada, .tesela, .captura").forEach(t => {
-    const slot = t.querySelector("[data-res]");
-    if(slot && !slot.classList.contains("cargada")) t.remove();
+  /* Un hueco marcado así, que sigue sin imagen, no se publica: el visitante
+     ve solo lo que hay. En el estudio sigue visible para que lo rellenes.
+     Es una marca explícita de la página, no una lista de clases: así el
+     limpiador nunca se lleva por delante un bloque que no conoce. */
+  clon.querySelectorAll("[data-quitar-si-vacio]").forEach(t => {
+    if(!t.querySelector(".cargada") && !t.classList.contains("cargada")) t.remove();
   });
-  /* Si una galería se quedó sin nada, se queda vacía y no rota. */
-  clon.querySelectorAll(".mq, .portadas, .capturas, .muro").forEach(g => {
-    if(!g.querySelector(".cuenta, .portada, .tesela, .captura")) g.remove();
+  /* Y una galería que se quedó sin una sola pieza no se publica vacía. */
+  clon.querySelectorAll("[data-galeria]").forEach(g => {
+    if(g.children.length) return;
+    (g.closest("[data-galeria-caja]") || g).remove();
   });
   /* Un hueco opcional sin imagen sería un recuadro gris para el visitante. */
   clon.querySelectorAll("[data-res][data-res-opcional]:not(.cargada)").forEach(e => e.remove());
@@ -2230,34 +2234,163 @@ function pintarEstructura(){
   }));
 }
 
+/* ── Bloque para GoHighLevel ──────────────────────────────────────────
+   GHL no admite un documento completo: su elemento de código incrusta el
+   HTML DENTRO de su propia página. Así que el bloque se encierra en un
+   contenedor propio y todo el CSS se reescribe para vivir solo ahí dentro.
+   Ni la página toca lo que GHL pinte alrededor, ni GHL toca la página.   */
+
+const GHL_RAIZ = "eg-pagina";
+
+/** Parte una lista de selectores por comas, respetando :is(), :not(), [attr]. */
+function partirComas(s){
+  const out = []; let d = 0, cur = "", q = null;
+  for(let i = 0; i < s.length; i++){
+    const c = s[i];
+    if(q){ cur += c; if(c === q && s[i-1] !== "\\") q = null; continue; }
+    if(c === '"' || c === "'"){ q = c; cur += c; continue; }
+    if(c === "(" || c === "[") d++;
+    if(c === ")" || c === "]") d--;
+    if(c === "," && d === 0){ out.push(cur); cur = ""; continue; }
+    cur += c;
+  }
+  out.push(cur);
+  return out;
+}
+
+/** html/body/:root pasan a ser el contenedor; lo demás cuelga de él. */
+function acotarSelector(lista, sel){
+  return partirComas(lista).map(s => {
+    s = s.trim();
+    if(!s) return "";
+    if(/^(:root|html|body)$/i.test(s)) return sel;
+    s = s.replace(/^html\s+body\b/i, sel)
+         .replace(/^(?::root|html|body)(?=[.:#\[])/i, sel)
+         .replace(/^(?::root|html|body)\s+/i, sel + " ");
+    return s.startsWith(sel) ? s : sel + " " + s;
+  }).filter(Boolean).join(",");
+}
+
+/** Reescribe un CSS entero para que solo aplique dentro de `sel`. */
+function acotarCss(css, sel){
+  let out = "", i = 0;
+  const n = css.length;
+  while(i < n){
+    while(i < n && /\s/.test(css[i])) i++;
+    if(i >= n) break;
+    if(css.startsWith("/*", i)){ const j = css.indexOf("*/", i + 2); i = j < 0 ? n : j + 2; continue; }
+
+    let j = i, d = 0, q = null;
+    while(j < n){
+      const c = css[j];
+      if(q){ if(c === q && css[j-1] !== "\\") q = null; }
+      else if(c === '"' || c === "'") q = c;
+      else if(c === "(") d++;
+      else if(c === ")") d--;
+      else if(d === 0 && (c === "{" || c === ";")) break;
+      j++;
+    }
+    if(j >= n) break;
+    const prel = css.slice(i, j).trim();
+    if(css[j] === ";"){ if(prel) out += prel + ";\n"; i = j + 1; continue; }
+
+    let k = j + 1, p = 1; q = null;
+    while(k < n && p > 0){
+      const c = css[k];
+      if(q){ if(c === q && css[k-1] !== "\\") q = null; }
+      else if(c === '"' || c === "'") q = c;
+      else if(c === "/" && css[k+1] === "*"){ const e = css.indexOf("*/", k + 2); k = e < 0 ? n : e + 1; }
+      else if(c === "{") p++;
+      else if(c === "}") p--;
+      k++;
+    }
+    const cuerpo = css.slice(j + 1, k - 1);
+    if(prel[0] === "@"){
+      const at = prel.slice(1).split(/[\s({]/)[0].toLowerCase();
+      out += /^(media|supports|container|layer|scope)$/.test(at)
+        ? prel + "{\n" + acotarCss(cuerpo, sel) + "}\n"
+        : prel + "{" + cuerpo + "}\n";
+    } else {
+      out += acotarSelector(prel, sel) + "{" + cuerpo + "}\n";
+    }
+    i = k;
+  }
+  return out;
+}
+
+/* Los contenedores de GHL que envuelven el bloque dejan de estrecharlo.
+   Es lo único que sale del contenedor, y solo cuando lo contiene. */
+const GHL_RESET =
+`#${GHL_RAIZ}{width:100%;max-width:none;margin:0;padding:0;position:relative;isolation:isolate}
+[class*="c-section"]:has(> * #${GHL_RAIZ}),[class*="c-section"]:has(> #${GHL_RAIZ}),
+[class*="c-row"]:has(#${GHL_RAIZ}),[class*="c-column"]:has(#${GHL_RAIZ}),
+[class*="c-wrapper"]:has(#${GHL_RAIZ}),[class*="hl_page-preview"]:has(#${GHL_RAIZ}){
+padding:0!important;margin:0!important;max-width:none!important;width:100%!important;background:transparent!important;border:0!important}`;
+
+/** El HTML final convertido en un bloque pegable dentro de GoHighLevel. */
+function htmlGHL(slug = ACT){
+  const doc = new DOMParser().parseFromString(htmlFinal(slug), "text/html");
+  const raiz = "#" + GHL_RAIZ;
+  const links = [...doc.querySelectorAll('link[rel="stylesheet"],link[rel="preconnect"]')].map(e => e.outerHTML);
+  const css = [...doc.querySelectorAll("style")].map(e => e.textContent).join("\n");
+  const js = [...doc.querySelectorAll("script")].map(e => e.outerHTML);
+  doc.querySelectorAll("style,link,script").forEach(e => e.remove());
+  const attrs = [...doc.body.attributes].filter(x => x.name.startsWith("data-"))
+    .map(x => ` ${x.name}="${x.value}"`).join("");
+  const nom = metaDe(slug).nombre || slug;
+  return [
+    `<!-- ═══ ${nom} · Edume Global™ ═══════════════════════════════════`,
+    "     Pegar tal cual en un elemento de código de GoHighLevel.",
+    "     Todo el CSS vive dentro de #" + GHL_RAIZ + ": no puede tocar nada de GHL.",
+    "     ══════════════════════════════════════════════════════════ -->",
+    links.join("\n"),
+    "<style>\n" + GHL_RESET + "\n" + acotarCss(css, raiz).trim() + "\n</style>",
+    `<div id="${GHL_RAIZ}"${attrs}>`,
+    doc.body.innerHTML.trim(),
+    "</div>",
+    js.join("\n"),
+  ].filter(Boolean).join("\n");
+}
+
+/* ── Panel de código ─────────────────────────────────────────────── */
+
+let MODO_COD = "ghl";     // "ghl" = bloque pegable · "doc" = documento completo
+
 function pintarCodigo(){
-  const html = htmlFinal();
+  const cont = $("#hCodigo");
+  const ghl = MODO_COD === "ghl";
+  const html = ghl ? htmlGHL() : htmlFinal();
   const kb = Math.round(new Blob([html]).size / 1024);
-  const crudo = marco.contentDocument
-    ? Math.round(new Blob(["<!doctype html>" + marco.contentDocument.documentElement.outerHTML]).size / 1024)
-    : kb;
-  const recortado = html.length > 200000;
-  const aviso1 = $("#codAviso");
-  aviso1.style.display = recortado ? "flex" : "none";
-  aviso1.innerHTML = recortado
-    ? '<b>Vista recortada</b><span>Se muestran los primeros 200 000 caracteres de '
-      + html.length.toLocaleString("es-ES") + '. Usa <b>Copiar todo</b>: copia el archivo entero.</span>'
-    : "";
-  $("#codPre").innerHTML = esc(recortado ? html.slice(0,200000) + "\n\n… (aquí acaba la vista · la copia va completa)" : html);
+
+  cont.innerHTML = `
+    <div class="modo-cod" style="display:flex;gap:6px;margin-bottom:12px">
+      <button class="chip${ghl?" oro":""}" data-modo="ghl" style="flex:1;justify-content:center">Bloque GoHighLevel</button>
+      <button class="chip${ghl?"":" oro"}" data-modo="doc" style="flex:1;justify-content:center">Documento completo</button>
+    </div>
+    <p class="kit-nota" style="margin:0 0 12px">${ghl
+      ? "Para pegar en un elemento de código de GHL. El CSS va acotado a un contenedor propio, así que no puede romper nada de la plantilla ni al revés."
+      : "Documento HTML autónomo, con su <code>&lt;head&gt;</code>. Para subir a un hosting o abrir en el navegador."}</p>
+    <pre class="cod" id="codPre"></pre>`;
+
+  $("#codPre").textContent = html.length > 200000
+    ? html.slice(0, 200000) + "\n\n… (recortado en la vista, la copia va completa)" : html;
+
+  $$("[data-modo]", cont).forEach(b => b.addEventListener("click", () => {
+    MODO_COD = b.dataset.modo; pintarCodigo();
+  }));
+
   const pie = $("#panelPie");
   pie.style.display = "flex";
   pie.innerHTML = `
-    <button class="chip oro" id="bCopiar" style="flex:1;justify-content:center">Copiar todo · ${kb} KB</button>
+    <button class="chip oro" id="bCopiar" style="flex:1;justify-content:center">Copiar todo</button>
     <button class="chip" id="bPrev">Previsualizar</button>
     <button class="chip" id="bBajar">Descargar</button>
-    <span class="estado-guardado ok" style="align-self:center"
-      title="${crudo} KB en crudo · ${kb} KB ya optimizado">${
-        new Date().toLocaleTimeString("es-ES",{hour:"2-digit",minute:"2-digit"})}${
-        crudo>kb?` · −${crudo-kb} KB`:""}</span>`;
+    <span class="estado-guardado${kb>900?" pend":""}" style="align-self:center">${kb} KB</span>`;
   if(kb > 900) aviso(`La página pesa ${Math.round(kb/1024*10)/10} MB. Sube las imágenes a tu hosting y pega la URL en vez de incrustarlas.`, "mal");
-  $("#bPrev").addEventListener("click", () => previsualizar(html));
+
+  $("#bPrev").addEventListener("click", () => previsualizar(ghl ? enmarcarGHL(html) : html));
   $("#bCopiar").addEventListener("click", async () => {
-    try { await navigator.clipboard.writeText(html); aviso("Código copiado al portapapeles", "ok"); }
+    try { await navigator.clipboard.writeText(html); aviso(ghl ? "Bloque copiado · pégalo en GoHighLevel" : "Código copiado al portapapeles", "ok"); }
     catch {
       const ta = document.createElement("textarea");
       ta.value = html; document.body.append(ta); ta.select();
@@ -2265,7 +2398,26 @@ function pintarCodigo(){
       aviso("Código copiado", "ok");
     }
   });
-  $("#bBajar").addEventListener("click", () => descargar(ACT + ".html", html));
+  $("#bBajar").addEventListener("click", () => descargar(ACT + (ghl ? "-ghl" : "") + ".html", html));
+}
+
+/** Mete el bloque en un simulacro de la maquetación de GHL: si el reset
+    funciona, la página rompe el contenedor estrecho y ocupa todo el ancho. */
+function enmarcarGHL(frag){
+  return `<!doctype html><html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><style>
+body{margin:0;background:#EDEDF2;font-family:system-ui,sans-serif}
+.hl_page-preview--content{padding:60px 0}
+.c-section{padding:48px 24px;background:#fff}
+.c-row{max-width:960px;margin:0 auto}
+.c-column{padding:16px}
+.sim{font:600 11px/1 ui-monospace,monospace;letter-spacing:.14em;text-transform:uppercase;
+color:#8A8A9A;padding:14px 24px;text-align:center}
+</style></head><body>
+<div class="sim">Simulacro de GoHighLevel · sección de 960 px con relleno</div>
+<div class="hl_page-preview--content"><div class="c-section"><div class="c-row"><div class="c-column">
+${frag}
+</div></div></div></div></body></html>`;
 }
 
 /** Muestra el código exportado tal cual se vería al pegarlo. */
@@ -2585,25 +2737,14 @@ $("#bGuardar").addEventListener("click", async () => {
     const doc = await regenerar();
     if(!doc){ aviso("No pude reconstruir el estudio para publicar. Tu trabajo sigue guardado en local.", "mal"); return; }
     guarda.poner("funnel-vuelve", ACT, true);
-    /* El código debe quedar al día tras guardar, listo para copiar y pegar.
-       Publicar recarga el estudio, así que se recuerda para después; y si no
-       llega a recargar, se repinta aquí mismo. */
-    guarda.poner("funnel-hoja", "codigo", true);
     await API.publish(doc);
-    aviso("Publicado. El código de esta página ya está al día — «Copiar todo».", "ok");
   } catch(err){
     const c = err?.code;
     if(c === "conflict") aviso("Alguien publicó una versión más nueva. Recarga y vuelve a intentar.", "mal");
     else if(c === "not_writer" || c === "not_granted") aviso("No tienes permiso de publicar en este artifact.", "mal");
     else if(c === "rate_limited") aviso("Vas muy rápido. Espera unos segundos y guarda de nuevo.", "mal");
     else aviso("No se pudo publicar" + (c ? ` (${c})` : "") + ". Tu trabajo sigue en local.", "mal");
-  } finally {
-    b.disabled = false;
-    /* Pase lo que pase con la publicación, el código queda al día y delante:
-       es lo que se copia y se pega. */
-    if($(".hoja.act")?.id === "hCodigo") pintarCodigo();
-    else abrirHoja("codigo");
-  }
+  } finally { b.disabled = false; }
 });
 
 /** Reconstruye el documento del estudio con el estado embebido. */

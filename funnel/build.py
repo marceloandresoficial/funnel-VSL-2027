@@ -60,8 +60,11 @@ def leer_pagina(slug):
 
 
 def plantilla_esbozo():
-    """El esbozo de 'vsl' sirve de molde para las páginas nuevas del estudio."""
-    _, html = leer_pagina("vsl")
+    """Un esbozo cualquiera sirve de molde para las páginas nuevas del estudio."""
+    molde = next((sl for sl in ORDEN if leer_pagina(sl)[0].get("estado") == "esbozo"), None)
+    if not molde:
+        return "<section class=\"sect\"><div class=\"wrap\"><h1>__NOMBRE__</h1><p>__ROL__</p></div></section>"
+    _, html = leer_pagina(molde)
     html = re.sub(r"(<div class=\"esbozo-paso rv\">)Paso \d+( del funnel</div>)",
                   r"\1Paso __PASO__\2", html)
     html = re.sub(r"(<div class=\"esbozo-icono rv\"[^>]*>)[^<]*(</div>)", r"\1○\2", html)

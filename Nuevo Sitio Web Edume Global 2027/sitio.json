@@ -1,0 +1,71 @@
+{
+  "nombre": "Edume Global",
+  "dominio": "edumeglobal.com",
+  "nota": "El mapa del sitio. Cada entrada es una página. Si el archivo paginas/<slug>.html no existe, el build lo crea como esbozo. El orden de esta lista es el orden del riel izquierdo del estudio, y 'grupo' lo separa por áreas.",
+  "paginas": [
+    {
+      "slug": "inicio",
+      "nombre": "Inicio",
+      "icono": "◉",
+      "grupo": "Sitio",
+      "descripcion": "La home. Promesa, los dos programas, el fundador y la prueba social.",
+      "origen": "https://www.edumeglobal.com/"
+    },
+    {
+      "slug": "quienes-somos",
+      "nombre": "Quiénes somos",
+      "icono": "◈",
+      "grupo": "Sitio",
+      "descripcion": "Quién está detrás y por qué se le puede creer.",
+      "origen": "https://www.edumeglobal.com/quienessomos"
+    },
+    {
+      "slug": "casos-de-exito",
+      "nombre": "Casos de Éxito",
+      "icono": "★",
+      "grupo": "Sitio",
+      "descripcion": "La prueba: resultados de alumnos, con nombre y cifra.",
+      "origen": "https://www.edumeglobal.com/casosdeexito"
+    },
+    {
+      "slug": "one-billion",
+      "nombre": "One Billion Mastermind",
+      "icono": "◆",
+      "grupo": "Programas",
+      "descripcion": "El programa de 7 cifras: sistemas, procesos y equipo.",
+      "origen": "https://www.edumeglobal.com/onebillion"
+    },
+    {
+      "slug": "terminos-y-condiciones",
+      "nombre": "Términos y Condiciones",
+      "icono": "§",
+      "grupo": "Legales",
+      "descripcion": "Condiciones de contratación y uso.",
+      "origen": "https://www.edumeglobal.com/terminosycondiciones"
+    },
+    {
+      "slug": "politica-de-privacidad",
+      "nombre": "Política de Privacidad",
+      "icono": "§",
+      "grupo": "Legales",
+      "descripcion": "Tratamiento de datos personales.",
+      "origen": "https://www.edumeglobal.com/politicadeprivacidad"
+    },
+    {
+      "slug": "garantia-de-satisfaccion",
+      "nombre": "Garantía de Satisfacción",
+      "icono": "§",
+      "grupo": "Legales",
+      "descripcion": "Los términos de la garantía.",
+      "origen": "https://www.edumeglobal.com/garantiadesatisfaccion"
+    },
+    {
+      "slug": "inicio-kajabi",
+      "nombre": "Inicio (Kajabi actual)",
+      "icono": "⧉",
+      "grupo": "Referencia",
+      "descripcion": "La home de hoy, replicada al píxel. Sirve de patrón de comparación.",
+      "origen": "https://www.edumeglobal.com/"
+    }
+  ]
+}

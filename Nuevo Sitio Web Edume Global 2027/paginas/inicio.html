@@ -1,0 +1,975 @@
+<!--PAGINA {"nombre": "Inicio", "slug": "inicio", "icono": "◉", "grupo": "Sitio", "descripcion": "La home nueva. Promesa, metodología, prueba, mundo, programas y fundador.", "origen": "https://www.edumeglobal.com/", "estado": "listo"} -->
+<style>
+/* ═══════════════════════════════════════════════════════════════════
+   INICIO · Edume Global™ 2027
+   La esencia del sitio actual —la promesa, los dos programas, el
+   fundador, los logos— en el lenguaje nuevo: holístico, de lujo,
+   con el aire y el ritmo de una página de Apple.
+
+   Todo lo que se ve aquí es real: 220 negocios, 20 países, las 20
+   cuentas de clientes y las fotos cara a cara. Lo único vacío a
+   propósito son las capturas de banco y facturación: esas las subes
+   tú desde «Ver recursos». No invento cifras de nadie.
+   ═══════════════════════════════════════════════════════════════════ */
+
+.pagina{background:var(--marfil);color:#4A4A52;font-size:16px;line-height:1.55}
+
+/* La flor de la vida: el mismo trazo en el hero, la metodología, las
+   tarjetas de programa y el cierre. Gira muy despacio, casi no se nota. */
+.orb-geo{fill:none;stroke:currentColor}
+.orb-geo.gira{transform-origin:250px 250px;animation:girar 150s linear infinite}
+@keyframes girar{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.orb-geo.gira{animation:none}}
+.pagina .bajada{color:#4A4A52}
+
+/* ── Cabecera de cristal ─────────────────────────────────────────── */
+
+.nav{position:sticky;top:0;z-index:60;height:82px;display:flex;align-items:center;
+  transition:background .45s var(--ease),box-shadow .45s var(--ease),height .45s var(--ease)}
+.nav.solida{background:#FBF8F2F2;-webkit-backdrop-filter:saturate(180%) blur(20px);
+  backdrop-filter:saturate(180%) blur(20px);box-shadow:0 1px 0 var(--linea);height:70px}
+/* Sobre una sección oscura la cabecera se vuelve oscura: el logo, los
+   enlaces y el botón siguen leyéndose sin cambiar de archivo. */
+.nav.oscura.solida{background:#160A26F2;box-shadow:0 1px 0 var(--linea-clara)}
+.nav.oscura .nav-links a{color:var(--blanco)}
+.nav.oscura .nav-links .btn{color:var(--blanco)}
+.nav.oscura .nav-btn{color:var(--blanco)}
+.nav-in{display:flex;align-items:center;gap:30px;width:100%}
+.nav .marca img{width:150px;height:auto;
+  /* El logo actual tiene el texto en blanco. Sobre marfil se invierte a
+     negro para que se lea; sobre oscuro se muestra tal cual. Cuando subas
+     la versión de fondo claro, quita este filtro. */
+  filter:brightness(0);transition:filter .35s var(--ease)}
+.nav.oscura .marca img{filter:none}
+.nav-links{margin-left:auto;display:flex;align-items:center;gap:30px}
+.nav-links a{font-size:14px;font-weight:500;color:var(--tinta);opacity:.78;
+  transition:opacity .2s var(--ease)}
+.nav-links a:hover{opacity:1}
+.nav-links .btn{opacity:1;color:var(--blanco)}
+.nav-btn{display:none;margin-left:auto;width:36px;height:36px;color:var(--tinta);
+  align-items:center;justify-content:center}
+.nav-btn svg{width:24px;height:24px}
+
+/* ── 1 · Hero ────────────────────────────────────────────────────── */
+
+.hero{position:relative;overflow:hidden;background:var(--marfil);
+  padding-block:clamp(42px,4.6vw,74px) clamp(46px,5vw,80px)}
+.hero-aura{position:absolute;inset:-20% -10% auto;height:150%;pointer-events:none;
+  background:
+    radial-gradient(52% 44% at 50% 30%,#7F1BE914,transparent 70%),
+    radial-gradient(40% 34% at 82% 12%,#F5E2B84D,transparent 70%)}
+.hero-geo{position:absolute;top:50%;left:50%;width:min(1180px,140%);aspect-ratio:1;
+  transform:translate(-50%,-52%);color:var(--violeta);opacity:.10;pointer-events:none}
+.hero-in{position:relative;z-index:1;text-align:center;max-width:1000px;margin-inline:auto}
+.hero .display{margin:0}
+.hero .bajada{margin:20px auto 0;text-align:center;max-width:54ch}
+.hero-acc{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:30px}
+.hero-nota{margin:16px 0 0;font-size:13px;letter-spacing:0;opacity:.72}
+
+.cifras{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;
+  max-width:1000px;margin:clamp(38px,4vw,58px) auto 0;
+  border-top:1px solid var(--linea);padding-top:clamp(26px,2.8vw,36px)}
+
+/* ── 2 · Cinta de confianza ──────────────────────────────────────── */
+
+.confianza{background:var(--marfil-2);padding-block:34px;border-block:1px solid var(--linea)}
+.confianza .mq-head{font-size:11.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  text-align:center;opacity:.62;margin:0 0 24px}
+.logo-c{flex:none;display:grid;place-items:center;height:56px;padding-inline:26px}
+.logo-c img{max-height:52px;width:auto;filter:grayscale(1);opacity:.55;
+  transition:filter .4s var(--ease),opacity .4s var(--ease)}
+.mq:hover .logo-c img{filter:grayscale(0);opacity:.95}
+
+/* ── 3 · Diferenciador ───────────────────────────────────────────── */
+
+.dif-cab{max-width:760px}
+.dif-rej{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;
+  margin-top:clamp(32px,3.4vw,46px);align-items:stretch}
+.via{border-radius:20px;padding:30px 27px;border:1px solid var(--linea);background:var(--blanco);
+  display:flex;flex-direction:column;transition:transform .45s var(--ease)}
+.via:hover{transform:translateY(-4px)}
+.via-i{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;
+  background:var(--marfil-2);color:var(--gris);margin-bottom:22px;flex:none}
+.via-i svg{width:22px;height:22px}
+.via h3{font-family:var(--alma);font-size:23px;line-height:1.14;color:var(--tinta);margin:0 0 11px;letter-spacing:-.015em}
+.via p{margin:0 0 11px;font-size:15px;line-height:1.55}
+.via-t{margin:auto 0 0;padding-top:18px;font-size:11.5px;font-weight:700;letter-spacing:.06em;
+  text-transform:uppercase;opacity:.6}
+.via--nuestra{background:var(--berenjena);border-color:transparent;color:#FFFFFFC4;
+  box-shadow:0 30px 70px -34px #160A2699}
+.via--nuestra h3{color:var(--blanco)}
+.via--nuestra .via-i{background:#FFFFFF14;color:var(--crema)}
+.via--nuestra .via-t{color:var(--crema);opacity:.9}
+
+/* ── 4 · Metodología · el mandala ────────────────────────────────── */
+
+.metodo{background:var(--berenjena);color:#FFFFFFB8;position:relative;overflow:hidden}
+.metodo::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(46% 42% at 50% 40%,#7F1BE926,transparent 72%)}
+/* La geometría se queda de fondo, callada. El mensaje va delante. */
+.metodo-geo{position:absolute;top:-14%;left:50%;width:min(820px,110%);aspect-ratio:1;
+  transform:translateX(-50%);color:var(--crema);opacity:.075;pointer-events:none}
+.metodo-in{position:relative;z-index:1}
+
+.pilares{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;
+  margin-top:clamp(34px,3.6vw,50px)}
+.pilar{position:relative;border-radius:20px;padding:32px 28px;
+  border:1px solid var(--linea-clara);background:#FFFFFF0A;
+  display:flex;flex-direction:column;
+  transition:transform .4s var(--ease),background .4s var(--ease),border-color .4s var(--ease)}
+.pilar:hover{transform:translateY(-4px);background:#FFFFFF12;border-color:#F5E2B855}
+.pilar--suyo{background:linear-gradient(160deg,#7F1BE926,#FFFFFF0A);border-color:#F5E2B84D}
+
+.pilar-n{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+.pilar-n svg{width:34px;height:34px;flex:none;color:var(--crema)}
+.pilar-n b{font-family:var(--sys);font-size:12px;font-weight:700;letter-spacing:.1em;
+  color:var(--crema);opacity:.8}
+.pilar h3{font-family:var(--alma);font-size:26px;line-height:1.12;color:var(--blanco);
+  margin:0 0 6px;letter-spacing:-.015em}
+.pilar-sub{font-size:12.5px;font-weight:600;color:var(--crema);opacity:.85;margin:0 0 16px}
+.pilar p{margin:0;font-size:15px;line-height:1.55}
+.pilar-lista{list-style:none;margin:20px 0 0;padding:18px 0 0;
+  border-top:1px solid var(--linea-clara);display:flex;flex-wrap:wrap;gap:7px}
+.pilar-lista li{font-size:12px;font-weight:600;padding:5px 11px;border-radius:999px;
+  background:#FFFFFF14;color:#FFFFFFCC;white-space:nowrap}
+.pilar--suyo .pilar-lista li{background:#F5E2B81F;color:var(--crema)}
+.pilar-sello{position:absolute;top:18px;right:18px;font-size:10.5px;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;color:#2A1A05;background:var(--crema);
+  padding:4px 10px;border-radius:999px}
+
+/* ── 5 · Resultados sin retoque ──────────────────────────────────── */
+
+.capturas{background:var(--marfil)}
+.cap{flex:none;width:236px;aspect-ratio:9/16;border-radius:20px;box-shadow:var(--sombra);
+  background:var(--blanco);overflow:hidden;transition:transform .45s var(--ease)}
+.cap:hover{transform:translateY(-6px) scale(1.02)}
+.cap.ph{border:1px solid var(--linea)}
+.cap.ph::before{background:radial-gradient(120% 100% at 30% 8%,#7F1BE914,transparent 62%)}
+.cap.ph>span{color:#160A2647}
+.cap-fila+.cap-fila{margin-top:20px}
+
+/* ── 6 · Collage cara a cara ─────────────────────────────────────── */
+
+.collage{background:var(--berenjena-2);color:#FFFFFFB0;overflow:hidden}
+.foto-c{flex:none;width:290px;aspect-ratio:4/5;border-radius:22px;overflow:hidden;
+  position:relative;background:var(--berenjena)}
+.foto-c img{width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease)}
+.foto-c:hover img{transform:scale(1.05)}
+.foto-c figcaption{position:absolute;inset:auto 0 0;padding:44px 20px 18px;
+  background:linear-gradient(transparent,#0B0616E6);
+  color:var(--blanco);font-size:14px;font-weight:600;letter-spacing:-.01em}
+.foto-c figcaption span{display:block;font-size:12px;font-weight:500;letter-spacing:.02em;
+  color:var(--crema);opacity:.9;margin-top:3px}
+
+/* ── 7 · Cuentas reales ──────────────────────────────────────────── */
+
+.cuentas{display:grid;grid-template-columns:repeat(auto-fill,minmax(238px,1fr));gap:10px;
+  margin-top:clamp(30px,3.2vw,44px)}
+.cta-c{display:flex;align-items:center;gap:13px;padding:14px 16px;border-radius:16px;
+  border:1px solid var(--linea);background:var(--blanco);
+  transition:border-color .3s var(--ease),transform .3s var(--ease)}
+.cta-c:hover{border-color:#7F1BE955;transform:translateY(-2px)}
+.cta-foto{flex:none;width:38px;height:38px;border-radius:50%;object-fit:cover;
+  object-position:center 22%}
+.cta-c i{flex:none;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;
+  background:linear-gradient(140deg,#7F1BE9,#3C096C);color:var(--blanco);
+  font-style:normal;font-weight:700;font-size:14px;font-family:var(--sys)}
+.cta-b{min-width:0}
+.cta-n{display:block;font-size:14px;font-weight:600;color:var(--tinta);white-space:nowrap;
+  overflow:hidden;text-overflow:ellipsis;line-height:1.3}
+.cta-m{display:block;font-size:12px;opacity:.72;white-space:nowrap;overflow:hidden;
+  text-overflow:ellipsis;line-height:1.35}
+.cta-f{margin-left:auto;flex:none;font-size:11px;font-weight:700;color:var(--violeta);
+  font-variant-numeric:tabular-nums}
+
+/* ── 8 · El mundo ────────────────────────────────────────────────── */
+
+.mundo{background:var(--berenjena);color:#FFFFFFB0;position:relative;overflow:hidden}
+.mundo-rej{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);
+  gap:clamp(30px,4vw,60px);align-items:center;margin-top:clamp(40px,5vw,60px)}
+.globo-caja{position:relative;width:100%;max-width:560px;margin-inline:auto;aspect-ratio:1}
+.globo-caja canvas{width:100%;height:100%;display:block}
+.globo-tip{position:absolute;transform:translate(-50%,-190%);pointer-events:none;
+  background:var(--crema);color:#2A1A05;font-size:11.5px;font-weight:700;padding:5px 11px;
+  border-radius:999px;white-space:nowrap;opacity:0;transition:opacity .2s var(--ease)}
+.globo-tip.ver{opacity:1}
+.rank-i{display:flex;align-items:center;gap:14px;padding:11px 0;
+  border-bottom:1px solid var(--linea-clara);transition:border-color .3s var(--ease)}
+.rank-n{font-size:11px;opacity:.4;width:20px;font-variant-numeric:tabular-nums}
+.rank-b{flex:1;min-width:0}
+.rank-b b{display:block;font-size:14.5px;font-weight:600;color:var(--blanco);line-height:1.3}
+.rank-barra{display:block;height:3px;border-radius:2px;background:#FFFFFF14;
+  margin-top:6px;overflow:hidden}
+.rank-barra i{display:block;height:100%;width:0;border-radius:2px;
+  background:linear-gradient(90deg,#7F1BE9,var(--crema));transition:width 1.1s var(--ease)}
+.rank-i.in .rank-barra i{width:var(--w)}
+.rank-c{font-size:13px;font-weight:700;color:var(--crema);font-variant-numeric:tabular-nums}
+
+/* ── 9 · Los dos programas ───────────────────────────────────────── */
+
+.prog-rej{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:clamp(32px,3.4vw,46px)}
+.prog{position:relative;overflow:hidden;border-radius:24px;padding:clamp(32px,3.2vw,46px);
+  display:flex;flex-direction:column;min-height:400px;
+  transition:transform .5s var(--ease),box-shadow .5s var(--ease)}
+.prog:hover{transform:translateY(-6px);box-shadow:0 40px 90px -40px #160A2680}
+.prog--100k{background:linear-gradient(158deg,var(--crema),#EBD3A0);color:#4A3A14}
+.prog--ob{background:linear-gradient(158deg,var(--morado),#22064A);color:#FFFFFFB8}
+.prog-geo{position:absolute;right:-70px;top:-70px;width:300px;height:300px;
+  opacity:.16;pointer-events:none}
+.prog-n{font-size:11.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;
+  opacity:.75;margin:0 0 14px;position:relative}
+.prog h3{font-family:var(--alma);font-size:clamp(28px,3vw,40px);line-height:1.06;
+  margin:0 0 18px;position:relative}
+.prog--100k h3{color:#2E2408}
+.prog--ob h3{color:var(--blanco)}
+.prog>p{margin:0;font-size:16px;line-height:1.55;position:relative;max-width:42ch}
+.prog-lista{list-style:none;margin:26px 0 0;padding:0;display:grid;gap:11px;position:relative}
+.prog-lista li{display:flex;gap:11px;font-size:15px;line-height:1.45}
+.prog-lista svg{width:17px;height:17px;flex:none;margin-top:2px}
+.prog-pie{margin-top:auto;padding-top:34px;position:relative}
+
+/* ── 10 · Fundador ───────────────────────────────────────────────── */
+
+.fund{background:var(--marfil-2)}
+.fund-rej{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);
+  gap:clamp(32px,4vw,70px);align-items:center}
+.fund-foto{position:relative;border-radius:26px;overflow:hidden;aspect-ratio:4/5;
+  background:linear-gradient(158deg,#EFE6D6,#D9CDB6)}
+.fund-foto img{width:100%;height:100%;object-fit:cover;object-position:top center}
+.fund-cifras{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:26px;
+  padding-top:24px;border-top:1px solid var(--linea)}
+.fund-cifras .cifra{text-align:left}
+.fund-cifras .cifra b{font-size:clamp(26px,2.6vw,36px)}
+.fund-cifras .cifra span{font-size:12px}
+.fund-firma{font-family:var(--alma);font-style:italic;font-size:19px;line-height:1.45;
+  color:var(--tinta);margin:22px 0 0;padding-left:18px;border-left:2px solid var(--violeta)}
+
+/* ── 11 · Cierre ─────────────────────────────────────────────────── */
+
+.cierre{background:var(--berenjena);color:#FFFFFFB0;position:relative;overflow:hidden;
+  text-align:center}
+.cierre-geo{position:absolute;top:50%;left:50%;width:min(900px,120%);aspect-ratio:1;
+  transform:translate(-50%,-50%);color:var(--crema);opacity:.12;pointer-events:none}
+.cierre-in{position:relative;z-index:1;max-width:760px;margin-inline:auto}
+.cierre .bajada{margin:24px auto 0;text-align:center}
+
+/* ── Móvil ───────────────────────────────────────────────────────── */
+
+@media (max-width:1000px){
+  .metodo-rej,.mundo-rej,.fund-rej,.prog-rej,.dif-rej{grid-template-columns:1fr}
+  .cifras{grid-template-columns:repeat(2,1fr);gap:30px 18px}
+  .fund-foto{max-width:420px;margin-inline:auto}
+}
+@media (max-width:900px){
+  .nav{height:72px}
+  .nav .marca img{width:130px}
+  .nav-btn{display:flex}
+  .nav-links{position:fixed;inset:72px 0 auto;flex-direction:column;align-items:stretch;gap:0;
+    background:#FBF8F2FA;-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);
+    padding:8px 22px 26px;box-shadow:0 20px 40px -24px #160A2666;
+    transform:translateY(-10px);opacity:0;pointer-events:none;
+    transition:opacity .24s var(--ease),transform .24s var(--ease)}
+  .nav-links[data-abierto]{opacity:1;transform:none;pointer-events:auto}
+  .nav-links a{padding:15px 0;border-bottom:1px solid var(--linea);font-size:16px}
+  .nav-links .btn{margin-top:16px;border-bottom:0}
+  .orb-panel{min-height:0}
+  .cap{width:190px}
+  .foto-c{width:220px}
+  .prog{min-height:0;padding:32px 26px}
+  .fund-cifras{grid-template-columns:1fr;gap:22px}
+}
+</style>
+
+<div class="pagina" id="top">
+
+<!-- ═══ Cabecera ═══════════════════════════════════════════════════ -->
+<header class="nav" id="nav">
+  <div class="contenedor nav-in">
+    <a class="marca" href="#top" aria-label="Edume Global · Inicio">
+      <img data-res="logo-cabecera" data-res-tipo="imagen"
+           data-res-label="Logo de la cabecera"
+           data-res-nota="Versión sobre fondo claro. Hoy vive en el CDN de Kajabi."
+           src="https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production/file-uploads/themes/2153372673/settings_images/838c702-6d4-02f-07c-07bfa2245fba_Edume_Global_logo_Mesa_de_trabajo_1_1_.png"
+           alt="Edume Global" width="150" height="57">
+    </a>
+    <button class="nav-btn" id="navBtn" aria-label="Abrir el menú"
+            aria-expanded="false" aria-controls="navLinks">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+        <path d="M4 7h16M4 12h16M4 17h16"/>
+      </svg>
+    </button>
+    <nav class="nav-links" id="navLinks">
+      <a href="#metodo">Metodología</a>
+      <a href="#prueba">Casos</a>
+      <a href="#programas">Programas</a>
+      <a href="#fundador">Quiénes somos</a>
+      <a class="btn btn-pill btn-violeta" data-res="cta-agenda" data-res-tipo="link"
+         data-res-label="Botón «Agenda tu sesión»"
+         data-res-nota="Enlace del calendario. Hoy apunta al VSL de la Aceleradora."
+         href="https://master.edumeglobal.com/f/vsl/demo-aceleradora/">Agenda tu sesión</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ═══ 1 · Hero ═══════════════════════════════════════════════════ -->
+<section class="hero">
+  <div class="hero-aura" aria-hidden="true"></div>
+  <svg class="hero-geo" viewBox="0 0 500 500" fill="none" stroke="currentColor" aria-hidden="true">
+    <g class="orb-geo gira" stroke-width=".8">
+      <circle cx="250" cy="250" r="70"/><circle cx="250" cy="180" r="70"/>
+      <circle cx="310.6" cy="215" r="70"/><circle cx="310.6" cy="285" r="70"/>
+      <circle cx="250" cy="320" r="70"/><circle cx="189.4" cy="285" r="70"/>
+      <circle cx="189.4" cy="215" r="70"/>
+    </g>
+    <circle cx="250" cy="250" r="140" stroke-width=".8" opacity=".5"/>
+    <circle cx="250" cy="250" r="210" stroke-width=".8" opacity=".3"/>
+  </svg>
+
+  <div class="contenedor hero-in">
+    <p class="eyebrow centro rv">Coaches · Formadores · Consultores</p>
+    <h1 class="display rv" style="--d:70ms">Programas premium que se venden
+      <em class="alma">en piloto automático.</em></h1>
+    <p class="bajada rv" style="--d:140ms">Ayudamos a coaches, formadores y consultores holísticos
+      a multiplicar sus ingresos y su tiempo libre con un sistema de atracción de clientes que
+      trabaja aunque tú no estés delante.</p>
+    <div class="hero-acc rv" style="--d:210ms">
+      <a class="btn btn-pill btn-lg btn-violeta"
+         href="https://master.edumeglobal.com/f/vsl/demo-aceleradora/">Agenda tu sesión</a>
+      <a class="btn btn-pill btn-lg btn-fantasma" href="#metodo"
+         style="color:var(--tinta)">Ver la metodología</a>
+    </div>
+    <p class="hero-nota rv" style="--d:260ms">Gratis · 45 minutos · cupos limitados cada semana</p>
+
+    <div class="cifras">
+      <div class="cifra rv"><b><span data-count="220">0</span>+</b><span>Negocios escalados</span></div>
+      <div class="cifra rv" style="--d:80ms"><b><span data-count="20">0</span></b><span>Países</span></div>
+      <div class="cifra rv" style="--d:160ms"><b><span data-count="200">0</span>+</b><span>Casos documentados</span></div>
+      <div class="cifra rv" style="--d:240ms"><b>$<span data-count="66964">0</span></b><span>Mejor récord en 60 días</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 2 · Cinta de confianza ═════════════════════════════════════ -->
+<section class="confianza">
+  <p class="mq-head">Han confiado en nosotros</p>
+  <div class="mq" style="--sp:46s;--hueco:0px">
+    <div class="mq-t" id="cintaLogos"></div>
+  </div>
+</section>
+
+<!-- ═══ 3 · El diferenciador ═══════════════════════════════════════ -->
+<section class="seccion aire" id="diferencia">
+  <div class="contenedor">
+    <div class="dif-cab">
+      <p class="eyebrow rv">Por qué casi nadie lo logra</p>
+      <h2 class="titular rv" style="--d:70ms">El sueño sin sistema.
+        <em class="alma">El sistema sin alma.</em></h2>
+      <p class="bajada rv" style="--d:140ms">Los dos fallan. Uno te deja agotado cobrando por hora;
+        el otro te convierte en un vendedor que ya no reconoces. Nosotros construimos el tercero.</p>
+    </div>
+
+    <div class="dif-rej">
+      <article class="via rv" style="--d:60ms">
+        <span class="via-i" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+            <path d="M12 3v6M12 15v6M4.2 7.5l5.2 3M14.6 13.5l5.2 3M4.2 16.5l5.2-3M14.6 10.5l5.2-3"/>
+            <circle cx="12" cy="12" r="2.6"/></svg>
+        </span>
+        <h3>Tienes el don, no el sistema</h3>
+        <p>Transformas vidas de verdad, pero tu facturación depende de que tú estés delante.
+          Cada mes vuelves a empezar de cero, persiguiendo la siguiente sesión.</p>
+        <p class="via-t">Techo: tu propia agenda</p>
+      </article>
+
+      <article class="via rv" style="--d:130ms">
+        <span class="via-i" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+            <rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M8 15h4"/></svg>
+        </span>
+        <h3>Compras el sistema, pierdes el alma</h3>
+        <p>Una agencia te monta el embudo genérico, te pone a perseguir leads fríos y te escribe
+          guiones que no son tuyos. Vende algo, sí. Pero ya no se parece a ti.</p>
+        <p class="via-t">Techo: tu incomodidad</p>
+      </article>
+
+      <article class="via via--nuestra rv" style="--d:200ms">
+        <span class="via-i" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+            <circle cx="12" cy="12" r="8.6"/><circle cx="12" cy="12" r="3"/>
+            <path d="M12 3.4v3M12 17.6v3M3.4 12h3M17.6 12h3"/></svg>
+        </span>
+        <h3>Sistema con tu voz dentro</h3>
+        <p>La estructura que escala, entrenada en tus paradigmas, tu lenguaje y tu forma de
+          acompañar. El negocio crece sin que tengas que dejar de ser quien eres.</p>
+        <p class="via-t">Sin techo</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 4 · Metodología · tres pilares ═════════════════════════════ -->
+<section class="seccion metodo aire" id="metodo" data-tono="oscuro">
+  <svg class="metodo-geo" viewBox="0 0 500 500" fill="none" stroke="currentColor" aria-hidden="true">
+    <g class="orb-geo gira" stroke-width=".9"><circle cx="250" cy="250" r="46"/><circle cx="250" cy="204" r="46"/><circle cx="289.8" cy="227" r="46"/><circle cx="289.8" cy="273" r="46"/><circle cx="250" cy="296" r="46"/><circle cx="210.2" cy="273" r="46"/><circle cx="210.2" cy="227" r="46"/></g>
+    <circle cx="250" cy="250" r="150" stroke-width=".9" opacity=".5"/>
+    <circle cx="250" cy="250" r="215" stroke-width=".9" opacity=".3"/>
+  </svg>
+
+  <div class="contenedor metodo-in">
+    <div style="max-width:700px">
+      <p class="eyebrow rv">Cómo lo resolvemos</p>
+      <h2 class="titular rv" style="--d:70ms">Tres pilares.
+        <em class="alma">El segundo no lo tiene nadie.</em></h2>
+      <p class="bajada rv" style="--d:140ms">Uno sin los otros dos no sostiene nada.
+        Juntos son un negocio que factura sin ti delante.</p>
+    </div>
+
+    <div class="pilares">
+      <article class="pilar rv" style="--d:60ms">
+        <div class="pilar-n"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" aria-hidden="true"><circle cx="20" cy="20" r="6" stroke-width="1.1" opacity="1"/></svg><b>PILAR 01</b></div>
+        <h3>Tu oferta</h3>
+        <p class="pilar-sub">Posicionamiento</p>
+        <p>El sitio exacto donde eres la única opción evidente, la promesa dicha con
+          las palabras que tu cliente ya usa, y el precio que vale tu transformación.</p>
+        <ul class="pilar-lista">
+          <li>Micro nicho</li><li>Promesa</li><li>Precio</li>
+        </ul>
+      </article>
+
+      <article class="pilar pilar--suyo rv" style="--d:130ms">
+        <span class="pilar-sello">Solo aquí</span>
+        <div class="pilar-n"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" aria-hidden="true"><circle cx="20" cy="20" r="6" stroke-width="1.1" opacity="1"/><circle cx="20" cy="20" r="12" stroke-width="1.1" opacity=".62"/></svg><b>PILAR 02</b></div>
+        <h3>Segundo cerebro</h3>
+        <p class="pilar-sub">La Biblia + agentes de IA</p>
+        <p>Los paradigmas, deseos y miedos de tu cliente ideal, por escrito. Y agentes
+          entrenados en tu voz que escriben y responden como lo harías tú.</p>
+        <ul class="pilar-lista">
+          <li>La Biblia</li><li>Agentes</li><li>Guiones</li><li>Criterio</li>
+        </ul>
+      </article>
+
+      <article class="pilar rv" style="--d:200ms">
+        <div class="pilar-n"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" aria-hidden="true"><circle cx="20" cy="20" r="6" stroke-width="1.1" opacity="1"/><circle cx="20" cy="20" r="12" stroke-width="1.1" opacity=".62"/><circle cx="20" cy="20" r="18" stroke-width="1.1" opacity=".38"/></svg><b>PILAR 03</b></div>
+        <h3>Conversión</h3>
+        <p class="pilar-sub">Leads, llamadas y cierres</p>
+        <p>Contenido y anuncios que traen conversaciones, un CRM donde cada lead tiene
+          nombre y siguiente paso, y una estructura de cierre sin presionar ni rogar.</p>
+        <ul class="pilar-lista">
+          <li>Contenido</li><li>Anuncios</li><li>Conversación</li>
+          <li>CRM</li><li>Llamada</li><li>Script dorado</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 5 · Resultados sin retoque ═════════════════════════════════ -->
+<section class="seccion capturas aire" id="resultados" data-si-vacio>
+  <div class="contenedor" style="max-width:820px;text-align:center">
+    <p class="eyebrow centro rv">Sin retoque</p>
+    <h2 class="titular rv" style="--d:70ms">Las capturas,
+      <em class="alma">tal cual llegaron.</em></h2>
+    <p class="bajada rv" style="--d:140ms">Notificaciones de venta, transferencias recibidas y
+      paneles de facturación de nuestros clientes. Sin recortes y sin retoque.</p>
+  </div>
+
+  <div style="margin-top:clamp(40px,5vw,58px)">
+    <div class="mq cap-fila" data-galeria-caja style="--sp:70s"><div class="mq-t" id="capA" data-galeria></div></div>
+    <div class="mq cap-fila" data-galeria-caja style="--sp:84s"><div class="mq-t rev" id="capB" data-galeria></div></div>
+  </div>
+</section>
+
+<!-- ═══ 6 · Collage cara a cara ════════════════════════════════════ -->
+<section class="seccion collage aire" id="collage" data-tono="oscuro">
+  <div class="contenedor" style="max-width:820px;text-align:center">
+    <p class="eyebrow centro rv">Cara a cara</p>
+    <h2 class="titular rv" style="--d:70ms">No son avatares.
+      <em class="alma">Son personas.</em></h2>
+    <p class="bajada rv" style="--d:140ms">Los conocemos por su nombre, sabemos qué venden y
+      hemos estado con ellos. Esto es solo una parte.</p>
+  </div>
+  <div class="mq" style="--sp:80s;margin-top:clamp(40px,5vw,58px)">
+    <div class="mq-t" id="collageT"></div>
+  </div>
+</section>
+
+<!-- ═══ 7 · Cuentas reales ═════════════════════════════════════════ -->
+<section class="seccion aire" id="prueba">
+  <div class="contenedor">
+    <div style="max-width:760px">
+      <p class="eyebrow rv">La prueba</p>
+      <h2 class="titular rv" style="--d:70ms">Gente real.
+        <em class="alma">Cuentas reales.</em></h2>
+      <p class="bajada rv" style="--d:140ms">Búscalos en Instagram y pregúntales directamente.
+        Es lo mejor que puedes hacer antes de decidir.</p>
+    </div>
+    <div class="cuentas rv" style="--d:180ms" id="cuentas"></div>
+  </div>
+</section>
+
+<!-- ═══ 8 · El mundo ═══════════════════════════════════════════════ -->
+<section class="seccion mundo aire" id="mundo" data-tono="oscuro">
+  <div class="contenedor">
+    <div style="max-width:760px">
+      <p class="eyebrow rv">Casos en el mundo</p>
+      <h2 class="titular rv" style="--d:70ms">Funciona en
+        <em class="alma">20 países.</em></h2>
+      <p class="bajada rv" style="--d:140ms">El método no depende del idioma ni del mercado.
+        Pasa el cursor por cualquier punto del globo.</p>
+    </div>
+
+    <div class="mundo-rej">
+      <div class="globo-caja rv" style="--d:150ms">
+        <canvas id="globo" width="900" height="900" role="img"
+                aria-label="Globo con los países donde hay casos de éxito"></canvas>
+        <div class="globo-tip" id="globoTip"></div>
+      </div>
+      <div class="rv" style="--d:210ms" id="ranking"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 9 · Los dos programas ══════════════════════════════════════ -->
+<section class="seccion aire" id="programas" style="background:var(--marfil-2)">
+  <div class="contenedor">
+    <div style="max-width:760px">
+      <p class="eyebrow rv">Dos caminos</p>
+      <h2 class="titular rv" style="--d:70ms">Elige el nivel
+        <em class="alma">que te toca ahora.</em></h2>
+    </div>
+
+    <div class="prog-rej">
+      <article class="prog prog--100k rv" style="--d:70ms">
+        <svg class="prog-geo" viewBox="0 0 200 200" fill="none" stroke="#4A3A14"
+             stroke-width="1" aria-hidden="true">
+          <circle cx="100" cy="100" r="40"/><circle cx="100" cy="60" r="40"/>
+          <circle cx="134.6" cy="80" r="40"/><circle cx="134.6" cy="120" r="40"/>
+          <circle cx="100" cy="140" r="40"/><circle cx="65.4" cy="120" r="40"/>
+          <circle cx="65.4" cy="80" r="40"/>
+        </svg>
+        <p class="prog-n">Programa insignia</p>
+        <h3>Aceleradora 100K™</h3>
+        <p>Escala tu negocio de coaching y formación a <b>6 cifras anuales</b> con programas de
+          alto valor y un sistema automático de ventas.</p>
+        <ul class="prog-lista">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 13l4.5 4.5L19 7"/></svg>Oferta premium y precio que sostiene el margen</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 13l4.5 4.5L19 7"/></svg>Contenido y anuncios que traen conversaciones</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 13l4.5 4.5L19 7"/></svg>Estructura de cierre sin presionar ni rogar</li>
+        </ul>
+        <div class="prog-pie">
+          <a class="btn btn-pill btn-lg"
+             style="background:#2E2408;border-color:#2E2408;color:var(--crema)"
+             href="https://master.edumeglobal.com/f/vsl/demo-aceleradora/">Saber más</a>
+        </div>
+      </article>
+
+      <article class="prog prog--ob rv" style="--d:150ms">
+        <svg class="prog-geo" viewBox="0 0 200 200" fill="none" stroke="#F5E2B8"
+             stroke-width="1" aria-hidden="true">
+          <circle cx="100" cy="100" r="40"/><circle cx="100" cy="60" r="40"/>
+          <circle cx="134.6" cy="80" r="40"/><circle cx="134.6" cy="120" r="40"/>
+          <circle cx="100" cy="140" r="40"/><circle cx="65.4" cy="120" r="40"/>
+          <circle cx="65.4" cy="80" r="40"/>
+        </svg>
+        <p class="prog-n">Mastermind</p>
+        <h3>One Billion Mastermind</h3>
+        <p>Escala a <b>7 cifras anuales</b> con sistemas, procesos y un equipo de alto rendimiento
+          que libere tu tiempo.</p>
+        <ul class="prog-lista">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 13l4.5 4.5L19 7"/></svg>Estructura de equipo y delegación real</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 13l4.5 4.5L19 7"/></svg>Procesos documentados que no dependen de ti</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 13l4.5 4.5L19 7"/></svg>Mesa de pares con negocios de tu tamaño</li>
+        </ul>
+        <div class="prog-pie">
+          <a class="btn btn-pill btn-lg btn-crema"
+             href="https://www.edumeglobal.com/onebillion">Saber más</a>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 10 · Fundador ══════════════════════════════════════════════ -->
+<section class="seccion fund aire" id="fundador">
+  <div class="contenedor fund-rej">
+    <div class="fund-foto rv">
+      <img data-res="foto-marcelo" data-res-tipo="imagen"
+           data-res-label="Retrato de Marcelo"
+           data-res-nota="El recorte actual de Kajabi. Puedes subir uno nuevo."
+           src="https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production/file-uploads/themes/2153372673/settings_images/fb1d67e-bbbd-fe55-13-56da25002_Carruseles_MA_1_.png"
+           alt="Marcelo Andrés, fundador de Edume Global">
+    </div>
+
+    <div class="rv" style="--d:110ms">
+      <p class="eyebrow">Quién está detrás</p>
+      <h2 class="titular">No te lo cuenta <em class="alma">un teórico.</em></h2>
+      <p class="bajada" style="margin-top:18px">Marcelo Andrés es ingeniero en Negocios
+        Internacionales y egresado de Psicología, con un máster en Liderazgo Directivo y
+        formación como Coach Profesional. Fundó Edume con un objetivo: ayudar a un millón de
+        personas y construir una comunidad global de emprendedores conscientes.</p>
+      <p class="fund-firma">Entiendo los registros akáshicos, las constelaciones y las heridas
+        de tu cliente. Y entiendo un CRM. Ese cruce es todo el negocio.</p>
+
+      <div class="fund-cifras">
+        <div class="cifra"><b>$<span data-count="65">0</span>K</b><span>Al mes de cash collect en su propio negocio</span></div>
+        <div class="cifra"><b><span data-count="15">0</span></b><span>Personas en el equipo, cada día</span></div>
+        <div class="cifra"><b><span data-count="1500">0</span></b><span>Personas en sus eventos presenciales</span></div>
+      </div>
+
+      <div style="margin-top:34px">
+        <a class="btn btn-pill btn-lg btn-violeta" href="https://www.marceloandres.com/">Conoce a Marcelo</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 11 · Cierre ════════════════════════════════════════════════ -->
+<section class="seccion cierre aire" id="agenda" data-tono="oscuro">
+  <svg class="cierre-geo" viewBox="0 0 500 500" fill="none" stroke="currentColor" aria-hidden="true">
+    <g class="orb-geo gira" stroke="currentColor" stroke-width=".8">
+      <circle cx="250" cy="250" r="70"/><circle cx="250" cy="180" r="70"/>
+      <circle cx="310.6" cy="215" r="70"/><circle cx="310.6" cy="285" r="70"/>
+      <circle cx="250" cy="320" r="70"/><circle cx="189.4" cy="285" r="70"/>
+      <circle cx="189.4" cy="215" r="70"/>
+    </g>
+    <circle cx="250" cy="250" r="160" stroke-width=".8" opacity=".5"/>
+  </svg>
+  <div class="contenedor cierre-in">
+    <p class="eyebrow centro rv">Antes de agendar</p>
+    <h2 class="titular rv" style="--d:70ms">Trabajo con pocos.
+      <em class="alma">Sin vueltas.</em></h2>
+    <p class="bajada rv" style="--d:140ms">Cuarenta y cinco minutos, sin presentación comercial:
+      miramos tu oferta, tus números y si el sistema encaja contigo. Si no encaja, te lo decimos
+      en la misma llamada.</p>
+    <div class="hero-acc rv" style="--d:210ms">
+      <a class="btn btn-pill btn-lg btn-crema"
+         href="https://master.edumeglobal.com/f/vsl/demo-aceleradora/">Agenda tu sesión</a>
+    </div>
+    <p class="hero-nota rv" style="--d:260ms">Solo si ya facturas +$1.000 USD al mes</p>
+  </div>
+</section>
+
+<!-- ═══ Pie ════════════════════════════════════════════════════════ -->
+<footer class="pie">
+  <div class="contenedor pie-in">
+    <a class="pie-marca" href="#top" aria-label="Edume Global · Inicio">
+      <img data-res="logo-pie" data-res-tipo="imagen"
+           data-res-label="Logo del pie" data-res-nota="Cuadrado, 132×132."
+           src="https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production/file-uploads/themes/2149048594/settings_images/8133d80-1ccc-c7ea-51b7-83afa467a6e3_Disen_o_sin_ti_tulo_9_.png"
+           alt="Edume Global" width="50" height="50" loading="lazy">
+    </a>
+    <div class="pie-links">
+      <a href="https://www.edumeglobal.com/terminosycondiciones">Términos y Condiciones</a>
+      <a href="https://www.edumeglobal.com/politicadeprivacidad">Política de Privacidad</a>
+      <a href="https://www.edumeglobal.com/garantiadesatisfaccion">Garantía de Satisfacción</a>
+    </div>
+    <div class="pie-der">
+      <div class="pie-soc">
+        <a href="https://www.facebook.com/edumeglobal/" aria-label="Facebook" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 8.5V6.9c0-.7.2-1.1 1.2-1.1h1.5V3.1c-.3 0-1.2-.1-2.2-.1-2.2 0-3.6 1.3-3.6 3.7v1.8H9v3h2.4V21h3V11.5h2.4l.4-3z"/></svg>
+        </a>
+        <a href="https://www.instagram.com/edumeglobal/" aria-label="Instagram" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.2c3.2 0 3.6 0 4.9.1 1.2.1 1.8.3 2.2.4.6.2 1 .5 1.4.9.4.4.7.8.9 1.4.2.4.4 1 .4 2.2.1 1.3.1 1.7.1 4.9s0 3.6-.1 4.9c-.1 1.2-.3 1.8-.4 2.2-.2.6-.5 1-.9 1.4-.4.4-.8.7-1.4.9-.4.2-1 .4-2.2.4-1.3.1-1.7.1-4.9.1s-3.6 0-4.9-.1c-1.2-.1-1.8-.3-2.2-.4-.6-.2-1-.5-1.4-.9-.4-.4-.7-.8-.9-1.4-.2-.4-.4-1-.4-2.2C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.9c.1-1.2.3-1.8.4-2.2.2-.6.5-1 .9-1.4.4-.4.8-.7 1.4-.9.4-.2 1-.4 2.2-.4 1.3-.1 1.7-.1 4.8-.1zm0 6.8a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm0-1.8a4.8 4.8 0 1 1 0 9.6 4.8 4.8 0 0 1 0-9.6zm6.1-.2a1.1 1.1 0 1 1-2.2 0 1.1 1.1 0 0 1 2.2 0z"/></svg>
+        </a>
+        <a href="https://ec.linkedin.com/company/edume-global" aria-label="LinkedIn" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.9 21H3.6V9.2h3.3V21zM5.2 7.8A1.9 1.9 0 1 1 5.2 4a1.9 1.9 0 0 1 0 3.8zM21 21h-3.3v-5.7c0-1.4 0-3.1-1.9-3.1s-2.2 1.5-2.2 3v5.8H10.3V9.2h3.1v1.6h.1c.4-.8 1.5-1.7 3.1-1.7 3.3 0 3.9 2.2 3.9 5V21z"/></svg>
+        </a>
+      </div>
+      <div class="pie-cop">© 2026 · Marcelo Andrés International ·</div>
+    </div>
+  </div>
+</footer>
+
+</div>
+
+<script>
+(() => {
+"use strict";
+const $  = (s,c=document) => c.querySelector(s);
+const $$ = (s,c=document) => [...c.querySelectorAll(s)];
+const RM = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const esc = s => String(s).replace(/[&<>"]/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]));
+
+/* El estudio exporta clonando el DOM vivo: si el HTML ya trae lo que este
+   script genera, no se vuelve a generar y nada se duplica al pegarlo. */
+const pon = (sel, html) => { const n = $(sel); if(n && !n.children.length) n.innerHTML = html; };
+
+/* ── Red de seguridad de visibilidad ────────────────────────────────
+   Algunos editores y previsualizadores incrustan la página en un marco
+   donde el navegador nunca informa de qué está a la vista. Si a 1,3 s
+   nadie ha informado, se muestra todo de golpe: mejor sin animación de
+   entrada que una página en blanco. */
+const alVer = (() => {
+  const pendientes = [];
+  let vivo = false, rendido = false;
+  const io = "IntersectionObserver" in window ? new IntersectionObserver((es,o) => {
+    es.forEach(e => {
+      if(!e.isIntersecting) return;
+      vivo = true; o.unobserve(e.target);
+      if(e.target.__alVer){ e.target.__alVer(); e.target.__alVer = null; }
+    });
+  }, {threshold:.2}) : null;
+
+  setTimeout(() => {
+    if(vivo || rendido) return;
+    rendido = true;
+    pendientes.forEach(el => { if(el.__alVer){ el.__alVer(); el.__alVer = null; } });
+    $$(".rv").forEach(e => e.classList.add("in"));
+    $$("[data-count]").forEach(e => {
+      if(e.textContent.trim() === "0") e.textContent = (+e.dataset.count).toLocaleString("es-ES");
+    });
+  }, 1300);
+
+  return (el, fn) => {
+    if(!el) return;
+    el.__alVer = fn; pendientes.push(el);
+    if(io) io.observe(el); else fn();
+  };
+})();
+
+/* ═══ DATOS ══════════════════════════════════════════════════════════
+   Todo real, tomado de tu propio funnel. Las capturas de banco van
+   vacías a propósito: se cargan desde «Ver recursos».
+   ══════════════════════════════════════════════════════════════════ */
+
+const BASE = "https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production/file-uploads/themes/2153372673/settings_images/";
+
+const LOGOS = [
+  ["metropolitan","Metropolitan Touring", BASE+"41340f-812-6ba-3b73-8c868cc288aa_b6Is6Z4qSufgNzgDmDx0_Metropolitan-Touring_logo_gris.webp"],
+  ["consorcio","Consorcio Pichincha",     BASE+"f8f6a1b-bd55-d77-ebb8-ff7a6f8a42_5d02170e-9878-4094-a7da-f354969da085.webp"],
+  ["difare","Difare",                     BASE+"b048e8e-56c7-67d-282d-38ce22a05db5_iFNynDBpQe6QzVAuh7ER_3_Difare_Grupo_gris.webp"],
+  ["mutualista","Mutualista Pichincha",   BASE+"f76482b-deb-a67a-e101-7a2d5a8145c_P97QPICDRBazT0zpk0rr_MP_gris.webp"],
+  ["usfq","Universidad San Francisco",    BASE+"17f1cf0-e1e2-a1af-788-befb8ee0b188_yaZyrG6S5q82QNimoxp8_1_uni.webp"],
+];
+
+const CUENTAS = [
+  ["numerologia_delalma","Lissete Sánchez","Numerología","209 mil"],
+  ["jimefrontera","Jime Frontera","Terapia RTT","417 mil"],
+  ["jeanmendezingles","Jean Méndez","Inglés para perfiles tech","116 mil"],
+  ["fabimersan","Fabiana Mersan","Marca personal","68,8 mil"],
+  ["omarramirezcortazar","Omar Ramírez","Salud mental","62,5 mil"],
+  ["rof1t","Rodrigo Marabolí","Fitness para empresarios","50,5 mil"],
+  ["buddhitanz_yogagdl","Carmen Castillo","Yoga ayurvédico","38,6 mil"],
+  ["ignacio_capocasale","Ignacio Capocasale","Mentoría de alto impacto","34,7 mil"],
+  ["alexreyesortiz","Alex Reyes-Ortiz","Rediseño estratégico","14,2 mil"],
+  ["hectorantillon.hipnosis","Héctor Antillón","Hipnosis","9.099"],
+  ["yosoykristel","Kristel RIV","Negocio y ventas","8.620"],
+  ["adrian.ma.in","Adrián Main","Coaching con caballos","8.313"],
+  ["araguerreroc","Ara Guerrero","Mentora de psicólogas","7.790"],
+  ["ynesbrigitte","Ynes Brigitte","Coaching transformacional","7.582"],
+  ["paolasaldanac","Paola Saldaña","Divorcio y relaciones","5.620"],
+  ["robertacarriles","Roberta Carriles","Diseño humano","5.228"],
+  ["mariofinanciero","Mario Magaña","Consultoría empresarial","5.050"],
+  ["soyevelynsalazar","Evelyn Salazar","Mentora de escritoras","4.337"],
+  ["jordiblancom","Jordi Blanco","Alto rendimiento","4.258"],
+  ["rainier_hidalgo","Rainier Hidalgo","Mentor de líderes","879"],
+];
+
+/* Las caras. Los archivos vienen embebidos en window.FOTOS_EDUME, que
+   genera fotos.py: así la página viaja entera y no depende de rutas.
+   [clave, nombre, nicho, cuenta de Instagram] */
+const FOTOS = [
+  ["liss","Lissete Sánchez","Numerología","numerologia_delalma"],
+  ["jime","Jime Frontera","Terapia RTT","jimefrontera"],
+  ["ignacio","Ignacio Capocasale","Mentoría de alto impacto","ignacio_capocasale"],
+  ["omar","Omar Ramírez","Salud mental","omarramirezcortazar"],
+  ["carmen","Carmen Castillo","Yoga ayurvédico","buddhitanz_yogagdl"],
+  ["alex","Alex Reyes-Ortiz","Rediseño estratégico","alexreyesortiz"],
+  ["hector","Héctor Antillón","Hipnosis","hectorantillon.hipnosis"],
+  ["kristel","Kristel RIV","Negocio y ventas","yosoykristel"],
+  ["adrian","Adrián Main","Coaching con caballos","adrian.ma.in"],
+  ["ara","Ara Guerrero","Mentora de psicólogas","araguerreroc"],
+  ["ynes","Ynes Brigitte","Coaching transformacional","ynesbrigitte"],
+  ["roberta","Roberta Carriles","Diseño humano","robertacarriles"],
+  ["mario","Mario Magaña","Consultoría empresarial","mariofinanciero"],
+  ["evelyn","Evelyn Salazar","Mentora de escritoras","soyevelynsalazar"],
+  ["jordi","Jordi Blanco","Alto rendimiento","jordiblancom"],
+];
+const CARA = window.FOTOS_EDUME || {};
+/* Cuenta de Instagram → cara, para las tarjetas de la prueba. */
+const CARA_DE = Object.fromEntries(FOTOS.map(([k,,,u]) => [u, CARA[k]]).filter(p => p[1]));
+
+const PAISES = [
+  ["México",29,23,-102],["Colombia",28,4,-73],["Argentina",24,-34,-64],["España",19,40,-3],
+  ["Chile",17,-33,-71],["Perú",14,-10,-76],["Ecuador",13,-1,-78],["Estados Unidos",12,38,-97],
+  ["Venezuela",10,8,-66],["Brasil",9,-14,-51],["Uruguay",7,-33,-56],["Guatemala",6,15,-90],
+  ["Costa Rica",6,10,-84],["R. Dominicana",5,19,-70],["Panamá",5,9,-80],["Bolivia",4,-17,-64],
+  ["Paraguay",4,-23,-58],["Puerto Rico",3,18,-66],["El Salvador",3,14,-89],["Canadá",2,56,-106],
+];
+
+/* ═══ Cabecera ═════════════════════════════════════════════════════ */
+(() => {
+  const nav = $("#nav"); if(!nav) return;
+  /* Qué sección hay justo debajo de la cabecera: de eso depende su tono. */
+  const zonas = $$("section, footer");
+  const marcar = () => {
+    nav.classList.toggle("solida", (window.scrollY || 0) > 30);
+    const y = nav.getBoundingClientRect().height * .55;
+    const bajo = zonas.find(s => { const r = s.getBoundingClientRect(); return r.top <= y && r.bottom > y; });
+    nav.classList.toggle("oscura", bajo ? bajo.dataset.tono === "oscuro" : false);
+  };
+  addEventListener("scroll", marcar, {passive:true});
+  addEventListener("resize", marcar, {passive:true});
+  marcar();
+
+  const btn = $("#navBtn"), links = $("#navLinks");
+  if(btn && links){
+    const cerrar = () => { links.removeAttribute("data-abierto"); btn.setAttribute("aria-expanded","false"); };
+    btn.addEventListener("click", () =>
+      btn.setAttribute("aria-expanded", String(links.toggleAttribute("data-abierto"))));
+    $$("a", links).forEach(a => a.addEventListener("click", cerrar));
+    addEventListener("keydown", e => { if(e.key === "Escape") cerrar(); });
+  }
+})();
+
+/* ═══ Cinta de logos ═══════════════════════════════════════════════
+   Una sola copia: el kit duplica la pista de cada marquesina para que
+   el bucle no tenga costura. Duplicarla aquí la dejaría al cuádruple. */
+pon("#cintaLogos", LOGOS.map(([id,nom,url]) => `
+  <span class="logo-c">
+    <img data-res="cliente-${esc(id)}" data-res-tipo="imagen"
+      data-res-label="Logo · ${esc(nom)}" data-res-nota="Versión gris, fondo transparente."
+      src="${esc(url)}" alt="${esc(nom)}" loading="lazy">
+  </span>`).join(""));
+
+/* ═══ Muro de capturas · huecos a la espera de tus imágenes ════════ */
+const capturas = (n, desde) => Array.from({length:n}, (_,i) => {
+  const num = desde + i;
+  return `<div class="cap ph" data-quitar-si-vacio
+    data-res="captura-${num}" data-res-tipo="imagen"
+    data-res-label="Captura ${num}"
+    data-res-nota="Notificación de venta, transferencia o panel de facturación. Tal cual llegó."
+    ><span>Captura<br>${num}</span></div>`;
+}).join("");
+pon("#capA", capturas(6, 1));
+pon("#capB", capturas(6, 7));
+
+/* ═══ Collage cara a cara ══════════════════════════════════════════ */
+pon("#collageT", FOTOS.map(([id,nom,nicho,user]) => `
+  <figure class="foto-c" style="margin:0">
+    <img data-res="foto-${esc(id)}" data-res-tipo="imagen"
+      data-res-label="Foto · ${esc(nom)}"
+      data-res-nota="Ya viene embebida. Súbela a GoHighLevel y pega la URL si prefieres aligerar la página."
+      src="${CARA[id] || ""}" alt="Marcelo con ${esc(nom)}" loading="lazy"
+      onerror="this.style.display='none'">
+    <figcaption>${esc(nom)}<span>${esc(nicho)}</span></figcaption>
+  </figure>`).join(""));
+
+/* ═══ Cuentas reales ═══════════════════════════════════════════════ */
+pon("#cuentas", CUENTAS.map(([user,nom,nicho,seg]) => `
+  <a class="cta-c" href="https://instagram.com/${esc(user)}" target="_blank" rel="noopener">
+    ${CARA_DE[user]
+      ? `<img class="cta-foto" src="${CARA_DE[user]}" alt="" loading="lazy">`
+      : `<i aria-hidden="true">${esc(nom.trim()[0])}</i>`}
+    <span class="cta-b">
+      <span class="cta-n">${esc(nom)}</span>
+      <span class="cta-m">@${esc(user)} · ${esc(nicho)}</span>
+    </span>
+    <span class="cta-f">${esc(seg)}</span>
+  </a>`).join(""));
+
+/* ═══ Ranking de países ════════════════════════════════════════════ */
+const tope = Math.max(...PAISES.map(p => p[1]));
+const totalCasos = PAISES.reduce((a,p) => a + p[1], 0);
+
+pon("#ranking", PAISES.slice(0,8).map(([n,c],i) => `
+  <div class="rank-i" data-pais="${esc(n)}" style="--w:${Math.round(c/tope*100)}%">
+    <span class="rank-n">${String(i+1).padStart(2,"0")}</span>
+    <span class="rank-b"><b>${esc(n)}</b><span class="rank-barra"><i></i></span></span>
+    <span class="rank-c">${c}</span>
+  </div>`).join("") +
+  `<p style="margin:18px 0 0;font-size:13px;line-height:1.6;opacity:.6">
+     y ${PAISES.length-8} países más · <b style="color:var(--crema)">${totalCasos} casos</b> en total</p>`);
+
+$$(".rank-i").forEach(el => alVer(el, () => el.classList.add("in")));
+
+/* ═══ El globo ═════════════════════════════════════════════════════ */
+(() => {
+  const c = $("#globo"); if(!c) return;
+  const ctx = c.getContext("2d");
+  const W = c.width, H = c.height, R = W*.40, CX = W/2, CY = H/2, OFF = 3.4;
+  const N = 1100, pts = [], gr = Math.PI*(3-Math.sqrt(5));
+  for(let i=0;i<N;i++){
+    const y = 1-(i/(N-1))*2, r = Math.sqrt(1-y*y), th = gr*i;
+    pts.push([Math.cos(th)*r, y, Math.sin(th)*r]);
+  }
+  const marcas = PAISES.map(([n,casos,lat,lon]) => {
+    const p = lat*Math.PI/180, l = lon*Math.PI/180;
+    return {n, casos, v:[Math.cos(p)*Math.cos(l), Math.sin(p), Math.cos(p)*Math.sin(l)], x:0, y:0, z:-1};
+  });
+  const girar = (v,a) => [v[0]*Math.cos(a)+v[2]*Math.sin(a), v[1], -v[0]*Math.sin(a)+v[2]*Math.cos(a)];
+  let t0 = null, pausa = false, ang = OFF;
+  const tip = $("#globoTip");
+
+  const cuadro = t => {
+    if(t0 === null) t0 = t;
+    if(!pausa && !RM) ang = ((t-t0)/44000)*Math.PI*2 + OFF;
+    ctx.clearRect(0,0,W,H);
+
+    const g = ctx.createRadialGradient(CX,CY,R*.5,CX,CY,R*1.35);
+    g.addColorStop(0,"rgba(127,27,233,.22)"); g.addColorStop(1,"rgba(127,27,233,0)");
+    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(CX,CY,R*1.35,0,6.283); ctx.fill();
+
+    for(const p of pts){
+      const [x,y,z] = girar(p,ang);
+      if(z < -.05) continue;
+      const d = (z+1)/2;
+      ctx.globalAlpha = .08+d*.34; ctx.fillStyle = "#FBF8F2";
+      ctx.beginPath(); ctx.arc(CX+x*R, CY-y*R, 1.1+d*1.9, 0, 6.283); ctx.fill();
+    }
+
+    const pulso = RM ? .6 : (Math.sin(t/700)*.5+.5);
+    for(const m of marcas){
+      const [x,y,z] = girar(m.v,ang);
+      m.x = CX+x*R; m.y = CY-y*R; m.z = z;
+      if(z < 0) continue;
+      const d = (z+1)/2, tam = 5+(m.casos/tope)*11;
+      ctx.globalAlpha = .20*(1-pulso)*d; ctx.fillStyle = "#F5E2B8";
+      ctx.beginPath(); ctx.arc(m.x,m.y,tam*2.3+pulso*20,0,6.283); ctx.fill();
+      ctx.globalAlpha = .55+d*.45;
+      ctx.beginPath(); ctx.arc(m.x,m.y,tam,0,6.283); ctx.fill();
+      if(m.casos >= 12){
+        ctx.globalAlpha = .92*d; ctx.fillStyle = "#2A1A05";
+        ctx.font = "700 " + Math.round(tam*1.02) + "px Montserrat, sans-serif";
+        ctx.textAlign = "center"; ctx.textBaseline = "middle";
+        ctx.fillText(m.casos, m.x, m.y+1); ctx.fillStyle = "#F5E2B8";
+      }
+    }
+    ctx.globalAlpha = 1;
+    ctx.strokeStyle = "rgba(245,226,184,.26)"; ctx.lineWidth = 2.4;
+    ctx.beginPath(); ctx.arc(CX,CY,R,0,6.283); ctx.stroke();
+    if(!RM) requestAnimationFrame(cuadro);
+  };
+
+  alVer(c, () => cuadro(performance.now()));
+
+  c.addEventListener("pointermove", e => {
+    const r = c.getBoundingClientRect();
+    const px = (e.clientX-r.left)*(W/r.width), py = (e.clientY-r.top)*(H/r.height);
+    let cerca = null, mejor = 46*46;
+    for(const m of marcas){
+      if(m.z < 0) continue;
+      const d = (m.x-px)**2 + (m.y-py)**2;
+      if(d < mejor){ mejor = d; cerca = m; }
+    }
+    pausa = !!cerca;
+    $$(".rank-i").forEach(el => el.style.borderBottomColor =
+      (cerca && el.dataset.pais === cerca.n) ? "var(--crema)" : "");
+    if(cerca){
+      tip.textContent = cerca.n + " · " + cerca.casos + " casos";
+      tip.style.left = (cerca.x/W*r.width)+"px";
+      tip.style.top  = (cerca.y/H*r.height)+"px";
+      tip.classList.add("ver");
+    } else tip.classList.remove("ver");
+  });
+  c.addEventListener("pointerleave", () => {
+    pausa = false; tip.classList.remove("ver");
+    $$(".rank-i").forEach(el => el.style.borderBottomColor = "");
+  });
+})();
+
+/* El kit observa .rv y [data-count]: lo que acaba de nacer entra en
+   escena igual que el resto de la página. */
+window.KIT && window.KIT.refrescar && window.KIT.refrescar();
+})();
+</script>

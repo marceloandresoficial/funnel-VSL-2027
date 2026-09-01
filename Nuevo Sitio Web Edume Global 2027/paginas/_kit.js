@@ -31,6 +31,20 @@ if(nav && !document.documentElement.hasAttribute("data-sin-kit")){
   addEventListener("scroll", onScroll, {passive:true}); onScroll();
 }
 
+/* ── Menú móvil ──────────────────────────────────────────────────── */
+/* La cabecera va superpuesta sobre la foto: en móvil el menú se despliega
+   por debajo y se cierra solo al elegir un enlace o al pulsar Esc. */
+const menuBtn = $(".menu-btn"), menu = $(".menu");
+if(menuBtn && menu && !SIN_KIT){
+  const cerrar = () => { menu.removeAttribute("data-abierto"); menuBtn.setAttribute("aria-expanded","false"); };
+  menuBtn.addEventListener("click", () => {
+    const abierto = menu.toggleAttribute("data-abierto");
+    menuBtn.setAttribute("aria-expanded", String(abierto));
+  });
+  $$("a", menu).forEach(a => a.addEventListener("click", cerrar));
+  addEventListener("keydown", e => { if(e.key === "Escape") cerrar(); });
+}
+
 /* ── Cuenta regresiva ────────────────────────────────────────────── */
 /* data-res-tipo="contador": si hay fecha guardada cuenta hacia ella;
    si no, usa un ciclo perpetuo de N días (data-ciclo).                */
@@ -58,17 +72,13 @@ const countIO = new IntersectionObserver((es,o) => {
     if(!e.isIntersecting) return;
     o.unobserve(e.target);
     const el = e.target, to = +el.dataset.count, sfx = el.dataset.suffix || "";
-    const dec = +(el.dataset.dec || 0);            /* decimales: 1.5M, 4.8× … */
     /* 66964 se lee mal; 66.964 se lee. Salvo que se pida crudo (años, códigos). */
-    const cifra = v => el.hasAttribute("data-crudo")
-      ? v.toFixed(dec)
-      : v.toLocaleString("es-ES", {minimumFractionDigits:dec, maximumFractionDigits:dec});
+    const cifra = v => el.hasAttribute("data-crudo") ? String(v) : v.toLocaleString("es-ES");
     if(RM){ el.textContent = cifra(to) + sfx; return; }
     const t0 = performance.now(), dur = 1500;
     const step = t => {
       const p = Math.min(1,(t-t0)/dur);
-      const v = to * (1 - Math.pow(1-p,3));
-      el.textContent = cifra(dec ? +v.toFixed(dec) : Math.round(v)) + (p===1 ? sfx : "");
+      el.textContent = cifra(Math.round(to*(1-Math.pow(1-p,3)))) + (p===1 ? sfx : "");
       if(p<1) requestAnimationFrame(step);
     };
     requestAnimationFrame(step);
