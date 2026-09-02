@@ -110,6 +110,9 @@ body.rail-oculto{--rail-l:0px}
 .cod-aviso b{font-size:.72rem;font-weight:700;color:var(--warn)}
 .cod-aviso span{font-size:.7rem;line-height:1.45;color:var(--ui-tx-2)}
 .cod-aviso span b{font-weight:700;color:var(--ui-tx)}
+/* Perder contenido al copiar no es un aviso más: se pinta en rojo. */
+.cod-aviso-mal{background:#E0565614;border-color:#E0565655}
+.cod-aviso-mal b:first-child{color:#F08A8A}
 
 /* ── Riel izquierdo: el funnel ───────────────────────────────────── */
 
@@ -1987,6 +1990,15 @@ addEventListener("message", e => {
 
 /* ═══ CÓDIGO ════════════════════════════════════════════════════════ */
 
+/* Qué cuenta como contenido dentro de una galería. Si una pieza nueva no está
+   aquí, el export cree que la galería está vacía y la borra entera —así
+   desapareció la franja de transformaciones del código—. Toda tarjeta que se
+   liste en una galería tiene que figurar en CONTENIDO. */
+const CONTENIDO = ".cuenta, .portada, .tesela, .captura, .tf, .vida";
+/* Las que son solo un hueco de imagen: sin foto, no hay nada que enseñar. */
+const SOLO_FOTO = ".cuenta, .portada, .tesela, .captura, .vida";
+const GALERIAS  = ".mq, .portadas, .capturas, .muro, .tira";
+
 function htmlFinal(slug = ACT){
   const d = marco.contentDocument;
   if(slug !== ACT || !d) return documentoDe(slug);
@@ -2005,13 +2017,16 @@ function htmlFinal(slug = ACT){
 
   /* Los huecos sin imagen no se publican: el visitante ve solo lo que hay.
      En el estudio siguen visibles para que puedas rellenarlos. */
-  clon.querySelectorAll(".cuenta, .portada, .tesela, .captura").forEach(t => {
+  /* Una pieza que es solo un hueco de foto no se publica vacía. Ojo: aquí NO
+     entra .tf —la tarjeta de la franja lleva nombre, cifra y plazo, y sin foto
+     enseña la inicial—; borrarla por no tener retrato sería tirar el testimonio. */
+  clon.querySelectorAll(SOLO_FOTO).forEach(t => {
     const slot = t.querySelector("[data-res]");
     if(slot && !slot.classList.contains("cargada")) t.remove();
   });
   /* Si una galería se quedó sin nada, se queda vacía y no rota. */
-  clon.querySelectorAll(".mq, .portadas, .capturas, .muro").forEach(g => {
-    if(!g.querySelector(".cuenta, .portada, .tesela, .captura")) g.remove();
+  clon.querySelectorAll(GALERIAS).forEach(g => {
+    if(!g.querySelector(CONTENIDO)) g.remove();
   });
   /* Un hueco opcional sin imagen sería un recuadro gris para el visitante. */
   clon.querySelectorAll("[data-res][data-res-opcional]:not(.cargada)").forEach(e => e.remove());
@@ -2230,6 +2245,41 @@ function pintarEstructura(){
   }));
 }
 
+/* ── Auditoría del export ───────────────────────────────────────────
+   El código no es el archivo fuente: es el lienzo vivo, ya limpio. Esa
+   limpieza borra huecos sin foto a propósito, pero una regla mal afinada
+   puede llevarse contenido real por delante —le pasó a la franja de
+   transformaciones, 38 tarjetas que desaparecían del código sin avisar—.
+   Así que después de cada Guardar se cuenta lo que hay en pantalla, se
+   descuenta lo que debe caerse, y si el resultado no cuadra se dice. */
+function auditarExport(html){
+  const d = marco.contentDocument;
+  if(!d) return [];
+  const ex = new DOMParser().parseFromString(html, "text/html");
+  const cuenta = (doc, sel) => doc.querySelectorAll(sel).length;
+  const partes = [
+    ["tarjetas de la franja",  ".tf",      false],
+    ["cuentas de Instagram",   ".cuenta",  true ],
+    ["capturas",               ".captura", true ],
+    ["portadas",               ".portada", true ],
+    ["cifras de facturación",  ".tesela",  true ],
+    ["fotos de vida",          ".vida",    true ],
+    ["secciones",              "section",  false],
+  ];
+  const fallos = [];
+  for(const [nombre, sel, soloFoto] of partes){
+    const hay = cuenta(d, sel);
+    if(!hay) continue;
+    /* Lo que es solo un hueco de foto sí puede caerse: sin imagen no se publica. */
+    const debidas = soloFoto
+      ? [...d.querySelectorAll(sel)].filter(e => e.querySelector("[data-res].cargada")).length
+      : hay;
+    const salen = cuenta(ex, sel);
+    if(salen < debidas) fallos.push({nombre, salen, debidas, sel});
+  }
+  return fallos;
+}
+
 function pintarCodigo(){
   const html = htmlFinal();
   const kb = Math.round(new Blob([html]).size / 1024);
@@ -2237,12 +2287,20 @@ function pintarCodigo(){
     ? Math.round(new Blob(["<!doctype html>" + marco.contentDocument.documentElement.outerHTML]).size / 1024)
     : kb;
   const recortado = html.length > 200000;
+  const fallos = auditarExport(html);
   const aviso1 = $("#codAviso");
-  aviso1.style.display = recortado ? "flex" : "none";
-  aviso1.innerHTML = recortado
-    ? '<b>Vista recortada</b><span>Se muestran los primeros 200 000 caracteres de '
-      + html.length.toLocaleString("es-ES") + '. Usa <b>Copiar todo</b>: copia el archivo entero.</span>'
-    : "";
+  aviso1.style.display = (recortado || fallos.length) ? "flex" : "none";
+  aviso1.classList.toggle("cod-aviso-mal", fallos.length > 0);
+  aviso1.innerHTML =
+    (fallos.length
+      ? '<b>Falta contenido en el código</b><span>'
+        + fallos.map(f => `${f.salen} de ${f.debidas} ${f.nombre}`).join(" · ")
+        + '. Está en pantalla pero no sale al copiar: avísame y lo arreglo.</span>'
+      : "")
+    + (recortado
+      ? '<b>Vista recortada</b><span>Se muestran los primeros 200 000 caracteres de '
+        + html.length.toLocaleString("es-ES") + '. Usa <b>Copiar todo</b>: copia el archivo entero.</span>'
+      : "");
   $("#codPre").innerHTML = esc(recortado ? html.slice(0,200000) + "\n\n… (aquí acaba la vista · la copia va completa)" : html);
   const pie = $("#panelPie");
   pie.style.display = "flex";

@@ -112,83 +112,37 @@ versionarlo.
 
 ### La VSL, por dentro
 
-Hero a una pantalla (promesa + video + botón) · **franja de transformaciones de clientes justo bajo el botón** · barra fija con sigilo de expansión ·
-**bloque de hitos** (la cifra facturada manda, el resto orbita) · las dos trampas · **diagrama orbital del método** (3 capas, 13 piezas) ·
-circuito de 8 nodos · **cuentas de Instagram en dos filas deslizantes** con tratamiento holográfico ·
-**resultados con cifra en otras dos filas** · **muro de fotos** con foco al pasar el cursor ·
-**riel de capturas** que se desliza con el dedo (quietas, con foco y contador) · gráfico de dos caminos · rueda semanal ·
-mapa mundial interactivo · quién está detrás · filtro sí/no · FAQ · calendario iClosed ·
-lupa para ver cualquier prueba en grande · footer legal.
+Tráfico frío. Se acortó de 17.000 a 11.400 px quitando lo que no cerraba nada:
 
-### La revisión automática
-
-```bash
-python3 revisar.py
+```
+hero          la promesa + el mensaje grande: marca de referente, negocio que se
+              adapta a tu vida, y la era de la confianza — no la de la atención
+franja        transformaciones de clientes, deslizándose
+hitos         la cifra facturada manda, el resto orbita
+el problema   no está roto: está SOBRECARGADO · dos pares con ✕ en lo que ya no
+              funciona: sistema viejo → Circuito de Contenido · piezas sueltas →
+              Arquitectura de Conversión con IA
+la transición lo que NO hacemos, tachado → «imperios de referentes»
+quién está detrás  los hitos, no el discurso
+la reflexión  «¿quién te dijo que tenía que ser difícil?» + tira de fotos de vida
+el circuito   ESPIRAL de tres fases: La Órbita (frío) · El Umbral (cálido) ·
+              El Núcleo (decide y vuelve a la órbita). Cuanto más al centro, más caliente
+la prueba     cuentas de Instagram, solo la captura: sin aro, sin pie y sin marcos
+              capturas sin retoque · mapa de 20 países
+la llamada    qué pasa en los 45 minutos: diagnóstico · estrategia paso a paso ·
+              el programa por dentro. Va justo antes del filtro, no al principio
+el filtro · FAQ · agenda
 ```
 
-Caza en segundos las tres cosas que ya nos rompieron la página **en silencio**:
+Fuera de la página, guardados en `borradores/`: **los tres pilares**, **el gráfico de dos
+caminos** y **el muro de fotos**. Ninguno hacía avanzar la venta a tráfico frío.
 
-1. **Un `#id` que el JS toca y que no existe en el HTML.** Un `null` ahí aborta todo el
-   resto del `<script>` — así se quedaron vacíos los resultados, el muro, la rueda,
-   el gráfico, los pagos y la lupa a la vez.
-2. **Una clase usada en el markup sin una sola regla de CSS.** Así el icono de 24×24 de
-   «pago recibido» se estiró a pantalla completa: un `$` gigante ocupando toda la VSL.
-3. **JS que no compila o CSS con las llaves descuadradas.**
+**Una sola comparativa, no tres.** Tres tarjetas con doce «peros» obligaban a leer;
+una tabla de cinco filas se entiende de un vistazo. El bloque «El enredo contra El
+Circuito» quedó en `borradores/` porque la tabla ya hace ese trabajo.
 
-Pásalo antes de cada `./build.sh`. Devuelve 0 si está limpio.
-
-### Reglas que evitan los fallos que ya nos pasaron
-
-- **Nunca `$("#x").innerHTML = …` directo.** En la VSL se usa `pon(sel, html)` y
-  `txt(sel, texto)`: si el contenedor no existe, no pasa nada. Una excepción suelta ahí
-  se lleva por delante el resto del `<script>` — y eso vació media página sin avisar.
-- **Un adorno que sangra a los lados no puede mover la página.** `_kit.css` lleva
-  `html{overflow-x:clip}` y los bloques con velo o aura recortan lo suyo. `clip`, no
-  `hidden`: no crea contenedor de scroll, así que `position:sticky` sigue vivo.
-- **Cifras siempre con separador.** El contador usa `toLocaleString("es-ES")`.
-  `data-crudo` en el elemento lo desactiva (años, códigos).
-- **Todo componente necesita su CSS.** Sin reglas, un `<svg viewBox="0 0 24 24">` no
-  mide 24 px: se estira a lo que le dé el contenedor. `revisar.py` lo detecta.
-- **Los selectores de tamaño van al hijo directo.** `.hito b` alcanzaba también al `<b>`
-  de dentro del párrafo y lo ponía a 118 px; `.cifra span` hacía lo mismo con el contador.
-  Se escriben `.hito > b` y `.cifra > span`.
-- **Un `id` no se repite**, ni dentro de dos SVG iguales: los degradados se pisan.
-- **Al exportar** se quitan las tarjetas sin imagen, las galerías que quedan vacías,
-  los huecos **opcionales** sin cargar y cualquier `section[data-si-vacio]` sin una sola
-  prueba dentro. El estudio los sigue mostrando; el visitante no.
-
-### La franja de transformaciones
-
-`TRANSFORMACIONES` en `paginas/vsl.html`, junto al resto de datos editables:
-
-```js
-["Alejandro Grajeda","Arquitecto","$5K","$25K","en 90 días"]
-//  nombre           rol          arrancó  llegó  plazo
-```
-
-Si **arrancó** va vacío, la tarjeta muestra solo la cifra alcanzada, sin flecha.
-Hoy hay 3 transformaciones completas y 16 con la cifra de sus mini-portadas.
-Cada cliente tiene un hueco de foto opcional (`cara-<nombre>`); sin foto sale su inicial.
-
-### La BIO: Imperio Holístico™
-
-Sistema visual propio, aislado del Kit (`"kit": false` en su cabecera): obsidiana violeta
-`#08071A`, oro `#D9B45B`, y Cormorant Garamond / Cinzel / Karla. No hereda nada del funnel.
-
-Reglas del brief que el código respeta y conviene no romper:
-
-- **Una sola animación en toda la página**: los catorce cuadraditos del bloque 05 que se
-  ordenan al entrar en pantalla, una vez. `prefers-reduced-motion` los deja ya ordenados.
-- **La barra fija no aparece en el hero**, solo desde el bloque 02: ahí compite con el video,
-  que es lo que hace el trabajo de confianza.
-- **Listas con guion dorado, nunca palomita.** Las palomitas dicen «beneficios»;
-  los guiones dicen «diagnóstico».
-- **Sin contador, sin cupos, sin chat, sin segundo CTA.** Una sola acción en toda la página.
-- Los ocho casos y los seis videos salen de `CASOS` y `VIDEOS`, al principio del `<script>`.
-  La cita de un caso se muestra solo si existe: **nunca se inventa una.**
-
-La versión anterior (la modelada sobre strategycoach.us) está en
-`paginas/borradores/bio-instagram-strategycoach.html`.
+**«No somos una agencia, somos una consultora» salió del hero.** Responde una objeción que
+el visitante frío todavía no se ha hecho; sigue viva donde sí toca, en el filtro y en el FAQ.
 
 ### Falta cargar (5 recursos obligatorios)
 

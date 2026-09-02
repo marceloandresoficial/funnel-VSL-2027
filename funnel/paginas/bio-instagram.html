@@ -299,7 +299,7 @@ h1,h2,h3,h4{font-family:var(--sys);font-weight:800;margin:0;text-wrap:balance;le
 }
 .cifras-note{font-size:.85rem;color:var(--bone-faint);max-width:44ch}
 .cifras-note b{color:var(--bone-mute);font-weight:500}
-.cifras-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:1px;background:var(--line);margin-top:56px;border:1px solid var(--line)}
+.cifras-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(190px,100%),1fr));gap:1px;background:var(--line);margin-top:56px;border:1px solid var(--line)}
 .cifra{background:var(--ink);padding:26px 22px}
 .cifra dt{font-family:var(--data);font-size:.6rem;letter-spacing:.17em;text-transform:uppercase;color:var(--bone-faint);margin:0 0 12px}
 .cifra dd{margin:0;font-family:var(--data);font-weight:700;font-size:clamp(1.4rem,2.6vw,1.85rem);letter-spacing:-.03em;color:var(--gold-hi);font-variant-numeric:tabular-nums}
@@ -319,7 +319,7 @@ h1,h2,h3,h4{font-family:var(--sys);font-weight:800;margin:0;text-wrap:balance;le
 
 /* ---------- Problema ---------- */
 
-.tramp{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:18px;margin-top:56px}
+.tramp{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(270px,100%),1fr));gap:18px;margin-top:56px}
 .tramp-c{
   border:1px solid var(--line);border-radius:18px;padding:30px 26px;background:var(--card);
   position:relative;overflow:hidden;
@@ -360,7 +360,7 @@ h1,h2,h3,h4{font-family:var(--sys);font-weight:800;margin:0;text-wrap:balance;le
 .tl-i p{margin:0;font-size:.95rem;color:var(--bone-mute);line-height:1.6}
 .tl-i p b{color:var(--bone);font-weight:600}
 
-.stats3{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:22px;margin-top:48px;border-top:1px solid var(--line);padding-top:32px}
+.stats3{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(150px,100%),1fr));gap:22px;margin-top:48px;border-top:1px solid var(--line);padding-top:32px}
 .stats3 div strong{display:block;font-family:var(--data);font-weight:700;font-size:clamp(1.6rem,3.4vw,2.2rem);letter-spacing:-.04em;color:var(--gold-hi);font-variant-numeric:tabular-nums}
 .stats3 div span{display:block;font-size:.83rem;color:var(--bone-faint);margin-top:8px;line-height:1.45}
 
@@ -393,14 +393,14 @@ h1,h2,h3,h4{font-family:var(--sys);font-weight:800;margin:0;text-wrap:balance;le
 }
 @media(max-width:620px){.node{width:104px}.node b{font-size:.76rem}.node span{display:none}}
 
-.no3{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px;margin-top:60px}
+.no3{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(230px,100%),1fr));gap:18px;margin-top:60px}
 .no3 div{border-top:1px solid var(--line);padding-top:20px}
 .no3 h4{font-size:1rem;font-weight:700;letter-spacing:-.02em;margin-bottom:8px}
 .no3 p{margin:0;font-size:.9rem;color:var(--bone-faint);line-height:1.55}
 
 /* ---------- Chats de DM ---------- */
 
-.chats{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;margin-top:44px}
+.chats{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:20px;margin-top:44px}
 .chat{border:1px solid var(--line);border-radius:20px;background:var(--card);overflow:hidden;display:flex;flex-direction:column}
 .chat-h{display:flex;align-items:center;gap:11px;padding:14px 18px;border-bottom:1px solid var(--line-soft);background:#0F0D1a}
 .chat-h b{font-size:.86rem;font-weight:700;letter-spacing:-.02em;display:block}
@@ -582,6 +582,25 @@ h1,h2,h3,h4{font-family:var(--sys);font-weight:800;margin:0;text-wrap:balance;le
 
 /* ---------- CTA final ---------- */
 
+/* ── Los «sin»: el deseo se sube quitando, no agregando ──────────── */
+.sines{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(230px,100%),1fr));
+  gap:1px;background:var(--line);border:1px solid var(--line);border-radius:20px;
+  overflow:hidden;margin-top:clamp(30px,4vw,48px)}
+.sin{background:var(--card);padding:clamp(24px,3.4vw,38px)}
+.sin.con{background:linear-gradient(165deg,#1B1626,var(--card))}
+.sin i{display:block;font-family:var(--data);font-size:.6rem;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--gold);font-style:normal;margin-bottom:14px}
+.sin h3{font-size:clamp(1.28rem,2.9vw,1.72rem);font-weight:800;letter-spacing:-.03em;
+  line-height:1.12;margin:0 0 12px}
+.sin p{font-size:.93rem;color:var(--bone-mute);line-height:1.6;margin:0}
+
+.foot-legal{display:flex;flex-wrap:wrap;gap:clamp(11px,2vw,20px);align-items:center}
+.foot-legal a{position:relative;font-size:.8rem;color:var(--bone-faint);text-decoration:none;
+  transition:color .25s var(--ease)}
+.foot-legal a:hover{color:var(--gold-hi)}
+.foot-legal a:not(:last-child)::after{content:"·";position:absolute;
+  right:calc(-1 * clamp(7px,1vw,11px));color:var(--bone-ghost)}
+
 /* El precio, de frente: sin contador y sin cupos, es el argumento */
 .precio{margin:clamp(30px,4vw,46px) auto;padding-block:clamp(22px,3vw,32px);
   border-top:1px solid var(--line-hard);border-bottom:1px solid var(--line-hard);max-width:30ch}
@@ -641,7 +660,7 @@ h1,h2,h3,h4{font-family:var(--sys);font-weight:800;margin:0;text-wrap:balance;le
         <path d="M20 4v32M4 20h32" stroke="#D6A544" stroke-width="1" opacity=".28"/>
         <circle cx="20" cy="20" r="4" fill="#D6A544"/>
       </svg>
-      <span class="brand-txt">Marcelo Proaño<small>Escalling™</small></span>
+      <span class="brand-txt">Marcelo Proaño<small>Imperio Holístico™</small></span>
     </a>
     <div class="nav-links">
       <a href="#metodo">El Método</a>
@@ -650,8 +669,8 @@ h1,h2,h3,h4{font-family:var(--sys);font-weight:800;margin:0;text-wrap:balance;le
       <a href="#sobre">Sobre mí</a>
       <a href="#faq">Preguntas</a>
     </div>
-    <a class="cta" href="https://instagram.com/marceloproano" data-res="ig-principal" data-res-tipo="link" data-res-label="Tu Instagram (@)" data-res-nota="El destino de TODOS los botones. Se usa en 4 lugares de la página." target="_blank" rel="noopener">
-      <span class="lbl">Escríbeme</span> <span class="kw">IMPERIO</span>
+    <a class="cta" href="#aplicar" data-res="cta-agenda" data-res-tipo="link" data-res-label="URL de la agenda / calendario" data-res-nota="El destino de TODOS los botones de la página.">
+      <span class="lbl">Cruzar el</span> <span class="kw">UMBRAL</span>
     </a>
   </div>
 </nav>
@@ -671,31 +690,33 @@ h1,h2,h3,h4{font-family:var(--sys);font-weight:800;margin:0;text-wrap:balance;le
   </div>
 
   <div class="wrap hero-in">
-    <div class="badge">Para mentores, mentoras y terapeutas holísticos que <b>ya venden en línea</b></div>
+    <div class="badge">Para mentores, mentoras y terapeutas holísticos que <b>ya venden en línea</b> — y sienten que se quedaron lentos</div>
 
-    <h1 class="h-display" id="h1">Tienes todas las piezas de tu negocio.
-      <em class="alma">Y ninguna te dice cuál te está faltando.</em></h1>
+    <h1 class="h-display" id="h1">Convierte tu don en un negocio de cinco cifras al mes
+      <em class="alma">que no dependa de tu agenda.</em></h1>
 
     <div class="hero-grid">
       <div>
         <p class="lede">
-          No te falta talento. Te falta <strong class="mark">arquitectura</strong> — y un don
-          sin arquitectura no es humildad: es un alma en silencio.
+          Deja de vivir de lanzamientos, referidos y sesiones sueltas. Empieza a construir
+          <strong class="mark">El Plano™</strong>: la arquitectura que te trae conversaciones
+          calificadas todas las semanas, cierra sin que persigas a nadie y escala sin que
+          trabajes más horas.
         </p>
 
         <div class="hero-act">
-          <a class="cta" href="https://instagram.com/marceloproano" data-res="ig-principal" data-res-tipo="link" data-res-label="Tu Instagram (@)" data-res-nota="El destino de TODOS los botones. Se usa en 4 lugares de la página." target="_blank" rel="noopener">
+          <a class="cta" href="#aplicar" data-res="cta-agenda" data-res-tipo="link" data-res-label="URL de la agenda / calendario" data-res-nota="El destino de TODOS los botones de la página.">
             Ver cómo funciona <span class="kw">→</span>
           </a>
         </div>
-        <p class="hero-note">7 minutos. Marcelo te lo explica él mismo.</p>
+        <p class="hero-note">7 minutos. Te lo explico yo mismo, sin vender nada.</p>
         <p class="hero-note" style="margin-top:14px;padding-top:14px;border-top:1px solid var(--line)">
           Consultoría, no agencia. La responsabilidad de crecer sigue siendo tuya.</p>
 
       </div>
 
       <aside class="vsl">
-        <button class="vsl-btn" id="vslOpen" aria-label="Reproducir: cómo funciona Escalling™"
+        <button class="vsl-btn" id="vslOpen" aria-label="Reproducir: cómo funciona Imperio Holístico™"
                 data-res="vsl-bio" data-res-tipo="video"
                 data-res-label="VSL del hero"
                 data-res-nota="El video largo. YouTube, Vimeo, Wistia o MP4 directo.">
@@ -727,7 +748,9 @@ h1,h2,h3,h4{font-family:var(--sys);font-weight:800;margin:0;text-wrap:balance;le
 <!-- ======================= CIFRAS ======================= -->
 <section class="sect cifras" id="cifras">
   <div class="wrap">
-    <div class="eyebrow rv">Los números</div>
+    <div class="eyebrow rv">Los números, con su unidad</div>
+    <h2 class="h-sect rv" style="--d:60ms;margin-bottom:clamp(26px,3.4vw,40px)">Ocho casos pueden
+      ser suerte. <em class="alma">Doscientos son un patrón.</em></h2>
     <div class="cifras-top">
       <div class="rv" style="--d:80ms">
         <div class="big-n tnum" data-count="200" data-suffix="+">0</div>
@@ -735,6 +758,10 @@ h1,h2,h3,h4{font-family:var(--sys);font-weight:800;margin:0;text-wrap:balance;le
           en más de 20 países.</p>
       </div>
       <p class="cifras-note rv" style="--d:160ms;padding-bottom:12px">
+        <b>Si hoy facturas entre $2.000 y $5.000 al mes, esta página es literalmente sobre ti.</b>
+        Es el punto de partida de casi todos los que están aquí abajo, y los ocho casos de esta
+        página llegaron de ahí a cifras de <b>$9.000 a $104.000</b>.
+        <br><br>
         <b>Cómo contamos.</b> Una victoria es un resultado que el cliente demostró: una venta,
         un lanzamiento, una subida de precio, una agenda llena. Un caso documentado tiene
         entrevista completa. <b>No inflamos ninguna de las dos, y no las sumamos para que
@@ -755,9 +782,10 @@ h1,h2,h3,h4{font-family:var(--sys);font-weight:800;margin:0;text-wrap:balance;le
 <section class="sect" id="crew">
   <div class="wrap">
     <div class="eyebrow rv">El Círculo</div>
-    <h2 class="h-sect rv" style="--d:60ms">Mentores que <em class="alma">ya venden en línea.</em></h2>
-    <p class="lede rv" style="--d:120ms">Numerólogas, terapeutas akáshicas, consteladores, reikistas, astrólogas.
-      Gente con un don real que ya lo vendía — y que se había quedado lenta.</p>
+    <h2 class="h-sect rv" style="--d:60ms">Aquí se les llama <em class="alma">Constructores.</em></h2>
+    <p class="lede rv" style="--d:120ms">Numerólogas, terapeutas akáshicas, consteladores, reikistas,
+      astrólogas. Gente con un don real que <strong class="mark">ya lo vendía</strong> — y que
+      decidió dejar de improvisar.</p>
   </div>
   <div class="crew-rows">
     <div class="mq" style="--sp:64s"><div class="mq-t" id="mqCrew"></div></div>
@@ -769,52 +797,93 @@ h1,h2,h3,h4{font-family:var(--sys);font-weight:800;margin:0;text-wrap:balance;le
 <section class="sect" id="problema">
   <div class="wrap">
     <div class="eyebrow rv">El quiebre</div>
-    <h2 class="h-sect rv" style="--d:60ms">Tu día está <em class="alma">partido en dos.</em></h2>
-    <p class="lede rv" style="--d:120ms">La mitad la pasas atendiendo clientes. La otra mitad,
-      buscando una nueva forma de crecer. <strong>Ninguna de las dos construye algo que quede
-      de pie sin ti.</strong></p>
+    <h2 class="h-sect rv" style="--d:60ms">El juego de los negocios holísticos cambió.
+      <em class="alma">Y el modelo con el que llegaste hasta aquí está quedando obsoleto.</em></h2>
+    <p class="lede rv" style="--d:120ms">No es que hayas dejado de ser bueno. Es que el vehículo
+      que usas se hizo viejo — <strong class="mark">y casi nadie en tu mercado lo ha notado
+      todavía.</strong></p>
 
     <div class="tramp">
       <article class="tramp-c rv" style="--d:80ms">
         <svg class="tramp-i" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true">
           <circle cx="16" cy="16" r="13"/><path d="M16 9v9M16 22.5v.5" stroke-linecap="round"/>
         </svg>
-        <h3 class="h-card">Llega gente que no puede pagarte</h3>
-        <p>Creas contenido y atrae a quien no compra. Tienes tráfico, pero no se convierte en
-          conversaciones. Y tienes un programa grabado sin un mensaje que lo sostenga.</p>
+        <h3 class="h-card">01 · El lanzamiento</h3>
+        <p>Trabajas dos meses para una semana de ventas. Y si el número sale mal, ya no hay nada
+          que corregir: <strong>cuando ves el resultado, el lanzamiento ya terminó.</strong>
+          Después vienen tres semanas de vacío y vuelves a empezar de cero.</p>
       </article>
       <article class="tramp-c rv" style="--d:170ms">
         <svg class="tramp-i" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true">
           <rect x="4" y="7" width="24" height="18" rx="2"/><path d="M4 13h24M11 25v3M21 25v3" stroke-linecap="round"/>
         </svg>
-        <h3 class="h-card">Dependes de lo que no controlas</h3>
-        <p>Vives de referidos, y los referidos no se piden: se esperan. Cada mes empieza igual,
-          con la sensación de que ya deberías estar en otro lugar.</p>
+        <h3 class="h-card">02 · La sesión suelta y el referido</h3>
+        <p>Tu facturación es tu calendario, y tu calendario ya está lleno. El referido no se pide:
+          <strong>se espera.</strong> Por eso no puedes proyectar el mes que viene, y por eso cada
+          buen mes se siente suerte en vez de sistema.</p>
       </article>
       <article class="tramp-c rv" style="--d:260ms">
         <svg class="tramp-i" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true">
           <path d="M5 27V15M13 27V9M21 27V19M29 27V5" stroke-linecap="round"/>
         </svg>
-        <h3 class="h-card">Ya lo intentaste con piezas sueltas</h3>
-        <p>Ya contrataste equipo, ya usaste un CRM, ya pusiste pauta — y sigues sin poder
-          predecir de dónde sale el próximo cliente. No es que no sepas:
-          <strong>es que no sabes qué pieza te está faltando.</strong></p>
+        <h3 class="h-card">03 · Publicar todos los días</h3>
+        <p>Grabas, editas, subes. Te ven, te felicitan — <strong>y te escribe quien no puede
+          pagarte.</strong> Estás publicando para el algoritmo, no para tu cliente, y cada semana
+          empieza otra vez desde cero.</p>
       </article>
     </div>
 
     <div class="turn">
       <div class="rv">
-        <p class="prose">Y no es que no sepas. Sabes transformar personas — eso lo probaste
-          hace años. <strong>Lo que no sabes es qué pieza te está faltando</strong>, y por eso
-          cada mes empieza igual.</p>
+        <p class="prose">Los tres funcionaron alguna vez. Por eso los estás usando.
+          <strong>Pero los tres tienen el mismo defecto: producen cuando tú empujas, y se apagan
+          cuando paras.</strong></p>
       </div>
       <div class="rv" style="--d:120ms">
-        <p class="prose">Y lo más caro no es el dinero.
-          <strong>Es el tiempo que llevas perdiendo.</strong></p>
+        <p class="prose">Y nadie te enseñó a mirar un negocio: te formaste años para leer a una
+          persona, no un tablero. No es tu culpa. <strong>Pero lo más caro no es el dinero que
+          pusiste — es el tiempo que llevas perdiendo.</strong></p>
       </div>
     </div>
   </div>
 </section>
+
+<!-- ======================= EL ENEMIGO ======================= -->
+<section class="sect" id="enemigo">
+  <div class="wrap">
+    <div class="eyebrow rv">Qué jugamos nosotros</div>
+    <h2 class="h-sect rv" style="--d:60ms">Nosotros jugamos otro juego.
+      <em class="alma">Uno donde el cliente llega decidido.</em></h2>
+    <p class="lede rv" style="--d:120ms">Un negocio que produce conversaciones calificadas todas
+      las semanas, las convierte sin que tengas que convencer a nadie, y sigue produciendo el mes
+      que tú no estás inspirado. <strong class="mark">No construimos embudos: construimos la
+      arquitectura de un negocio.</strong></p>
+
+    <div class="turn">
+      <div class="rv">
+        <h3 class="h-card" style="margin-bottom:12px">Qué reemplaza a qué</h3>
+        <p class="prose">En vez del <b>lanzamiento</b>, un sistema que corre todos los días y se
+          corrige cualquier día — no cuando ya terminó.<br><br>
+          En vez del <b>referido</b>, un flujo que no depende de que alguien se acuerde de ti.<br><br>
+          En vez de <b>publicar para el algoritmo</b>, contenido que filtra antes de la
+          conversación: <strong>el que te escribe ya sabe cuánto cuesta y ya decidió.</strong></p>
+      </div>
+      <div class="rv" style="--d:120ms">
+        <h3 class="h-card" style="margin-bottom:12px">Y qué hacemos exactamente</h3>
+        <p class="prose">Ordenamos tu oferta para que el 80% lo entregue tu equipo. Construimos tu
+          <b>segundo cerebro</b> —tu método, tu voz y tus casos— y encima corren los agentes que
+          producen tus guiones, auditan tus llamadas y encuentran tu cuello de botella.
+          Y montamos la ruta completa: contenido, pauta, agenda, CRM y cierre.
+          <strong>Tú no compras un curso: compras que el sistema quede instalado.</strong></p>
+      </div>
+    </div>
+
+    <p class="lede rv" style="--d:60ms;margin-top:48px">No somos una agencia que te trae clientes.
+      <strong class="mark">Somos la consultora que te deja el negocio funcionando</strong> — y esa
+      diferencia decide de quién es tu negocio dentro de un año.</p>
+  </div>
+</section>
+
 
 <!-- ======================= SOBRE MÍ ======================= -->
 <section class="sect" id="sobre">
@@ -833,6 +902,7 @@ h1,h2,h3,h4{font-family:var(--sys);font-weight:800;margin:0;text-wrap:balance;le
         en PNL, hipnosis, Reiki y registros akáshicos. <strong>Vengo de los dos mundos —
         y me tomó una quiebra entender que nunca fueron opuestos.</strong>
       </p>
+
 
       <div class="tl rv" style="--d:180ms">
         <div class="tl-i"><div class="tl-y">2019</div><p>Renuncié. Abrí una oficina de consultoría de 220 m²: <b>cincuenta mil dólares de inversión</b> y más de mil de renta al mes.</p></div>
@@ -872,15 +942,15 @@ h1,h2,h3,h4{font-family:var(--sys);font-weight:800;margin:0;text-wrap:balance;le
     </div>
 
     <div class="no3">
-      <div class="rv"><h4>Pilar I · La Oferta</h4><p>A quién ayudas, en qué lo ayudas y cómo. Empaquetada para que el 80% lo entregue tu equipo y solo el 20% dependa de ti.</p></div>
+      <div class="rv"><h4>Pilar I · La Oferta</h4><p>A quién ayudas. En qué lo ayudas. Cómo lo ayudas. Empaquetada para que el 80% lo entregue tu equipo y solo el 20% dependa de ti.</p></div>
       <div class="rv" style="--d:90ms"><h4>Pilar II · La Atracción</h4><p>Contenido por nivel de conciencia, no por tema. Ángulos que revelan en vez de informar. Y la pauta que amplifica lo que ya funcionó.</p></div>
       <div class="rv" style="--d:180ms"><h4>Pilar III · La Conversión</h4><p>De desconocidos a llamadas calificadas, y de ahí a clientes que ejecutan. El que llega, llega convencido.</p></div>
     </div>
 
     <p class="lede rv" style="--d:60ms;margin-top:64px">
-      <strong class="mark">El Eje · El Núcleo.</strong> Tu segundo cerebro, tus agentes, tu CRM
-      y tus números. Va arriba y no abajo a propósito: la estructura no está debajo de tu
-      negocio, lo atraviesa entero.
+      <strong class="mark">El eje · El Núcleo.</strong> Tu segundo cerebro, tus agentes, tu CRM y
+      tus números. Va arriba y no abajo a propósito: <b>la estructura no está debajo de tu negocio,
+      lo atraviesa entero.</b>
     </p>
 
     <div class="chats">
@@ -921,6 +991,40 @@ h1,h2,h3,h4{font-family:var(--sys);font-weight:800;margin:0;text-wrap:balance;le
   </div>
 </section>
 
+
+<!-- ======================= LOS SIN ======================= -->
+<section class="sect" id="sines">
+  <div class="wrap">
+    <div class="eyebrow rv">Lo que dejas de hacer</div>
+    <h2 class="h-sect rv" style="--d:60ms">No necesitas hacer más.
+      <em class="alma">Necesitas dejar de hacer casi todo.</em></h2>
+    <p class="lede rv" style="--d:120ms">Esto es lo que desaparece de tu semana cuando la
+      arquitectura queda instalada.</p>
+
+    <div class="sines">
+      <div class="sin rv"><i>Sin</i>
+        <h3>Sin lanzamientos</h3>
+        <p>Nada de dos meses de trabajo para una semana de ventas. El sistema produce todas las
+          semanas y se corrige cualquier día.</p></div>
+      <div class="sin rv" style="--d:80ms"><i>Sin</i>
+        <h3>Sin perseguir a nadie</h3>
+        <p>Ni prospección en frío, ni DM a desconocidos, ni esperar a que alguien te recomiende.
+          El que llega, llega convencido.</p></div>
+      <div class="sin rv" style="--d:160ms"><i>Sin</i>
+        <h3>Sin publicar a diario</h3>
+        <p>Pocas piezas, bien hechas, por nivel de conciencia. Tu contenido filtra antes de la
+          conversación en vez de perseguir el algoritmo.</p></div>
+      <div class="sin con rv" style="--d:240ms"><i>Con</i>
+        <h3>Con un equipo pequeño</h3>
+        <p>Y con tu segundo cerebro y tus agentes corriendo encima. No hace falta una máquina de
+          setters para escalar: hace falta orden.</p></div>
+    </div>
+
+    <p class="lede rv" style="--d:60ms;margin-top:44px">Lo que compras no es más trabajo.
+      <strong class="mark">Es dejar de perder tiempo en la mitad que no construye nada.</strong></p>
+  </div>
+</section>
+
 <!-- ======================= PARA QUIÉN ======================= -->
 <section class="sect" id="para-quien">
   <div class="wrap">
@@ -955,6 +1059,42 @@ h1,h2,h3,h4{font-family:var(--sys);font-weight:800;margin:0;text-wrap:balance;le
   </div>
 </section>
 
+<!-- ======================= COMPARAR ======================= -->
+<section class="sect" id="comparar">
+  <div class="wrap">
+    <div class="eyebrow rv">Lo que estás comparando</div>
+    <h2 class="h-sect rv" style="--d:60ms">Hay tres caminos más sobre tu mesa.
+      <em class="alma">Te los explico yo.</em></h2>
+
+    <div class="tramp">
+      <article class="tramp-c rv" style="--d:80ms">
+        <h3 class="h-card">Una mentoría generalista</h3>
+        <p>Marca grande, buenos casos, sin nicho. <strong>El problema:</strong> un generalista no
+          entiende tu llamado, tus paradigmas ni el idioma de tu cliente. Te va a dar una plantilla
+          que funciona en otro mercado y vas a pasar seis meses traduciéndola tú.</p>
+      </article>
+      <article class="tramp-c rv" style="--d:170ms">
+        <h3 class="h-card">Una agencia que te trae clientes</h3>
+        <p><strong>El problema:</strong> te pueden traer conversaciones, no te pueden traer un
+          mensaje. Y sin mensaje, las conversaciones no cierran. Además, si ellos están más
+          comprometidos que tú con tu negocio, tu negocio no escala — eso ya lo probamos, y por eso
+          no somos una agencia.</p>
+      </article>
+      <article class="tramp-c rv" style="--d:260ms">
+        <h3 class="h-card">Un growth partner a resultados</h3>
+        <p>Suena a riesgo cero, y es la más honesta de comparar. <strong>El problema:</strong> quien
+          cobra contra tus resultados necesita controlar tus decisiones. Termina siendo dueño de tu
+          negocio sin haber puesto un dólar. <strong>Tú pagas por adelantado para seguir siendo el
+          dueño</strong> — y el riesgo se cubre con la garantía, no cediendo el control.</p>
+      </article>
+    </div>
+
+    <p class="lede rv" style="--d:60ms;margin-top:48px">Y el cuarto camino, el que casi nadie
+      nombra: <strong class="mark">la agencia barata.</strong> El que te vende barato en la puerta
+      te cobra de a gotas hasta sumar el doble. Decir el precio completo de frente no es una
+      debilidad: es el argumento.</p>
+  </div>
+</section>
 <!-- ======================= MAPA ======================= -->
 <section class="sect" id="mapa">
   <div class="wrap" style="text-align:center">
@@ -963,7 +1103,7 @@ h1,h2,h3,h4{font-family:var(--sys);font-weight:800;margin:0;text-wrap:balance;le
     <p class="lede rv" style="--d:120ms;margin-inline:auto;text-align:center">
       Terapeutas y educadores holísticos construyendo su imperio desde toda Latinoamérica, Estados Unidos y España.
     </p>
-    <div class="globo rv" style="--d:180ms"><canvas id="globo" width="1240" height="1240" role="img" aria-label="Globo con marcadores en los países donde hay clientes de Escalling"></canvas></div>
+    <div class="globo rv" style="--d:180ms"><canvas id="globo" width="1240" height="1240" role="img" aria-label="Globo con marcadores en los países donde hay clientes"></canvas></div>
     <div class="paises rv" style="--d:240ms" id="paises"></div>
   </div>
 </section>
@@ -992,54 +1132,55 @@ h1,h2,h3,h4{font-family:var(--sys);font-weight:800;margin:0;text-wrap:balance;le
     <div class="fases">
       <article class="fase rv">
         <div>
-          <div class="fase-tag">Fase 1 · CEO</div>
-          <h3>Identidad, oferta y caja</h3>
-          <div class="fase-when">Meses 1–2</div>
+          <div class="fase-tag">Días 1 a 17</div>
+          <h3>Deja de improvisar</h3>
+          <div class="fase-when">El primer mes se mide en días</div>
         </div>
         <div>
-          <p>El objetivo de los dos primeros meses es simple: que <b>el programa se pague solo</b>.
-            Arrancamos con un Game Plan 1:1 donde definimos quién eres tú como CEO de tu misión
-            y construimos tu Simple Oferta™: fácil de entender, fácil de comprar, fácil de entregar.</p>
+          <p>En la primera semana te sientas conmigo y salimos con tu oferta redefinida y el
+            ángulo con el que vas a hablarle a tu mercado. <b>Para el día 17 tienes terminados
+            todos tus activos</b> — no un temario que ver después: las piezas funcionando.</p>
           <ul>
-            <li>Tu One Belief y el mensaje que solo tú puedes decir.</li>
-            <li>La oferta high ticket, con el precio que tu transformación vale.</li>
-            <li>Las primeras ventas por DM, sin llamadas eternas.</li>
+            <li>Tu oferta empaquetada para que el 80% lo entregue tu equipo.</li>
+            <li>Script de ventas, manual de objeciones y CRM montado.</li>
+            <li>Tu segundo cerebro cargado y los agentes escribiendo en tu voz.</li>
+            <li>Perfil, calendario y guiones de contenido y anuncios, listos.</li>
           </ul>
         </div>
       </article>
 
       <article class="fase rv" style="--d:100ms">
         <div>
-          <div class="fase-tag">Fase 2 · Sistema</div>
-          <h3>Contenido que vende dormido</h3>
-          <div class="fase-when">Meses 3–6</div>
+          <div class="fase-tag">Días 17 a 60</div>
+          <h3>Deja de esperar clientes</h3>
+          <div class="fase-when">Primera agenda: semana 3 o 4</div>
         </div>
         <div>
-          <p>Con caja en la mano nos ponemos estratégicos. Instalamos el Motor de Contenido:
-            los 3 Pilares, las 5 Voces de Marca™ y el CTA de palabra clave que convierte
-            un comentario en una conversación real. <b>Ocho piezas por semana, cero improvisación.</b></p>
+          <p>Grabas, publicas y encendemos pauta. Aquí es donde tu calendario deja de depender de
+            que alguien se acuerde de ti. <b>Las llamadas se graban y se auditan una por una</b>
+            hasta que tu cierre sea repetible y no dependa de tu ánimo.</p>
           <ul>
-            <li>Tus 3 Pilares: problema, solución, programa y mentalidad.</li>
-            <li>El sistema de DMs que agenda diagnósticos mientras duermes.</li>
-            <li>Métricas semanales: qué pieza trajo qué conversación y qué venta.</li>
+            <li>Conversaciones calificadas entrando todas las semanas.</li>
+            <li>Ángulos que se corrigen con datos, no con opiniones.</li>
+            <li>Objetivo del tramo: <b>tu primera venta con el sistema puesto.</b></li>
           </ul>
         </div>
       </article>
 
       <article class="fase rv" style="--d:200ms">
         <div>
-          <div class="fase-tag">Fase 3 · Imperio</div>
-          <h3>Escalar sin complejidad</h3>
-          <div class="fase-when">De 6 meses en adelante</div>
+          <div class="fase-tag">Días 60 a 120</div>
+          <h3>Deja de ser el cuello de botella</h3>
+          <div class="fase-when">Escalar sin trabajar más horas</div>
         </div>
         <div>
-          <p>Ya con base, el foco pasa al <b>minimalismo rentable</b>: menos piezas, más precisión.
-            Yo llevo tres anuncios corriendo hace un año y un VSL hace dos.
-            Esa es la ventaja competitiva que casi nadie tiene el estómago de sostener.</p>
+          <p>Con el sistema produciendo, subimos volumen sin subir tus horas: más pauta sobre lo
+            que ya funcionó, más contenido salido de tus agentes y un equipo que entrega mientras
+            tú decides. <b>El negocio empieza a caminar cuando tú no estás mirando.</b></p>
           <ul>
-            <li>Tráfico pago sobre lo que ya convierte orgánico.</li>
-            <li>Programa entregado por sistema, no por tu calendario.</li>
-            <li>LTV: el cliente que se queda y el caso que trae al siguiente.</li>
+            <li>Tu tiempo vuelve a ser tuyo: el 20% donde de verdad haces falta.</li>
+            <li>Números que puedes leer un lunes y ajustar el martes.</li>
+            <li>Y un mes que puedes proyectar antes de que empiece.</li>
           </ul>
         </div>
       </article>
@@ -1082,10 +1223,19 @@ h1,h2,h3,h4{font-family:var(--sys);font-weight:800;margin:0;text-wrap:balance;le
 <!-- ======================= FILOSOFÍA ======================= -->
 <section class="sect filo">
   <div class="wrap filo-in">
-    <q class="rv">El mercado te vendió que el camino al éxito es sacrificio.
-      Yo pagué $150.000 de deuda para descubrir que no.
-      <b>Lo que se construye desde el agotamiento se cae.
-      Lo que se construye desde el sistema, se queda.</b></q>
+    <q class="rv">Hay cincuenta caminos que llegan al mismo lugar, y todos funcionan.
+      Sería deshonesto decirte lo contrario. Por eso tu decisión ya no es sobre el resultado:
+      <b>es sobre el camino — y sobre con quién caminarlo.</b></q>
+    <div class="rv" style="--d:100ms;margin-top:clamp(30px,4vw,44px)">
+      <p class="prose"><b>Solo construimos sistemas que se pueden corregir mientras están
+        corriendo.</b> Un lanzamiento no se corrige a mitad de camino: cuando ves el número, ya
+        terminó. Un workshop depende de una fecha. El low ticket necesita volumen extremo antes
+        de darte una señal útil. Un sistema evergreen con contenido y pauta se lee y se ajusta
+        cualquier día de la semana.</p>
+      <p class="prose" style="margin-top:20px"><b>Y no implementamos nada que no podamos
+        enseñar.</b> Si no puedes replicar cómo conseguimos nuestros clientes, no te estamos
+        vendiendo un método: te estamos vendiendo un espectáculo.</p>
+    </div>
     <div class="filo-sig rv" style="--d:150ms">
       <strong>Marcelo Andrés Proaño</strong>
       <span>Fundador · Edume Global™</span>
@@ -1156,11 +1306,56 @@ h1,h2,h3,h4{font-family:var(--sys);font-weight:800;margin:0;text-wrap:balance;le
     </div>
 
     <div style="margin-top:clamp(64px,8vw,100px)">
-      <div class="eyebrow rv">Cha-chings en vivo</div>
-      <h2 class="h-sect rv" style="--d:60ms">Cada venta se registra sola. <em class="alma">Let's go.</em></h2>
+      <div class="eyebrow rv">Antes de que sigas bajando</div>
+      <h2 class="h-sect rv" style="--d:60ms">Nuestros clientes describen
+        <em class="alma">nuestra forma de vender</em> como parte del producto.</h2>
+
+      <div class="tramp" style="margin-top:44px">
+        <article class="tramp-c rv" style="--d:80ms">
+          <p class="prose">«Sin yo sentir que me están invadiendo, sin yo sentir que están
+            vendiendo humo, sin yo sentir que me están presionando.»</p>
+          <h3 class="h-card" style="margin-top:18px">Bárbara Estévez</h3>
+        </article>
+        <article class="tramp-c rv" style="--d:170ms">
+          <p class="prose">«Lo que me vendió es que no estabas tú en la llamada.»</p>
+          <h3 class="h-card" style="margin-top:18px">Rainier Hidalgo</h3>
+        </article>
+        <article class="tramp-c rv" style="--d:260ms">
+          <p class="prose">«Me impresionó tu seguridad, el que no fuera negociable el precio.»</p>
+          <h3 class="h-card" style="margin-top:18px">Fabiana Mersan</h3>
+        </article>
+      </div>
+
+      <p class="lede rv" style="--d:60ms;margin-top:48px">No es casualidad.
+        <strong class="mark">Aquí no despertamos dormidos: guiamos despiertos.</strong>
+        Por eso no vas a encontrar un contador regresivo en esta página, y por eso el precio
+        está de frente.</p>
     </div>
   </div>
-  <div class="mq" style="--sp:56s;margin-top:44px"><div class="mq-t" id="mqCha"></div></div>
+</section>
+
+<!-- ======================= GARANTÍA ======================= -->
+<section class="sect" id="garantia">
+  <div class="wrap" style="max-width:min(760px,100%)">
+    <div class="eyebrow rv">La garantía</div>
+    <h2 class="h-sect rv" style="--d:60ms">Te acompañamos sin costo adicional
+      <em class="alma">hasta que factures $10.000.</em></h2>
+    <p class="prose rv" style="--d:120ms;margin-top:28px">Acumulados durante el programa, en ventas
+      facturadas. <strong>No es un techo: es la validación de que el sistema funciona en tus manos
+      y de que recuperaste tu inversión.</strong> Y estas son sus condiciones, a la vista:</p>
+
+    <div class="tl rv" style="--d:180ms">
+      <div class="tl-i"><div class="tl-y">01</div><p>Invertir en pauta el precio de tu propio servicio, con mínimo de <b>$2.000 en los primeros 30 días</b> de campaña.</p></div>
+      <div class="tl-i"><div class="tl-y">02</div><p>Asistir al <b>90% de las sesiones</b> asignadas.</p></div>
+      <div class="tl-i"><div class="tl-y">03</div><p>Ejecutar en los plazos acordados.</p></div>
+      <div class="tl-i"><div class="tl-y">04</div><p>Mantener tu Success Tracker y tus llamadas de venta cargadas.</p></div>
+    </div>
+
+    <p class="lede rv" style="--d:240ms;margin-top:40px">Las condiciones no están escondidas en
+      letra chica porque <strong class="mark">son exactamente lo que la hace creíble.</strong>
+      Una garantía sin condiciones no protege a nadie: ni a ti, que no vas a ejecutar, ni a
+      nosotros, que no podríamos sostenerla.</p>
+  </div>
 </section>
 
 <!-- ======================= FAQ ======================= -->
@@ -1171,37 +1366,45 @@ h1,h2,h3,h4{font-family:var(--sys);font-weight:800;margin:0;text-wrap:balance;le
 
     <div class="faq rv" style="--d:120ms">
       <details open>
-        <summary>¿Para quién es Imperio Holístico™?</summary>
-        <div class="faq-a"><p>Para terapeutas, numerólogos, constelodores, reikistas, astrólogas, coaches holísticos y sanadores que <b>ya cobran por su trabajo</b> —aunque sea poco— y quieren dejar de vender su tiempo por sesión. Si nunca has cobrado, todavía no es tu momento: primero valida que alguien pague, y eso te lleva una semana, no un programa.</p></div>
+        <summary>¿Ustedes me traen los clientes?</summary>
+        <div class="faq-a"><p>No. Somos una consultora, no una agencia. Y la razón te defiende a ti:
+          <b>si nosotros estamos más comprometidos que tú con tu negocio, tu negocio no escala.</b>
+          Ya lo probamos.</p></div>
       </details>
-      <details>
-        <summary>¿Cuánto dura el proceso?</summary>
-        <div class="faq-a"><p>El plan estructurado son 6 meses: dos de fundación, cuatro de sistema. De ahí en adelante la mayoría se queda porque el foco cambia de construir a escalar. No hay permanencia forzada: te quedas si te sirve.</p></div>
+      <details open>
+        <summary>¿Voy a tener atención personalizada?</summary>
+        <div class="faq-a"><p>Vas a tener algo mejor, y ya probamos lo otro. Los casos que fracasaron
+          fueron los que desarrollaron dependencia de un mentor individual. <b>Los mejores resultados
+          los tienen quienes se conectan a las sesiones grupales</b>, donde reciben perspectiva de
+          dueño de negocio.</p></div>
       </details>
-      <details>
-        <summary>¿En cuánto tiempo se ven resultados?</summary>
-        <div class="faq-a"><p>La meta explícita de la Fase 1 es que <b>el programa se pague solo en los primeros 60 días</b>. Muchos cierran su primer high ticket antes del día 30. Lissett pasó de $80 la sesión a $30.000/mes en 60 días. Fabiana hizo $66.964 en el mismo plazo. No todos van a ese ritmo, y te lo digo de frente.</p></div>
+      <details open>
+        <summary>¿La inteligencia artificial no va a volver genérico mi contenido?</summary>
+        <div class="faq-a"><p>Te quita el alma cuando no le das contexto. Y deja de quitártela en el
+          momento exacto en que le das el tuyo. <b>Los agentes son la primera capa; después revisa
+          un humano.</b></p></div>
       </details>
-      <details>
-        <summary>Me quemé con otros programas. ¿Por qué este sería distinto?</summary>
-        <div class="faq-a"><p>Porque casi todos los que te vendieron un sistema no conocen tu mundo. Te enseñaron hooks de coaches de negocios y te pidieron que sonaras como ellos. Yo vengo de los dos lados: entiendo registros akáshicos, constelaciones y heridas emocionales, <b>y</b> entiendo cash collect y adquisición. El sistema se adapta a tu voz, no al revés.</p></div>
+      <details open>
+        <summary>Está caro.</summary>
+        <div class="faq-a"><p>El que te vende barato en la puerta te cobra de a gotas hasta sumar el
+          doble. Y una pregunta honesta: <b>invertiste miles en tu formación. ¿Cuánto llevas
+          invertido en aprender a vender lo que sabes?</b></p></div>
       </details>
-      <details>
-        <summary>¿Tengo que publicar todos los días?</summary>
-        <div class="faq-a"><p>No. Ese es justamente el punto. Mi filosofía es el minimalismo: yo llevo tres anuncios corriendo hace un año y un VSL hace dos. Trabajamos ocho piezas por semana con estructura, no cuarenta improvisadas. Cuando las bases están bien puestas, lo demás es expansión.</p></div>
+      <details open>
+        <summary>¿Y si no me funciona? Ya perdí dinero antes.</summary>
+        <div class="faq-a"><p>La mayoría de nuestros casos llegó igual. Por eso existe la garantía con
+          sus condiciones a la vista. Y por eso digo esto en voz alta: <b>a pesar de todo, no todos
+          tienen los resultados que me gustaría.</b> Quien te promete lo contrario te está
+          vendiendo algo.</p></div>
       </details>
-      <details>
-        <summary>¿Necesito habilidades técnicas?</summary>
-        <div class="faq-a"><p>No. Necesitas saber grabarte con el celular y responder DMs. La parte técnica —automatizaciones, palabras clave, métricas— la instalamos juntos, y mi equipo de 15 personas está detrás.</p></div>
+      <details open>
+        <summary>No tengo tiempo.</summary>
+        <div class="faq-a"><p>Es cierto, y por eso estás atrapado: la mitad del día atendiendo, la
+          mitad buscando cómo crecer. <b>Lo que compras no es más trabajo: es dejar de perder tiempo
+          en la mitad que no construye nada.</b> Pero no te voy a decir que es fácil. Al inicio tu
+          vida se adapta a tu negocio.</p></div>
       </details>
-      <details>
-        <summary>¿Hay garantía?</summary>
-        <div class="faq-a"><p>No vendo garantías de facturación, porque quien las promete está mintiendo o está a punto de romperlas. Lo que sí garantizo es el acompañamiento: el Game Plan 1:1, las sesiones, el sistema completo y mi equipo. Los resultados dependen de tu ejecución, de tu mercado y de tu punto de partida.</p></div>
-      </details>
-      <details>
-        <summary>¿Qué pasa después de los 6 meses?</summary>
-        <div class="faq-a"><p>Te quedas en la Crew si quieres seguir escalando, o te vas con el sistema instalado y funcionando. Ambas son respuestas correctas. Lo que no quiero es gente atada a un programa que ya no necesita.</p></div>
-      </details>
+    
     </div>
   </div>
 </section>
@@ -1209,12 +1412,15 @@ h1,h2,h3,h4{font-family:var(--sys);font-weight:800;margin:0;text-wrap:balance;le
 <!-- ======================= CTA FINAL ======================= -->
 <section class="sect final" id="aplicar">
   <div class="wrap final-in">
-    <h2 class="h-sect rv" style="--d:60ms">Una vez que ves la arquitectura,
-      <em class="alma">ya no puedes dejar de verla.</em></h2>
+    <h2 class="h-sect rv" style="--d:60ms">Apuesta por ti.
+      <em class="alma">Es la única inversión que nadie te puede quitar.</em></h2>
     <p class="lede rv" style="--d:120ms;margin-inline:auto">
-      Eso no se desaprende, no se devuelve y no se olvida.
-      <strong class="mark">Es la única garantía que damos de verdad.</strong>
+      Una vez que ves la arquitectura ya no puedes dejar de verla: no se desaprende, no se
+      devuelve y no se olvida. <strong class="mark">Esa es la única garantía que damos de
+      verdad.</strong>
     </p>
+
+    
 
     <div class="precio rv" style="--d:170ms">
       <b>$7.000 USD</b>
@@ -1222,22 +1428,33 @@ h1,h2,h3,h4{font-family:var(--sys);font-weight:800;margin:0;text-wrap:balance;le
     </div>
 
 
+    <p class="lede rv" style="--d:200ms;margin-inline:auto;margin-top:8px">Agenda la llamada
+      <strong class="mark">si te reconoces en los cinco.</strong></p>
+
     <ol class="crit rv" style="--d:240ms">
-      <li><b>01</b> Tienes un don real: terapia, numerología, akáshicos, constelaciones, reiki, meditación.</li>
-      <li><b>02</b> Ya cobras por él, aunque sea por sesión y aunque sea poco.</li>
-      <li><b>03</b> Tienes espacio para tomar más clientes este trimestre.</li>
-      <li><b>04</b> Quieres construir una marca de referente, no un pico de facturación.</li>
-      <li><b>05</b> No te incomoda el lenguaje directo. Yo no te voy a decir lo que quieres oír.</li>
+      <li><b>01</b> Ya vendiste high ticket. Sabes lo que se siente cerrar cuatro cifras.</li>
+      <li><b>02</b> Tienes clientes que pueden contar lo que les pasó contigo.</li>
+      <li><b>03</b> Estás cansado de que tu facturación dependa de tu calendario.</li>
+      <li><b>04</b> Ejecutas lo que se acuerda, en el plazo en que se acuerda.</li>
+      <li><b>05</b> Entiendes que hay un precio que pagar. Y no te asusta.</li>
     </ol>
 
     <div class="rv" style="--d:300ms;margin-top:44px">
-      <a class="cta" href="https://instagram.com/marceloproano" data-res="ig-principal" data-res-tipo="link" data-res-label="Tu Instagram (@)" data-res-nota="El destino de TODOS los botones. Se usa en 4 lugares de la página." target="_blank" rel="noopener"
+      <a class="cta" href="#aplicar" data-res="cta-agenda" data-res-tipo="link" data-res-label="URL de la agenda / calendario" data-res-nota="El destino de TODOS los botones de la página."
          style="font-size:1.05rem;padding:18px 32px">
-        Escríbeme la palabra <span class="kw">IMPERIO</span> por DM →
+        Cruzar el <span class="kw">umbral</span> →
       </a>
       <p class="hero-note" style="margin-inline:auto;text-align:center;margin-top:18px">
-        Una sola palabra. Te llega el diagnóstico y seguimos desde ahí.
+        Una llamada de diagnóstico. Si no calificas, te lo decimos ahí mismo.
       </p>
+
+      <div class="filo-sig" style="margin-top:clamp(44px,5.5vw,68px);padding-top:clamp(28px,3.6vw,40px);border-top:1px solid var(--line)">
+        <q style="display:block;font-family:var(--alma);font-style:italic;font-weight:300;
+                  font-size:clamp(1.5rem,3.6vw,2.2rem);line-height:1.2;color:var(--gold);
+                  quotes:none;max-width:22ch;margin-inline:auto">Cuando tú escalas, el mundo sana.</q>
+        <strong style="margin-top:18px">Marcelo Andrés Proaño</strong>
+        <span>Edume Global™ · Imperio Holístico™</span>
+      </div>
     </div>
   </div>
 </section>
@@ -1245,8 +1462,16 @@ h1,h2,h3,h4{font-family:var(--sys);font-weight:800;margin:0;text-wrap:balance;le
 <footer class="foot">
   <div class="wrap">
     <div class="foot-in">
-      <div>© 2026 Edume Global™ · Escalling™ · Imperio Holístico™</div>
-      <div><a href="https://instagram.com/marceloproano" data-res="ig-principal" data-res-tipo="link" data-res-label="Tu Instagram (@)" data-res-nota="El destino de TODOS los botones. Se usa en 4 lugares de la página." target="_blank" rel="noopener">Instagram</a></div>
+      <div>© 2026 Edume Global™ · Imperio Holístico™</div>
+      <nav class="foot-legal">
+        <a href="#" data-res="legal-aviso" data-res-tipo="link"
+           data-res-label="Aviso legal" data-res-nota="URL de tu aviso legal.">Aviso legal</a>
+        <a href="#" data-res="legal-privacidad" data-res-tipo="link"
+           data-res-label="Política de privacidad" data-res-nota="URL de tu política de privacidad.">Política de privacidad</a>
+        <a href="#" data-res="legal-cookies" data-res-tipo="link"
+           data-res-label="Política de cookies" data-res-nota="URL de tu política de cookies.">Política de cookies</a>
+        <a href="#umbral">Volver arriba</a>
+      </nav>
     </div>
     <p class="disclaimer">
       Las cifras publicadas en esta página son reportadas por los propios clientes y corresponden a
@@ -1259,7 +1484,7 @@ h1,h2,h3,h4{font-family:var(--sys);font-weight:800;margin:0;text-wrap:balance;le
 
 <div class="modal" id="modal" role="dialog" aria-modal="true" aria-label="Video">
   <div class="modal-in">
-    <div class="modal-hd"><b id="modalTitle">Mira cómo funciona Escalling™</b><button id="modalX" aria-label="Cerrar">×</button></div>
+    <div class="modal-hd"><b id="modalTitle">Mira cómo funciona Imperio Holístico™</b><button id="modalX" aria-label="Cerrar">×</button></div>
     <div class="modal-body"><p>Aquí va tu VSL. Pega el <code>&lt;iframe&gt;</code> de YouTube o Vimeo dentro de <code>#modalBody</code> en el código.</p></div>
   </div>
 </div>
@@ -1476,7 +1701,7 @@ const winCard = w => `<article class="win">
 </article>`;
 
 const chaCard = c => `<article class="chach">
-  <div class="chach-h"><span class="ic">AI</span><b>Escalling AI</b><span class="tag">APP</span><span class="t">ahora</span></div>
+  <div class="chach-h"><span class="ic">AI</span><b>El Núcleo</b><span class="tag">APP</span><span class="t">ahora</span></div>
   <div class="chach-b">
     <div class="chach-go">LET'S GOOOO 🚀</div>
     <div class="chach-amt">${esc(c.amt)}</div>
@@ -1500,9 +1725,8 @@ fill("mqCasos2", [...CASOS].reverse(), casoCard);
 fill("mqCrew",   CREW.slice(0,8),  crewCard);
 fill("mqCrew2",  CREW.slice(7),    crewCard);
 fill("mqWins",   WINS,  winCard);
-fill("mqCha",    CHA,   chaCard);
 
-/* ── El Círculo Escalling ────────────────────────────────────────── */
+/* ── El Plano ────────────────────────────────────────────────────── */
 (() => {
   const box = $("#circ"); if(!box) return;
   const R = 37.5; // % del radio
@@ -1605,7 +1829,7 @@ $("#paises").innerHTML = PAISES.map(([n]) => `<span class="pais">${esc(n)}</span
   const m = $("#modal"), title = $("#modalTitle");
   const open = t => { title.textContent = t; m.setAttribute("open",""); $("#modalX").focus(); };
   const close = () => m.removeAttribute("open");
-  $("#vslOpen")?.addEventListener("click", () => open("Mira cómo funciona Escalling™"));
+  $("#vslOpen")?.addEventListener("click", () => open("Mira cómo funciona Imperio Holístico™"));
   $$("[data-video]").forEach(b => b.addEventListener("click", () => {
     open($(".vcard-tag", b)?.textContent.trim() || "Caso de éxito");
   }));

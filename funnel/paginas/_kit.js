@@ -51,6 +51,7 @@ const contadores = () => {
   tick(); setInterval(tick, 1000);
 };
 if(!SIN_KIT) contadores();
+pieAlFinal();
 
 /* ── Conteo animado ──────────────────────────────────────────────── */
 const countIO = new IntersectionObserver((es,o) => {
@@ -223,8 +224,18 @@ function listarRecursos(){
   return [...vistos.values()];
 }
 
+/** El pie siempre cierra. Si algo lo dejó en otro sitio —un arrastre en el
+    estudio, un estado antiguo, un pegado a medias— vuelve solo a su lugar.
+    Es idempotente: si ya está el último, no toca el DOM. */
+function pieAlFinal(){
+  const pie = $("footer.foot") || $("body > footer");
+  if(pie && pie !== document.body.lastElementChild &&
+     !pie.nextElementSibling?.matches?.("script")) document.body.append(pie);
+}
+
 /** Re-arma todo después de que el estudio inyecta o edita contenido. */
 function refrescar(){
+  pieAlFinal();                   // pase lo que pase, el pie cierra
   sellarBloques();                // ids estables de bloque para el estudio
   armarPlayers();                 // los players son del estudio: siempre
   if(SIN_KIT) return;             // la página trae sus propios comportamientos
@@ -316,11 +327,19 @@ function aplicarEstructura({orden = [], ocultos = []} = {}){
   sellarBloques();
   const body = document.body;
   const porId = new Map([...body.children].map(el => [el.dataset.bloque, el]));
-  orden.forEach(id => { const el = porId.get(String(id)); if(el) body.append(el); });
+  /* Un orden guardado puede traer ids que ya no existen —la página cambió desde
+     que se guardó—. Reordenar solo con los que sobreviven dejaría a los bloques
+     no mencionados colgando al principio, que es como el pie acababa arriba.
+     Así que se reconstruye la secuencia entera: primero los ids pedidos que aún
+     existen, y detrás los demás en el orden que ya tenían en el documento. */
+  const pedidos = orden.map(String).filter(id => porId.has(id));
+  const resto   = [...porId.keys()].filter(id => !pedidos.includes(id));
+  [...pedidos, ...resto].forEach(id => body.append(porId.get(id)));
   porId.forEach((el, id) => {
     const esconder = ocultos.map(String).includes(String(id));
     el.toggleAttribute("data-oculto", esconder);
   });
+  pieAlFinal();                     // el pie cierra, mande lo que mande el orden
   /* Los <script> vuelven al final para no quedar en medio del contenido. */
   $$("body > script").forEach(s => body.append(s));
 }

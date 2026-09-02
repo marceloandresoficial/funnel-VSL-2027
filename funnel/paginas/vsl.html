@@ -217,76 +217,226 @@ body > *{position:relative;z-index:1}
 /* Y la fila de abajo */
 .resto .hito > b{font-size:clamp(1.95rem,4.6vw,2.7rem)}
 
+/* ── Antes y después: el enredo contra el circuito ────────────────── */
+.vs2{display:grid;gap:clamp(14px,2.4vw,22px);margin-top:clamp(28px,4vw,46px)}
+@media(min-width:900px){.vs2{grid-template-columns:1fr 1fr;align-items:stretch}}
+.vs-c{border:1px solid var(--line);border-radius:20px;padding:clamp(22px,3vw,32px);
+  background:var(--card);display:flex;flex-direction:column}
+.vs-c.nuevo{border-color:#D6A54455;background:
+  radial-gradient(120% 130% at 12% 6%,#D6A5441A,transparent 58%),
+  linear-gradient(165deg,#1B1626,var(--card))}
+.vs-t{font-family:var(--data);font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--bone-faint);margin-bottom:6px}
+.vs-c.nuevo .vs-t{color:var(--gold)}
+.vs-c h3{font-size:clamp(1.2rem,2.6vw,1.55rem);font-weight:800;letter-spacing:-.03em;margin:0 0 16px}
+.vs-svg{width:100%;height:auto;display:block;margin-bottom:18px}
+.vs-c p{font-size:.92rem;color:var(--bone-mute);line-height:1.6;margin:0}
+.vs-c p b{color:var(--bone)}
+.vs-pie{margin-top:auto;padding-top:16px;font-family:var(--data);font-size:.62rem;
+  letter-spacing:.13em;text-transform:uppercase;color:var(--bone-faint)}
+.vs-c.nuevo .vs-pie{color:var(--gold-hi)}
+
 /* ── Trampas ────────────────────────────────────────────────────── */
-.trampas{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:clamp(26px,4vw,44px)}
-@media(max-width:720px){.trampas{grid-template-columns:1fr}}
-.trampa{border:1px solid var(--line);border-radius:16px;padding:clamp(20px,3vw,30px);
-  background:linear-gradient(165deg,var(--card),#0E0C1A);position:relative;overflow:hidden;
-  transition:border-color .35s var(--ease),transform .35s var(--ease)}
-.trampa:hover{border-color:var(--line-hard);transform:translateY(-4px)}
-.trampa-n{font-family:var(--data);font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:13px}
-.trampa h3{font-size:clamp(1.05rem,2.4vw,1.32rem);font-weight:800;letter-spacing:-.03em;margin-bottom:9px}
-.trampa p{margin:0;font-size:clamp(.86rem,2vw,.94rem);color:var(--bone-mute);line-height:1.58}
+/* ── Qué pasa en la llamada: tres pasos, uno debajo de otro ──────── */
+.llam{display:grid;gap:clamp(12px,2vw,18px);margin-top:clamp(28px,4vw,44px)}
+@media(min-width:860px){.llam{grid-template-columns:repeat(3,1fr)}}
+.llam-p{
+  border:1px solid var(--line);border-radius:18px;padding:clamp(22px,3vw,30px);
+  background:linear-gradient(165deg,var(--card),#0E0C1A);
+  display:flex;flex-direction:column;position:relative;overflow:hidden;
+  transition:border-color .4s var(--ease),transform .4s var(--ease);
+}
+.llam-p:hover{border-color:#D6A54459;transform:translateY(-3px)}
+.llam-n{
+  font-family:var(--data);font-weight:700;letter-spacing:-.04em;
+  font-size:clamp(2.2rem,5vw,3rem);line-height:1;color:transparent;
+  background:linear-gradient(172deg,var(--bone) 24%,var(--gold));
+  -webkit-background-clip:text;background-clip:text;margin-bottom:16px;
+}
+.llam-p h3{font-size:clamp(1.06rem,2.3vw,1.28rem);font-weight:800;letter-spacing:-.03em;
+  line-height:1.16;margin:0 0 10px}
+.llam-p p{margin:0;font-size:clamp(.86rem,2vw,.94rem);color:var(--bone-mute);line-height:1.58}
+.llam-pie{
+  margin-top:clamp(24px,3.4vw,34px);padding:clamp(16px,2.4vw,22px) clamp(18px,2.6vw,26px);
+  border:1px solid var(--line);border-left:2px solid var(--gold);border-radius:0 14px 14px 0;
+  background:#D6A5440D;font-size:clamp(.88rem,2vw,.96rem);color:var(--bone-mute);line-height:1.6;
+}
+.llam-pie b{color:var(--bone)}
 
-/* ── El método, en órbita ───────────────────────────────────────── */
-.orbita-caja{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(18px,3.5vw,48px);
-  align-items:center;margin-top:clamp(20px,3.4vw,36px)}
-@media(max-width:860px){.orbita-caja{grid-template-columns:1fr;gap:20px}}
-.orbita{width:100%;max-width:520px;margin:0 auto;display:block;overflow:visible;cursor:default}
-.orbita .aro-o{fill:none;stroke:#D6A54426;stroke-width:1}
-.orbita .radio{stroke:#D6A5441f;stroke-width:.8}
-.orbita .nodo-g{cursor:pointer}
-.orbita .disco{fill:#141122;stroke:#D6A54455;stroke-width:1.2;transition:all .3s var(--ease)}
-.orbita .nodo-g:hover .disco,.orbita .nodo-g.on .disco{fill:#241C0E;stroke:var(--gold);r:15}
-.orbita .ia .disco{stroke:#4FB39B66}
-.orbita .ia .nodo-g:hover .disco,.orbita .ia .nodo-g.on .disco{fill:#0F2620;stroke:var(--jade)}
-.orbita .eti{font-family:var(--data);font-size:8.6px;letter-spacing:.05em;fill:#F4EFE6a8;
-  text-anchor:middle;pointer-events:none;transition:fill .3s var(--ease)}
-.orbita .nodo-g:hover .eti,.orbita .nodo-g.on .eti{fill:var(--gold-hi)}
-.orbita .ia .nodo-g:hover .eti,.orbita .ia .nodo-g.on .eti{fill:#8FD6C7}
-.orbita .capa{transition:opacity .4s var(--ease)}
-.orbita.filtrando .capa{opacity:.2}
-.orbita.filtrando .capa.viva{opacity:1}
-.orbita .nucleo-t{font-family:var(--sys);font-weight:800;letter-spacing:-.03em;
-  fill:var(--bone);text-anchor:middle}
-.orbita .nucleo-s{font-family:var(--data);font-size:7.4px;letter-spacing:.18em;
-  fill:#F4EFE666;text-anchor:middle}
-.orbita .gira-o{transform-origin:50% 50%;animation:girar 180s linear infinite}
-@media(prefers-reduced-motion:reduce){.orbita .gira-o{animation:none}}
+/* ── La transición: lo que no hacemos, tachado ───────────────────── */
+.trans{padding-block:clamp(46px,7vw,86px)}
+.trans-p{
+  font-family:var(--alma);font-weight:300;line-height:1.24;letter-spacing:-.02em;
+  font-size:clamp(1.5rem,4.6vw,2.9rem);color:var(--bone-faint);
+  max-width:22ch;margin:0 auto;text-align:center;
+}
+.trans-p s{
+  text-decoration:none;position:relative;white-space:nowrap;color:#8A8072;
+}
+.trans-p s::after{
+  content:"";position:absolute;left:-2%;right:-2%;top:58%;height:1.5px;
+  background:#C97B6E;opacity:.8;transform:rotate(-1.4deg);
+}
+.trans-p.dos{color:var(--bone);margin-top:clamp(22px,3vw,34px);max-width:26ch}
+.trans-p.dos b{color:var(--gold-hi);font-family:var(--sys);font-weight:700;
+  font-size:.86em;letter-spacing:-.02em}
 
-.orbita-lado{display:grid;gap:12px}
-.pilar-chip{display:flex;align-items:center;gap:11px;width:100%;text-align:left;
-  border:1px solid var(--line);border-radius:14px;padding:13px 15px;background:var(--card);
-  transition:border-color .3s var(--ease),background .3s var(--ease)}
-.pilar-chip:hover{border-color:var(--line-hard)}
-.pilar-chip.act{border-color:var(--gold);background:#D6A5440f}
-.pilar-chip.ia.act{border-color:var(--jade);background:#4FB39B12}
-.pilar-chip i{width:26px;aspect-ratio:1;border-radius:9px;display:grid;place-items:center;flex:none;
-  font-family:var(--data);font-style:normal;font-weight:700;font-size:.68rem;
-  background:linear-gradient(168deg,#C9A863,#96793F);color:#17100A}
-.pilar-chip.ia i{background:linear-gradient(168deg,#5FC4AC,#2C6B5D);color:#04140F}
-.pilar-chip b{font-size:.9rem;font-weight:700;letter-spacing:-.025em;flex:1}
-.pilar-chip span{font-family:var(--data);font-size:.56rem;letter-spacing:.12em;color:var(--bone-ghost)}
+/* ── La tira de vida ─────────────────────────────────────────────── */
+.tira{display:flex;gap:clamp(9px,1.4vw,14px);overflow-x:auto;scroll-snap-type:x mandatory;
+  scrollbar-width:none;padding:clamp(28px,4vw,44px) clamp(18px,5vw,48px) 4px}
+.tira::-webkit-scrollbar{display:none}
+.tira .vida{
+  flex:none;width:clamp(150px,22vw,230px);aspect-ratio:4/5;scroll-snap-align:center;
+  border-radius:16px;overflow:hidden;border:1px solid var(--line);
+  transition:transform .45s var(--ease),border-color .45s var(--ease);
+}
+.tira .vida:hover{transform:translateY(-4px);border-color:#D6A54455}
+.tira .vida .ph{width:100%;height:100%;border-radius:0;font-size:12px}
 
-.detalle{border:1px solid var(--line-hard);border-radius:16px;background:linear-gradient(165deg,#191333,#0C0A18);
-  padding:clamp(15px,2.6vw,20px);min-height:104px}
-.detalle i{display:block;font-family:var(--data);font-style:normal;font-size:.55rem;
-  letter-spacing:.17em;text-transform:uppercase;color:var(--gold);margin-bottom:7px}
-.detalle b{display:block;font-size:clamp(1rem,2.3vw,1.2rem);font-weight:800;letter-spacing:-.03em;margin-bottom:6px}
-.detalle p{margin:0;font-size:clamp(.85rem,2vw,.93rem);color:var(--bone-mute);line-height:1.5}
+/* ── Holograma vivo: un barrido lento sobre las cajas del método ─── */
+@media(prefers-reduced-motion:no-preference){
+  .par-b,.llam-p,.hito.faro{position:relative;isolation:isolate}
+  .par-b::after,.llam-p::after,.hito.faro::after{
+    content:"";position:absolute;inset:0;pointer-events:none;z-index:1;border-radius:inherit;
+    background:linear-gradient(104deg,transparent 44%,#F2D39114 49%,#FFF6DE1f 51%,#F2D39114 53%,transparent 58%);
+    background-size:300% 100%;background-position:150% 0;
+    animation:barrido 7.5s linear infinite;
+  }
+  .llam-p:nth-child(2)::after{animation-delay:1.1s}
+  .llam-p:nth-child(3)::after{animation-delay:2.2s}
+  .par:nth-child(2) .par-b::after{animation-delay:1.6s}
+  @keyframes barrido{0%{background-position:150% 0}62%,100%{background-position:-70% 0}}
+  .par-b > *,.llam-p > *,.hito.faro > *{position:relative;z-index:2}
+}
+
+/* ── La comparativa: dos pares, viejo → nuestro ──────────────────── */
+.comp{margin-top:clamp(28px,4vw,46px);display:grid;gap:clamp(14px,2.2vw,20px)}
+.par{
+  display:grid;gap:clamp(12px,2vw,18px);align-items:center;
+  border:1px solid var(--line);border-radius:20px;overflow:hidden;
+  grid-template-columns:1fr;background:var(--card);
+}
+@media(min-width:880px){.par{grid-template-columns:1fr 56px 1.05fr;gap:0}}
+.par-a,.par-b{padding:clamp(20px,2.8vw,30px);min-width:0}
+.par-b{background:
+  radial-gradient(130% 150% at 8% 0%,#D6A5441A,transparent 60%),
+  linear-gradient(165deg,#1B1626,var(--card));
+  border-top:1px solid var(--gold-line)}
+@media(min-width:880px){.par-b{border-top:0;border-left:1px solid var(--gold-line)}}
+.par-t{
+  font-family:var(--data);font-size:.62rem;letter-spacing:.17em;text-transform:uppercase;
+  color:var(--bone-faint);margin-bottom:14px;
+}
+.par-b .par-t{color:var(--gold);font-weight:700}
+.par-f{display:grid;place-items:center;color:var(--gold);opacity:.75}
+.par-f svg{width:34px;height:auto;transform:rotate(90deg)}
+@media(min-width:880px){.par-f svg{transform:none}}
+.mal{list-style:none;margin:0;padding:0;display:grid;gap:9px}
+.mal li{
+  display:grid;grid-template-columns:16px 1fr;gap:11px;align-items:start;
+  font-size:clamp(.86rem,1.9vw,.93rem);color:var(--bone-faint);line-height:1.45;
+}
+.mal li::before{
+  content:"✕";font-family:var(--data);font-size:.72rem;line-height:1.55;
+  color:#C97B6E;opacity:.85;text-align:center;
+}
+.par-b p{margin:0;font-size:clamp(.88rem,2vw,.96rem);color:var(--bone-mute);line-height:1.6}
+.par-b p b{color:var(--bone)}
+
+@keyframes deslizaLuz{0%{transform:translateX(-120%)}58%,100%{transform:translateX(120%)}}
+
+/* ── EL PROBLEMA · tres frentes, sin una sola promesa dentro ──────── */
+.dolor{display:grid;gap:clamp(16px,2.4vw,26px);margin-top:clamp(28px,4vw,44px)}
+@media(min-width:820px){.dolor{grid-template-columns:repeat(3,1fr)}}
+.dol{border:1px solid var(--line);border-radius:16px;padding:clamp(20px,2.6vw,28px);
+  background:linear-gradient(180deg,#C97B6E0a,transparent 62%)}
+.dol-t{font-family:var(--data);font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;
+  color:#C97B6E;margin-bottom:14px}
+.dol ul{list-style:none;margin:0;padding:0;display:grid;gap:11px}
+.dol li{position:relative;padding-left:22px;font-size:clamp(.86rem,1.9vw,.94rem);
+  line-height:1.55;color:var(--bone-mute)}
+.dol li::before{content:"✕";position:absolute;left:0;top:0;font-family:var(--data);
+  font-size:.7rem;color:#C97B6E;opacity:.8}
+.dol li b{color:var(--bone);font-weight:600}
+.remate{margin-top:clamp(26px,3.6vw,40px);text-align:center;
+  font-family:var(--alma);font-weight:300;font-size:clamp(1.15rem,2.9vw,1.7rem);
+  line-height:1.45;color:var(--bone);letter-spacing:-.01em}
+.remate em{font-style:italic;color:var(--gold-hi)}
+
+/* ── LA SOLUCIÓN · el tamaño es el mensaje: esto es lo nuevo ──────── */
+.sol-marca{display:flex;align-items:center;gap:13px;justify-content:center;
+  font-family:var(--data);font-size:.64rem;letter-spacing:.24em;text-transform:uppercase;
+  color:var(--gold)}
+.sol-marca::before,.sol-marca::after{content:"";width:38px;height:1px;background:var(--gold);opacity:.45}
+.sol-nuevo{text-align:center;margin:18px auto 0;max-width:660px;
+  font-size:clamp(.92rem,2.1vw,1.05rem);color:var(--bone-mute);line-height:1.6}
+.sol-nuevo b{color:var(--bone)}
+.sol-h{text-align:center;margin:clamp(14px,2vw,22px) 0 0;
+  /* El salto de tamaño es el que dice «esto es la solución»: ~1,45× el .h-sect
+     del resto en móvil y ~1,62× en escritorio. El suelo está calculado para que
+     la palabra más larga —ESCALADO— quepa aún en una pantalla de 275px; sin
+     salto forzado, para que reparta las líneas según el ancho que haya. */
+  font-size:clamp(3rem,9.2vw,6rem);line-height:.92;letter-spacing:-.055em;font-weight:900;
+  text-wrap:balance;overflow-wrap:break-word}
+.sol-h em{display:block;font-family:var(--alma);font-style:italic;font-weight:300;
+  font-size:.42em;letter-spacing:-.02em;color:var(--gold-hi);margin-top:.34em}
+.sol-p{text-align:center;max-width:620px;margin:clamp(18px,2.4vw,26px) auto 0;
+  font-size:clamp(.92rem,2.1vw,1.05rem);color:var(--bone-mute);line-height:1.65}
+
+.fases{display:grid;gap:clamp(14px,2vw,20px);margin-top:clamp(34px,4.6vw,56px);counter-reset:f}
+@media(min-width:880px){.fases{grid-template-columns:repeat(3,1fr)}}
+.fase{position:relative;overflow:hidden;border:1px solid var(--line-hard);border-radius:18px;
+  padding:clamp(24px,3vw,34px);background:#FFFFFF05;counter-increment:f}
+.fase::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(115deg,transparent 42%,#D6A54426 50%,transparent 58%);
+  transform:translateX(-120%);animation:deslizaLuz 7s var(--ease) infinite;
+  animation-delay:calc(var(--i,0) * 1.1s)}
+@media(prefers-reduced-motion:reduce){.fase::after{animation:none}}
+.fase-n{font-family:var(--data);font-size:.6rem;letter-spacing:.2em;color:var(--gold);
+  opacity:.7;margin-bottom:16px}
+.fase-n::before{content:"0" counter(f)}
+.fase h3{margin:0;font-size:clamp(1.5rem,3.6vw,2.05rem);letter-spacing:-.04em;font-weight:800;
+  text-transform:uppercase}
+.fase-q{display:block;margin:10px 0 14px;font-family:var(--alma);font-style:italic;
+  font-weight:300;font-size:clamp(1rem,2.3vw,1.15rem);color:var(--gold-hi);line-height:1.35}
+.fase p{margin:0;font-size:clamp(.87rem,1.9vw,.95rem);line-height:1.62;color:var(--bone-mute)}
+.fase p b{color:var(--bone);font-weight:600}
+
+/* Los ads no son una cuarta fase: son la capa que multiplica las tres. */
+.ads{position:relative;overflow:hidden;margin-top:clamp(18px,2.4vw,26px);
+  border:1px solid #D6A54455;border-radius:18px;padding:clamp(24px,3.2vw,36px);
+  background:linear-gradient(120deg,#D6A5441c,#5B4A9C14);
+  display:grid;gap:clamp(12px,2vw,22px);align-items:center}
+@media(min-width:820px){.ads{grid-template-columns:auto 1fr}}
+.ads::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(115deg,transparent 44%,#F2D39130 50%,transparent 56%);
+  transform:translateX(-120%);animation:deslizaLuz 5.5s var(--ease) infinite}
+@media(prefers-reduced-motion:reduce){.ads::after{animation:none}}
+.ads-t{font-size:clamp(1.7rem,5vw,2.9rem);letter-spacing:-.05em;font-weight:900;
+  line-height:.98;white-space:nowrap}
+.ads-t small{display:block;font-family:var(--data);font-size:.24em;font-weight:500;
+  letter-spacing:.2em;color:var(--gold);margin-bottom:.5em;white-space:normal}
+.ads p{margin:0;font-size:clamp(.9rem,2vw,1rem);line-height:1.6;color:var(--bone-mute)}
+.ads p b{color:var(--bone)}
 
 /* ── El sistema en marcha ───────────────────────────────────────── */
-.flujo{display:grid;grid-template-columns:repeat(auto-fit,minmax(128px,1fr));gap:10px;margin-top:clamp(26px,4vw,44px)}
+.flujo{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(186px,100%),1fr));
+  gap:10px;margin-top:clamp(26px,4vw,44px);align-items:stretch}
 .nodo{
-  border:1px solid var(--line);border-radius:14px;padding:16px 13px;background:var(--card);
-  text-align:center;position:relative;opacity:.38;
+  border:1px solid var(--line);border-radius:14px;padding:18px 15px;background:var(--card);
+  text-align:left;position:relative;opacity:.38;display:flex;flex-direction:column;
   transition:opacity .5s var(--ease),border-color .5s var(--ease),transform .5s var(--ease),background .5s var(--ease);
 }
 .nodo.on{opacity:1;border-color:var(--gold);transform:translateY(-4px);
   background:linear-gradient(165deg,#1B1626,var(--card));box-shadow:0 0 34px -8px #D6A54455}
 .nodo i{display:block;font-family:var(--data);font-size:.52rem;letter-spacing:.16em;color:var(--gold);margin-bottom:9px;font-style:normal}
 .nodo b{display:block;font-size:clamp(.8rem,1.9vw,.9rem);font-weight:700;letter-spacing:-.02em;line-height:1.15}
-.nodo span{display:block;font-size:.7rem;color:var(--bone-faint);margin-top:5px;line-height:1.35}
+.nodo span{display:block;font-size:.72rem;color:var(--bone-mute);margin-top:6px;line-height:1.4}
+.nodo ul{list-style:none;margin:12px 0 0;padding:12px 0 0;border-top:1px solid var(--line);
+  display:grid;gap:6px}
+.nodo li{display:grid;grid-template-columns:9px 1fr;gap:8px;align-items:start;
+  font-family:var(--data);font-size:.58rem;letter-spacing:.05em;color:var(--bone-faint);line-height:1.4}
+.nodo li::before{content:"";width:9px;height:1px;background:var(--gold);opacity:.7;margin-top:.62em}
 
 /* ── Testimonios: carrusel ──────────────────────────────────────── */
 .carr{position:relative;margin-top:clamp(26px,4vw,44px)}
@@ -336,43 +486,21 @@ body > *{position:relative;z-index:1}
 .mq-holo{padding-block:5px}
 .mq-holo .mq-t{gap:11px}
 .cuenta{
-  flex:none;width:clamp(232px,64vw,302px);
-  position:relative;isolation:isolate;overflow:hidden;
+  flex:none;width:clamp(228px,62vw,296px);
+  position:relative;isolation:isolate;overflow:hidden;border-radius:14px;
+  border:1px solid #D6A54430;background:#0C0A18;line-height:0;
+  transition:transform .35s var(--ease),border-color .35s var(--ease);
 }
-.cuenta::before{                      /* marco holográfico */
-  content:"";position:absolute;inset:0;border-radius:16px;pointer-events:none;z-index:2;
-  border:1px solid #D6A54473;
-  box-shadow:inset 0 0 26px #D6A5440f, 0 0 22px -6px #D6A54444;
-}
-.cuenta::after{                       /* destello que barre */
-  content:"";position:absolute;inset:0;border-radius:16px;pointer-events:none;z-index:3;
-  background:linear-gradient(102deg,transparent 40%,#F2D3912e 47%,#FFF6DE3d 50%,#F2D3912e 53%,transparent 60%);
+.cuenta:hover{transform:translateY(-4px);border-color:#D6A54480}
+.cuenta::after{                       /* un solo destello, muy tenue */
+  content:"";position:absolute;inset:0;pointer-events:none;z-index:2;
+  background:linear-gradient(102deg,transparent 42%,#F2D39122 48%,#FFF6DE2e 50%,#F2D39122 52%,transparent 58%);
   background-size:280% 100%;background-position:150% 0;
-  animation:holoCarta 4.6s linear infinite;animation-delay:var(--dh,0s);
+  animation:holoCarta 5.4s linear infinite;animation-delay:var(--dh,0s);
 }
 @keyframes holoCarta{0%{background-position:150% 0}55%,100%{background-position:-60% 0}}
-.cuenta i.tick{position:absolute;width:9px;height:9px;border:1.4px solid #F2D39199;z-index:3;pointer-events:none}
-.cuenta i.ai{top:5px;left:5px;border-right:0;border-bottom:0;border-radius:5px 0 0 0}
-.cuenta i.ad{top:5px;right:5px;border-left:0;border-bottom:0;border-radius:0 5px 0 0}
-.cuenta i.bi{bottom:5px;left:5px;border-right:0;border-top:0;border-radius:0 0 0 5px}
-.cuenta i.bd{bottom:5px;right:5px;border-left:0;border-top:0;border-radius:0 0 5px 0}
-@media(prefers-reduced-motion:reduce){.cuenta::after{animation:none;opacity:.25}}
-.cuenta{border-radius:16px;padding:9px;
-  background:linear-gradient(165deg,#191333,#0C0A18);
-  transition:transform .35s var(--ease)}
-.cuenta:hover{transform:translateY(-4px)}
-.cuenta > *{position:relative;z-index:1}
-.aro{width:100%;border-radius:11px;overflow:hidden;
-  padding:1.5px;background:conic-gradient(from 150deg,#F0B429,#E1306C,#C13584,#833AB4,#F0B429)}
-.aro{height:auto}
-.aro .ph{width:100%;border-radius:10px;font-size:12px}
-.cuenta-pie{display:flex;align-items:baseline;gap:8px;padding:9px 5px 3px}
-.cuenta-a{font-size:clamp(.7rem,1.6vw,.79rem);font-weight:700;letter-spacing:-.02em;
-  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;min-width:0}
-.cuenta-n{display:none}
-.cuenta-s{font-family:var(--data);font-size:clamp(.58rem,1.4vw,.66rem);font-weight:700;
-  color:var(--gold-hi);flex:none;white-space:nowrap}
-.cuenta-s i{font-style:normal;font-weight:400;color:var(--bone-ghost);font-size:.85em}
+@media(prefers-reduced-motion:reduce){.cuenta::after{animation:none;opacity:.18}}
+.cuenta .ph{width:100%;border-radius:0;display:block;font-size:12px}
 
 /* B · Mini portadas con el monto */
 .portadas{display:grid;grid-template-columns:repeat(auto-fill,minmax(clamp(210px,30vw,300px),1fr));gap:11px}
@@ -383,7 +511,7 @@ body > *{position:relative;z-index:1}
 .junto:hover{border-color:var(--line-hard);transform:translateY(-4px)}
 .junto .ph{width:100%;aspect-ratio:4/3;border-radius:0;font-size:15px}
 .junto .ph.cargada{aspect-ratio:auto}
-.aro .ph:not(.cargada){aspect-ratio:1.3}
+.cuenta .ph:not(.cargada){aspect-ratio:1.3}
 .junto-v{position:absolute;left:0;right:0;bottom:0;padding:26px 12px 11px;
   background:linear-gradient(180deg,transparent,#07060Cee 62%)}
 .junto-v b{display:block;font-size:.76rem;font-weight:700;letter-spacing:-.02em}
@@ -654,24 +782,36 @@ body > *{position:relative;z-index:1}
 .extra p{margin:0;font-size:.84rem;color:var(--bone-faint);line-height:1.5}
 
 /* ── Quién está detrás ─────────────────────────────────────────── */
-.quien{display:grid;grid-template-columns:1fr 1fr;gap:clamp(22px,4vw,52px);align-items:center}
+.quien{display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);
+  gap:clamp(22px,4vw,52px);align-items:center}
 @media(max-width:860px){.quien{grid-template-columns:1fr}}
-.mosaico{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+/* La principal manda y respeta su propia proporción: nunca se recorta.
+   Las dos opcionales se apilan a su lado, así el bloque no se vuelve una torre. */
+.mosaico{display:grid;grid-template-columns:1.32fr 1fr;gap:10px;align-content:start}
 .mosaico .ph{border-radius:14px}
-.mosaico .ph:first-child{grid-column:1/-1;aspect-ratio:16/11;border-radius:18px;font-size:30px}
-.mosaico .ph:not(:first-child){aspect-ratio:1;font-size:16px}
+.mosaico .ph:first-child{grid-column:1;grid-row:1 / span 2;border-radius:18px;font-size:26px}
+.mosaico .ph:first-child:not(.cargada){aspect-ratio:4/5}
+.mosaico .ph:not(:first-child){grid-column:2;aspect-ratio:1;font-size:14px}
+@media(max-width:520px){
+  .mosaico{grid-template-columns:1fr 1fr}
+  .mosaico .ph:first-child{grid-column:1/-1;grid-row:auto}
+  .mosaico .ph:not(:first-child){grid-column:auto}
+}
 .credo{list-style:none;margin:clamp(20px,3vw,30px) 0 0;padding:0;display:grid;gap:2px}
 .credo li{display:grid;grid-template-columns:clamp(74px,13vw,104px) 1fr;gap:clamp(12px,2.4vw,20px);
   align-items:baseline;padding:clamp(11px,2vw,15px) 0;border-top:1px solid var(--line-soft)}
 .credo li:first-child{border-top:0}
-.credo b{font-family:var(--data);font-weight:700;letter-spacing:-.045em;
-  font-size:clamp(1.15rem,3.2vw,1.72rem);line-height:1;font-variant-numeric:tabular-nums;
+.credo b{font-family:var(--data);font-weight:700;letter-spacing:-.045em;white-space:nowrap;
+  font-size:clamp(1.15rem,3.2vw,1.72rem);line-height:1.1;font-variant-numeric:tabular-nums;
   background:linear-gradient(175deg,var(--bone) 26%,var(--gold));
   -webkit-background-clip:text;background-clip:text;color:transparent}
-.credo span{font-size:clamp(.85rem,2vw,.95rem);color:var(--bone-mute);line-height:1.5}
-.credo span em{font-style:normal;color:var(--bone);font-weight:600}
+/* Ojo con el «>»: sin él, esta regla también encogía el <span data-count>
+   que va DENTRO del número, y «$1.5M» salía partido en tres tamaños. */
+.credo > li > span{font-size:clamp(.85rem,2vw,.95rem);color:var(--bone-mute);line-height:1.5}
+.credo > li > span em{font-style:normal;color:var(--bone);font-weight:600}
+.credo b span{font:inherit;letter-spacing:inherit;color:inherit;display:inline}
 .credo li.doble{grid-template-columns:1fr}
-.credo li.doble span{font-family:var(--alma);font-style:italic;font-weight:300;
+.credo li.doble > span{font-family:var(--alma);font-style:italic;font-weight:300;
   font-size:clamp(1rem,2.4vw,1.2rem);color:var(--gold-hi);line-height:1.45}
 
 /* ── Filtro ─────────────────────────────────────────────────────── */
@@ -684,8 +824,17 @@ body > *{position:relative;z-index:1}
   font-size:.76rem;flex:none;font-family:var(--data)}
 .fcol.si h3 em{background:var(--gold);color:#150F02}
 .fcol.no h3 em{background:#F4EFE614;color:var(--bone-faint)}
-.fcol ul{list-style:none;margin:0;padding:0;display:grid;gap:12px}
-.fcol li{font-size:clamp(.85rem,2vw,.9rem);line-height:1.5;color:var(--bone-mute)}
+.fcol ul{list-style:none;margin:0;padding:0;display:grid;gap:13px}
+.fcol li{display:grid;grid-template-columns:15px 1fr;gap:11px;align-items:start;
+  font-size:clamp(.86rem,2vw,.93rem);line-height:1.5;color:var(--bone-mute)}
+.fcol li::before{content:"";width:15px;height:15px;border-radius:50%;margin-top:.22em;
+  background:no-repeat center/9px 9px}
+.fcol.si li::before{
+  background-color:#D6A5441F;box-shadow:inset 0 0 0 1px #D6A54455;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none' stroke='%23D6A544' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2 6.4l2.6 2.6L10 3.4'/%3E%3C/svg%3E")}
+.fcol.no li::before{
+  background-color:#C97B6E1A;box-shadow:inset 0 0 0 1px #C97B6E44;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none' stroke='%23C97B6E' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M3 3l6 6M9 3l-6 6'/%3E%3C/svg%3E")}
 .fcol.no li{color:var(--bone-faint)}
 
 /* ── Agenda final ───────────────────────────────────────────────── */
@@ -894,9 +1043,8 @@ body > *{position:relative;z-index:1}
     </h1>
 
     <p class="hero-sub rv" style="--d:120ms">
-      <b>No somos una agencia: somos una consultora.</b> No te llevamos los anuncios —
-      te instalamos el sistema completo, empezando por tu <b>segundo cerebro de IA</b>
-      entrenado en tu voz. El negocio queda siendo tuyo.
+      Con un negocio que se adapta a tu vida y una <b>marca de referente</b> en tu sector.
+      Porque la era de la atención terminó: <b>hoy gana la confianza.</b>
     </p>
 
     <div class="rv" style="--d:160ms;margin-top:clamp(14px,2.6vw,24px)">
@@ -929,7 +1077,9 @@ body > *{position:relative;z-index:1}
 </header>
 
 <!-- ═══ LA FRANJA · prueba social inmediata ═══ -->
-<section class="franja" data-si-vacio>
+<!-- Sin data-si-vacio: las tarjetas llevan nombre, cifra y plazo. Las caras
+     son opcionales y caen a la inicial, así que la franja nunca está vacía. -->
+<section class="franja">
   <p class="franja-h">Algunos de los que ya lo lograron</p>
   <div class="mq" style="--sp:88s"><div class="mq-t" id="franja"
     data-galeria="caras" data-galeria-titulo="Caras de la franja"></div></div>
@@ -985,97 +1135,166 @@ body > *{position:relative;z-index:1}
 <!-- ═══ EL PROBLEMA ═══ -->
 <section class="sect">
   <div class="wrap">
-    <div class="eyebrow rv">Por qué estás estancado</div>
-    <h2 class="h-sect rv" style="--d:60ms">Tienes el don. <em class="alma">Y aun así no despega.</em></h2>
-    <p class="lede rv" style="--d:120ms">De 220 negocios holísticos, casi todos llegaron atrapados en una de estas dos.</p>
+    <div class="eyebrow rv">El problema</div>
+    <h2 class="h-sect rv" style="--d:60ms">Tu negocio no está roto.
+      <em class="alma">Está sobrecargado.</em></h2>
+    <p class="lede rv" style="--d:120ms">De 220 negocios holísticos que hemos abierto por dentro,
+      casi todos llegaron con las mismas tres escenas. <b>Mira si reconoces alguna:</b></p>
 
-    <div class="trampas">
-      <article class="trampa rv">
-        <div class="trampa-n">Trampa 01</div>
-        <h3>El sueño sin sistema</h3>
-        <p>Tienes el don y los testimonios. Pero vives de referidos y de meses buenos
-          que no se repiten. Tu talento nunca fue el problema.</p>
-      </article>
-      <article class="trampa rv" style="--d:110ms">
-        <div class="trampa-n">Trampa 02</div>
-        <h3>El sistema sin alma</h3>
-        <p>Compraste el curso de embudos y copiaste los hooks de siempre. Ahora vendes,
-          pero suenas como cualquiera y ya no te reconoces.</p>
-      </article>
-    </div>
-  </div>
-</section>
+    <div class="dolor">
+      <div class="dol rv" style="--d:180ms">
+        <div class="dol-t">Tu contenido</div>
+        <ul>
+          <li>Publicas <b>todos los días</b> y el mes que más publicaste no fue el que más facturaste.</li>
+          <li>Un reel se dispara, entran cuatrocientos seguidores <b>y ni una sola conversación de venta</b>.</li>
+          <li>Te enteras de que algo funcionó <b>cuando ya pasó</b>, y no sabes repetirlo.</li>
+          <li>Le hablas a todo el mundo, así que <b>nadie siente que le hablas a él</b>.</li>
+        </ul>
+      </div>
 
-<!-- ═══ LOS 3 PILARES ═══ -->
-<section class="sect velo" id="metodo">
-  <div class="mandala-fondo" aria-hidden="true"><svg class="mandala" viewBox="0 0 400 400" fill="none" stroke="currentColor" aria-hidden="true"><defs><radialGradient id="nucleoM"><stop offset="0" stop-color="#F2D391" stop-opacity=".55"/><stop offset="1" stop-color="#D6A544" stop-opacity="0"/></radialGradient></defs><g class="lento" stroke-width="1"><line x1="200.00" y1="32.00" x2="200.00" y2="22.00"/><line x1="284.00" y1="54.51" x2="289.00" y2="45.85"/><line x1="345.49" y1="116.00" x2="354.15" y2="111.00"/><line x1="368.00" y1="200.00" x2="378.00" y2="200.00"/><line x1="345.49" y1="284.00" x2="354.15" y2="289.00"/><line x1="284.00" y1="345.49" x2="289.00" y2="354.15"/><line x1="200.00" y1="368.00" x2="200.00" y2="378.00"/><line x1="116.00" y1="345.49" x2="111.00" y2="354.15"/><line x1="54.51" y1="284.00" x2="45.85" y2="289.00"/><line x1="32.00" y1="200.00" x2="22.00" y2="200.00"/><line x1="54.51" y1="116.00" x2="45.85" y2="111.00"/><line x1="116.00" y1="54.51" x2="111.00" y2="45.85"/></g><circle cx="200" cy="200" r="162" stroke-width="1"/><circle cx="200" cy="200" r="104" stroke-width=".8" opacity=".5"/><g class="late" stroke-width=".9" opacity=".75"><circle cx="200" cy="200" r="30"/><circle cx="200.00" cy="170.00" r="30"/><circle cx="225.98" cy="185.00" r="30"/><circle cx="225.98" cy="215.00" r="30"/><circle cx="200.00" cy="230.00" r="30"/><circle cx="174.02" cy="215.00" r="30"/><circle cx="174.02" cy="185.00" r="30"/></g><circle cx="200" cy="200" r="46" fill="url(#nucleoM)" stroke="none"/></svg></div>
-  <div class="wrap">
-    <div class="mandala-sello rv" aria-hidden="true">
-      <span class="ph" data-res="mandala-marca" data-res-tipo="imagen" data-res-opcional
-        data-res-label="Mandala de marca (original)"
-        data-res-nota="Sube tu PNG cuadrado si prefieres el original al dibujo vectorial."><span>MANDALA</span></span>
-      <svg class="mandala" viewBox="0 0 400 400" fill="none" stroke="currentColor" aria-hidden="true"><defs><radialGradient id="nucleoS"><stop offset="0" stop-color="#F2D391" stop-opacity=".55"/><stop offset="1" stop-color="#D6A544" stop-opacity="0"/></radialGradient></defs><g class="lento" stroke-width="1"><line x1="200.00" y1="32.00" x2="200.00" y2="22.00"/><line x1="284.00" y1="54.51" x2="289.00" y2="45.85"/><line x1="345.49" y1="116.00" x2="354.15" y2="111.00"/><line x1="368.00" y1="200.00" x2="378.00" y2="200.00"/><line x1="345.49" y1="284.00" x2="354.15" y2="289.00"/><line x1="284.00" y1="345.49" x2="289.00" y2="354.15"/><line x1="200.00" y1="368.00" x2="200.00" y2="378.00"/><line x1="116.00" y1="345.49" x2="111.00" y2="354.15"/><line x1="54.51" y1="284.00" x2="45.85" y2="289.00"/><line x1="32.00" y1="200.00" x2="22.00" y2="200.00"/><line x1="54.51" y1="116.00" x2="45.85" y2="111.00"/><line x1="116.00" y1="54.51" x2="111.00" y2="45.85"/></g><circle cx="200" cy="200" r="162" stroke-width="1"/><circle cx="200" cy="200" r="104" stroke-width=".8" opacity=".5"/><g class="late" stroke-width=".9" opacity=".75"><circle cx="200" cy="200" r="30"/><circle cx="200.00" cy="170.00" r="30"/><circle cx="225.98" cy="185.00" r="30"/><circle cx="225.98" cy="215.00" r="30"/><circle cx="200.00" cy="230.00" r="30"/><circle cx="174.02" cy="215.00" r="30"/><circle cx="174.02" cy="185.00" r="30"/></g><circle cx="200" cy="200" r="46" fill="url(#nucleoS)" stroke="none"/></svg>
-    </div>
-    <div class="eyebrow center rv" style="justify-content:center">Cómo lo resolvemos</div>
-    <h2 class="h-sect rv" style="--d:60ms;text-align:center">Tres pilares. <em class="alma">Uno no lo tiene nadie.</em></h2>
-    <p class="lede center rv" style="--d:120ms">Pasa el cursor por cualquier punto.</p>
+      <div class="dol rv" style="--d:240ms">
+        <div class="dol-t">Tu agenda</div>
+        <ul>
+          <li>Cada mes <b>vuelves a empezar de cero</b> buscando quién compra.</li>
+          <li>Tus mejores meses son también <b>los que más te vaciaron</b>.</li>
+          <li>Si te enfermas una semana, <b>el negocio se detiene contigo</b>.</li>
+          <li>Bajas el precio para llenar el cupo y acabas atendiendo <b>a quien no debiste aceptar</b>.</li>
+        </ul>
+      </div>
 
-    <div class="orbita-caja">
-      <svg class="orbita" id="orbita" viewBox="0 0 520 520" role="img"
-        aria-label="El método en tres órbitas: oferta, segundo cerebro de IA y conversión"></svg>
-      <div class="orbita-lado">
-        <div id="pilarChips" style="display:grid;gap:8px"></div>
-        <div class="detalle" id="detalle"></div>
+      <div class="dol rv" style="--d:300ms">
+        <div class="dol-t">Tu sistema</div>
+        <ul>
+          <li>Catorce herramientas <b>que no se hablan entre sí</b>.</li>
+          <li>Un CRM que <b>nadie llena</b> y una lista que nadie usa.</li>
+          <li>Freelancers que entienden un pedazo <b>y ninguno el todo</b>.</li>
+          <li>O una agencia que, cuando se va, <b>se lleva el sistema con ella</b>.</li>
+        </ul>
       </div>
     </div>
+
+    <p class="remate rv" style="--d:360ms">Nada de esto se arregla trabajando más.<br>
+      <em>Ese es exactamente el problema: ya estás trabajando más.</em></p>
   </div>
 </section>
 
-<!-- ═══ EL SISTEMA EN MARCHA ═══ -->
-<section class="sect banda">
+<!-- ═══ LA TRANSICIÓN ═══ -->
+<section class="sect trans" id="transicion">
   <div class="wrap">
-    <div class="eyebrow center rv" style="justify-content:center">El circuito completo</div>
-    <h2 class="h-sect rv" style="--d:60ms;text-align:center">Así se ve <em class="alma">funcionando.</em></h2>
-
-    <div class="flujo" id="flujo">
-      <div class="nodo"><i>01</i><b>Tu segundo cerebro</b><span>Tu marca, entendida a fondo</span></div>
-      <div class="nodo"><i>02</i><b>Agentes de IA</b><span>Piensan y escriben con tu voz</span></div>
-      <div class="nodo"><i>03</i><b>Estrategia de contenido</b><span>Que atrae al cliente correcto</span></div>
-      <div class="nodo"><i>04</i><b>Anuncios</b><span>Alcance que no depende del algoritmo</span></div>
-      <div class="nodo"><i>05</i><b>Llamadas y cierre</b><span>Gente calificada, script dorado</span></div>
-    </div>
-    <p class="lede center rv" style="margin-top:26px">
-      Cinco piezas, en este orden. Cada cliente que cierras vuelve al segundo cerebro
-      y hace más preciso al siguiente ciclo.
+    <p class="trans-p rv">
+      No construimos <s>embudos que se vacían</s>, <s>agendas que te esclavizan</s>
+      ni <s>marcas que suenan a todas</s>.
+    </p>
+    <p class="trans-p dos rv" style="--d:140ms">
+      Construimos <em class="alma">imperios de referentes</em> — negocios que se sostienen
+      solos en el tiempo, con una marca tan auténtica que <b>en la era de la IA sea imposible
+      de copiar.</b>
     </p>
   </div>
 </section>
 
-<!-- ═══ LO QUE CAMBIA · gráfico ═══ -->
+<!-- ═══ QUIÉN ESTÁ DETRÁS ═══ -->
 <section class="sect">
-  <div class="wrap">
-    <div class="eyebrow rv">Lo que cambia</div>
-    <h2 class="h-sect rv" style="--d:60ms">Dos caminos. <em class="alma">Uno tiene techo.</em></h2>
-
-    <div class="gcaja rv" style="--d:120ms;margin-top:clamp(24px,4vw,40px)">
-      <h3>Cobrar por sesión vs. construir el sistema</h3>
-      <p class="sub">Facturación mensual como múltiplo de la que tienes hoy, a lo largo de seis meses.</p>
-      <svg class="linea" id="graf" viewBox="0 0 620 250" role="img"
-        aria-label="Comparación entre seguir cobrando por sesión y construir el sistema"></svg>
-      <div class="gtip" id="grafTip"></div>
-      <p class="gnota">Ilustración del modelo, no de un cliente concreto. Los resultados
-        dependen de tu punto de partida, tu mercado y tu ejecución.</p>
+  <div class="wrap quien">
+    <div class="mosaico rv">
+      <div class="ph entera" style="--hu:38" data-res="foto-marcelo" data-res-tipo="imagen"
+           data-res-label="Tu foto principal"
+           data-res-nota="Sube la que mejor te posicione: la caja se adapta a su proporción y no la recorta."><span>MARCELO</span></div>
+      <div class="ph" style="--hu:264" data-res="foto-escenario" data-res-tipo="imagen" data-res-opcional
+           data-res-label="Foto en escenario o evento" data-res-nota="Cuadrada."><span>EVENTO</span></div>
+      <div class="ph" style="--hu:20" data-res="foto-equipo" data-res-tipo="imagen" data-res-opcional
+           data-res-label="Foto con tu equipo" data-res-nota="Cuadrada."><span>EQUIPO</span></div>
     </div>
 
-    <div class="rv" style="--d:180ms;margin-top:clamp(28px,4vw,44px)">
-      <p class="logos-t">Traemos tus clientes desde donde ya están</p>
-      <div class="logos">
-        <span class="logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="2.5" y="2.5" width="19" height="19" rx="5.4"/><circle cx="12" cy="12" r="4.6"/><circle cx="17.6" cy="6.4" r="1.15" fill="currentColor" stroke="none"/></svg><span>Instagram</span></span>
-        <span class="logo"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23 12s0-3.9-.5-5.7a3 3 0 0 0-2.1-2.1C18.6 3.7 12 3.7 12 3.7s-6.6 0-8.4.5a3 3 0 0 0-2.1 2.1C1 8.1 1 12 1 12s0 3.9.5 5.7a3 3 0 0 0 2.1 2.1c1.8.5 8.4.5 8.4.5s6.6 0 8.4-.5a3 3 0 0 0 2.1-2.1c.5-1.8.5-5.7.5-5.7M9.8 15.5v-7l5.7 3.5z"/></svg><span>YouTube</span></span>
-        <span class="logo"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.9 4.5c2.6 0 4.2 3.3 5.1 5.2.9-1.9 2.5-5.2 5.1-5.2 3 0 5.4 2.9 5.4 7s-2.4 7-5.4 7c-2.8 0-4.5-3.3-5.1-4.8-.6 1.5-2.3 4.8-5.1 4.8-3 0-5.4-2.9-5.4-7s2.4-7 5.4-7m0 2.5C5.3 7 4 8.9 4 11.5S5.3 16 6.9 16c1.6 0 3-2.5 3.7-4.1C9.9 10.2 8.6 7 6.9 7m10.2 0c-1.7 0-3 3.2-3.7 4.9.7 1.6 2.1 4.1 3.7 4.1 1.6 0 2.9-1.9 2.9-4.5S18.7 7 17.1 7"/></svg><span>Meta Ads</span></span>
-        <span class="logo"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2m0 2a8 8 0 1 1-4.2 14.8l-.4-.2-2.9.7.8-2.8-.2-.4A8 8 0 0 1 12 4m-3.6 4.3c-.2 0-.5 0-.7.4-.2.4-.9.9-.9 2.2s.9 2.5 1 2.7c.1.2 1.8 2.9 4.4 3.9 2.2.8 2.6.7 3.1.6.5 0 1.5-.6 1.7-1.2s.2-1.1.2-1.2c-.1-.1-.3-.2-.6-.4l-2-1c-.3-.1-.5-.1-.7.1l-.9 1.2c-.2.2-.3.2-.6.1a6.5 6.5 0 0 1-3.3-2.9c-.2-.4 0-.6.2-.8l.5-.6c.1-.2.2-.3.3-.5s0-.4 0-.5l-.9-2.1c-.2-.6-.4-.5-.6-.5z"/></svg><span>WhatsApp</span></span>
-        <span class="logo"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.6 5.6A17 17 0 0 0 15.4 4.3l-.2.4a15.6 15.6 0 0 1 3.7 1.3 13.4 13.4 0 0 0-4.6-1.5 14.7 14.7 0 0 0-4.6 0A13.5 13.5 0 0 0 5 6a15.6 15.6 0 0 1 3.8-1.3l-.2-.4A17 17 0 0 0 4.4 5.6C1.7 9.6 1 13.6 1.3 17.5a17 17 0 0 0 5.2 2.6l1-1.7a11 11 0 0 1-1.7-.8l.4-.3a12.2 12.2 0 0 0 10.4 0l.4.3a11 11 0 0 1-1.7.8l1 1.7a17 17 0 0 0 5.2-2.6c.4-4.5-.7-8.5-2.9-11.9M8.7 15.1c-1 0-1.9-.9-1.9-2.1s.8-2.1 1.9-2.1 1.9 1 1.9 2.1-.8 2.1-1.9 2.1m6.6 0c-1 0-1.9-.9-1.9-2.1s.8-2.1 1.9-2.1 1.9 1 1.9 2.1-.8 2.1-1.9 2.1"/></svg><span>Discord</span></span>
+    <div>
+      <div class="eyebrow rv">Quién está detrás</div>
+      <h2 class="h-sect rv" style="--d:60ms">Marcelo <em class="alma">Andrés Proaño.</em></h2>
+
+      <ul class="credo rv" style="--d:120ms">
+        <li><b>$<span data-count="1.5" data-dec="1" data-crudo>0.0</span>M</b>
+            <span>facturados en línea con este negocio</span></li>
+        <li><b>$<span data-count="500">0</span>K</b>
+            <span>invertidos en publicidad propia, <em>no en teoría</em></span></li>
+        <li><b><span data-count="220">0</span>+</b>
+            <span>negocios holísticos escalados en <em>más de 20 países</em></span></li>
+        <li><b><span data-count="1500">0</span></b>
+            <span>personas en sus eventos presenciales: <em>sabe llenar salas</em></span></li>
+        <li class="doble"><span>Psicólogo, formado con Tony Robbins, en PNL, hipnosis, Reiki y
+          registros akáshicos — y también en anuncios, CRM y cash collect.
+          Casi nadie está en los dos mundos.</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ LA REFLEXIÓN ═══ -->
+<section class="sect banda" id="reflexion">
+  <div class="wrap">
+    <p class="lede center rv" style="margin-inline:auto;text-align:center;max-width:26ch;
+       font-family:var(--alma);font-style:italic;font-weight:300;
+       font-size:clamp(1.5rem,4.4vw,2.6rem);line-height:1.24;color:var(--gold-hi)">
+      ¿Quién te dijo que tenía que ser difícil?
+    </p>
+    <p class="lede center rv" style="--d:120ms;margin-inline:auto;text-align:center;margin-top:22px">
+      Complicarlo no te hace más profesional. Te quita el tiempo para lo único que nadie
+      puede hacer por ti: <b>estar presente con quien viene a transformarse.</b>
+    </p>
+  </div>
+
+  <div class="tira rv" style="--d:200ms" id="tira"
+       data-galeria="vida" data-galeria-titulo="Fotos de vida"></div>
+
+  <p class="lede center rv" style="--d:260ms;margin-top:clamp(26px,3.4vw,38px)">
+    Ese es el punto. <b class="mark">Un negocio que se adapta a tu vida</b>, no una vida que
+    se adapta a tu negocio.
+  </p>
+</section>
+
+<!-- ═══ EL SISTEMA EN MARCHA ═══ -->
+<section class="sect banda" id="circuito">
+  <div class="wrap">
+    <div class="sol-marca rv">La solución</div>
+    <p class="sol-nuevo rv" style="--d:60ms">Esto no es una versión mejorada de lo que ya intentaste.
+      <b>Es otra forma de construir el negocio</b>, y funciona al revés que todo lo anterior.</p>
+
+    <h2 class="sol-h rv" style="--d:120ms">EL CIRCUITO DE ESCALADO
+      <em>Tres movimientos. En este orden.</em></h2>
+
+    <p class="sol-p rv" style="--d:180ms">Cada uno hace una sola cosa, y prepara al siguiente.
+      Por eso no depende de tu ánimo, de una fecha ni de que un video explote.</p>
+
+    <div class="fases">
+      <div class="fase rv" style="--d:240ms;--i:0">
+        <div class="fase-n"></div>
+        <h3>Atraer</h3>
+        <span class="fase-q">Contenido de micronicho.</span>
+        <p>Dejas de hablarle a todo el mundo. Publicas para <b>un micronicho concreto</b>, con sus
+          palabras y su situación exacta — y te encuentra justo quien puede pagarte, sin que
+          persigas a nadie.</p>
       </div>
+
+      <div class="fase rv" style="--d:300ms;--i:1">
+        <div class="fase-n"></div>
+        <h3>Conectar</h3>
+        <span class="fase-q">Perspectivas y filosofía del problema.</span>
+        <p>Aquí todavía no vendes: <b>cambias cómo ven su problema</b>. Cuando alguien entiende
+          su problema como tú lo entiendes, ya solo hay un sitio donde tiene sentido resolverlo.</p>
+      </div>
+
+      <div class="fase rv" style="--d:360ms;--i:2">
+        <div class="fase-n"></div>
+        <h3>Cerrar</h3>
+        <span class="fase-q">Offer docs y gatillos mentales de venta.</span>
+        <p>La oferta llega <b>escrita, clara y sin ambigüedad</b>, con los gatillos que hacen que
+          decidir hoy sea lo natural. No hace falta insistir: hace falta que se entienda.</p>
+      </div>
+    </div>
+
+    <div class="ads rv" style="--d:420ms">
+      <div class="ads-t"><small>Y todo esto, con esteroides</small>LOS ADS</div>
+      <p>Los tres movimientos funcionan solos. <b>Con pauta encima, funcionan a escala:</b>
+        amplificas solo lo que ya convirtió con tu dinero, no lo que crees que va a funcionar.
+        Ahí el circuito deja de depender del algoritmo — y empieza a depender de cuánto quieras invertir.</p>
     </div>
   </div>
 </section>
@@ -1085,19 +1304,13 @@ body > *{position:relative;z-index:1}
   <div class="wrap">
     <div class="eyebrow center rv" style="justify-content:center">La prueba</div>
     <h2 class="h-sect rv" style="--d:60ms;text-align:center">Gente real. <em class="alma">Cuentas reales.</em></h2>
-    <p class="lede center rv" style="--d:100ms">Búscalos en Instagram y pregúntales. Es lo mejor que puedes hacer antes de decidir.</p>
+    <p class="lede center rv" style="--d:100ms">Sus perfiles, tal cual están hoy.
+      <b>Búscalos y pregúntales</b> — es lo mejor que puedes hacer antes de decidir.</p>
 
   </div>
 
   <div class="mq mq-holo" style="--sp:74s"><div class="mq-t" id="fila1" data-galeria="cuentas" data-galeria-titulo="Cuentas de Instagram"></div></div>
   <div class="mq mq-holo" style="--sp:92s;margin-top:11px"><div class="mq-t" id="fila2"></div></div>
-
-  <div class="mq mq-holo" style="--sp:82s;margin-top:clamp(30px,4.5vw,50px)">
-    <div class="mq-t" id="gridPortadas" data-galeria="portadas" data-galeria-titulo="Resultados con cifra"></div>
-  </div>
-  <div class="mq mq-holo" style="--sp:104s;margin-top:11px">
-    <div class="mq-t" id="gridPortadas2"></div>
-  </div>
 </section>
 
 <!-- ═══ CAPTURAS ═══ -->
@@ -1122,17 +1335,6 @@ body > *{position:relative;z-index:1}
   </div>
 </section>
 
-<!-- ═══ EL MURO ═══ -->
-<section class="sect banda" id="muro" data-si-vacio>
-  <div class="wrap">
-    <div class="eyebrow center rv" style="justify-content:center">Cara a cara</div>
-    <h2 class="h-sect rv" style="--d:60ms;text-align:center">No los conozco <em class="alma">por pantalla.</em></h2>
-    <p class="lede center rv" style="--d:100ms">Gente con la que me he sentado. Pasa el cursor por cualquiera.</p>
-    <div class="muro rv" style="--d:140ms" id="gridJuntos"
-      data-galeria="juntos" data-galeria-titulo="Fotos con clientes"></div>
-  </div>
-</section>
-
 <!-- ═══ MAPA ═══ -->
 <section class="sect banda" id="mapa">
   <div class="wrap">
@@ -1150,66 +1352,43 @@ body > *{position:relative;z-index:1}
   </div>
 </section>
 
-<!-- ═══ EL ACOMPAÑAMIENTO ═══ -->
-<section class="sect velo" id="acompanamiento">
+<!-- ═══ QUÉ PASA EN LA LLAMADA ═══ -->
+<section class="sect velo" id="llamada">
   <div class="wrap">
-    <div class="eyebrow rv">Cómo trabajamos juntos</div>
-    <h2 class="h-sect rv" style="--d:60ms">Sesiones <em class="alma">todos los días.</em></h2>
-    <p class="lede rv" style="--d:120ms">Ni curso grabado ni agencia que te gestiona las cosas.
-      Es <b style="color:var(--gold-hi)">consultoría</b>: te sentamos con un experto distinto cada día
-      hasta que el sistema sea tuyo y sepas operarlo sin nosotros.</p>
+    <div class="eyebrow center rv" style="justify-content:center">La llamada</div>
+    <h2 class="h-sect rv" style="--d:60ms;text-align:center">45 minutos.
+      <em class="alma">Y sales con el diagnóstico, cerremos o no.</em></h2>
+    <p class="lede center rv" style="--d:120ms;margin-inline:auto;text-align:center">
+      No es una llamada para convencerte de nada. Es donde abrimos tu negocio y te decimos
+      qué encontramos.</p>
 
-    <div class="g2" style="grid-template-columns:.85fr 1.15fr;align-items:center;margin-top:clamp(22px,3.5vw,36px)">
-      <div class="rv">
-        <svg class="rueda" id="rueda" viewBox="0 0 200 200" role="img"
-          aria-label="Rueda semanal: un experto distinto cada día"></svg>
-        <div class="rueda-det" id="ruedaDet"></div>
-      </div>
-      <div class="gcaja rv" style="--d:100ms">
-        <h3>Cinco días, cinco expertos</h3>
-        <p class="sub">Pasa el cursor por la rueda. Cada día del programa tiene su consultor
-          y su tema: nadie improvisa contigo.</p>
-        <div class="logos" style="justify-content:flex-start;gap:clamp(14px,3vw,26px)">
-          <span class="logo"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.6 5.6A17 17 0 0 0 15.4 4.3l-.2.4a15.6 15.6 0 0 1 3.7 1.3 13.4 13.4 0 0 0-4.6-1.5 14.7 14.7 0 0 0-4.6 0A13.5 13.5 0 0 0 5 6a15.6 15.6 0 0 1 3.8-1.3l-.2-.4A17 17 0 0 0 4.4 5.6C1.7 9.6 1 13.6 1.3 17.5a17 17 0 0 0 5.2 2.6l1-1.7a11 11 0 0 1-1.7-.8l.4-.3a12.2 12.2 0 0 0 10.4 0l.4.3a11 11 0 0 1-1.7.8l1 1.7a17 17 0 0 0 5.2-2.6c.4-4.5-.7-8.5-2.9-11.9M8.7 15.1c-1 0-1.9-.9-1.9-2.1s.8-2.1 1.9-2.1 1.9 1 1.9 2.1-.8 2.1-1.9 2.1m6.6 0c-1 0-1.9-.9-1.9-2.1s.8-2.1 1.9-2.1 1.9 1 1.9 2.1-.8 2.1-1.9 2.1"/></svg><span>Discord</span></span>
-          <span class="logo"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="9.2" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M12 2.8v18.4M2.8 12h18.4M5.5 5.5l13 13M18.5 5.5l-13 13" stroke="currentColor" stroke-width="1.1" opacity=".55"/><circle cx="12" cy="12" r="3.1"/></svg><span>Loom</span></span>
-        </div>
-      </div>
+    <div class="llam">
+      <article class="llam-p rv">
+        <div class="llam-n">01</div>
+        <h3>El diagnóstico completo</h3>
+        <p>Abrimos tu negocio por dentro y encontramos el cuello de botella real: dónde se te
+          está yendo el dinero, dónde el tiempo, y <b>qué parte del sistema que usas hoy te está
+          desgastando</b> sin que lo veas.</p>
+      </article>
+
+      <article class="llam-p rv" style="--d:110ms">
+        <div class="llam-n">02</div>
+        <h3>La estrategia, paso a paso</h3>
+        <p>Qué instalaríamos exactamente, <b>en qué orden y en qué día</b>. No una promesa
+          general: la ruta concreta para tu negocio, con lo que cambia primero y por qué.</p>
+      </article>
+
+      <article class="llam-p rv" style="--d:220ms">
+        <div class="llam-n">03</div>
+        <h3>El programa por dentro</h3>
+        <p>Te enseñamos la plataforma, los agentes y las sesiones en vivo.
+          <b>Ves exactamente lo que recibes</b> antes de decidir nada — sin sorpresas después.</p>
+      </article>
     </div>
 
-    <div class="extras">
-      <div class="extra rv"><svg class="extra-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9.6 9.6 0 0 1-2.8-.4L3 21l1.5-4.6A8.2 8.2 0 0 1 3 11.5C3 6.8 7 3 12 3s9 3.8 9 8.5"/></svg><b>Discord privado</b><p>Chat ilimitado. Respuestas el mismo día, no la semana que viene.</p></div>
-      <div class="extra rv" style="--d:80ms"><svg class="extra-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2.5" y="5.5" width="14" height="13" rx="2.5"/><path d="M16.5 10.5 21.5 8v8l-5-2.5z"/></svg><b>Videos de Loom</b><p>Te grabamos la pantalla con tu caso concreto.</p></div>
-      <div class="extra rv" style="--d:160ms"><svg class="extra-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4.5" y="6.5" width="15" height="12" rx="3"/><path d="M9 3.5v3M15 3.5v3M2.5 11h2M19.5 11h2"/><circle cx="9.5" cy="12.5" r="1.2" fill="currentColor"/><circle cx="14.5" cy="12.5" r="1.2" fill="currentColor"/></svg><b>Software y agentes</b><p>Tu plataforma con los agentes de IA y el CRM, incluidos.</p></div>
-      <div class="extra rv" style="--d:240ms"><svg class="extra-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="9" cy="8.5" r="3.2"/><path d="M2.8 19.5a6.2 6.2 0 0 1 12.4 0"/><circle cx="17" cy="7" r="2.4"/><path d="M16.4 12.8a5.6 5.6 0 0 1 4.8 5.2"/></svg><b>Comunidad real</b><p>Otros holísticos escalando. Gente que entiende tu mundo.</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══ QUIÉN ESTÁ DETRÁS ═══ -->
-<section class="sect">
-  <div class="wrap quien">
-    <div class="mosaico rv">
-      <div class="ph" style="--hu:38" data-res="foto-marcelo" data-res-tipo="imagen"
-           data-res-label="Tu foto principal" data-res-nota="Horizontal 16:11. La que mejor te posicione."><span>MARCELO</span></div>
-      <div class="ph" style="--hu:264" data-res="foto-escenario" data-res-tipo="imagen" data-res-opcional
-           data-res-label="Foto en escenario o evento" data-res-nota="Cuadrada."><span>EVENTO</span></div>
-      <div class="ph" style="--hu:20" data-res="foto-equipo" data-res-tipo="imagen" data-res-opcional
-           data-res-label="Foto con tu equipo" data-res-nota="Cuadrada."><span>EQUIPO</span></div>
-    </div>
-
-    <div>
-      <div class="eyebrow rv">Quién está detrás</div>
-      <h2 class="h-sect rv" style="--d:60ms">No te lo cuenta <em class="alma">un teórico.</em></h2>
-
-      <ul class="credo rv" style="--d:120ms">
-        <li><b><span data-count="220">0</span>+</b><span>negocios holísticos escalados en <em>más de 20 países</em></span></li>
-        <li><b>$<span data-count="65">0</span>K</b><span>al mes de cash collect en <em>mi propio negocio</em>, hoy</span></li>
-        <li><b><span data-count="15">0</span></b><span>personas en mi equipo trabajando en esto <em>todos los días</em></span></li>
-        <li><b><span data-count="1500">0</span></b><span>personas en mis eventos presenciales: sé llenar salas, <em>no solo pantallas</em></span></li>
-        <li class="doble"><span>Entiendo los registros akáshicos, las constelaciones y las heridas
-          emocionales — y también los anuncios, el CRM y el cash collect. Casi nadie está en los dos mundos.</span></li>
-      </ul>
-    </div>
+    <p class="llam-pie rv" style="--d:300ms">Si al terminar no encajamos, te lo decimos ahí mismo
+      — y te llevas el diagnóstico igual. <b>Preferimos decirte que no hoy, que fallarte en seis
+      meses.</b></p>
   </div>
 </section>
 
@@ -1424,109 +1603,6 @@ const esc = t => String(t).replace(/[&<>"]/g, m => ({"&":"&amp;","<":"&lt;",">":
   addEventListener("resize", () => { cancelAnimationFrame(raf); medir(); RM ? pinta(0) : (raf = requestAnimationFrame(pinta)); });
 })();
 
-/* ── El método en órbita ────────────────────────────────────────── */
-const METODO = [
-  {n:"Tu oferta", sub:"Posicionamiento", ia:false, r:118, desde:-96, nodos:[
-    ["Micro nicho","El sitio exacto donde eres la única opción evidente."],
-    ["Promesa","Dicha con las palabras que tu cliente ya usa."],
-    ["Precio","El que vale tu transformación, no el que te da miedo."],
-  ]},
-  {n:"Segundo cerebro", sub:"La Biblia + agentes de IA", ia:true, r:176, desde:-104, nodos:[
-    ["La Biblia","Paradigmas, deseos y miedos de tu cliente ideal, por escrito."],
-    ["Agentes","Entrenados en tu voz, dentro de nuestro software privado."],
-    ["Guiones","Ángulos nuevos sin volver a quedarte en blanco."],
-    ["Criterio","Respuestas de DM resueltas como las darías tú."],
-  ]},
-  {n:"Conversión", sub:"Leads, llamadas y cierres", ia:false, r:234, desde:-100, nodos:[
-    ["Contenido","Epifanía situacional: se ven a sí mismos y se mueven."],
-    ["Anuncios","Alcance que no depende del algoritmo."],
-    ["Conversación","Estructura validada, sin perseguir a nadie."],
-    ["CRM","Cada lead con nombre, etapa y siguiente paso."],
-    ["Llamada","Calificada, no curiosa."],
-    ["Script dorado","Cerrar sin presionar y sin rogar."],
-  ]},
-];
-
-(() => {
-  const svg = $("#orbita"), det = $("#detalle"), chips = $("#pilarChips");
-  if(!svg) return;
-  const C = 260;
-  const pol = (a,r) => [C + r*Math.cos((a-90)*Math.PI/180), C + r*Math.sin((a-90)*Math.PI/180)];
-
-  let capas = "", radios = "";
-  METODO.forEach((cap, ci) => {
-    let nodos = "";
-    cap.nodos.forEach((nd, i) => {
-      const a = cap.desde + (360/cap.nodos.length)*i;
-      const [x,y] = pol(a, cap.r);
-      const [rx,ry] = pol(a, cap.r - 13);
-      radios += `<line class="radio" x1="${C}" y1="${C}" x2="${rx.toFixed(1)}" y2="${ry.toFixed(1)}"/>`;
-      const fuera = cap.r > 190;
-      const [ex,ey] = pol(a, cap.r + (fuera ? 24 : -24));
-      nodos += `<g class="nodo-g" data-c="${ci}" data-n="${i}">
-          <circle class="disco" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="12"/>
-          <text class="eti" x="${ex.toFixed(1)}" y="${(ey+3).toFixed(1)}">${esc(nd[0])}</text>
-        </g>`;
-    });
-    capas += `<g class="capa${cap.ia?" ia":""}" data-c="${ci}">
-        <circle class="aro-o" cx="${C}" cy="${C}" r="${cap.r}"/>${nodos}</g>`;
-  });
-
-  svg.innerHTML = `
-    <g class="gira-o">${radios}</g>
-    ${capas}
-    <circle cx="${C}" cy="${C}" r="62" fill="#12101E" stroke="#D6A54455" stroke-width="1.2"/>
-    <text class="nucleo-s" x="${C}" y="${C-16}">EL MÉTODO</text>
-    <text class="nucleo-t" x="${C}" y="${C+4}" font-size="17">Escalling™</text>
-    <text class="nucleo-s" x="${C}" y="${C+22}">3 CAPAS · 13 PIEZAS</text>`;
-
-  chips.innerHTML = METODO.map((c,i) => `
-    <button class="pilar-chip${c.ia?" ia":""}" data-c="${i}">
-      <i>0${i+1}</i><b>${esc(c.n)}</b><span>${c.nodos.length}</span>
-    </button>`).join("");
-
-  const inicio = {i:"El método", b:"Tres capas que se sostienen",
-    p:"La oferta te hace único. El segundo cerebro te multiplica. La conversión lo cobra."};
-  const pinta = (ci, ni) => {
-    if(ci == null) det.innerHTML = `<i>${esc(inicio.i)}</i><b>${esc(inicio.b)}</b><p>${esc(inicio.p)}</p>`;
-    else{
-      const c = METODO[ci], nd = c.nodos[ni];
-      det.innerHTML = `<i>${esc(c.n)}</i><b>${esc(nd[0])}</b><p>${esc(nd[1])}</p>`;
-    }
-  };
-  pinta(null);
-
-  $$(".nodo-g", svg).forEach(g => {
-    const act = () => {
-      $$(".nodo-g", svg).forEach(x => x.classList.remove("on"));
-      g.classList.add("on");
-      pinta(+g.dataset.c, +g.dataset.n);
-    };
-    g.addEventListener("pointerenter", act);
-    g.addEventListener("click", act);
-  });
-
-  let filtro = null;
-  const filtrar = ci => {
-    filtro = filtro === ci ? null : ci;
-    svg.classList.toggle("filtrando", filtro !== null);
-    $$(".capa", svg).forEach(c => c.classList.toggle("viva", +c.dataset.c === filtro));
-    $$(".pilar-chip", chips).forEach(b => b.classList.toggle("act", +b.dataset.c === filtro));
-    if(filtro !== null) pinta(filtro, 0); else pinta(null);
-  };
-  $$(".pilar-chip", chips).forEach(b => {
-    b.addEventListener("click", () => filtrar(+b.dataset.c));
-    b.addEventListener("pointerenter", () => {
-      if(filtro === null){
-        svg.classList.add("filtrando");
-        $$(".capa", svg).forEach(c => c.classList.toggle("viva", c.dataset.c === b.dataset.c));
-      }
-    });
-    b.addEventListener("pointerleave", () => {
-      if(filtro === null){ svg.classList.remove("filtrando"); $$(".capa", svg).forEach(c => c.classList.remove("viva")); }
-    });
-  });
-})();
 
 /* ── Circuito: los nodos se encienden en cadena ─────────────────── */
 (() => {
@@ -1787,16 +1863,11 @@ const PORTADAS = [
 
   /* A · cuentas, en dos filas que se deslizan a la izquierda */
   const tarjeta = ([ar,nom,nicho,segs],i) => `
-    <article class="cuenta" style="--dh:${(i%7)*.62}s">
-      <i class="tick ai"></i><i class="tick ad"></i><i class="tick bi"></i><i class="tick bd"></i>
-      <div class="aro"><span class="ph entera" style="--hu:${(i*47)%360}"
+    <article class="cuenta" style="--dh:${(i%7)*.62}s" title="@${esc(ar)} · ${esc(nicho)}">
+      <span class="ph entera" style="--hu:${(i*47)%360}"
         data-res="ig-${esc(ar)}" data-res-tipo="imagen" data-res-opcional
         data-res-label="Captura del perfil de @${esc(ar)}"
-        data-res-nota="La captura completa del perfil. Se muestra entera, sin recortar."><span>${esc(nicho)}</span></span></div>
-      <div class="cuenta-pie">
-        <span class="cuenta-a">@${esc(ar)}</span>
-        <span class="cuenta-s">${esc(segs)} <i>seg.</i></span>
-      </div>
+        data-res-nota="La captura completa del perfil, tal cual. Se muestra entera, sin recortar y sin marco."><span>@${esc(ar)}</span></span>
     </article>`;
   const mitad = Math.ceil(CUENTAS.length/2);
   pon("#fila1", CUENTAS.slice(0,mitad).map(tarjeta).join(""));
@@ -1845,6 +1916,16 @@ const PORTADAS = [
         data-res-nota="Archivo listo: funnel/fotos/${esc(archivo)}.jpg"><span>${esc(nom.split(" ")[0])}</span></span>
       <div class="tesela-v"><b>${esc(nom)}</b>${rol?`<span>${esc(rol)}</span>`:""}</div>
     </article>`).join(""));
+
+  /* La tira de vida: fotos de disfrute, todas opcionales */
+  const VIDA = ["En sesión", "En casa", "Viajando", "Con el equipo",
+                "En un evento", "Descansando", "Grabando", "En familia"];
+  pon("#tira", VIDA.map((que, i) => `
+    <figure class="vida">
+      <span class="ph" style="--hu:${(i*47+20)%360}" data-res="vida-${i+1}" data-res-tipo="imagen" data-res-opcional
+        data-res-label="Foto de vida ${i+1} · ${esc(que)}"
+        data-res-nota="Vertical 4:5. Nada de poses corporativas: la vida que el sistema te devuelve."><span>${esc(que)}</span></span>
+    </figure>`).join(""));
 
   /* La franja de transformaciones, bajo el botón del hero */
   const inicial = n => (n.trim()[0] || "·").toUpperCase();
@@ -2130,8 +2211,9 @@ const PORTADAS = [
   const textoDe = el => {
     const t = el.closest(".portada, .tesela, .cuenta, .captura");
     if(!t) return {n:"", s:""};
-    const n = t.querySelector(".portada-n, .tesela-v b, .cuenta-a, .captura-e")?.textContent.trim() || "";
-    const s = t.querySelector(".portada-c, .tesela-v span, .cuenta-s")?.textContent.trim() || "";
+    if(t.classList.contains("cuenta")) return {n: t.title || "", s: ""};
+    const n = t.querySelector(".portada-n, .tesela-v b, .captura-e")?.textContent.trim() || "";
+    const s = t.querySelector(".portada-c, .tesela-v span")?.textContent.trim() || "";
     return {n, s};
   };
   const pinta = () => {
