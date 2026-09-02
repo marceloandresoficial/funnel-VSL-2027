@@ -6,7 +6,7 @@
    ═══════════════════════════════════════════════════════════════════ */
 
 :root{
-  --sect:clamp(46px,7vw,104px);     /* bloques más juntos que en el resto */
+  --sect:clamp(30px,6vw,96px);      /* en móvil el suelo manda: 30px, no 46 */
   --gut:clamp(18px,4.5vw,44px);
   --nube:#171232;                    /* violeta profundo: rompe el negro */
   --nube-2:#1E1740;
@@ -801,7 +801,10 @@ body > *{position:relative;z-index:1}
 .credo li{display:grid;grid-template-columns:clamp(74px,13vw,104px) 1fr;gap:clamp(12px,2.4vw,20px);
   align-items:baseline;padding:clamp(11px,2vw,15px) 0;border-top:1px solid var(--line-soft)}
 .credo li:first-child{border-top:0}
-.credo b{font-family:var(--data);font-weight:700;letter-spacing:-.045em;white-space:nowrap;
+/* Otra vez el «>»: sin él, el nowrap del número alcanzaba a cualquier <b> del
+   bloque —incluido el de la bio— y lo forzaba a una línea de 347px, que rompía
+   la rejilla entera en móvil. Solo el <b> hijo directo del li es la cifra. */
+.credo > li > b{font-family:var(--data);font-weight:700;letter-spacing:-.045em;white-space:nowrap;
   font-size:clamp(1.15rem,3.2vw,1.72rem);line-height:1.1;font-variant-numeric:tabular-nums;
   background:linear-gradient(175deg,var(--bone) 26%,var(--gold));
   -webkit-background-clip:text;background-clip:text;color:transparent}
@@ -809,7 +812,7 @@ body > *{position:relative;z-index:1}
    que va DENTRO del número, y «$1.5M» salía partido en tres tamaños. */
 .credo > li > span{font-size:clamp(.85rem,2vw,.95rem);color:var(--bone-mute);line-height:1.5}
 .credo > li > span em{font-style:normal;color:var(--bone);font-weight:600}
-.credo b span{font:inherit;letter-spacing:inherit;color:inherit;display:inline}
+.credo > li > b span{font:inherit;letter-spacing:inherit;color:inherit;display:inline}
 .credo li.doble{grid-template-columns:1fr}
 .credo li.doble > span{font-family:var(--alma);font-style:italic;font-weight:300;
   font-size:clamp(1rem,2.4vw,1.2rem);color:var(--gold-hi);line-height:1.45}
@@ -844,6 +847,22 @@ body > *{position:relative;z-index:1}
 .faq{margin-top:clamp(24px,3.5vw,44px)}
 .faq summary{padding-block:clamp(16px,2.6vw,22px)}
 .sect{padding-block:var(--sect)}
+/* Dos secciones seguidas sumaban su relleno: 92px de nada entre bloque y bloque
+   en una pantalla de 275px. Al tocarse, la de abajo cede la mitad. */
+.sect + .sect{padding-top:calc(var(--sect) * .5)}
+/* En móvil el aire interno también sobra: títulos y rejillas más pegados. */
+@media(max-width:640px){
+  .lede{margin-top:14px}
+  .h-sect{margin-top:8px}
+  .dolor{margin-top:22px}
+  .fases{margin-top:24px}
+  .sol-h{margin-top:10px}
+  .sol-nuevo{margin-top:12px}
+  .sol-p{margin-top:14px}
+  .remate{margin-top:20px}
+  .ads{margin-top:14px}
+  .faq{margin-top:18px}
+}
 
 /* ── Barra superior fija ────────────────────────────────────────── */
 .tope{
@@ -1043,8 +1062,8 @@ body > *{position:relative;z-index:1}
     </h1>
 
     <p class="hero-sub rv" style="--d:120ms">
-      Con un negocio que se adapta a tu vida y una <b>marca de referente</b> en tu sector.
-      Porque la era de la atención terminó: <b>hoy gana la confianza.</b>
+      Una <b>marca de referente</b> en tu sector, no más contenido.
+      La era de la atención terminó: <b>hoy gana la confianza.</b>
     </p>
 
     <div class="rv" style="--d:160ms;margin-top:clamp(14px,2.6vw,24px)">
@@ -1093,7 +1112,7 @@ body > *{position:relative;z-index:1}
       <div class="hito faro rv">
         <div class="eyebrow">Facturado online por nuestros clientes</div>
         <b>+$<span data-count="1.5" data-dec="1" data-crudo>0.0</span>M</b>
-        <p>La suma de lo que nuestros clientes reportan haber facturado con el sistema.
+        <p>Lo que nuestros clientes reportan haber facturado.
           Cada caso es distinto: <b>los números los reportan ellos.</b></p>
       </div>
 
@@ -1101,12 +1120,12 @@ body > *{position:relative;z-index:1}
         <div class="hito rv" style="--d:80ms">
           <div class="eyebrow">Negocios escalados</div>
           <b><span data-count="220">0</span>+</b>
-          <span>Coaches, mentores y terapeutas acompañados uno a uno</span>
+          <span>Acompañados uno a uno</span>
         </div>
         <div class="hito rv" style="--d:140ms">
           <div class="eyebrow">Nichos espirituales</div>
           <b><span data-count="54">0</span>+</b>
-          <span>Nichos de mentores holísticos ya abordados</span>
+          <span>De mentores holísticos, ya abordados</span>
         </div>
       </div>
 
@@ -1119,7 +1138,7 @@ body > *{position:relative;z-index:1}
         <div class="hito rv" style="--d:260ms">
           <div class="eyebrow">Países</div>
           <b><span data-count="20">0</span>+</b>
-          <span>Con casos activos ahora mismo</span>
+          <span>Con casos activos hoy</span>
         </div>
         <div class="hito rv" style="--d:320ms">
           <div class="eyebrow">Mejor récord</div>
@@ -1138,8 +1157,8 @@ body > *{position:relative;z-index:1}
     <div class="eyebrow rv">El problema</div>
     <h2 class="h-sect rv" style="--d:60ms">Tu negocio no está roto.
       <em class="alma">Está sobrecargado.</em></h2>
-    <p class="lede rv" style="--d:120ms">De 220 negocios holísticos que hemos abierto por dentro,
-      casi todos llegaron con las mismas tres escenas. <b>Mira si reconoces alguna:</b></p>
+    <p class="lede rv" style="--d:120ms">Hemos abierto 220 negocios holísticos por dentro.
+      Casi todos llegaron con las mismas escenas. <b>Mira cuántas reconoces:</b></p>
 
     <div class="dolor">
       <div class="dol rv" style="--d:180ms">
@@ -1186,9 +1205,8 @@ body > *{position:relative;z-index:1}
       ni <s>marcas que suenan a todas</s>.
     </p>
     <p class="trans-p dos rv" style="--d:140ms">
-      Construimos <em class="alma">imperios de referentes</em> — negocios que se sostienen
-      solos en el tiempo, con una marca tan auténtica que <b>en la era de la IA sea imposible
-      de copiar.</b>
+      Construimos <em class="alma">imperios de referentes</em>. Negocios que se sostienen
+      solos. Y marcas que <b>la IA no puede copiar.</b>
     </p>
   </div>
 </section>
@@ -1214,14 +1232,12 @@ body > *{position:relative;z-index:1}
         <li><b>$<span data-count="1.5" data-dec="1" data-crudo>0.0</span>M</b>
             <span>facturados en línea con este negocio</span></li>
         <li><b>$<span data-count="500">0</span>K</b>
-            <span>invertidos en publicidad propia, <em>no en teoría</em></span></li>
-        <li><b><span data-count="220">0</span>+</b>
-            <span>negocios holísticos escalados en <em>más de 20 países</em></span></li>
+            <span>invertidos en su propia publicidad, <em>no en teoría</em></span></li>
         <li><b><span data-count="1500">0</span></b>
             <span>personas en sus eventos presenciales: <em>sabe llenar salas</em></span></li>
-        <li class="doble"><span>Psicólogo, formado con Tony Robbins, en PNL, hipnosis, Reiki y
-          registros akáshicos — y también en anuncios, CRM y cash collect.
-          Casi nadie está en los dos mundos.</span></li>
+        <li class="doble"><span>Psicólogo. Formado con Tony Robbins, en PNL, hipnosis y Reiki
+          — y también en anuncios, CRM y cash collect.
+          <b>Casi nadie está en los dos mundos.</b></span></li>
       </ul>
     </div>
   </div>
@@ -1236,8 +1252,8 @@ body > *{position:relative;z-index:1}
       ¿Quién te dijo que tenía que ser difícil?
     </p>
     <p class="lede center rv" style="--d:120ms;margin-inline:auto;text-align:center;margin-top:22px">
-      Complicarlo no te hace más profesional. Te quita el tiempo para lo único que nadie
-      puede hacer por ti: <b>estar presente con quien viene a transformarse.</b>
+      Complicarlo no te hace más profesional. Solo te quita el tiempo de lo único
+      que nadie puede hacer por ti: <b>estar presente.</b>
     </p>
   </div>
 
@@ -1245,8 +1261,8 @@ body > *{position:relative;z-index:1}
        data-galeria="vida" data-galeria-titulo="Fotos de vida"></div>
 
   <p class="lede center rv" style="--d:260ms;margin-top:clamp(26px,3.4vw,38px)">
-    Ese es el punto. <b class="mark">Un negocio que se adapta a tu vida</b>, no una vida que
-    se adapta a tu negocio.
+    <b class="mark">Un negocio que se adapta a tu vida.</b> No una vida que se adapta
+    a tu negocio.
   </p>
 </section>
 
@@ -1254,13 +1270,13 @@ body > *{position:relative;z-index:1}
 <section class="sect banda" id="circuito">
   <div class="wrap">
     <div class="sol-marca rv">La solución</div>
-    <p class="sol-nuevo rv" style="--d:60ms">Esto no es una versión mejorada de lo que ya intentaste.
-      <b>Es otra forma de construir el negocio</b>, y funciona al revés que todo lo anterior.</p>
+    <p class="sol-nuevo rv" style="--d:60ms">Esto no es una versión mejorada de lo anterior.
+      <b>Es otra forma de construir el negocio.</b></p>
 
     <h2 class="sol-h rv" style="--d:120ms">EL CIRCUITO DE ESCALADO
       <em>Tres movimientos. En este orden.</em></h2>
 
-    <p class="sol-p rv" style="--d:180ms">Cada uno hace una sola cosa, y prepara al siguiente.
+    <p class="sol-p rv" style="--d:180ms">Cada uno hace una sola cosa y prepara al siguiente.
       Por eso no depende de tu ánimo, de una fecha ni de que un video explote.</p>
 
     <div class="fases">
@@ -1268,33 +1284,32 @@ body > *{position:relative;z-index:1}
         <div class="fase-n"></div>
         <h3>Atraer</h3>
         <span class="fase-q">Contenido de micronicho.</span>
-        <p>Dejas de hablarle a todo el mundo. Publicas para <b>un micronicho concreto</b>, con sus
-          palabras y su situación exacta — y te encuentra justo quien puede pagarte, sin que
-          persigas a nadie.</p>
+        <p>Dejas de hablarle a todo el mundo. Publicas para <b>un micronicho concreto</b>,
+          con sus palabras y su situación. Y te encuentra quien puede pagarte.</p>
       </div>
 
       <div class="fase rv" style="--d:300ms;--i:1">
         <div class="fase-n"></div>
         <h3>Conectar</h3>
         <span class="fase-q">Perspectivas y filosofía del problema.</span>
-        <p>Aquí todavía no vendes: <b>cambias cómo ven su problema</b>. Cuando alguien entiende
-          su problema como tú lo entiendes, ya solo hay un sitio donde tiene sentido resolverlo.</p>
+        <p>Aquí todavía no vendes. <b>Cambias cómo ven su problema.</b> Y cuando lo ven
+          como tú, solo queda un sitio donde resolverlo.</p>
       </div>
 
       <div class="fase rv" style="--d:360ms;--i:2">
         <div class="fase-n"></div>
         <h3>Cerrar</h3>
         <span class="fase-q">Offer docs y gatillos mentales de venta.</span>
-        <p>La oferta llega <b>escrita, clara y sin ambigüedad</b>, con los gatillos que hacen que
-          decidir hoy sea lo natural. No hace falta insistir: hace falta que se entienda.</p>
+        <p>La oferta llega <b>escrita y sin ambigüedad</b>, con los gatillos que hacen que
+          decidir hoy sea lo natural. No hace falta insistir. Hace falta que se entienda.</p>
       </div>
     </div>
 
     <div class="ads rv" style="--d:420ms">
       <div class="ads-t"><small>Y todo esto, con esteroides</small>LOS ADS</div>
-      <p>Los tres movimientos funcionan solos. <b>Con pauta encima, funcionan a escala:</b>
-        amplificas solo lo que ya convirtió con tu dinero, no lo que crees que va a funcionar.
-        Ahí el circuito deja de depender del algoritmo — y empieza a depender de cuánto quieras invertir.</p>
+      <p>Los tres funcionan solos. <b>Con pauta encima, funcionan a escala:</b> amplificas
+        solo lo que ya convirtió con tu dinero. El circuito deja de depender del algoritmo
+        y pasa a depender de cuánto quieras invertir.</p>
     </div>
   </div>
 </section>
@@ -1304,8 +1319,8 @@ body > *{position:relative;z-index:1}
   <div class="wrap">
     <div class="eyebrow center rv" style="justify-content:center">La prueba</div>
     <h2 class="h-sect rv" style="--d:60ms;text-align:center">Gente real. <em class="alma">Cuentas reales.</em></h2>
-    <p class="lede center rv" style="--d:100ms">Sus perfiles, tal cual están hoy.
-      <b>Búscalos y pregúntales</b> — es lo mejor que puedes hacer antes de decidir.</p>
+    <p class="lede center rv" style="--d:100ms"><b>Búscalos en Instagram y pregúntales.</b>
+      Es lo mejor que puedes hacer antes de decidir.</p>
 
   </div>
 
@@ -1318,8 +1333,8 @@ body > *{position:relative;z-index:1}
   <div class="wrap">
     <div class="eyebrow center rv" style="justify-content:center">Sin retoque</div>
     <h2 class="h-sect rv" style="--d:60ms;text-align:center">Las capturas, <em class="alma">tal cual llegaron.</em></h2>
-    <p class="lede center rv" style="--d:100ms">Notificaciones de venta, mensajes de clientes y paneles reales.
-      Tal cual llegaron al teléfono. Desliza para verlas todas.</p>
+    <p class="lede center rv" style="--d:100ms">Ventas, mensajes de clientes y paneles reales.
+      <b>Desliza para verlas todas.</b></p>
     <div class="riel rv" style="--d:140ms" id="riel">
       <div class="riel-pista" id="gridCapturas" data-galeria="capturas"
         data-galeria-titulo="Capturas de resultados"></div>
@@ -1359,36 +1374,33 @@ body > *{position:relative;z-index:1}
     <h2 class="h-sect rv" style="--d:60ms;text-align:center">45 minutos.
       <em class="alma">Y sales con el diagnóstico, cerremos o no.</em></h2>
     <p class="lede center rv" style="--d:120ms;margin-inline:auto;text-align:center">
-      No es una llamada para convencerte de nada. Es donde abrimos tu negocio y te decimos
-      qué encontramos.</p>
+      No venimos a convencerte. Abrimos tu negocio y te decimos qué encontramos.</p>
 
     <div class="llam">
       <article class="llam-p rv">
         <div class="llam-n">01</div>
         <h3>El diagnóstico completo</h3>
-        <p>Abrimos tu negocio por dentro y encontramos el cuello de botella real: dónde se te
-          está yendo el dinero, dónde el tiempo, y <b>qué parte del sistema que usas hoy te está
-          desgastando</b> sin que lo veas.</p>
+        <p>Dónde se te va el dinero. Dónde se te va el tiempo. Y <b>qué parte de lo que
+          haces hoy te está desgastando</b> sin que lo veas.</p>
       </article>
 
       <article class="llam-p rv" style="--d:110ms">
         <div class="llam-n">02</div>
         <h3>La estrategia, paso a paso</h3>
-        <p>Qué instalaríamos exactamente, <b>en qué orden y en qué día</b>. No una promesa
-          general: la ruta concreta para tu negocio, con lo que cambia primero y por qué.</p>
+        <p>Qué instalaríamos, <b>en qué orden y en qué día</b>. La ruta concreta para tu
+          negocio, no una promesa general.</p>
       </article>
 
       <article class="llam-p rv" style="--d:220ms">
         <div class="llam-n">03</div>
         <h3>El programa por dentro</h3>
-        <p>Te enseñamos la plataforma, los agentes y las sesiones en vivo.
-          <b>Ves exactamente lo que recibes</b> antes de decidir nada — sin sorpresas después.</p>
+        <p>La plataforma, los agentes y las sesiones en vivo.
+          <b>Ves lo que recibes</b> antes de decidir nada.</p>
       </article>
     </div>
 
-    <p class="llam-pie rv" style="--d:300ms">Si al terminar no encajamos, te lo decimos ahí mismo
-      — y te llevas el diagnóstico igual. <b>Preferimos decirte que no hoy, que fallarte en seis
-      meses.</b></p>
+    <p class="llam-pie rv" style="--d:300ms">Si no encajamos, te lo decimos ahí mismo y te
+      llevas el diagnóstico igual. <b>Preferimos decirte que no hoy, que fallarte en seis meses.</b></p>
   </div>
 </section>
 
@@ -1431,13 +1443,13 @@ body > *{position:relative;z-index:1}
 
     <div class="faq rv" style="--d:120ms">
       <details open><summary>¿Qué pasa exactamente en la llamada?</summary><div class="faq-a">
-        <p>Cuarenta y cinco minutos, gratis. Revisamos dónde estás —tus números, tu oferta, tu mercado—, te digo cuál es tu cuello de botella real (casi nunca es el que crees) y salimos con un plan para los primeros sesenta días. <b>Ese plan te lo llevas trabajemos juntos o no.</b></p></div></details>
+        <p>Revisamos tus números, tu oferta y tu mercado. Te digo cuál es tu cuello de botella real —casi nunca es el que crees— y sales con un plan para los primeros sesenta días. <b>Ese plan te lo llevas trabajemos juntos o no.</b></p></div></details>
       <details><summary>¿Qué es eso del «segundo cerebro»?</summary><div class="faq-a">
-        <p>Es la Biblia de tu Cliente Ideal convertida en agentes de IA dentro de nuestro software. En vez de pedirle guiones a una IA que no te conoce, tus agentes ya saben a quién le hablas, qué le duele, cómo lo dice y cuál es tu voz. Lo construimos contigo en las primeras semanas y mejora cada vez que lo usas.</p></div></details>
+        <p>Es la Biblia de tu Cliente Ideal convertida en agentes de IA dentro de nuestro software. Una IA cualquiera no te conoce. Tus agentes sí: saben a quién le hablas, qué le duele y cuál es tu voz. Lo construimos contigo en las primeras semanas.</p></div></details>
       <details><summary>¿Tengo que publicar todos los días?</summary><div class="faq-a">
         <p>No, y ese es el punto. Mi filosofía es el minimalismo: llevo <b>tres anuncios corriendo hace un año y un VSL hace dos</b>. Con los agentes produciendo, pocas piezas bien hechas rinden más que cuarenta improvisadas.</p></div></details>
       <details><summary>¿Necesito saber de tecnología o de IA?</summary><div class="faq-a">
-        <p>No. Necesitas saber grabarte con el celular y responder mensajes. Los agentes, el CRM y las automatizaciones los montamos nosotros contigo, y tienes sesiones de IA y sistemas todas las semanas.</p></div></details>
+        <p>No. Necesitas saber grabarte con el celular y responder mensajes. Los agentes, el CRM y las automatizaciones los montamos nosotros contigo.</p></div></details>
       <details><summary>¿Me van a vender algo en la llamada?</summary><div class="faq-a">
         <p>Si encajas, te explico cómo trabajamos y cuánto cuesta. Si no encajas, te lo digo de frente y te dejo el camino que sí te sirve. No persigo a nadie ni hago seguimiento eterno.</p></div></details>
     </div>
@@ -1450,8 +1462,7 @@ body > *{position:relative;z-index:1}
     <div class="mini-badge rv"><i class="dot-live"></i> Quedan pocos cupos esta semana</div>
     <h2 class="h-sect rv" style="--d:60ms">Elige tu horario <em class="alma">y hablamos.</em></h2>
     <p class="lede center rv" style="--d:120ms">
-      Cuarenta y cinco minutos, sin costo. Llega con tus números de los últimos tres meses
-      y con la decisión de decidir.
+      Llega con tus números de los últimos tres meses <b>y con la decisión de decidir.</b>
     </p>
 
     <div class="agenda-caja rv" style="--d:180ms">
@@ -1464,7 +1475,7 @@ body > *{position:relative;z-index:1}
     </div>
 
     <p class="nota-cta rv" style="--d:240ms;margin-top:22px">
-      Solo coaches, mentores o terapeutas holísticos con negocio online y clientes actuales
+      Solo con negocio online y clientes actuales
     </p>
   </div>
 </section>
