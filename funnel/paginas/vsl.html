@@ -364,28 +364,38 @@ body > *{position:relative;z-index:1}
 .remate em{font-style:italic;color:var(--gold-hi)}
 
 /* ── LA SOLUCIÓN · el tamaño es el mensaje: esto es lo nuevo ──────── */
-.sol-marca{display:flex;align-items:center;gap:13px;justify-content:center;
-  font-family:var(--data);font-size:.64rem;letter-spacing:.24em;text-transform:uppercase;
-  color:var(--gold)}
-.sol-marca::before,.sol-marca::after{content:"";width:38px;height:1px;background:var(--gold);opacity:.45}
-.sol-nuevo{text-align:center;margin:18px auto 0;max-width:660px;
-  font-size:clamp(.92rem,2.1vw,1.05rem);color:var(--bone-mute);line-height:1.6}
-.sol-nuevo b{color:var(--bone)}
-/* El nombre va en una sola línea SIEMPRE. En un móvil de 275px, 23 caracteres
-   seguidos no caben a 48px: la física no negocia. Así que en vez de encogerlo
-   hasta que parezca un subtítulo, se dibuja como SVG y se estira al ancho
-   exacto del contenedor. Ocupa de borde a borde en cualquier pantalla —lee
-   como una firma, no como un título encogido— y nunca parte. */
-.sol-h{text-align:center;margin:clamp(14px,2vw,22px) 0 0}
-.sol-h svg{display:block;width:100%;height:auto;overflow:visible}
-.sol-h text{font-family:var(--sys);font-weight:900;font-size:92px;letter-spacing:-.045em;
-  fill:var(--bone);text-anchor:middle}
-.sol-h .tm{font-size:.3em;fill:var(--gold)}
-.sol-h em{display:block;font-family:var(--alma);font-style:italic;font-weight:300;
-  font-size:clamp(1.02rem,2.7vw,1.62rem);letter-spacing:-.02em;color:var(--gold-hi);
-  margin-top:clamp(10px,1.4vw,16px)}
-.sol-p{text-align:center;max-width:620px;margin:clamp(18px,2.4vw,26px) auto 0;
-  font-size:clamp(.92rem,2.1vw,1.05rem);color:var(--bone-mute);line-height:1.65}
+/* El nombre vive en el antetítulo, pequeño y con su ™ a tamaño de texto: ahí
+   es una marca, no un cartel. El titular queda libre para hacer su trabajo,
+   que es marcar la diferencia entre lo que hace el mercado y lo que hacemos. */
+.sol-marca{display:flex;align-items:center;gap:9px;justify-content:center;
+  font-family:var(--data);font-size:.66rem;font-weight:700;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--gold)}
+.sol-marca::before{content:"";width:6px;height:6px;border-radius:50%;
+  background:var(--gold);box-shadow:0 0 0 4px #D6A5441f;flex:none}
+/* El antetítulo lleva .22em de espaciado y eso empujaba el ™ lejos de la N:
+   se compensa tirando de él hacia atrás lo mismo que hereda. */
+.sol-marca sup{font-size:.7em;letter-spacing:0;vertical-align:.4em;margin-left:-.16em}
+
+/* Mismo sistema tipográfico que el resto de titulares, un punto por encima:
+   es el más grande de la página, pero de la misma familia. */
+.sol-h{text-align:center;margin:clamp(14px,2vw,22px) 0 0;font-weight:800;
+  /* Suelo calculado sobre la línea más larga —«no un embudo.»— para que llene
+     el 92% del ancho en un móvil de 275px sin rozar el borde: 1,32× el .h-sect
+     del resto, arriba y abajo. */
+  font-size:clamp(2.7rem,7.4vw,4.6rem);line-height:1.03;letter-spacing:-.045em;
+  text-wrap:balance}
+.sol-h b{font-weight:900;color:var(--gold-hi)}
+/* La palabra que rechazamos: tachada de verdad, con una barra gruesa y limpia. */
+.sol-h s{text-decoration:none;position:relative;color:var(--bone);opacity:.34}
+.sol-h s::after{content:"";position:absolute;left:-.03em;right:-.03em;top:.53em;
+  height:.082em;background:currentColor;border-radius:99px}
+.sol-p{text-align:center;max-width:56ch;margin:clamp(16px,2.2vw,26px) auto 0;
+  font-size:clamp(.95rem,2.1vw,1.1rem);color:var(--bone-mute);line-height:1.62}
+.sol-p b{color:var(--bone)}
+/* Rótulo que abre las tres tarjetas, para que no cuelguen del gráfico. */
+.sol-pasos{margin:clamp(28px,3.6vw,44px) 0 0;text-align:center;
+  font-family:var(--data);font-size:.62rem;letter-spacing:.24em;text-transform:uppercase;
+  color:var(--bone-faint)}
 
 .fases{display:grid;gap:clamp(14px,2vw,20px);margin-top:clamp(34px,4.6vw,56px);counter-reset:f}
 @media(min-width:880px){.fases{grid-template-columns:repeat(3,1fr)}}
@@ -1334,19 +1344,13 @@ body > *{position:relative;z-index:1}
 <!-- ═══ EL SISTEMA EN MARCHA ═══ -->
 <section class="sect banda" id="circuito">
   <div class="wrap">
-    <div class="sol-marca rv">La solución</div>
-    <p class="sol-nuevo rv" style="--d:60ms">Todo el mercado te dice que llegues a más gente.
-      <b>Nosotros hacemos exactamente lo contrario.</b></p>
+    <div class="sol-marca rv">El Circuito de Conversión<sup>™</sup></div>
 
-    <h2 class="sol-h rv" style="--d:120ms">
-      <svg viewBox="0 0 1000 104" role="img" aria-label="Circuito de Conversión">
-        <text x="500" y="84" textLength="1000" lengthAdjust="spacingAndGlyphs"
-          >CIRCUITO DE CONVERSIÓN<tspan class="tm" dy="-.62em">™</tspan></text>
-      </svg>
-      <em>Tres movimientos. Y un bucle que no se rompe.</em></h2>
+    <h2 class="sol-h rv" style="--d:60ms">Un <b>CIRCUITO</b>,<br>no un <s>embudo</s>.</h2>
 
-    <p class="sol-p rv" style="--d:180ms">Cada uno hace una sola cosa y prepara al siguiente.
-      No depende de tu ánimo, de una fecha ni de que un video explote.</p>
+    <p class="sol-p rv" style="--d:120ms">El embudo se vacía y toca volver a llenarlo.
+      <b>El circuito devuelve al cliente al principio — y trae al siguiente.</b>
+      Por eso no depende de tu ánimo, de una fecha ni de que un video explote.</p>
 
     <div class="circo rv" style="--d:210ms">
       <svg viewBox="0 0 480 320" role="img"
@@ -1417,6 +1421,8 @@ body > *{position:relative;z-index:1}
         una etapa o vuelven atrás. <b>El sistema es el mismo para todas</b> — y las recoge
         en cualquier punto, entren por donde entren.</p>
     </div>
+
+    <p class="sol-pasos rv">Tres movimientos · en este orden</p>
 
     <div class="fases">
       <div class="fase rv" style="--d:240ms;--i:0">
@@ -2199,6 +2205,17 @@ const PORTADAS = [
   const arranque = esq.findIndex(e => e.arriba && e.izq);
   if(arranque > 0) esq = esq.slice(arranque).concat(esq.slice(0, arranque));
 
+  /* Las fases se miden desde las marcas reales, no por cuartos del trazo: así
+     el color cambia y el dinero cae exactamente al pasar por 03 y por 04. */
+  const cortes = esq.map(e => e.d);
+  const rel = cortes.map(c => (c - cortes[0] + L) % L);
+  const faseDe = d => {
+    const t = (d - cortes[0] + L) % L;
+    let i = 0;
+    while(i < 3 && t >= rel[i+1]) i++;
+    return i;
+  };
+
   marcas.innerHTML = "";
   esq.forEach((e, i) => {
     const q = via.getPointAtLength(e.d), f = FASES[i];
@@ -2313,7 +2330,7 @@ const PORTADAS = [
 
       p.g.setAttribute("transform", `translate(${x.toFixed(1)} ${y.toFixed(1)})`);
       if(Math.abs(opaco - p.op) > .01){ p.op = opaco; p.g.setAttribute("opacity", opaco.toFixed(2)); }
-      const fase = Math.min(3, Math.floor(p.d/L*4));
+      const fase = faseDe(p.d);
       if(fase !== p.fase){
         /* Al entrar en CERRAR cae dinero. Al entrar en RETENER cae el doble:
            el cliente que se queda vuelve a pagar. */
