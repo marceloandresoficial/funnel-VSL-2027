@@ -1,0 +1,1324 @@
+<!--PAGINA {"nombre": "BIO Instagram", "slug": "bio-instagram", "icono": "◉", "paso": 6, "descripcion": "Imperio Holístico™ · el link de la bio. 19 bloques + barra fija.", "estado": "listo", "kit": false} -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,400&family=Cinzel:wght@400;600&family=Karla:wght@400;700&display=swap">
+
+<style>
+/* ═══════════════════════════════════════════════════════════════════
+   IMPERIO HOLÍSTICO™ · página de venta
+   Tema único oscuro. Una sola animación en toda la página (bloque 05).
+   El aire es parte del argumento: esta página no se ve apretada.
+   ═══════════════════════════════════════════════════════════════════ */
+
+body{
+  --void:#08071A; --surface:#100E2C; --surface-2:#181543; --surface-3:#221D57;
+  --gold:#D9B45B; --gold-hi:#F2DDA4;
+  --gold-wash:rgba(217,180,91,.08); --gold-line:rgba(217,180,91,.22);
+  --ink:#F4F1FC; --ink-2:#B5AED6; --ink-3:#7E76A8;
+  --line:rgba(255,255,255,.08); --ok:#7FC8A9;
+  --display:"Cormorant Garamond",Georgia,serif;
+  --label:"Cinzel",Georgia,serif;
+  --body:"Karla",Arial,Helvetica,sans-serif;
+  --max:1180px;
+  --pad:clamp(18px,5vw,48px);
+  --salto:clamp(56px,9vw,130px);
+  color-scheme:dark;
+}
+body,body *,body *::before,body *::after{box-sizing:border-box}
+body{
+  margin:0;background:var(--void);color:var(--ink);
+  font-family:var(--body);font-weight:400;line-height:1.7;
+  font-size:clamp(1rem,1.35vw,1.12rem);
+  -webkit-font-smoothing:antialiased;
+  overflow-x:clip;padding-bottom:64px;
+}
+body img,body svg{max-width:100%}
+body a{color:inherit}
+body :focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+
+/* ── Retícula ─────────────────────────────────────────────────────── */
+.ih-wrap{width:100%;max-width:var(--max);margin-inline:auto;padding-inline:var(--pad)}
+.ih-sec{padding-block:var(--salto);border-top:1px solid var(--line);position:relative}
+.ih-sec:first-of-type{border-top:0}
+.ih-lee{max-width:68ch}
+.ih-lee-corto{max-width:58ch}
+
+/* ── Tipografía ───────────────────────────────────────────────────── */
+body h1,body h2{font-family:var(--display);font-weight:600;margin:0}
+body h1{font-size:clamp(2.2rem,6vw,4.2rem);line-height:1.02;letter-spacing:-.02em}
+body h2{font-size:clamp(1.7rem,4vw,2.8rem);line-height:1.08;letter-spacing:-.01em}
+body em{font-style:italic;font-weight:400;color:var(--gold);font-family:var(--display)}
+body p{margin:0 0 1.15em;color:var(--ink-2)}
+body p:last-child{margin-bottom:0}
+body p b,body li b{color:var(--ink);font-weight:700}
+.ih-lead{
+  font-family:var(--display);font-weight:600;
+  font-size:clamp(1.3rem,2.6vw,1.9rem);line-height:1.26;letter-spacing:-.01em;
+  color:var(--ink);margin:clamp(22px,3vw,34px) 0 0;max-width:34ch;
+}
+.ih-lead b{color:var(--gold-hi);font-weight:600}
+
+.ih-eyebrow{
+  display:flex;align-items:center;gap:12px;
+  font-family:var(--label);font-size:.71rem;font-weight:600;
+  letter-spacing:.22em;text-transform:uppercase;color:var(--gold);
+  margin-bottom:clamp(18px,2.6vw,26px);
+}
+.ih-eyebrow::before{content:"";width:24px;height:1px;background:var(--gold);flex:none}
+.ih-eyebrow.centro{justify-content:center}
+
+/* ── Listas: guion dorado, nunca palomita ─────────────────────────── */
+.ih-lista{list-style:none;margin:clamp(20px,3vw,30px) 0 0;padding:0;display:grid;gap:14px}
+.ih-lista li{display:grid;grid-template-columns:12px 1fr;gap:14px;align-items:start;color:var(--ink-2)}
+.ih-lista li::before{content:"";width:12px;height:1px;background:var(--gold);margin-top:.85em}
+
+/* ── Nota destacada ───────────────────────────────────────────────── */
+.ih-nota{
+  border-left:2px solid var(--gold);background:var(--gold-wash);
+  padding:18px 20px;margin-top:clamp(26px,3.4vw,38px);
+  font-size:.98rem;line-height:1.65;color:var(--ink-2);
+}
+.ih-nota b{color:var(--ink)}
+
+/* ── Axioma ───────────────────────────────────────────────────────── */
+.ih-axioma{
+  background:var(--surface-3);border:1px solid var(--gold-line);
+  padding:clamp(24px,3.4vw,38px);margin-top:clamp(26px,3.6vw,40px);
+}
+.ih-axioma .et{
+  display:block;font-family:var(--label);font-size:.71rem;font-weight:600;
+  letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;
+}
+.ih-axioma q{
+  display:block;font-family:var(--display);font-weight:400;font-style:italic;
+  font-size:clamp(1.35rem,3.2vw,2.1rem);line-height:1.2;color:var(--ink);quotes:none;
+}
+
+/* ── Tarjeta ──────────────────────────────────────────────────────── */
+.ih-card{background:var(--surface);border:1px solid var(--line);padding:clamp(20px,2.8vw,30px)}
+
+/* ── Botón: rectángulo sólido, sin radio ──────────────────────────── */
+.ih-cta{
+  display:inline-block;background:var(--gold);color:var(--void);
+  font-family:var(--label);font-weight:600;font-size:.82rem;
+  letter-spacing:.18em;text-transform:uppercase;text-decoration:none;
+  padding:16px 30px;border:0;transition:background .2s ease;
+}
+.ih-cta:hover{background:var(--gold-hi)}
+.ih-micro{display:block;margin-top:14px;font-size:.85rem;color:var(--ink-3);line-height:1.5}
+
+/* ── Huecos de recurso ────────────────────────────────────────────── */
+body .ph{
+  display:grid;place-items:center;position:relative;overflow:hidden;
+  background:var(--surface-2);border:1px dashed var(--gold-line);
+  background-size:cover;background-position:center;
+  font-family:var(--label);font-size:.6rem;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--ink-3);text-align:center;padding:10px;
+}
+body .ph.cargada{border-style:solid;border-color:var(--line)}
+body .ph.cargada > span{display:none}
+
+/* ── Geometría sagrada: textura de marca, nunca mecanismo ─────────── */
+.ih-geo{
+  position:absolute;inset:0;overflow:hidden;pointer-events:none;
+  display:grid;place-items:center;z-index:0;
+}
+.ih-geo svg{width:min(760px,120%);height:auto;color:var(--gold);opacity:.08}
+.ih-sec > .ih-wrap{position:relative;z-index:1}
+
+/* ═══ 01 · HERO ════════════════════════════════════════════════════ */
+.ih-hero{position:relative;padding-block:clamp(56px,10vw,110px) var(--salto)}
+.ih-hero-g{display:grid;gap:clamp(28px,4vw,52px);align-items:center}
+@media(min-width:900px){.ih-hero-g{grid-template-columns:55fr 45fr}}
+.ih-pre{
+  font-family:var(--body);font-size:.95rem;line-height:1.6;color:var(--ink-2);
+  border-left:2px solid var(--gold);padding-left:16px;margin:0 0 clamp(22px,3vw,32px);
+  max-width:46ch;
+}
+.ih-pre b{color:var(--ink)}
+.ih-hero h1 em{display:block}
+.ih-hero-sub{margin-top:clamp(20px,2.6vw,30px);max-width:52ch}
+.ih-hero-cta{margin-top:clamp(26px,3.4vw,38px)}
+.ih-pie-hero{
+  margin-top:clamp(30px,4vw,46px);padding-top:18px;border-top:1px solid var(--line);
+  font-size:.85rem;color:var(--ink-3);max-width:44ch;
+}
+/* Reproductor */
+.ih-player{
+  position:relative;aspect-ratio:9/13;background:var(--surface);
+  border:1px solid var(--gold-line);overflow:hidden;
+}
+@media(min-width:900px){.ih-player{aspect-ratio:4/5}}
+.ih-player .player-art{position:absolute;inset:0;border:0;border-radius:0}
+.ih-player .player-btn{
+  position:absolute;inset:0;z-index:2;display:grid;place-items:center;gap:14px;
+  background:linear-gradient(180deg,rgba(8,7,26,.18),rgba(8,7,26,.72));
+  border:0;cursor:pointer;color:var(--ink);font:inherit;align-content:center;
+}
+.ih-player .player-btn i{
+  display:grid;place-items:center;width:74px;height:74px;border-radius:50%;
+  border:1px solid var(--gold);background:rgba(8,7,26,.55);color:var(--gold);
+  font-style:normal;font-size:1.5rem;padding-left:5px;
+  transition:background .25s ease,color .25s ease;
+}
+.ih-player .player-btn:hover i{background:var(--gold);color:var(--void)}
+.ih-player .player-btn b{
+  font-family:var(--label);font-size:.68rem;font-weight:600;
+  letter-spacing:.2em;text-transform:uppercase;
+}
+.ih-player .player-meta{
+  position:absolute;left:0;right:0;bottom:0;z-index:2;padding:22px 18px 16px;
+  background:linear-gradient(180deg,transparent,rgba(8,7,26,.92));
+  font-family:var(--label);font-size:.62rem;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--ink-3);text-align:center;
+}
+.ih-player iframe,.ih-player video{
+  position:absolute;inset:0;width:100%;height:100%;border:0;background:#000;z-index:3}
+.ih-player.sin-video .player-btn{cursor:default}
+
+/* ═══ 02 · LA PRUEBA ═══════════════════════════════════════════════ */
+.ih-tres{display:grid;gap:clamp(14px,2vw,20px);margin-top:clamp(24px,3vw,34px)}
+@media(min-width:760px){.ih-tres{grid-template-columns:repeat(3,1fr)}}
+.ih-caso-h{display:flex;align-items:center;gap:16px}
+.ih-caso-h .ph{width:72px;height:72px;border-radius:50%;flex:none;font-size:.55rem}
+.ih-caso-n{font-family:var(--display);font-size:1.24rem;font-weight:600;line-height:1.15;color:var(--ink)}
+.ih-caso-p{font-family:var(--label);font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3);margin-top:5px}
+.ih-caso-q{font-size:.9rem;color:var(--ink-3);margin:16px 0 0;font-style:italic}
+.ih-caso-r{
+  font-family:var(--display);font-weight:600;font-size:clamp(1.2rem,2.4vw,1.5rem);
+  line-height:1.2;color:var(--ink);margin-top:12px;
+}
+.ih-caso-r b{color:var(--gold);font-weight:600}
+
+/* ═══ 03 · LOS NÚMEROS ═════════════════════════════════════════════ */
+.ih-cifras{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:1px;
+  background:var(--line);border:1px solid var(--line);margin-top:clamp(24px,3vw,34px);
+}
+@media(min-width:820px){.ih-cifras{grid-template-columns:repeat(4,1fr)}}
+.ih-cifra{background:var(--void);padding:clamp(22px,3vw,34px) clamp(16px,2vw,24px)}
+.ih-cifra b{
+  display:block;font-family:var(--display);font-weight:600;
+  font-size:clamp(2.1rem,5vw,3.2rem);line-height:1;color:var(--gold);
+  letter-spacing:-.02em;white-space:nowrap;
+}
+.ih-cifra span{display:block;margin-top:12px;font-size:.86rem;color:var(--ink-3);line-height:1.45}
+.ih-propia b::after{
+  content:"";display:inline-block;width:6px;height:6px;border-radius:50%;
+  background:var(--gold);vertical-align:super;margin-left:8px;
+}
+
+/* ═══ 04 · EL QUIEBRE ══════════════════════════════════════════════ */
+.ih-quiebre{display:grid;gap:clamp(30px,4vw,54px);align-items:start}
+@media(min-width:900px){.ih-quiebre{grid-template-columns:1fr 280px}}
+.ih-bucle{width:100%;max-width:280px;height:auto;color:var(--gold);justify-self:center}
+.ih-bucle text{font-family:var(--label);font-size:9px;letter-spacing:.16em;fill:#7E76A8}
+
+/* ═══ 05 · EL ENEMIGO ══════════════════════════════════════════════ */
+.ih-dos{display:grid;gap:clamp(20px,3vw,32px);margin-top:clamp(28px,3.6vw,44px)}
+@media(min-width:820px){.ih-dos{grid-template-columns:1fr 1fr}}
+.ih-dos-t{
+  font-family:var(--label);font-size:.71rem;font-weight:600;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--gold);margin:0 0 14px;
+}
+/* La única animación de la página */
+.ih-caos{display:flex;flex-wrap:wrap;gap:9px;margin-top:clamp(26px,3.4vw,38px);justify-content:center}
+.ih-caos i{
+  display:block;width:20px;height:20px;flex:none;
+  border:1px solid var(--gold-line);background:var(--surface-2);
+  transform:translate(var(--x,0),var(--y,0)) rotate(var(--r,0deg));
+}
+.ih-caos.ordenado i{transform:none}
+@media(prefers-reduced-motion:no-preference){
+  .ih-caos i{transition:transform .6s cubic-bezier(.16,.84,.3,1) var(--d,0ms)}
+}
+@media(prefers-reduced-motion:reduce){.ih-caos i{transform:none}}
+
+/* ═══ 06 · LA EPIFANÍA ═════════════════════════════════════════════ */
+.ih-epifania{padding-block:calc(var(--salto) * 1.9);text-align:center}
+.ih-epifania .ih-lee-corto{margin-inline:auto;text-align:left}
+.ih-epifania h2{margin-bottom:clamp(26px,3.4vw,40px)}
+.ih-epifania .ih-lead{margin-inline:auto;text-align:center;max-width:30ch}
+.ih-patrones{
+  display:grid;gap:1px;background:var(--line);border:1px solid var(--line);
+  margin:clamp(34px,4.6vw,60px) 0;
+}
+@media(min-width:760px){.ih-patrones{grid-template-columns:repeat(3,1fr)}}
+.ih-patron{background:var(--void);padding:clamp(20px,2.6vw,28px)}
+.ih-patron svg{width:100%;height:auto;color:var(--gold);display:block}
+.ih-patron span{
+  display:block;margin-top:16px;font-family:var(--label);font-size:.62rem;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--ink-3);
+}
+
+/* ═══ 07 · MARCELO ═════════════════════════════════════════════════ */
+.ih-marcelo{display:grid;gap:clamp(28px,4vw,52px);align-items:start}
+@media(min-width:900px){.ih-marcelo{grid-template-columns:38fr 62fr}}
+.ih-marcelo > .ph{aspect-ratio:4/5;width:100%}
+.ih-tiempo{list-style:none;margin:clamp(26px,3.4vw,38px) 0 0;padding:0;display:grid;gap:0}
+.ih-tiempo li{
+  display:grid;grid-template-columns:92px 1fr;gap:clamp(14px,2vw,22px);
+  padding:clamp(16px,2.2vw,22px) 0;border-top:1px solid var(--line);
+}
+.ih-tiempo li:first-child{border-top:0;padding-top:0}
+.ih-tiempo b{
+  font-family:var(--label);font-size:.78rem;font-weight:600;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--gold);line-height:1.5;
+}
+.ih-tiempo p{margin:0;font-size:.98rem}
+
+/* ═══ 08 · EL PLANO ════════════════════════════════════════════════ */
+.ih-templo{width:100%;height:auto;margin-top:clamp(28px,3.6vw,44px);display:block}
+.ih-templo .et{font-family:"Cinzel",Georgia,serif;font-size:11px;font-weight:600;letter-spacing:.18em;fill:#D9B45B}
+.ih-templo .et-v{font-family:"Cinzel",Georgia,serif;font-size:9.5px;letter-spacing:.16em;fill:#7E76A8}
+.ih-templo .tit{font-family:"Cormorant Garamond",Georgia,serif;font-size:17px;font-weight:600;fill:#F4F1FC}
+.ih-templo .cierre{font-family:"Cormorant Garamond",Georgia,serif;font-size:16px;font-style:italic;fill:#D9B45B}
+.ih-templo .caja{fill:#100E2C;stroke:rgba(255,255,255,.08)}
+.ih-templo .eje{fill:#221D57;stroke:rgba(217,180,91,.22)}
+
+/* ═══ 09-10 · FILOSOFÍA Y ALTERNATIVAS ═════════════════════════════ */
+.ih-tres-col{display:grid;gap:clamp(16px,2.2vw,24px);margin-top:clamp(26px,3.4vw,38px)}
+@media(min-width:860px){.ih-tres-col{grid-template-columns:repeat(3,1fr)}}
+.ih-alt-t{font-family:var(--display);font-size:1.22rem;font-weight:600;line-height:1.2;color:var(--ink);margin:0 0 12px}
+.ih-alt p{font-size:.96rem;margin:0}
+.ih-alt p + p{margin-top:.9em}
+
+/* ═══ 11 · EL FILTRO ═══════════════════════════════════════════════ */
+.ih-filtro{display:grid;gap:clamp(24px,3.4vw,40px)}
+@media(min-width:820px){.ih-filtro{grid-template-columns:1fr 1fr}}
+.ih-filtro .si .ih-eyebrow{color:var(--ok)}
+.ih-filtro .si .ih-eyebrow::before{background:var(--ok)}
+.ih-filtro .no .ih-eyebrow{color:var(--ink-3)}
+.ih-filtro .no .ih-eyebrow::before{background:var(--ink-3)}
+.ih-filtro .no .ih-lista li::before{background:var(--ink-3)}
+
+/* ═══ 12 · LOS OCHO CASOS ══════════════════════════════════════════ */
+.ih-ocho{
+  display:flex;gap:clamp(14px,2vw,18px);margin-top:clamp(26px,3.4vw,38px);
+  overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding-bottom:4px;
+}
+.ih-ocho::-webkit-scrollbar{display:none}
+.ih-ocho > *{flex:none;width:min(78vw,300px);scroll-snap-align:center}
+@media(min-width:900px){
+  .ih-ocho{display:grid;grid-template-columns:repeat(4,1fr);overflow:visible}
+  .ih-ocho > *{width:auto}
+}
+.ih-ocho .ph{width:64px;height:64px;border-radius:50%;font-size:.52rem}
+.ih-ocho .ih-caso-n{font-size:1.1rem;margin-top:14px}
+.ih-ocho .ih-caso-r{font-size:1.16rem}
+.ih-ig{
+  display:inline-block;margin-top:14px;font-family:var(--label);font-size:.6rem;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--gold);text-decoration:none;
+  border-bottom:1px solid var(--gold-line);padding-bottom:2px;
+}
+
+/* ═══ 13 · CÓMO SE VENDE ═══════════════════════════════════════════ */
+.ih-citas{display:grid;gap:clamp(18px,2.4vw,26px);margin-top:clamp(26px,3.4vw,38px)}
+@media(min-width:860px){.ih-citas{grid-template-columns:repeat(3,1fr)}}
+.ih-cita p{
+  font-family:var(--display);font-weight:600;font-size:1.16rem;line-height:1.4;
+  color:var(--ink);margin:0;
+}
+.ih-cita cite{
+  display:block;margin-top:16px;font-family:var(--label);font-style:normal;
+  font-size:.66rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);
+}
+
+/* ═══ 14 · LOS CUATRO MESES ════════════════════════════════════════ */
+.ih-dias{list-style:none;margin:clamp(26px,3.4vw,38px) 0 0;padding:0;display:grid;gap:0}
+.ih-dias li{display:grid;gap:6px;padding:clamp(16px,2.2vw,22px) 0;border-top:1px solid var(--line)}
+@media(min-width:760px){
+  .ih-dias li{grid-template-columns:150px 1fr;gap:clamp(16px,2.4vw,26px);align-items:baseline}
+}
+.ih-dias li:first-child{border-top:0;padding-top:0}
+.ih-dias b{
+  font-family:var(--label);font-size:.76rem;font-weight:600;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--gold);
+}
+.ih-dias p{margin:0;font-size:.98rem}
+.ih-dias .clave{
+  background:var(--gold-wash);border-left:2px solid var(--gold);
+  padding-left:clamp(14px,2vw,20px);border-top-color:transparent;
+}
+
+/* ═══ 15 · EL NÚCLEO ═══════════════════════════════════════════════ */
+.ih-nucleo-g{display:grid;gap:clamp(28px,4vw,50px);align-items:center}
+@media(min-width:900px){.ih-nucleo-g{grid-template-columns:1fr 1fr}}
+.ih-agentes{width:100%;height:auto;display:block}
+.ih-agentes .et{font-family:"Cinzel",Georgia,serif;font-size:8.5px;letter-spacing:.14em;fill:#B5AED6}
+.ih-agentes .et-c{font-family:"Cinzel",Georgia,serif;font-size:10px;font-weight:600;letter-spacing:.18em;fill:#D9B45B}
+.ih-agentes .caja{fill:#100E2C;stroke:rgba(255,255,255,.08)}
+
+/* ═══ 16 · LA PRUEBA EN VIDEO ══════════════════════════════════════ */
+.ih-seis{display:grid;gap:clamp(14px,2vw,20px);margin-top:clamp(26px,3.4vw,38px)}
+@media(min-width:620px){.ih-seis{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:960px){.ih-seis{grid-template-columns:repeat(3,1fr)}}
+.ih-vid .ih-player{aspect-ratio:16/10}
+.ih-vid-pie{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-top:12px}
+.ih-vid-pie b{font-family:var(--display);font-size:1.06rem;font-weight:600;color:var(--ink)}
+.ih-vid-pie span{font-family:var(--label);font-size:.62rem;letter-spacing:.16em;color:var(--gold);flex:none}
+
+/* ═══ 18 · FAQ ═════════════════════════════════════════════════════ */
+.ih-faq{list-style:none;margin:clamp(26px,3.4vw,38px) 0 0;padding:0;display:grid;gap:0}
+.ih-faq li{padding:clamp(22px,3vw,30px) 0;border-top:1px solid var(--line)}
+.ih-faq li:first-child{border-top:0;padding-top:0}
+.ih-faq h3{
+  font-family:var(--display);font-weight:600;font-size:clamp(1.16rem,2.3vw,1.44rem);
+  line-height:1.25;color:var(--ink);margin:0 0 12px;
+}
+.ih-faq p{margin:0;max-width:70ch}
+
+/* ═══ 19 · EL CIERRE ═══════════════════════════════════════════════ */
+.ih-cierre{text-align:center}
+.ih-cierre h2{max-width:20ch;margin-inline:auto}
+.ih-cierre .ih-wrap > p{margin-inline:auto;max-width:52ch}
+.ih-precio{
+  margin:clamp(34px,4.4vw,52px) auto;padding-block:clamp(26px,3.4vw,38px);
+  border-top:1px solid var(--gold-line);border-bottom:1px solid var(--gold-line);
+  max-width:30ch;
+}
+.ih-precio b{
+  display:block;font-family:var(--display);font-weight:600;
+  font-size:clamp(2.6rem,7vw,4rem);line-height:1;color:var(--gold);letter-spacing:-.02em;
+}
+.ih-precio span{
+  display:block;margin-top:12px;font-family:var(--label);font-size:.68rem;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3);
+}
+.ih-firma{
+  margin-top:clamp(40px,5vw,64px);padding-top:clamp(26px,3.4vw,36px);
+  border-top:1px solid var(--line);
+}
+.ih-firma q{
+  display:block;font-family:var(--display);font-weight:600;quotes:none;
+  font-size:clamp(1.5rem,3.6vw,2.3rem);line-height:1.2;color:var(--gold);
+}
+.ih-firma span{
+  display:block;margin-top:14px;font-family:var(--label);font-size:.66rem;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--ink-3);
+}
+
+/* ═══ BARRA FIJA ═══════════════════════════════════════════════════ */
+.ih-barra{
+  position:fixed;left:0;right:0;bottom:0;z-index:60;height:64px;
+  display:flex;align-items:center;gap:clamp(12px,2vw,26px);padding-inline:var(--pad);
+  background:rgba(24,21,67,.92);border-top:1px solid var(--gold-line);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  transform:translateY(100%);transition:transform .3s ease;
+}
+.ih-barra.ver{transform:none}
+@media(prefers-reduced-motion:reduce){.ih-barra{transition:none}}
+.ih-barra-t{
+  flex:1;min-width:0;font-size:.84rem;color:var(--ink-2);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.ih-barra-t b{color:var(--ink);font-weight:700}
+.ih-barra-t i{color:var(--gold);font-style:normal;font-weight:700}
+.ih-barra .ih-cta{padding:11px 20px;font-size:.72rem;flex:none}
+@media(max-width:719px){
+  .ih-barra-t .larga{display:none}
+  .ih-barra-t{flex:none}
+  .ih-barra .ih-cta{flex:1;text-align:center}
+}
+</style>
+
+<!-- ═══ 01 · EL HERO ═════════════════════════════════════════════ -->
+<header class="ih-sec ih-hero" id="umbral">
+  <div class="ih-geo" aria-hidden="true">
+    <svg viewBox="0 0 400 400" fill="none" stroke="currentColor" stroke-width=".6">
+      <circle cx="200" cy="200" r="52"/>
+      <circle cx="200" cy="148" r="52"/><circle cx="200" cy="252" r="52"/>
+      <circle cx="245" cy="174" r="52"/><circle cx="245" cy="226" r="52"/>
+      <circle cx="155" cy="174" r="52"/><circle cx="155" cy="226" r="52"/>
+      <circle cx="200" cy="96"  r="52"/><circle cx="200" cy="304" r="52"/>
+      <circle cx="290" cy="148" r="52"/><circle cx="290" cy="252" r="52"/>
+      <circle cx="110" cy="148" r="52"/><circle cx="110" cy="252" r="52"/>
+      <circle cx="200" cy="200" r="156"/><circle cx="200" cy="200" r="166"/>
+    </svg>
+  </div>
+  <div class="ih-wrap">
+    <div class="ih-hero-g">
+      <div>
+        <p class="ih-pre">Para mentores, mentoras y terapeutas holísticos que
+          <b>ya venden en línea</b> — y sienten que se quedaron lentos.</p>
+
+        <h1>Tienes todas las piezas de tu negocio.
+          <em>Y ninguna te dice cuál te está faltando.</em></h1>
+
+        <p class="ih-hero-sub">No te falta talento. Te falta <b>arquitectura</b> — y un don
+          sin arquitectura no es humildad: es un alma en silencio.</p>
+
+        <div class="ih-hero-cta">
+          <a class="ih-cta" href="#cierre" data-res="cta-agenda" data-res-tipo="link"
+             data-res-label="URL de la agenda / calendario"
+             data-res-nota="La misma para los cuatro botones de la página.">Ver cómo funciona</a>
+          <span class="ih-micro">7 minutos. Marcelo te lo explica él mismo.</span>
+        </div>
+
+        <p class="ih-pie-hero">Consultoría, no agencia. La responsabilidad de crecer sigue siendo tuya.</p>
+      </div>
+
+      <div class="ih-player player" data-res="hero-video" data-res-tipo="video"
+           data-res-label="Video del hero · Marcelo a cámara"
+           data-res-nota="Autoplay silenciado con carátula. Pega la URL o el código de incrustación.">
+        <span class="ph player-art" data-res="hero-caratula" data-res-tipo="imagen" data-res-opcional
+              data-res-label="Carátula del video del hero"
+              data-res-nota="Marcelo mirando a cámara. Vertical en móvil, 4:5 en escritorio."><span>Carátula</span></span>
+        <button class="player-btn" type="button">
+          <i aria-hidden="true">▶</i>
+          <b>Activar sonido y ver</b>
+        </button>
+        <div class="player-meta">Pendiente: archivo de video del hero</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ═══ 02 · LA PRUEBA, DE ENTRADA ═══════════════════════════════ -->
+<section class="ih-sec" id="prueba">
+  <div class="ih-wrap">
+    <div class="ih-eyebrow">Algunos de los que ya lo construyeron</div>
+
+    <div class="ih-tres">
+      <article class="ih-card">
+        <div class="ih-caso-h">
+          <span class="ph" data-res="foto-angelica" data-res-tipo="imagen"
+            data-res-label="Foto de Angélica Lozano"
+            data-res-nota="Cuadrada. Se recorta en círculo de 72 px."><span>Foto</span></span>
+          <div>
+            <div class="ih-caso-n">Angélica Lozano</div>
+            <div class="ih-caso-p">Perú</div>
+          </div>
+        </div>
+        <p class="ih-caso-q">TDAH y neurodivergencia infantil</p>
+        <p class="ih-caso-r">De $250 a <b>$9.000</b> en un mes</p>
+      </article>
+
+      <article class="ih-card">
+        <div class="ih-caso-h">
+          <span class="ph" data-res="foto-teresita" data-res-tipo="imagen"
+            data-res-label="Foto de Teresita González"
+            data-res-nota="Cuadrada. Se recorta en círculo de 72 px."><span>Foto</span></span>
+          <div>
+            <div class="ih-caso-n">Teresita González</div>
+            <div class="ih-caso-p">México</div>
+          </div>
+        </div>
+        <p class="ih-caso-q">Medicina alternativa</p>
+        <p class="ih-caso-r"><b>$11.000</b> en 15 días</p>
+      </article>
+
+      <article class="ih-card">
+        <div class="ih-caso-h">
+          <span class="ph" data-res="foto-alex" data-res-tipo="imagen"
+            data-res-label="Foto de Alex Reyes-Ortíz"
+            data-res-nota="Cuadrada. Se recorta en círculo de 72 px."><span>Foto</span></span>
+          <div>
+            <div class="ih-caso-n">Alex Reyes-Ortíz</div>
+            <div class="ih-caso-p">México</div>
+          </div>
+        </div>
+        <p class="ih-caso-q">Lujo y moda</p>
+        <p class="ih-caso-r"><b>$57.000</b> en 2 meses</p>
+      </article>
+    </div>
+
+    <div class="ih-nota">Resultados reportados por nuestros clientes. Cada uno con lo que le
+      costó: pauta, contenido y ejecución.</div>
+  </div>
+</section>
+
+<!-- ═══ 03 · LOS NÚMEROS, CON SU UNIDAD ══════════════════════════ -->
+<section class="ih-sec" id="numeros">
+  <div class="ih-wrap">
+    <div class="ih-cifras">
+      <div class="ih-cifra"><b>+200</b><span>victorias documentadas de clientes</span></div>
+      <div class="ih-cifra"><b>39</b><span>con caso completo y entrevista grabada</span></div>
+      <div class="ih-cifra ih-propia"><b>~$500K</b><span>invertidos en publicidad propia</span></div>
+      <div class="ih-cifra"><b>$1.5M</b><span>facturados con este negocio, en línea</span></div>
+    </div>
+
+    <div class="ih-nota"><b>Cómo contamos.</b> Una victoria es un resultado que el cliente
+      demostró: una venta, un lanzamiento, una subida de precio, una agenda llena. Un caso
+      documentado tiene entrevista completa. <b>No inflamos ninguna de las dos, y no las
+      sumamos para que parezcan una sola.</b></div>
+  </div>
+</section>
+
+<!-- ═══ 04 · EL QUIEBRE ══════════════════════════════════════════ -->
+<section class="ih-sec" id="quiebre">
+  <div class="ih-wrap">
+    <div class="ih-eyebrow">El quiebre</div>
+    <div class="ih-quiebre">
+      <div class="ih-lee">
+        <h2>Tu día está partido en dos.</h2>
+        <p style="margin-top:clamp(20px,2.6vw,30px)">La mitad la pasas atendiendo clientes.
+          La otra mitad, buscando una nueva forma de crecer.</p>
+        <p>Ninguna de las dos mitades construye algo que quede de pie sin ti.</p>
+        <p>Y no es que no sepas. Sabes transformar personas — eso lo probaste hace años.
+          <b>Lo que no sabes es qué pieza te está faltando</b>, y por eso cada mes empieza
+          igual: con la sensación de que ya deberías estar en otro lugar.</p>
+
+        <ul class="ih-lista">
+          <li>Creas contenido y llega gente que no puede pagarte.</li>
+          <li>Tienes tráfico, pero no se convierte en conversaciones.</li>
+          <li>Tienes un programa grabado sin un mensaje que lo sostenga.</li>
+          <li>Dependes de referidos, y los referidos no se piden: se esperan.</li>
+          <li>Ya contrataste equipo, ya usaste un CRM, ya pusiste pauta — y sigues sin poder
+            predecir de dónde sale el próximo cliente.</li>
+        </ul>
+
+        <p class="ih-lead">Y lo más caro no es el dinero. <b>Es el tiempo que llevas perdiendo.</b></p>
+      </div>
+
+      <svg class="ih-bucle" viewBox="0 0 260 260" fill="none" stroke="currentColor"
+           stroke-width="1" role="img" aria-label="Un día partido en dos mitades que vuelve al inicio">
+        <circle cx="130" cy="132" r="86"/>
+        <path d="M130 46v172" stroke-dasharray="3 5" opacity=".55"/>
+        <text x="82" y="136" text-anchor="middle">ATIENDO</text>
+        <text x="178" y="120" text-anchor="middle">BUSCO</text>
+        <text x="178" y="136" text-anchor="middle">CÓMO</text>
+        <text x="178" y="152" text-anchor="middle">CRECER</text>
+        <path d="M130 24a108 108 0 0 1 74 29" stroke-width="1.2"/>
+        <path d="M196 46l10 8-11 7" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="130" y="248" text-anchor="middle">Y VUELVE A EMPEZAR</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 05 · EL ENEMIGO ══════════════════════════════════════════ -->
+<section class="ih-sec" id="enemigo">
+  <div class="ih-wrap">
+    <div class="ih-eyebrow">Contra qué estamos</div>
+    <div class="ih-lee">
+      <h2>El enemigo no es la inteligencia artificial.
+        <em>Es la sobrecomplicación.</em></h2>
+      <p style="margin-top:clamp(20px,2.6vw,30px)">Catorce aplicaciones. Tres cursos sin
+        terminar. Un embudo a medias. Y una pestaña abierta esperando que algo resuelva lo
+        que nunca ordenaste.</p>
+      <p>A eso le llamaste “tener sistemas”. Y cada herramienta te pide más tiempo del que
+        te devuelve.</p>
+    </div>
+
+    <div class="ih-caos" id="caos" aria-hidden="true"></div>
+
+    <div class="ih-dos">
+      <div class="ih-card">
+        <p class="ih-dos-t">El que te lo vende</p>
+        <p>El que te ofrece la última herramienta <b>como si hubiera descubierto el agua
+          tibia</b>, para venderte su curso sobre la última herramienta. El que te vende
+          barato en la puerta y después te cobra de a gotas hasta sumar el doble. El que
+          promete traerte clientes sin entender tu mensaje, tu llamado, ni una palabra del
+          dolor de quien te busca.</p>
+      </div>
+      <div class="ih-card">
+        <p class="ih-dos-t">Y el hábito que lo hace posible</p>
+        <p>Nadie te enseñó a mirar un negocio. Te formaste durante años para transformar
+          personas, no para leer un tablero de métricas. <b>Y eso te deja a merced del
+          primero que llega con una promesa.</b> No es tu culpa. Pero sí es tu problema.</p>
+      </div>
+    </div>
+
+    <p class="ih-lead">Diez piezas que no se hablan entre sí no son un sistema.
+      <b>Son diez trabajos.</b></p>
+  </div>
+</section>
+
+<!-- ═══ 06 · LA EPIFANÍA ═════════════════════════════════════════ -->
+<section class="ih-sec ih-epifania" id="epifania">
+  <div class="ih-geo" aria-hidden="true">
+    <svg viewBox="0 0 400 400" fill="none" stroke="currentColor" stroke-width=".6">
+      <circle cx="200" cy="200" r="52"/>
+      <circle cx="200" cy="148" r="52"/><circle cx="200" cy="252" r="52"/>
+      <circle cx="245" cy="174" r="52"/><circle cx="245" cy="226" r="52"/>
+      <circle cx="155" cy="174" r="52"/><circle cx="155" cy="226" r="52"/>
+      <circle cx="200" cy="96"  r="52"/><circle cx="200" cy="304" r="52"/>
+      <circle cx="290" cy="148" r="52"/><circle cx="290" cy="252" r="52"/>
+      <circle cx="110" cy="148" r="52"/><circle cx="110" cy="252" r="52"/>
+      <circle cx="200" cy="200" r="156"/><circle cx="200" cy="200" r="166"/>
+    </svg>
+  </div>
+  <div class="ih-wrap">
+    <div class="ih-eyebrow centro">La epifanía</div>
+    <h2>Somos código.</h2>
+
+    <div class="ih-lee-corto">
+      <p>Un constelador encuentra patrones en el linaje de una persona. Un terapeuta lee el
+        código de la programación de un ser humano. La inteligencia artificial también es
+        código — y el código es una secuencia de patrones que se lleva al mundo material.</p>
+      <p>Es la misma ley de siempre: <em>lo que crees en tu mente lo manifiestas en tu mundo.</em></p>
+    </div>
+
+    <div class="ih-patrones">
+      <div class="ih-patron">
+        <svg viewBox="0 0 200 140" fill="none" stroke="currentColor" stroke-width="1"
+             role="img" aria-label="Un árbol genealógico">
+          <circle cx="100" cy="22" r="7"/>
+          <circle cx="58" cy="70" r="7"/><circle cx="142" cy="70" r="7"/>
+          <circle cx="34" cy="118" r="7"/><circle cx="82" cy="118" r="7"/>
+          <circle cx="118" cy="118" r="7"/><circle cx="166" cy="118" r="7"/>
+          <path d="M100 29v14H58v20M100 43h42v20M58 77v14H34v20M58 91h24v20M142 77v14h-24v20M142 91h24v20"/>
+        </svg>
+        <span>Linaje</span>
+      </div>
+      <div class="ih-patron">
+        <svg viewBox="0 0 200 140" fill="none" stroke="currentColor" stroke-width="1"
+             role="img" aria-label="Un mapa de creencias">
+          <circle cx="100" cy="70" r="7"/>
+          <circle cx="46" cy="34" r="7"/><circle cx="154" cy="34" r="7"/>
+          <circle cx="34" cy="102" r="7"/><circle cx="100" cy="126" r="7"/>
+          <circle cx="166" cy="106" r="7"/>
+          <path d="M96 65 50 39M104 65l46-26M95 74l-54 24M100 77v42M106 74l55 27M53 40l-14 55M150 41l14 58M45 106l48 18M158 110l-50 14"/>
+        </svg>
+        <span>Creencias</span>
+      </div>
+      <div class="ih-patron">
+        <svg viewBox="0 0 200 140" fill="none" stroke="currentColor" stroke-width="1"
+             role="img" aria-label="Unas líneas de código">
+          <path d="M22 26h34M66 26h64M22 48h22M54 48h96M36 70h30M76 70h58M36 92h74M120 92h44M22 114h48M80 114h38"/>
+          <circle cx="14" cy="26" r="2.5"/><circle cx="14" cy="48" r="2.5"/>
+          <circle cx="14" cy="70" r="2.5"/><circle cx="14" cy="92" r="2.5"/>
+          <circle cx="14" cy="114" r="2.5"/>
+        </svg>
+        <span>Código</span>
+      </div>
+    </div>
+
+    <p class="ih-lead">Esto no es lo opuesto a tu trabajo. <b>Es tu trabajo, aplicado a tu negocio.</b></p>
+
+    <div class="ih-lee-corto" style="margin-top:clamp(30px,4vw,48px)">
+      <p>Por eso te quita el alma cuando no le das contexto. <b>Y por eso deja de quitártela
+        en el momento exacto en que le das el tuyo.</b></p>
+      <p>Un experto solo no puede producir el volumen que exige esta era. No es falta de
+        disciplina: es aritmética. Lo que estamos construyendo contigo se dice fácil y se
+        hace difícil — <b>tu método, tu voz y tu criterio viviendo en un lugar que no se
+        olvida, no se cansa y no renuncia.</b></p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 07 · SOBRE MARCELO ═══════════════════════════════════════ -->
+<section class="ih-sec" id="marcelo">
+  <div class="ih-wrap">
+    <div class="ih-eyebrow">Quién te va a acompañar</div>
+    <div class="ih-marcelo">
+      <span class="ph" data-res="foto-marcelo-oficina" data-res-tipo="imagen"
+        data-res-label="Foto de Marcelo en su oficina real"
+        data-res-nota="En su oficina, no en estudio. Vertical 4:5. Sin autos, relojes ni escenarios."><span>Foto en su oficina</span></span>
+
+      <div>
+        <h2>No empecé desde cero.
+          <em>Empecé desde el subsuelo.</em></h2>
+
+        <ul class="ih-tiempo">
+          <li><b>2019</b><p>Renuncié. Abrí una oficina de consultoría de doscientos veinte
+            metros cuadrados: cincuenta mil dólares de inversión y más de mil de renta al mes.</p></li>
+          <li><b>2020</b><p>La pandemia me dejó sin ingresos. Mi deuda pasó de treinta mil a
+            <b>más de ciento cincuenta mil dólares con intereses.</b></p></li>
+          <li><b>Después</b><p>Me reinventé de consultor presencial a mentor en línea. Y vendí
+            <b>exactamente todo lo que hoy rechazo:</b> lanzamientos, workshops, low ticket, WhatsApp.</p></li>
+          <li><b>Hoy</b><p>Un millón y medio de dólares facturados en línea. Cerca de medio
+            millón invertido en publicidad propia. Más de doscientas victorias documentadas.</p></li>
+        </ul>
+
+        <p style="margin-top:clamp(24px,3vw,32px)">Soy psicólogo. Estudié físico-matemático e
+          ingeniería. Me formé con Tony Robbins, en PNL, hipnosis, Reiki y registros akáshicos.</p>
+
+        <p class="ih-lead">Vengo de los dos mundos. <b>Y me tomó una quiebra entender que
+          nunca fueron opuestos.</b></p>
+
+        <p style="margin-top:clamp(24px,3vw,32px)">Por eso no rechazo esos modelos por gusto ni
+          por haberlos leído. <b>Los ejecuté con la deuda encima, cuando equivocarme no era un
+          experimento.</b> Sé exactamente dónde se rompe cada uno, en qué mes, y qué te deja debiendo.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 08 · EL PLANO™ ═══════════════════════════════════════════ -->
+<section class="ih-sec" id="plano">
+  <div class="ih-wrap">
+    <div class="ih-eyebrow">El método</div>
+    <div class="ih-lee">
+      <h2>Tres pilares y un eje.
+        <em>Nada más que eso.</em></h2>
+      <p style="margin-top:clamp(20px,2.6vw,30px)">Ellos venden temarios.
+        <b>Nosotros entregamos el plano.</b></p>
+    </div>
+
+    <svg class="ih-templo" viewBox="0 0 760 430" fill="none" role="img"
+         aria-label="El plano: el Movimiento 0 arriba, el eje del Núcleo, y los tres pilares Oferta, Atracción y Conversión">
+      <rect x="120" y="6" width="520" height="34" fill="#100E2C" stroke-dasharray="4 5" stroke="#D9B45B" opacity=".85"/>
+      <text x="380" y="28" text-anchor="middle" class="et">MOVIMIENTO 0 · LA FILOSOFÍA</text>
+      <path d="M380 40v22" stroke="#D9B45B" stroke-dasharray="3 4" opacity=".6"/>
+
+      <rect x="20" y="62" width="720" height="46" class="eje"/>
+      <text x="380" y="90" text-anchor="middle" class="et">EL EJE · EL NÚCLEO</text>
+
+      <path d="M140 108v22M380 108v22M620 108v22" stroke="#D9B45B" opacity=".5"/>
+
+      <rect x="20" y="130" width="230" height="216" class="caja"/>
+      <text x="135" y="158" text-anchor="middle" class="et">PILAR I</text>
+      <text x="135" y="184" text-anchor="middle" class="tit">La Oferta</text>
+      <text x="42" y="218" class="et-v">— A QUIÉN AYUDAS</text>
+      <text x="42" y="242" class="et-v">— EN QUÉ LO AYUDAS</text>
+      <text x="42" y="266" class="et-v">— CÓMO LO AYUDAS</text>
+      <text x="42" y="302" class="et-v">80% LO ENTREGA TU EQUIPO</text>
+      <text x="42" y="322" class="et-v">20% DEPENDE DE TI</text>
+
+      <rect x="265" y="130" width="230" height="216" class="caja"/>
+      <text x="380" y="158" text-anchor="middle" class="et">PILAR II</text>
+      <text x="380" y="184" text-anchor="middle" class="tit">La Atracción</text>
+      <text x="287" y="218" class="et-v">— POR NIVEL DE CONCIENCIA</text>
+      <text x="287" y="242" class="et-v">— ÁNGULOS QUE REVELAN</text>
+      <text x="287" y="266" class="et-v">— PAUTA QUE AMPLIFICA</text>
+      <text x="287" y="302" class="et-v">NO POR TEMA:</text>
+      <text x="287" y="322" class="et-v">POR MOMENTO</text>
+
+      <rect x="510" y="130" width="230" height="216" class="caja"/>
+      <text x="625" y="158" text-anchor="middle" class="et">PILAR III</text>
+      <text x="625" y="184" text-anchor="middle" class="tit">La Conversión</text>
+      <text x="532" y="218" class="et-v">— DESCONOCIDOS A LLAMADAS</text>
+      <text x="532" y="242" class="et-v">— LLAMADAS A CLIENTES</text>
+      <text x="532" y="266" class="et-v">— CLIENTES QUE EJECUTAN</text>
+      <text x="532" y="302" class="et-v">EL QUE LLEGA,</text>
+      <text x="532" y="322" class="et-v">LLEGA CONVENCIDO</text>
+
+      <path d="M20 378h720" stroke="#D9B45B" opacity=".55"/>
+      <text x="380" y="408" text-anchor="middle" class="cierre">Esencia + Estructura = Arquitectura</text>
+    </svg>
+
+    <div class="ih-lee" style="margin-top:clamp(22px,3vw,32px)">
+      <p><b>EL EJE · EL NÚCLEO.</b> Tu segundo cerebro, tus agentes, tu CRM y tus números.
+        Va arriba y no abajo a propósito: <b>la estructura no está debajo de tu negocio,
+        lo atraviesa entero.</b></p>
+    </div>
+
+    <div class="ih-nota"><b>Y antes de todo eso, el Movimiento 0.</b> El primer trabajo
+      contigo no es tu embudo: es tu filosofía. Porque hoy hay cincuenta caminos que llegan
+      al mismo lugar, y la decisión de tu cliente ya no es sobre el resultado — es sobre el
+      camino y sobre con quién caminarlo.</div>
+  </div>
+</section>
+
+<!-- ═══ 09 · LA FILOSOFÍA ════════════════════════════════════════ -->
+<section class="ih-sec" id="filosofia">
+  <div class="ih-wrap">
+    <div class="ih-eyebrow">Por qué este camino</div>
+    <div class="ih-lee">
+      <h2>Hace diez años comprabas el destino.
+        <em>Hoy ya sabes que se puede llegar.</em></h2>
+      <p style="margin-top:clamp(20px,2.6vw,30px)">Y sabes algo más, aunque no lo digas así:
+        <b>hay cincuenta caminos que llegan al mismo lugar.</b> Lanzamientos, webinars, low
+        ticket, prospección, workshops, retiros, orgánico, pauta, TikTok, WhatsApp. Todos
+        funcionan. Sería deshonesto decirte lo contrario.</p>
+
+      <p class="ih-lead">Por eso tu decisión ya no es sobre el resultado.
+        <b>Es sobre el camino — y sobre con quién caminarlo.</b></p>
+    </div>
+
+    <div class="ih-axioma">
+      <span class="et">Axioma 1 · El principio que une todo</span>
+      <q>Solo construimos sistemas que se pueden corregir mientras están corriendo.</q>
+    </div>
+
+    <div class="ih-lee" style="margin-top:clamp(24px,3vw,34px)">
+      <p>Un lanzamiento no se corrige a mitad de camino: cuando ves el número, ya terminó.
+        Un workshop depende de una fecha, y fuera de esa fecha no produce. El low ticket
+        necesita volumen extremo antes de darte una sola señal útil. La prospección en frío
+        depende del esfuerzo de ayer, no del sistema.</p>
+      <p><b>Un sistema evergreen con contenido y pauta se lee y se ajusta cualquier día de la
+        semana.</b> Por eso el diagnóstico empieza siempre por los números.</p>
+    </div>
+
+    <div class="ih-axioma">
+      <span class="et">Axioma 2 · Y el segundo no negociable</span>
+      <q>No implementamos nada que no podamos enseñar.</q>
+    </div>
+
+    <div class="ih-lee" style="margin-top:clamp(24px,3vw,34px)">
+      <p>Si no puedes replicar cómo conseguimos nuestros clientes, no te estamos vendiendo un
+        método: <b>te estamos vendiendo un espectáculo.</b></p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 10 · LO QUE ESTÁS COMPARANDO ═════════════════════════════ -->
+<section class="ih-sec" id="comparar">
+  <div class="ih-wrap">
+    <div class="ih-eyebrow">Lo que estás comparando</div>
+    <div class="ih-lee">
+      <h2>Hay tres caminos más sobre tu mesa.
+        <em>Te los explico yo.</em></h2>
+    </div>
+
+    <div class="ih-tres-col">
+      <article class="ih-card ih-alt">
+        <h3 class="ih-alt-t">Una mentoría generalista</h3>
+        <p>Marca grande, buenos casos, sin nicho.</p>
+        <p><b>El problema:</b> un generalista no entiende tu llamado, tus paradigmas ni el
+          idioma de tu cliente. Te va a dar una plantilla que funciona en otro mercado y vas
+          a pasar seis meses traduciéndola tú.</p>
+      </article>
+
+      <article class="ih-card ih-alt">
+        <h3 class="ih-alt-t">Una agencia que te trae clientes</h3>
+        <p><b>El problema:</b> te pueden traer conversaciones, no te pueden traer un mensaje.
+          Y sin mensaje, las conversaciones no cierran. Además, si ellos están más
+          comprometidos que tú con tu negocio, tu negocio no escala — eso ya lo probamos y
+          por eso no somos una agencia.</p>
+      </article>
+
+      <article class="ih-card ih-alt">
+        <h3 class="ih-alt-t">Un growth partner que cobra contra resultados</h3>
+        <p>Suena a riesgo cero, y es la más honesta de comparar.</p>
+        <p><b>El problema:</b> quien cobra contra tus resultados necesita controlar tus
+          decisiones. Termina siendo dueño de tu negocio sin haber puesto un dólar.
+          <b>Tú pagas por adelantado para seguir siendo el dueño</b> — y el riesgo se cubre
+          con la garantía, no cediendo el control.</p>
+      </article>
+    </div>
+
+    <div class="ih-nota">Y el cuarto camino, el que casi nadie nombra: <b>la agencia barata.</b>
+      El que te vende barato en la puerta te cobra de a gotas hasta sumar el doble. Decir el
+      precio completo de frente no es una debilidad: es el argumento.</div>
+  </div>
+</section>
+
+<!-- ═══ 11 · PARA QUIÉN ES Y PARA QUIÉN NO ═══════════════════════ -->
+<section class="ih-sec" id="filtro">
+  <div class="ih-wrap">
+    <div class="ih-filtro">
+      <div class="si">
+        <div class="ih-eyebrow">Es para ti si</div>
+        <ul class="ih-lista">
+          <li>Ya lanzaste un programa en línea y <b>ya vendiste high ticket.</b> Sabes lo que
+            se siente cerrar una venta de cuatro cifras.</li>
+          <li>Ya hiciste masterclasses, webinars y contenido. <b>No eres análogo.</b></li>
+          <li>Ya contrataste equipo, ya usaste un CRM, ya pusiste pauta — y sigues sin poder
+            predecir de dónde sale el próximo cliente.</li>
+          <li>Tienes clientes que pueden testificar lo que les pasó contigo.</li>
+          <li>Quieres hablar de facturación, de cierre y de retención <b>sin sentir que
+            traicionas tu propósito.</b></li>
+          <li>Entiendes que hay un precio que pagar.</li>
+        </ul>
+      </div>
+
+      <div class="no">
+        <div class="ih-eyebrow">No es para ti si</div>
+        <ul class="ih-lista">
+          <li>Estás empezando. No hay arquitectura que levantar sobre un terreno vacío.</li>
+          <li>Quieres que te hagamos el negocio. <b>Somos una consultora, no una agencia.</b></li>
+          <li>Crees que una herramienta va a trabajar en tu lugar.</li>
+          <li>Llevas tres mentorías y las tres fueron el problema.</li>
+          <li>Viniste a vibrar bonito sin mirar un número.</li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="ih-lead">Aquí el filtro no son los años. <b>Es la prueba.</b></p>
+  </div>
+</section>
+
+<!-- ═══ 12 · LOS OCHO CASOS ══════════════════════════════════════ -->
+<section class="ih-sec" id="casos">
+  <div class="ih-wrap">
+    <div class="ih-eyebrow">Victorias del Círculo</div>
+
+    <div class="ih-ocho" id="ocho"></div>
+
+    <div class="ih-nota"><b>Cada uno pagó un precio.</b> Pauta, contenido grabado semana tras
+      semana, y decisiones incómodas sobre a quién dejar de venderle. Ninguno de estos
+      resultados llegó sin eso, y no vamos a fingir lo contrario.</div>
+  </div>
+</section>
+
+<!-- ═══ 13 · CÓMO SE VENDE AQUÍ ══════════════════════════════════ -->
+<section class="ih-sec" id="venta">
+  <div class="ih-wrap">
+    <div class="ih-eyebrow">Antes de que sigas bajando</div>
+    <div class="ih-lee">
+      <h2>Nuestros clientes describen
+        <em>nuestra forma de vender</em> como parte del producto.</h2>
+    </div>
+
+    <div class="ih-citas">
+      <blockquote class="ih-card ih-cita">
+        <p>Sin yo sentir que me están invadiendo, sin yo sentir que están vendiendo humo,
+          sin yo sentir que me están presionando.</p>
+        <cite>Bárbara Estévez</cite>
+      </blockquote>
+      <blockquote class="ih-card ih-cita">
+        <p>Lo que me vendió es que no estabas tú en la llamada.</p>
+        <cite>Rainier Hidalgo</cite>
+      </blockquote>
+      <blockquote class="ih-card ih-cita">
+        <p>Me impresionó tu seguridad, el que no fuera negociable el precio.</p>
+        <cite>Fabiana Mersan</cite>
+      </blockquote>
+    </div>
+
+    <div class="ih-lee" style="margin-top:clamp(26px,3.4vw,38px)">
+      <p>No es casualidad. <b>Aquí no despertamos dormidos: guiamos despiertos.</b> A quien
+        hay que convencer para que entre, hay que convencerlo también para que ejecute — y un
+        cliente que no ejecuta no obtiene resultado.</p>
+    </div>
+
+    <p class="ih-lead">Por eso no vas a encontrar un contador regresivo en esta página.
+      <b>Y por eso el precio está de frente.</b></p>
+  </div>
+</section>
+
+<!-- ═══ 14 · LOS CUATRO MESES, EN DÍAS ═══════════════════════════ -->
+<section class="ih-sec" id="dias">
+  <div class="ih-wrap">
+    <div class="ih-eyebrow">Cómo se ve por dentro</div>
+    <div class="ih-lee">
+      <h2>Cuatro meses.
+        <em>Y el primero se mide en días.</em></h2>
+    </div>
+
+    <ul class="ih-dias">
+      <li><b>Día 0</b><p>Formulario de onboarding y acceso a la plataforma.</p></li>
+      <li><b>Días 1–3</b><p>Sesión de onboarding y auditoría del negocio para encontrar tu
+        cuello de botella.</p></li>
+      <li class="clave"><b>Días 1–7</b><p><b>Sesión directamente con Marcelo:</b> auditoría de
+        tu oferta, ángulos de comunicación y estrategia de marketing.</p></li>
+      <li><b>Días 7–17</b><p><b>Todos tus activos digitales terminados:</b> script de ventas,
+        prospección, calendario, CRM, estructura de webinar, perfil optimizado, escalera de
+        valor y guiones de contenido y anuncios.</p></li>
+      <li><b>Días 17–30</b><p>Grabas, publicas y lanzas campañas.
+        <b>Semana 3 o 4: tu primera agenda.</b></p></li>
+      <li><b>Días 30–60</b><p>Optimización de ángulos y conversión. Se graban tus llamadas y
+        se auditan. <b>Objetivo: primera venta.</b></p></li>
+      <li><b>Días 60–120</b><p>Escalar. Más contenido, más pauta, mejor cierre.</p></li>
+    </ul>
+
+    <div class="ih-nota">Y en paralelo, todo el programa: sesiones grupales diarias con
+      especialistas por tema, canal privado con feedback grabado, account manager asignado, y
+      <b>dos sesiones por semana directamente con Marcelo.</b></div>
+  </div>
+</section>
+
+<!-- ═══ 15 · EL NÚCLEO Y LOS AGENTES ═════════════════════════════ -->
+<section class="ih-sec" id="nucleo">
+  <div class="ih-wrap">
+    <div class="ih-eyebrow">El eje</div>
+    <div class="ih-lee">
+      <h2>Tu método, tu voz y tu criterio
+        <em>viviendo en un lugar que no se cansa.</em></h2>
+    </div>
+
+    <div class="ih-nucleo-g" style="margin-top:clamp(26px,3.4vw,40px)">
+      <div>
+        <p>El Núcleo es tu segundo cerebro. Adentro viven tu cliente ideal, tu oferta, tu
+          forma de decir las cosas y tus casos. Y encima corren los agentes:</p>
+        <ul class="ih-lista">
+          <li>Construye ofertas contigo y las audita.</li>
+          <li>Genera guiones de contenido y de anuncios en tu voz.</li>
+          <li>Audita tus llamadas de venta grabadas.</li>
+          <li>Produce tu script y tu manual de objeciones.</li>
+          <li>Encuentra tu cuello de botella antes de que tú lo notes.</li>
+        </ul>
+        <p style="margin-top:clamp(22px,2.8vw,30px)">No nacieron de una moda.
+          <b>Nacieron de mis propios cuatro cuellos de botella</b>, que son exactamente los
+          mismos que vas a tener tú.</p>
+      </div>
+
+      <svg class="ih-agentes" viewBox="0 0 420 340" fill="none" stroke="currentColor"
+           stroke-width="1" color="#D9B45B" role="img"
+           aria-label="El Núcleo al centro, cinco funciones alrededor, y una flecha que sale hacia una persona">
+        <circle cx="180" cy="150" r="46" fill="#100E2C" stroke="#D9B45B"/>
+        <text x="180" y="146" text-anchor="middle" class="et-c">EL</text>
+        <text x="180" y="162" text-anchor="middle" class="et-c">NÚCLEO</text>
+
+        <rect x="112" y="16" width="136" height="34" class="caja"/>
+        <text x="180" y="37" text-anchor="middle" class="et">OFERTA</text>
+        <path d="M180 50v54" stroke="#D9B45B" opacity=".45"/>
+
+        <rect x="8" y="76" width="112" height="34" class="caja"/>
+        <text x="64" y="97" text-anchor="middle" class="et">CONTENIDO</text>
+        <path d="M120 100l24 22" stroke="#D9B45B" opacity=".45"/>
+
+        <rect x="8" y="190" width="112" height="34" class="caja"/>
+        <text x="64" y="211" text-anchor="middle" class="et">LLAMADAS</text>
+        <path d="M120 200l24-22" stroke="#D9B45B" opacity=".45"/>
+
+        <rect x="106" y="264" width="148" height="34" class="caja"/>
+        <text x="180" y="285" text-anchor="middle" class="et">SCRIPT Y OBJECIONES</text>
+        <path d="M180 264v-68" stroke="#D9B45B" opacity=".45"/>
+
+        <rect x="252" y="76" width="120" height="34" class="caja"/>
+        <text x="312" y="97" text-anchor="middle" class="et">CUELLO DE BOTELLA</text>
+        <path d="M252 100l-26 22" stroke="#D9B45B" opacity=".45"/>
+
+        <path d="M226 178h96" stroke="#D9B45B" stroke-width="1.4"/>
+        <path d="M314 172l10 6-10 6" stroke="#D9B45B" stroke-width="1.4"
+              stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="360" cy="164" r="12" stroke="#D9B45B" stroke-width="1.4"/>
+        <path d="M338 208a22 26 0 0 1 44 0" stroke="#D9B45B" stroke-width="1.4"/>
+        <text x="360" y="236" text-anchor="middle" class="et-c">TÚ</text>
+        <text x="360" y="252" text-anchor="middle" class="et">DECIDES</text>
+      </svg>
+    </div>
+
+    <div class="ih-axioma">
+      <span class="et">Axioma · La regla que no se rompe</span>
+      <q>Los agentes proponen. Un humano decide.</q>
+    </div>
+
+    <div class="ih-lee" style="margin-top:clamp(24px,3vw,34px)">
+      <p>Conversas con ellos, y después llevas eso a la sesión para que un humano lo revise —
+        o yo directamente. <b>Nunca quedas solo frente a una máquina.</b> Y su valor real no
+        es la velocidad: es que llegas a la sesión habiendo pensado ya.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 16 · LA PRUEBA EN VIDEO ══════════════════════════════════ -->
+<section class="ih-sec" id="videos">
+  <div class="ih-wrap">
+    <div class="ih-eyebrow">La prueba, en su voz</div>
+    <div class="ih-lee">
+      <h2>No te lo cuento yo.</h2>
+      <p style="margin-top:clamp(20px,2.6vw,30px)">Seis conversaciones completas. Sin edición
+        de highlights, sin música épica. <b>Cada una empieza por dónde estaban antes</b> —
+        porque casi todos llegaron igual: ya habían invertido en cursos, certificaciones o
+        mentorías que no funcionaron.</p>
+    </div>
+
+    <div class="ih-seis" id="seis"></div>
+
+    <p class="ih-lead">No competimos contra el que nunca invirtió.
+      <b>Competimos contra el recuerdo del que ya perdió dinero.</b></p>
+  </div>
+</section>
+
+<!-- ═══ 17 · LA GARANTÍA ═════════════════════════════════════════ -->
+<section class="ih-sec" id="garantia">
+  <div class="ih-wrap">
+    <div class="ih-eyebrow">La garantía</div>
+    <div class="ih-lee">
+      <h2>Te acompañamos sin costo adicional
+        <em>hasta que factures $10.000.</em></h2>
+      <p style="margin-top:clamp(20px,2.6vw,30px)">Acumulados durante el programa, en ventas
+        facturadas. <b>No es un techo: es la validación de que el sistema funciona en tus
+        manos y de que recuperaste tu inversión.</b></p>
+      <p><b>Y estas son sus condiciones, a la vista:</b></p>
+      <ul class="ih-lista">
+        <li>Invertir en pauta el precio de tu propio servicio, con mínimo de
+          <b>$2.000 en los primeros 30 días</b> de campaña.</li>
+        <li>Asistir al <b>90% de las sesiones</b> asignadas.</li>
+        <li>Ejecutar en los plazos acordados.</li>
+        <li>Mantener tu Success Tracker y tus llamadas de venta cargadas.</li>
+      </ul>
+    </div>
+
+    <div class="ih-nota">Las condiciones no están escondidas en letra chica porque
+      <b>son exactamente lo que la hace creíble.</b> Una garantía sin condiciones no protege
+      a nadie: ni a ti, que no vas a ejecutar, ni a nosotros, que no podríamos sostenerla.</div>
+  </div>
+</section>
+
+<!-- ═══ 18 · PREGUNTAS FRECUENTES ════════════════════════════════ -->
+<section class="ih-sec" id="faq">
+  <div class="ih-wrap">
+    <div class="ih-eyebrow">Preguntas frecuentes</div>
+    <ul class="ih-faq">
+      <li>
+        <h3>¿Ustedes me traen los clientes?</h3>
+        <p>No. Somos una consultora, no una agencia. Y la razón te defiende a ti:
+          <b>si nosotros estamos más comprometidos que tú con tu negocio, tu negocio no
+          escala.</b> Ya lo probamos.</p>
+      </li>
+      <li>
+        <h3>¿Voy a tener atención personalizada?</h3>
+        <p>Vas a tener algo mejor, y ya probamos lo otro. Los casos que fracasaron fueron los
+          que desarrollaron dependencia de un mentor individual. <b>Los mejores resultados los
+          tienen quienes se conectan a las sesiones grupales</b>, donde reciben perspectiva de
+          dueño de negocio.</p>
+      </li>
+      <li>
+        <h3>¿La inteligencia artificial no va a volver genérico mi contenido?</h3>
+        <p>Te quita el alma cuando no le das contexto. Y deja de quitártela en el momento
+          exacto en que le das el tuyo. <b>Los agentes son la primera capa; después revisa un
+          humano.</b></p>
+      </li>
+      <li>
+        <h3>Está caro.</h3>
+        <p>El que te vende barato en la puerta te cobra de a gotas hasta sumar el doble. Y una
+          pregunta honesta: <b>invertiste miles en tu formación. ¿Cuánto llevas invertido en
+          aprender a vender lo que sabes?</b></p>
+      </li>
+      <li>
+        <h3>¿Y si no me funciona? Ya perdí dinero antes.</h3>
+        <p>La mayoría de nuestros casos llegó igual. Por eso existe la garantía con sus
+          condiciones a la vista. Y por eso digo esto en voz alta: <b>a pesar de todo, no
+          todos tienen los resultados que me gustaría.</b> Quien te promete lo contrario te
+          está vendiendo algo.</p>
+      </li>
+      <li>
+        <h3>No tengo tiempo.</h3>
+        <p>Es cierto, y por eso estás atrapado: la mitad del día atendiendo, la mitad buscando
+          cómo crecer. <b>Lo que compras no es más trabajo: es dejar de perder tiempo en la
+          mitad que no construye nada.</b> Pero no te voy a decir que es fácil. Al inicio tu
+          vida se adapta a tu negocio.</p>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ═══ 19 · EL CIERRE ═══════════════════════════════════════════ -->
+<section class="ih-sec ih-cierre" id="cierre">
+  <div class="ih-wrap">
+    <h2>Una vez que ves la arquitectura,
+      <em>ya no puedes dejar de verla.</em></h2>
+
+    <p style="margin-top:clamp(22px,3vw,32px)">Eso no se desaprende, no se devuelve y no se
+      olvida. <b>Es la única garantía que damos de verdad.</b></p>
+
+    <div class="ih-precio">
+      <b>$7.000 USD</b>
+      <span>en cuotas · cuatro meses de acompañamiento</span>
+    </div>
+
+    <a class="ih-cta" href="#cierre" data-res="cta-agenda" data-res-tipo="link">Cruzar el umbral</a>
+    <span class="ih-micro">Una llamada de diagnóstico. Si no calificas, te lo decimos ahí mismo.</span>
+
+    <p class="ih-lead" style="margin-inline:auto;max-width:34ch">No es fácil. Nunca dijimos
+      que fuera fácil. <b>Pero es posible — y hay más de doscientas personas que ya lo
+      hicieron antes que tú.</b></p>
+
+    <div class="ih-firma">
+      <q>Si tú escalas, el mundo sana.</q>
+      <span>Marcelo Andrés Proaño · Imperio Holístico™</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ BARRA FIJA ═══════════════════════════════════════════════ -->
+<div class="ih-barra" id="barra">
+  <div class="ih-barra-t">
+    <b>Imperio Holístico™</b><span class="larga"> · 4 meses · </span><i>$7.000 USD</i><span class="larga"> · garantía hasta $10.000 facturados</span>
+  </div>
+  <a class="ih-cta" href="#cierre" data-res="cta-agenda" data-res-tipo="link">Cruzar el umbral</a>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════════
+   Imperio Holístico™ · lo mínimo indispensable.
+   Una sola animación en toda la página (bloque 05) y nada más se mueve.
+   ═══════════════════════════════════════════════════════════════════ */
+(() => {
+"use strict";
+const $ = s => document.querySelector(s);
+const esc = t => String(t).replace(/[&<>"']/g, c =>
+  ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const RM = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const clave = n => n.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"")
+                    .replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
+
+/* ── DATOS EDITABLES ─────────────────────────────────────────────
+   Los ocho casos: [nombre, nicho, país, resultado, cita]
+   La cita se muestra solo si existe. Nunca se inventa una.        */
+const CASOS = [
+  ["Angélica Lozano",  "TDAH infantil",         "Perú",      "De $250 a $9.000 en un mes", ""],
+  ["Ara Guerrero",     "Coach de riqueza",      "Ecuador",   "$10.300 en 15 días",         ""],
+  ["Paola Saldaña",    "Coach de separaciones", "Colombia",  "$10.000 en un mes",          ""],
+  ["Lizeth Alaniz",    "Terapeuta de rupturas", "México",    "$10.000 en 30 días",         ""],
+  ["Teresita González","Medicina alternativa",  "México",    "$11.000 en 15 días",         ""],
+  ["Rainier Hidalgo",  "Venta directa",         "Venezuela", "+$12.000 en 30 días",
+    "Lo que me vendió es que no estabas tú en la llamada."],
+  ["Alex Reyes-Ortíz", "Lujo y moda",           "México",    "$57.000 en 2 meses",         ""],
+  ["Fabiana Mersan",   "Marca personal",        "Paraguay",  "+$104.000 en 4 meses",
+    "Me impresionó tu seguridad, el que no fuera negociable el precio."],
+];
+
+/* Los seis videos: [nombre, duración] — la duración es prueba, ponla en cuanto la sepas */
+const VIDEOS = [
+  ["Bárbara Estévez", ""], ["Rainier Hidalgo", ""],  ["Fabiana Mersan", ""],
+  ["Ara Guerrero", ""],    ["Teresita González", ""], ["Angélica Lozano", ""],
+];
+
+/* ── 12 · Los ocho casos ─────────────────────────────────────────── */
+const ocho = $("#ocho");
+if(ocho) ocho.innerHTML = CASOS.map(([nom, nicho, pais, res, cita]) => {
+  const k = clave(nom);
+  const m = res.match(/^(.*?)(\+?\$[\d.,]+)(.*)$/);
+  const [antes, cifra, despues] = m ? [m[1], m[2], m[3]] : ["", res, ""];
+  return `
+  <article class="ih-card">
+    <span class="ph" data-res="caso-${k}" data-res-tipo="imagen" data-res-opcional
+      data-res-label="Foto de ${esc(nom)}"
+      data-res-nota="Cuadrada. Se recorta en círculo de 64 px."><span>Foto</span></span>
+    <div class="ih-caso-n">${esc(nom)}</div>
+    <div class="ih-caso-p">${esc(nicho)} · ${esc(pais)}</div>
+    <p class="ih-caso-r">${esc(antes)}<b>${esc(cifra)}</b>${esc(despues)}</p>
+    ${cita ? `<p class="ih-caso-q">“${esc(cita)}”</p>` : ""}
+    <a class="ih-ig" href="#casos" data-res="ig-${k}" data-res-tipo="link" data-res-opcional
+      data-res-label="Instagram de ${esc(nom)}"
+      data-res-nota="Su perfil, para que se pueda verificar.">Ver su cuenta</a>
+  </article>`;
+}).join("");
+
+/* ── 16 · Los seis videos ────────────────────────────────────────── */
+const seis = $("#seis");
+if(seis) seis.innerHTML = VIDEOS.map(([nom, dur]) => {
+  const k = clave(nom);
+  return `
+  <div class="ih-vid">
+    <div class="ih-player player" data-res="video-${k}" data-res-tipo="video"
+      data-res-label="Conversación con ${esc(nom)}"
+      data-res-nota="Sin editar. Pega la URL o el código de incrustación.">
+      <span class="ph player-art" data-res="port-${k}" data-res-tipo="imagen" data-res-opcional
+        data-res-label="Carátula de ${esc(nom)}"
+        data-res-nota="Un fotograma real de la conversación."><span>Carátula</span></span>
+      <button class="player-btn" type="button"><i aria-hidden="true">▶</i><b>Ver la conversación</b></button>
+      <div class="player-meta">Pendiente: video</div>
+    </div>
+    <div class="ih-vid-pie">
+      <b>${esc(nom)}</b>
+      <span data-res="dur-${k}" data-res-tipo="texto" data-res-opcional
+        data-res-label="Duración del video de ${esc(nom)}"
+        data-res-nota="Se muestra tal cual. Por ejemplo: 12 MIN.">${dur ? esc(dur) : "— MIN"}</span>
+    </div>
+  </div>`;
+}).join("");
+
+/* ── 05 · La única animación de la página ────────────────────────── */
+const caos = $("#caos");
+if(caos){
+  const DES = [[-14,9,-7],[11,-12,5],[-8,-15,8],[16,7,-4],[-12,13,6],[9,-9,-6],[-16,-6,4],
+               [13,11,-8],[-10,-13,7],[7,15,-5],[-15,8,3],[12,-14,-7],[-9,10,6],[14,-8,-3]];
+  caos.innerHTML = DES.map(([x,y,r], i) =>
+    `<i style="--x:${x}px;--y:${y}px;--r:${r}deg;--d:${i*26}ms"></i>`).join("");
+  if(RM) caos.classList.add("ordenado");
+  else new IntersectionObserver((es, o) => {
+    if(!es[0].isIntersecting) return;
+    o.disconnect();
+    caos.classList.add("ordenado");
+  }, {threshold:.5}).observe(caos);
+}
+
+/* ── La barra fija: nunca antes del bloque 02 ────────────────────── */
+const barra = $("#barra"), prueba = $("#prueba");
+if(barra && prueba){
+  const mirar = () => barra.classList.toggle("ver", prueba.getBoundingClientRect().top < 0);
+  addEventListener("scroll", mirar, {passive:true});
+  addEventListener("resize", mirar);
+  mirar();
+}
+
+/* ── Desplazamiento suave dentro de la página ────────────────────── */
+document.querySelectorAll('body a[href^="#"]').forEach(a => {
+  a.addEventListener("click", e => {
+    const destino = document.getElementById(a.getAttribute("href").slice(1));
+    if(!destino) return;
+    e.preventDefault();
+    scrollTo({top: destino.getBoundingClientRect().top + scrollY - 20,
+              behavior: RM ? "auto" : "smooth"});
+  });
+});
+
+window.KIT?.refrescar?.();
+})();
+</script>

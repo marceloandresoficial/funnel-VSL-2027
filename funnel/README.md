@@ -107,7 +107,7 @@ versionarlo.
 | Página | Estado |
 |---|---|
 | **VSL** | Terminada. Tráfico frío, móvil primero. |
-| **BIO Instagram** | Terminada. |
+| **BIO Instagram** | Terminada. **Imperio Holístico™** — 19 bloques + barra fija, sistema visual propio (`kit:false`). |
 | VSL Retargeting · Sesión Confirmada · Preparación · Programa | Esbozo, esperando brief |
 
 ### La VSL, por dentro
@@ -169,6 +169,26 @@ Pásalo antes de cada `./build.sh`. Devuelve 0 si está limpio.
 Si **arrancó** va vacío, la tarjeta muestra solo la cifra alcanzada, sin flecha.
 Hoy hay 3 transformaciones completas y 16 con la cifra de sus mini-portadas.
 Cada cliente tiene un hueco de foto opcional (`cara-<nombre>`); sin foto sale su inicial.
+
+### La BIO: Imperio Holístico™
+
+Sistema visual propio, aislado del Kit (`"kit": false` en su cabecera): obsidiana violeta
+`#08071A`, oro `#D9B45B`, y Cormorant Garamond / Cinzel / Karla. No hereda nada del funnel.
+
+Reglas del brief que el código respeta y conviene no romper:
+
+- **Una sola animación en toda la página**: los catorce cuadraditos del bloque 05 que se
+  ordenan al entrar en pantalla, una vez. `prefers-reduced-motion` los deja ya ordenados.
+- **La barra fija no aparece en el hero**, solo desde el bloque 02: ahí compite con el video,
+  que es lo que hace el trabajo de confianza.
+- **Listas con guion dorado, nunca palomita.** Las palomitas dicen «beneficios»;
+  los guiones dicen «diagnóstico».
+- **Sin contador, sin cupos, sin chat, sin segundo CTA.** Una sola acción en toda la página.
+- Los ocho casos y los seis videos salen de `CASOS` y `VIDEOS`, al principio del `<script>`.
+  La cita de un caso se muestra solo si existe: **nunca se inventa una.**
+
+La versión anterior (la modelada sobre strategycoach.us) está en
+`paginas/borradores/bio-instagram-strategycoach.html`.
 
 ### Falta cargar (5 recursos obligatorios)
 

@@ -582,15 +582,6 @@ h1,h2,h3,h4{font-family:var(--sys);font-weight:800;margin:0;text-wrap:balance;le
 
 /* ---------- CTA final ---------- */
 
-/* El precio, de frente: sin contador y sin cupos, es el argumento */
-.precio{margin:clamp(30px,4vw,46px) auto;padding-block:clamp(22px,3vw,32px);
-  border-top:1px solid var(--line-hard);border-bottom:1px solid var(--line-hard);max-width:30ch}
-.precio b{display:block;font-family:var(--data);font-weight:700;letter-spacing:-.04em;
-  font-size:clamp(2.4rem,6.4vw,3.6rem);line-height:1;color:var(--gold);
-  font-variant-numeric:tabular-nums;white-space:nowrap}
-.precio span{display:block;margin-top:12px;font-family:var(--data);font-size:.64rem;
-  letter-spacing:.18em;text-transform:uppercase;color:var(--bone-faint)}
-
 .final{position:relative;overflow:hidden;border-top:1px solid var(--line)}
 .final::before{
   content:"";position:absolute;left:50%;bottom:-40%;transform:translateX(-50%);
@@ -671,27 +662,40 @@ h1,h2,h3,h4{font-family:var(--sys);font-weight:800;margin:0;text-wrap:balance;le
   </div>
 
   <div class="wrap hero-in">
-    <div class="badge">Para mentores, mentoras y terapeutas holísticos que <b>ya venden en línea</b></div>
+    <div class="badge"><i class="dot-live"></i> Cupos abiertos · Grupo reducido</div>
 
-    <h1 class="h-display" id="h1">Tienes todas las piezas de tu negocio.
-      <em class="alma">Y ninguna te dice cuál te está faltando.</em></h1>
+    <h1 class="h-display" id="h1">Convierte tu don en un negocio de <em class="alma">cinco cifras</em> al mes.</h1>
 
     <div class="hero-grid">
       <div>
         <p class="lede">
-          No te falta talento. Te falta <strong class="mark">arquitectura</strong> — y un don
-          sin arquitectura no es humildad: es un alma en silencio.
+          No tienes un problema de marketing. No tienes un problema de conocimiento.
+          <strong class="mark">Tienes un negocio sin CEO.</strong>
+          Escalling™ es el sistema que convierte tu don holístico en un imperio: sin perseguir
+          clientes, sin volverte creador de contenido a tiempo completo y sin traicionar tu esencia.
         </p>
 
         <div class="hero-act">
           <a class="cta" href="https://instagram.com/marceloproano" data-res="ig-principal" data-res-tipo="link" data-res-label="Tu Instagram (@)" data-res-nota="El destino de TODOS los botones. Se usa en 4 lugares de la página." target="_blank" rel="noopener">
-            Ver cómo funciona <span class="kw">→</span>
+            Escríbeme la palabra <span class="kw">IMPERIO</span> →
           </a>
         </div>
-        <p class="hero-note">7 minutos. Marcelo te lo explica él mismo.</p>
-        <p class="hero-note" style="margin-top:14px;padding-top:14px;border-top:1px solid var(--line)">
-          Consultoría, no agencia. La responsabilidad de crecer sigue siendo tuya.</p>
+        <p class="hero-note">Te llega el diagnóstico por DM. Sin formularios, sin embudos fríos. Yo respondo.</p>
 
+        <div class="countdown" data-res="contador-bio" data-res-tipo="contador"
+             data-res-label="Fecha de cierre de puertas"
+             data-res-nota="Deja vacío para el ciclo automático de 7 días, o pon la fecha real de cierre.">
+          <div class="cd-label"><b>Puertas abiertas</b> · se cierran en:</div>
+          <div class="cd" id="cd1">
+            <div class="cd-u"><div class="cd-n" data-u="d">--</div><div class="cd-t">Días</div></div>
+            <div class="cd-sep">:</div>
+            <div class="cd-u"><div class="cd-n" data-u="h">--</div><div class="cd-t">Hrs</div></div>
+            <div class="cd-sep">:</div>
+            <div class="cd-u"><div class="cd-n" data-u="m">--</div><div class="cd-t">Min</div></div>
+            <div class="cd-sep">:</div>
+            <div class="cd-u"><div class="cd-n" data-u="s">--</div><div class="cd-t">Seg</div></div>
+          </div>
+        </div>
       </div>
 
       <aside class="vsl">
@@ -704,13 +708,13 @@ h1,h2,h3,h4{font-family:var(--sys);font-weight:800;margin:0;text-wrap:balance;le
             <svg width="20" height="22" viewBox="0 0 20 22" fill="currentColor" aria-hidden="true"><path d="M19 9.27a2 2 0 0 1 0 3.46L3 21.99a2 2 0 0 1-3-1.73V1.74A2 2 0 0 1 3 .01z"/></svg>
           </span>
           <span class="vsl-meta">
-            <strong>Marcelo te lo explica él mismo</strong>
-            <span>7 min</span>
+            <strong>Mira cómo funciona Escalling™</strong>
+            <span>32 min</span>
           </span>
         </button>
         <div class="vsl-foot">
           <p style="margin:0;font-size:.83rem;color:var(--bone-faint);line-height:1.5">
-            La arquitectura completa, explicada. Si después te hace sentido, agenda la llamada.
+            El sistema completo, explicado. Si después te hace sentido, escríbeme.
           </p>
         </div>
       </aside>
@@ -718,7 +722,7 @@ h1,h2,h3,h4{font-family:var(--sys);font-weight:800;margin:0;text-wrap:balance;le
   </div>
 
   <div class="wrap" style="margin-top:clamp(56px,7vw,86px)">
-    <p class="mq-head">Algunos de los que ya lo construyeron</p>
+    <p class="mq-head">Algunos de los +200 casos documentados</p>
   </div>
   <div class="mq" style="--sp:58s"><div class="mq-t" id="mqCasos"></div></div>
   <div class="mq" style="--sp:72s;margin-top:14px"><div class="mq-t rev" id="mqCasos2"></div></div>
@@ -730,23 +734,21 @@ h1,h2,h3,h4{font-family:var(--sys);font-weight:800;margin:0;text-wrap:balance;le
     <div class="eyebrow rv">Los números</div>
     <div class="cifras-top">
       <div class="rv" style="--d:80ms">
-        <div class="big-n tnum" data-count="200" data-suffix="+">0</div>
-        <p class="cifras-note" style="margin-top:14px"><b>Victorias documentadas</b> de clientes,
-          en más de 20 países.</p>
+        <div class="big-n tnum" data-count="220" data-suffix="+">0</div>
+        <p class="cifras-note" style="margin-top:14px"><b>Clientes acompañados</b> en 20+ países. Cifras reportadas por ellos: cada caso es único.</p>
       </div>
       <p class="cifras-note rv" style="--d:160ms;padding-bottom:12px">
-        <b>Cómo contamos.</b> Una victoria es un resultado que el cliente demostró: una venta,
-        un lanzamiento, una subida de precio, una agenda llena. Un caso documentado tiene
-        entrevista completa. <b>No inflamos ninguna de las dos, y no las sumamos para que
-        parezcan una sola.</b>
+        Yo también empecé abajo. En 2020 debía <b>$150.000</b> y subía contenido motivacional
+        mientras el banco llamaba a mi mamá. Hoy hago <b>$65.000/mes</b> de cash collect.
+        No te vendo teoría: te vendo el camino que ya caminé.
       </p>
     </div>
 
     <dl class="cifras-grid rv" style="--d:220ms">
-      <div class="cifra"><dt>Con caso completo</dt><dd><span data-count="39">0</span><small>y entrevista grabada</small></dd></div>
-      <div class="cifra"><dt>Invertidos en publicidad propia</dt><dd>~$500K<small>la única cifra que no depende del resultado de nadie más</small></dd></div>
-      <div class="cifra"><dt>Facturados en línea</dt><dd>$1.5M<small>con este negocio</small></dd></div>
-      <div class="cifra"><dt>Victorias documentadas</dt><dd><span data-count="200" data-suffix="+">0</span><small>de clientes, reportadas por ellos</small></dd></div>
+      <div class="cifra"><dt>Punto de partida típico</dt><dd>$0–$3K<small>por mes, cobrando por sesión</small></dd></div>
+      <div class="cifra"><dt>Punto de llegada</dt><dd>$20K–$65K<small>por mes, con oferta high ticket</small></dd></div>
+      <div class="cifra"><dt>Casos documentados</dt><dd><span data-count="200" data-suffix="+">0</span><small>60 de ellos, en entrevista de video</small></dd></div>
+      <div class="cifra"><dt>Mejor récord del método</dt><dd>$66.964<small>Fabiana, en 60 días</small></dd></div>
     </dl>
   </div>
 </section>
@@ -754,10 +756,10 @@ h1,h2,h3,h4{font-family:var(--sys);font-weight:800;margin:0;text-wrap:balance;le
 <!-- ======================= CREW ======================= -->
 <section class="sect" id="crew">
   <div class="wrap">
-    <div class="eyebrow rv">El Círculo</div>
-    <h2 class="h-sect rv" style="--d:60ms">Mentores que <em class="alma">ya venden en línea.</em></h2>
-    <p class="lede rv" style="--d:120ms">Numerólogas, terapeutas akáshicas, consteladores, reikistas, astrólogas.
-      Gente con un don real que ya lo vendía — y que se había quedado lenta.</p>
+    <div class="eyebrow rv">La comunidad</div>
+    <h2 class="h-sect rv" style="--d:60ms">Imperio <em class="alma">Crew.</em></h2>
+    <p class="lede rv" style="--d:120ms">Numerólogas, terapeutas akáshicas, constelodores, reikistas, astrólogas.
+      Gente con un don real que dejó de regalarlo por $60 la sesión.</p>
   </div>
   <div class="crew-rows">
     <div class="mq" style="--sp:64s"><div class="mq-t" id="mqCrew"></div></div>
@@ -768,49 +770,52 @@ h1,h2,h3,h4{font-family:var(--sys);font-weight:800;margin:0;text-wrap:balance;le
 <!-- ======================= PROBLEMA ======================= -->
 <section class="sect" id="problema">
   <div class="wrap">
-    <div class="eyebrow rv">El quiebre</div>
-    <h2 class="h-sect rv" style="--d:60ms">Tu día está <em class="alma">partido en dos.</em></h2>
-    <p class="lede rv" style="--d:120ms">La mitad la pasas atendiendo clientes. La otra mitad,
-      buscando una nueva forma de crecer. <strong>Ninguna de las dos construye algo que quede
-      de pie sin ti.</strong></p>
+    <div class="eyebrow rv">Las dos trampas</div>
+    <h2 class="h-sect rv" style="--d:60ms">Tienes el don. Lo que no tienes es <em class="alma">estructura.</em></h2>
+    <p class="lede rv" style="--d:120ms">El mercado holístico está lleno de gente extraordinaria ganando mal.
+      Casi siempre por una de estas tres razones.</p>
 
     <div class="tramp">
       <article class="tramp-c rv" style="--d:80ms">
         <svg class="tramp-i" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true">
           <circle cx="16" cy="16" r="13"/><path d="M16 9v9M16 22.5v.5" stroke-linecap="round"/>
         </svg>
-        <h3 class="h-card">Llega gente que no puede pagarte</h3>
-        <p>Creas contenido y atrae a quien no compra. Tienes tráfico, pero no se convierte en
-          conversaciones. Y tienes un programa grabado sin un mensaje que lo sostenga.</p>
+        <h3 class="h-card">Trampa 1 · El sueño sin sistema</h3>
+        <p>Tienes el don, la certificación y los testimonios. Pero eres invisible.
+          Vives de referidos y de meses buenos que no se repiten. Tu talento no es el problema:
+          nadie construyó el vehículo que lo lleva al mercado.</p>
       </article>
       <article class="tramp-c rv" style="--d:170ms">
         <svg class="tramp-i" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true">
           <rect x="4" y="7" width="24" height="18" rx="2"/><path d="M4 13h24M11 25v3M21 25v3" stroke-linecap="round"/>
         </svg>
-        <h3 class="h-card">Dependes de lo que no controlas</h3>
-        <p>Vives de referidos, y los referidos no se piden: se esperan. Cada mes empieza igual,
-          con la sensación de que ya deberías estar en otro lugar.</p>
+        <h3 class="h-card">Trampa 2 · El sistema sin alma</h3>
+        <p>Compraste el curso de embudos. Copiaste los hooks de gurús de negocios.
+          Ahora vendes, pero suenas como cualquiera y ya no te reconoces.
+          Escalaste el negocio y perdiste la misión.</p>
       </article>
       <article class="tramp-c rv" style="--d:260ms">
         <svg class="tramp-i" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true">
           <path d="M5 27V15M13 27V9M21 27V19M29 27V5" stroke-linecap="round"/>
         </svg>
-        <h3 class="h-card">Ya lo intentaste con piezas sueltas</h3>
-        <p>Ya contrataste equipo, ya usaste un CRM, ya pusiste pauta — y sigues sin poder
-          predecir de dónde sale el próximo cliente. No es que no sepas:
-          <strong>es que no sabes qué pieza te está faltando.</strong></p>
+        <h3 class="h-card">La trampa del volumen</h3>
+        <p>Publicas todos los días, respondes cien DMs, das cuarenta sesiones al mes
+          y facturas lo mismo que el año pasado. Confundiste actividad con estrategia.
+          El volumen es la salida de quien no tiene sistema.</p>
       </article>
     </div>
 
     <div class="turn">
       <div class="rv">
-        <p class="prose">Y no es que no sepas. Sabes transformar personas — eso lo probaste
-          hace años. <strong>Lo que no sabes es qué pieza te está faltando</strong>, y por eso
-          cada mes empieza igual.</p>
+        <p class="prose">Yo viví las tres. En 2019 llenaba salas de 1.500 personas.
+          En 2020 la deuda llegó a $150.000 y llegué a facturar $11.000 en un mes
+          <strong>y aun así no alcanzaba.</strong></p>
       </div>
       <div class="rv" style="--d:120ms">
-        <p class="prose">Y lo más caro no es el dinero.
-          <strong>Es el tiempo que llevas perdiendo.</strong></p>
+        <p class="prose">Cuando vendí mi primer high ticket entendí que el problema nunca fui yo.
+          <strong>Fue el modelo sin sistema.</strong> Desde entonces mi filosofía es una sola:
+          minimalismo. Tres anuncios durante un año. Un VSL durante dos.
+          El volumen no es la ventaja competitiva — la claridad sí.</p>
       </div>
     </div>
   </div>
@@ -820,31 +825,32 @@ h1,h2,h3,h4{font-family:var(--sys);font-weight:800;margin:0;text-wrap:balance;le
 <section class="sect" id="sobre">
   <div class="wrap sobre">
     <div class="sobre-fotos rv">
-      <div class="ph ph-sq" style="--hu:38" data-res="foto-marcelo-1" data-res-tipo="imagen" data-res-label="Tu foto en tu oficina real" data-res-nota="En tu oficina, no en estudio. Vertical 4:5. Sin autos, relojes ni escenarios con multitud."><span>MP</span></div>
+      <div class="ph ph-sq" style="--hu:38" data-res="foto-marcelo-1" data-res-tipo="imagen" data-res-label="Tu foto principal" data-res-nota="Vertical 4:5, mínimo 900 px de ancho."><span>MP</span></div>
       <div class="ph ph-sq" style="--hu:264" data-res="foto-marcelo-2" data-res-tipo="imagen" data-res-label="Foto en evento" data-res-nota="Vertical 4:5, mínimo 900 px de ancho."><span>EVENTO</span></div>
       <div class="ph ph-sq" style="--hu:20" data-res="foto-marcelo-3" data-res-tipo="imagen" data-res-label="Foto con tu equipo" data-res-nota="Vertical 4:5, mínimo 900 px de ancho."><span>EQUIPO</span></div>
     </div>
     <div>
-      <div class="eyebrow rv">Quién te va a acompañar</div>
-      <h2 class="h-sect rv" style="--d:60ms">No empecé desde cero.
-        <em class="alma">Empecé desde el subsuelo.</em></h2>
+      <div class="eyebrow rv">Sobre mí</div>
+      <h2 class="h-sect rv" style="--d:60ms">Soy Marcelo. Quebré con $150.000 de deuda y volví con un <em class="alma">sistema.</em></h2>
       <p class="prose rv" style="--d:120ms;margin-top:24px">
-        Soy psicólogo. Estudié físico-matemático e ingeniería. Me formé con Tony Robbins,
-        en PNL, hipnosis, Reiki y registros akáshicos. <strong>Vengo de los dos mundos —
-        y me tomó una quiebra entender que nunca fueron opuestos.</strong>
+        Soy el creador del método Escalling™ y del programa Imperio Holístico™.
+        Fundé Edume Global™. Y soy, hasta donde sé, el único que conoce
+        <strong>los dos mundos por dentro:</strong> el de los registros akáshicos, las constelaciones,
+        el reiki y las heridas emocionales — y el de la escalabilidad, los sistemas y el cash collect.
       </p>
 
       <div class="tl rv" style="--d:180ms">
-        <div class="tl-i"><div class="tl-y">2019</div><p>Renuncié. Abrí una oficina de consultoría de 220 m²: <b>cincuenta mil dólares de inversión</b> y más de mil de renta al mes.</p></div>
-        <div class="tl-i"><div class="tl-y">2020</div><p>La pandemia me dejó sin ingresos. Mi deuda pasó de treinta mil a <b>más de ciento cincuenta mil dólares con intereses.</b></p></div>
-        <div class="tl-i"><div class="tl-y">Después</div><p>Me reinventé de consultor presencial a mentor en línea. Y vendí <b>exactamente todo lo que hoy rechazo:</b> lanzamientos, workshops, low ticket, WhatsApp.</p></div>
-        <div class="tl-i now"><div class="tl-y">Hoy</div><p><b>Un millón y medio</b> facturados en línea. Cerca de medio millón invertido en publicidad propia. Más de doscientas victorias documentadas.</p></div>
+        <div class="tl-i"><div class="tl-y">2019</div><p><b>El techo del presencial.</b> Oficina de 220 m². 1.500 personas en mis eventos. Seis cifras al año y cero sistema debajo.</p></div>
+        <div class="tl-i"><div class="tl-y">2020</div><p><b>La caída.</b> La pandemia paró todo. Los $30–50K de deuda se volvieron $150.000 con intereses. Los bancos llamaban todos los días. También a mi madre.</p></div>
+        <div class="tl-i"><div class="tl-y">2021</div><p><b>El primer high ticket.</b> Una mentora me enseñó el modelo. Vendí uno y pensé: «mi vida puede cambiar». Ahí nació el minimalismo como estrategia.</p></div>
+        <div class="tl-i"><div class="tl-y">2025</div><p><b>Deuda en cero.</b> $65.000/mes de cash collect. Un equipo de 15 personas. 220 clientes acompañados en 20+ países.</p></div>
+        <div class="tl-i now"><div class="tl-y">2026 →</div><p><b>La meta.</b> $200.000/mes este año. $500.000/mes en 2027. Y el estándar del sector holístico latinoamericano, subido de nivel.</p></div>
       </div>
 
       <div class="stats3 rv" style="--d:240ms">
-        <div><strong data-count="200" data-suffix="+">0</strong><span>Victorias documentadas</span></div>
+        <div><strong data-count="220" data-suffix="+">0</strong><span>Clientes acompañados</span></div>
         <div><strong data-count="20" data-suffix="+">0</strong><span>Países con casos activos</span></div>
-        <div><strong data-count="39">0</strong><span>Con entrevista grabada</span></div>
+        <div><strong data-count="15">0</strong><span>Personas en mi equipo</span></div>
       </div>
     </div>
   </div>
@@ -853,34 +859,31 @@ h1,h2,h3,h4{font-family:var(--sys);font-weight:800;margin:0;text-wrap:balance;le
 <!-- ======================= EL MÉTODO ======================= -->
 <section class="sect" id="metodo">
   <div class="wrap">
-    <div class="eyebrow rv">El método</div>
-    <h2 class="h-sect rv" style="--d:60ms">Tres pilares y un eje.
-      <em class="alma">Nada más que eso.</em></h2>
-    <p class="lede rv" style="--d:120ms">Ellos venden temarios. <strong class="mark">Nosotros
-      entregamos el plano.</strong> Y antes de todo eso, el Movimiento 0: el primer trabajo
-      contigo no es tu embudo — es tu filosofía.</p>
+    <div class="eyebrow rv">El Círculo Escalling™</div>
+    <h2 class="h-sect rv" style="--d:60ms">Un círculo, <em class="alma">no un embudo.</em></h2>
+    <p class="lede rv" style="--d:120ms">Un embudo empuja gente hacia abajo hasta que se agota.
+      Un círculo se alimenta solo: cada cliente que transformas trae al siguiente.</p>
 
     <div class="circ-wrap rv" style="--d:180ms">
-      <div class="circ" id="circ" role="img" aria-label="El Plano: Movimiento 0, los tres pilares —Oferta, Atracción, Conversión— y el Eje del Núcleo">
+      <div class="circ" id="circ" role="img" aria-label="El Círculo Escalling: don, mensaje, comunidad, conversación, cliente, caso de éxito">
         <svg viewBox="0 0 400 400" fill="none">
           <circle class="ring" cx="200" cy="200" r="150" stroke="#D6A544" stroke-width="1" stroke-dasharray="3 9" opacity=".55"/>
           <circle cx="200" cy="200" r="150" stroke="#F4EFE6" stroke-width=".5" opacity=".1"/>
           <circle cx="200" cy="200" r="96" stroke="#5B4A9C" stroke-width=".5" opacity=".4"/>
         </svg>
-        <div class="circ-core"><b>El Plano<em class="alma">Imperio Holístico™</em></b></div>
+        <div class="circ-core"><b>Círculo<em class="alma">Escalling™</em></b></div>
       </div>
     </div>
 
     <div class="no3">
-      <div class="rv"><h4>Pilar I · La Oferta</h4><p>A quién ayudas, en qué lo ayudas y cómo. Empaquetada para que el 80% lo entregue tu equipo y solo el 20% dependa de ti.</p></div>
-      <div class="rv" style="--d:90ms"><h4>Pilar II · La Atracción</h4><p>Contenido por nivel de conciencia, no por tema. Ángulos que revelan en vez de informar. Y la pauta que amplifica lo que ya funcionó.</p></div>
-      <div class="rv" style="--d:180ms"><h4>Pilar III · La Conversión</h4><p>De desconocidos a llamadas calificadas, y de ahí a clientes que ejecutan. El que llega, llega convencido.</p></div>
+      <div class="rv"><h4>Sin perseguir a nadie</h4><p>El que llega decidido no necesita una hora de convencimiento.</p></div>
+      <div class="rv" style="--d:90ms"><h4>Sin ser creador masivo</h4><p>Tu esencia en pocas piezas bien hechas rinde más que publicar todos los días.</p></div>
+      <div class="rv" style="--d:180ms"><h4>Sin traicionar tu misión</h4><p>El sistema se adapta a tu voz. No al revés.</p></div>
     </div>
 
     <p class="lede rv" style="--d:60ms;margin-top:64px">
-      <strong class="mark">El Eje · El Núcleo.</strong> Tu segundo cerebro, tus agentes, tu CRM
-      y tus números. Va arriba y no abajo a propósito: la estructura no está debajo de tu
-      negocio, lo atraviesa entero.
+      Así se ven las conversaciones cuando el contenido ya hizo el trabajo —
+      <strong class="mark">nadie persiguió a nadie.</strong>
     </p>
 
     <div class="chats">
@@ -925,30 +928,28 @@ h1,h2,h3,h4{font-family:var(--sys);font-weight:800;margin:0;text-wrap:balance;le
 <section class="sect" id="para-quien">
   <div class="wrap">
     <div class="eyebrow rv">El filtro</div>
-    <h2 class="h-sect rv" style="--d:60ms">Para quién es
-      <em class="alma">y para quién no.</em></h2>
-    <p class="lede rv" style="--d:120ms">Aquí el filtro no son los años.
-      <strong class="mark">Es la prueba.</strong></p>
+    <h2 class="h-sect rv" style="--d:60ms">Trabajo con pocos. <em class="alma">Este es el filtro.</em></h2>
+    <p class="lede rv" style="--d:120ms">Prefiero decirte que no hoy, que fallarte en seis meses.</p>
 
     <div class="filtro rv" style="--d:180ms">
       <div class="col no">
-        <h3><em>✕</em> No es para ti si…</h3>
+        <h3><em>✕</em> No va a funcionar si…</h3>
         <ul>
-          <li><h4>Estás empezando</h4><p>No hay arquitectura que levantar sobre un terreno vacío.</p></li>
-          <li><h4>Quieres que te hagamos el negocio</h4><p>Somos una consultora, no una agencia.</p></li>
-          <li><h4>Crees que una herramienta va a trabajar en tu lugar</h4><p>Ninguna lo hace. Ni la mejor.</p></li>
-          <li><h4>Llevas tres mentorías y las tres fueron el problema</h4><p>Yo voy a ser la cuarta.</p></li>
-          <li><h4>Viniste a vibrar bonito sin mirar un número</h4><p>El diagnóstico empieza siempre por los números.</p></li>
+          <li><h4>Todavía no has cobrado nunca</h4><p>Si nunca cobraste por tu don, primero necesitas validar que alguien pague por él. Eso no requiere un programa: requiere una semana.</p></li>
+          <li><h4>Buscas resultados de un día para otro</h4><p>El primer cliente high ticket puede llegar en semanas. El negocio que te sostiene se construye en meses.</p></li>
+          <li><h4>El problema siempre fue de los demás</h4><p>Trabajaste con cinco mentores y todos ellos eran el problema. Yo voy a ser el sexto.</p></li>
+          <li><h4>Quieres delegarlo todo desde el día uno</h4><p>Antes de que un equipo ejecute el sistema, tú tienes que entenderlo. No hay atajo.</p></li>
+          <li><h4>Quieres el modelo viejo, más grande</h4><p>Un equipo enorme, la agenda llena de llamadas y sesiones de $60. Eso ya lo intentaste.</p></li>
         </ul>
       </div>
       <div class="col si">
-        <h3><em>✓</em> Es para ti si…</h3>
+        <h3><em>✓</em> Vamos a trabajar muy bien juntos si…</h3>
         <ul>
-          <li><h4>Ya vendiste high ticket</h4><p>Lanzaste un programa en línea y sabes lo que se siente cerrar una venta de cuatro cifras.</p></li>
-          <li><h4>No eres análogo</h4><p>Ya hiciste masterclasses, webinars y contenido.</p></li>
-          <li><h4>Ya lo intentaste con piezas sueltas</h4><p>Equipo, CRM, pauta — y sigues sin poder predecir de dónde sale el próximo cliente.</p></li>
-          <li><h4>Tienes clientes que pueden testificar</h4><p>Gente que puede contar lo que le pasó contigo.</p></li>
-          <li><h4>Quieres hablar de facturación sin culpa</h4><p>De cierre y de retención, sin sentir que traicionas tu propósito. Y entiendes que hay un precio que pagar.</p></li>
+          <li><h4>Tu trabajo transforma de verdad</h4><p>Tienes resultados que puedes nombrar y clientes que lo confirman.</p></li>
+          <li><h4>Ya vendes, aunque sea poco</h4><p>Cobras por sesión, por paquete o por taller. Ya hay algo que escalar.</p></li>
+          <li><h4>Entiendes que esto es a largo plazo</h4><p>Quieres una marca que siga viva en cinco años, no un pico de facturación en dos meses.</p></li>
+          <li><h4>Ejecutas lo que se acuerda</h4><p>Recibes una dirección y la sigues. Después ajustamos con datos, no con opiniones.</p></li>
+          <li><h4>Quieres que el negocio sirva a tu vida</h4><p>Y no al revés. Que a medida que crece, tú tengas más espacio, no menos.</p></li>
         </ul>
       </div>
     </div>
@@ -971,11 +972,9 @@ h1,h2,h3,h4{font-family:var(--sys);font-weight:800;margin:0;text-wrap:balance;le
 <!-- ======================= WINS ======================= -->
 <section class="sect" id="wins" style="padding-bottom:calc(var(--sect) * .7)">
   <div class="wrap">
-    <div class="eyebrow rv">Victorias del Círculo</div>
-    <h2 class="h-sect rv" style="--d:60ms">Ocho casos. <em class="alma">Ocho puntos de partida distintos.</em></h2>
-    <p class="lede rv" style="--d:120ms"><strong class="mark">Cada uno pagó un precio.</strong>
-      Pauta, contenido grabado semana tras semana, y decisiones incómodas sobre a quién dejar
-      de venderle. Ninguno de estos resultados llegó sin eso, y no vamos a fingir lo contrario.</p>
+    <div class="eyebrow rv">Wins de la Crew</div>
+    <h2 class="h-sect rv" style="--d:60ms">Las victorias son <em class="alma">todas las semanas.</em></h2>
+    <p class="lede rv" style="--d:120ms">Feed en vivo desde nuestra comunidad privada. Cifras reportadas por cada cliente.</p>
   </div>
   <div class="mq" style="--sp:70s;margin-top:44px"><div class="mq-t" id="mqWins"></div></div>
 </section>
@@ -983,11 +982,9 @@ h1,h2,h3,h4{font-family:var(--sys);font-weight:800;margin:0;text-wrap:balance;le
 <!-- ======================= FASES ======================= -->
 <section class="sect" id="fases">
   <div class="wrap">
-    <div class="eyebrow rv">Cómo se ve por dentro</div>
-    <h2 class="h-sect rv" style="--d:60ms">Cuatro meses.
-      <em class="alma">Y el primero se mide en días.</em></h2>
-    <p class="lede rv" style="--d:120ms">No hablamos en meses porque no trabajamos en meses.
-      <strong class="mark">Tu sesión conmigo es en los primeros siete días.</strong></p>
+    <div class="eyebrow rv">El plan de los primeros 6 meses</div>
+    <h2 class="h-sect rv" style="--d:60ms">Tres fases. <em class="alma">Un solo resultado.</em></h2>
+    <p class="lede rv" style="--d:120ms">Cada fase toca lo único que mueve la aguja en ese momento. Nada más.</p>
 
     <div class="fases">
       <article class="fase rv">
@@ -1050,13 +1047,11 @@ h1,h2,h3,h4{font-family:var(--sys);font-weight:800;margin:0;text-wrap:balance;le
 <!-- ======================= VOCES ======================= -->
 <section class="sect" id="voces">
   <div class="wrap">
-    <div class="eyebrow rv">El eje</div>
-    <h2 class="h-sect rv" style="--d:60ms">Tu método, tu voz y tu criterio
-      <em class="alma">viviendo en un lugar que no se cansa.</em></h2>
+    <div class="eyebrow rv">El motor de contenido</div>
+    <h2 class="h-sect rv" style="--d:60ms">Las 5 Voces de Marca™</h2>
     <p class="lede rv" style="--d:120ms">
-      El Núcleo es tu segundo cerebro. Adentro viven tu cliente ideal, tu oferta, tu forma de
-      decir las cosas y tus casos. Y encima corren los agentes.
-      <strong class="mark">Los agentes proponen. Un humano decide.</strong>
+      No escribes «contenido». Hablas con cinco registros distintos, y cada uno tiene un trabajo.
+      Esto es lo que hace que suenes a ti y no a un curso de embudos.
     </p>
 
     <ol class="voces">
@@ -1096,12 +1091,10 @@ h1,h2,h3,h4{font-family:var(--sys);font-weight:800;margin:0;text-wrap:balance;le
 <!-- ======================= PRUEBA ======================= -->
 <section class="sect" id="prueba">
   <div class="wrap">
-    <div class="eyebrow rv">La prueba, en su voz</div>
-    <h2 class="h-sect rv" style="--d:60ms">No te lo <em class="alma">cuento yo.</em></h2>
+    <div class="eyebrow rv">La prueba</div>
+    <h2 class="h-sect rv" style="--d:60ms">El sistema funciona. <em class="alma">Aquí está la prueba.</em></h2>
     <p class="lede rv" style="--d:120ms">
-      Conversaciones completas. Sin edición de highlights, sin música épica. Cada una empieza
-      por dónde estaban antes. <strong class="mark">No competimos contra el que nunca invirtió:
-      competimos contra el recuerdo del que ya perdió dinero.</strong>
+      Escríbele a cualquiera de ellos y pregúntale. Es lo mejor que puedes hacer antes de decidir.
     </p>
 
     <div class="videos">
@@ -1209,18 +1202,25 @@ h1,h2,h3,h4{font-family:var(--sys);font-weight:800;margin:0;text-wrap:balance;le
 <!-- ======================= CTA FINAL ======================= -->
 <section class="sect final" id="aplicar">
   <div class="wrap final-in">
-    <h2 class="h-sect rv" style="--d:60ms">Una vez que ves la arquitectura,
-      <em class="alma">ya no puedes dejar de verla.</em></h2>
+    <div class="badge rv"><i class="dot-live"></i> Cupos limitados cada mes</div>
+    <h2 class="h-sect rv" style="--d:60ms">Deja de regalar tu don. <em class="alma">Empieza a dirigirlo.</em></h2>
     <p class="lede rv" style="--d:120ms;margin-inline:auto">
-      Eso no se desaprende, no se devuelve y no se olvida.
-      <strong class="mark">Es la única garantía que damos de verdad.</strong>
+      Entro con un grupo reducido cada mes porque el Game Plan es 1:1 y no se puede escalar sin romperlo.
+      Si te reconoces en los cinco puntos de abajo, escríbeme hoy.
     </p>
 
-    <div class="precio rv" style="--d:170ms">
-      <b>$7.000 USD</b>
-      <span>en cuotas · cuatro meses de acompañamiento</span>
+    <div class="countdown rv" style="--d:180ms">
+      <div class="cd-label" style="text-align:center"><b>Puertas abiertas</b> · se cierran en:</div>
+      <div class="cd" id="cd2">
+        <div class="cd-u"><div class="cd-n" data-u="d">--</div><div class="cd-t">Días</div></div>
+        <div class="cd-sep">:</div>
+        <div class="cd-u"><div class="cd-n" data-u="h">--</div><div class="cd-t">Hrs</div></div>
+        <div class="cd-sep">:</div>
+        <div class="cd-u"><div class="cd-n" data-u="m">--</div><div class="cd-t">Min</div></div>
+        <div class="cd-sep">:</div>
+        <div class="cd-u"><div class="cd-n" data-u="s">--</div><div class="cd-t">Seg</div></div>
+      </div>
     </div>
-
 
     <ol class="crit rv" style="--d:240ms">
       <li><b>01</b> Tienes un don real: terapia, numerología, akáshicos, constelaciones, reiki, meditación.</li>
@@ -1277,14 +1277,13 @@ const CIERRE_CADA_DIAS = 7;                          // ciclo del contador
 
 // Casos con cifras verificadas. Añade los tuyos con la misma forma.
 const CASOS = [
-  {n:"Angélica Lozano",  r:"TDAH infantil · Perú",          a:"$250", b:"$9.000",   t:"1 mes",   hu:42},
-  {n:"Teresita González",r:"Medicina alternativa · México", a:"",     b:"$11.000",  t:"15 días", hu:18},
-  {n:"Alex Reyes-Ortíz", r:"Lujo y moda · México",          a:"",     b:"$57.000",  t:"2 meses", hu:268},
-  {n:"Fabiana Mersan",   r:"Marca personal · Paraguay",     a:"",     b:"+$104.000",t:"4 meses", hu:34},
-  {n:"Rainier Hidalgo",  r:"Venta directa · Venezuela",     a:"",     b:"+$12.000", t:"30 días", hu:300},
-  {n:"Ara Guerrero",     r:"Coach de riqueza · Ecuador",    a:"",     b:"$10.300",  t:"15 días", hu:200},
-  {n:"Paola Saldaña",    r:"Separaciones · Colombia",       a:"",     b:"$10.000",  t:"1 mes",   hu:96},
-  {n:"Lizeth Alaniz",    r:"Rupturas · México",             a:"",     b:"$10.000",  t:"30 días", hu:120},
+  {n:"Lissett",   r:"Numeróloga",              a:"$80/ses.", b:"$30.000/m", t:"60 días", hu:42},
+  {n:"Fabiana",   r:"Terapeuta holística",     a:"",         b:"$66.964",   t:"60 días", hu:18},
+  {n:"Rainier",   r:"Coach de meditación",     a:"$60/ses.", b:"$39.961/m", t:"3 meses", hu:268},
+  {n:"Marcelo",   r:"Mi propio caso",          a:"−$150K",   b:"$65.000/m", t:"cash collect", hu:34},
+  {n:"Héctor",    r:"Constelaciones",          a:"",         b:"Caso doc.", t:"en video", hu:300},
+  {n:"Paola",     r:"Registros akáshicos",     a:"",         b:"Caso doc.", t:"en video", hu:200},
+  {n:"Marina",    r:"Terapeuta energética",    a:"",         b:"Caso doc.", t:"en video", hu:96},
 ];
 
 // Comunidad. Sin @ para no apuntar a cuentas ajenas: cámbialos por tus handles reales.
@@ -1297,22 +1296,22 @@ const CREW = [
 ];
 
 const WINS = [
-  {n:"Angélica Lozano",  r:"TDAH infantil · Perú",
-   t:"De <b>$250</b> a <b>$9.000</b> en un mes.", hu:42},
-  {n:"Ara Guerrero",     r:"Coach de riqueza · Ecuador",
-   t:"<b>$10.300</b> en 15 días.", hu:200},
-  {n:"Paola Saldaña",    r:"Coach de separaciones · Colombia",
-   t:"<b>$10.000</b> en un mes.", hu:96},
-  {n:"Lizeth Alaniz",    r:"Terapeuta de rupturas · México",
-   t:"<b>$10.000</b> en 30 días.", hu:120},
-  {n:"Teresita González",r:"Medicina alternativa · México",
-   t:"<b>$11.000</b> en 15 días.", hu:18},
-  {n:"Rainier Hidalgo",  r:"Venta directa · Venezuela",
-   t:"<b>+$12.000</b> en 30 días. <i>“Lo que me vendió es que no estabas tú en la llamada.”</i>", hu:300},
-  {n:"Alex Reyes-Ortíz", r:"Lujo y moda · México",
-   t:"<b>$57.000</b> en 2 meses.", hu:268},
-  {n:"Fabiana Mersan",   r:"Marca personal · Paraguay",
-   t:"<b>+$104.000</b> en 4 meses. <i>“Me impresionó tu seguridad, el que no fuera negociable el precio.”</i>", hu:34},
+  {n:"Lissett", r:"Numeróloga",          t:"Pasó de cobrar <b>$80 la sesión</b> a <b>$30.000 al mes</b> en 60 días. Hoy no da una sola sesión suelta.", hu:42},
+  {n:"Fabiana", r:"Terapeuta holística", t:"Hizo <b>$66.964 en 60 días</b>. Es el récord del método hasta hoy.", hu:18},
+  {n:"Rainier", r:"Meditación",          t:"De <b>$60 la sesión</b> a <b>$39.961 al mes</b> en tres meses, sin llamadas de venta.", hu:268},
+  {n:"Héctor",  r:"Constelaciones",      t:"Cerró su primer high ticket <b>por DM</b>, en un pago, antes del día 30.", hu:300},
+  {n:"Paola",   r:"Registros akáshicos", t:"Dejó de dar <b>38 sesiones al mes</b> y pasó a <b>3 clientes</b> con la misma facturación.", hu:200},
+  {n:"Marina",  r:"Terapeuta energética",t:"Subió su ticket <b>×6</b> y llenó cupos publicando <b>menos</b> que antes.", hu:96},
+];
+
+// Feed de ventas — datos de muestra. Reemplaza por registros reales.
+const CHA = [
+  {amt:"$6.000",  who:"Lissett",  cash:"$3.000", d:"12 mar", goal:"$30K"},
+  {amt:"$4.500",  who:"Héctor",   cash:"$4.500", d:"14 mar", goal:"$20K"},
+  {amt:"$12.000", who:"Fabiana",  cash:"$6.000", d:"15 mar", goal:"$65K"},
+  {amt:"$3.000",  who:"Paola",    cash:"$1.500", d:"18 mar", goal:"$15K"},
+  {amt:"$8.000",  who:"Rainier",  cash:"$8.000", d:"21 mar", goal:"$40K"},
+  {amt:"$5.500",  who:"Marina",   cash:"$2.750", d:"24 mar", goal:"$25K"},
 ];
 
 const PAISES = [
@@ -1324,11 +1323,12 @@ const PAISES = [
 ];
 
 const NODOS = [
-  ["Movimiento 0",  "Tu filosofía, antes que tu embudo"],
-  ["Pilar I · Oferta",     "A quién, en qué y cómo ayudas"],
-  ["Pilar II · Atracción", "Contenido por nivel de conciencia"],
-  ["Pilar III · Conversión","De desconocidos a clientes que ejecutan"],
-  ["El Eje · El Núcleo",   "Segundo cerebro, agentes, CRM y números"],
+  ["Don",        "Lo que solo tú sabes hacer"],
+  ["Mensaje",    "Tu verdad, en tu voz"],
+  ["Comunidad",  "La gente correcta se queda"],
+  ["Conversación","Te escribe él, no lo perseguiste"],
+  ["Cliente",    "Cierra por DM, sin llamada"],
+  ["Caso",       "Su resultado trae al siguiente"],
 ];
 
 /* ══════════════════════════════════════════════════════════════════ */
