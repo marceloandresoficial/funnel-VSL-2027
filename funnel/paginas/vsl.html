@@ -6,7 +6,7 @@
    ═══════════════════════════════════════════════════════════════════ */
 
 :root{
-  --sect:clamp(30px,6vw,96px);      /* en móvil el suelo manda: 30px, no 46 */
+  --sect:clamp(22px,5vw,88px);      /* en móvil el suelo manda: 22px */
   --gut:clamp(18px,4.5vw,44px);
   --nube:#171232;                    /* violeta profundo: rompe el negro */
   --nube-2:#1E1740;
@@ -371,15 +371,19 @@ body > *{position:relative;z-index:1}
 .sol-nuevo{text-align:center;margin:18px auto 0;max-width:660px;
   font-size:clamp(.92rem,2.1vw,1.05rem);color:var(--bone-mute);line-height:1.6}
 .sol-nuevo b{color:var(--bone)}
-.sol-h{text-align:center;margin:clamp(14px,2vw,22px) 0 0;
-  /* El salto de tamaño es el que dice «esto es la solución»: ~1,45× el .h-sect
-     del resto en móvil y ~1,62× en escritorio. El suelo está calculado para que
-     la palabra más larga —ESCALADO— quepa aún en una pantalla de 275px; sin
-     salto forzado, para que reparta las líneas según el ancho que haya. */
-  font-size:clamp(3rem,9.2vw,6rem);line-height:.92;letter-spacing:-.055em;font-weight:900;
-  text-wrap:balance;overflow-wrap:break-word}
+/* El nombre va en una sola línea SIEMPRE. En un móvil de 275px, 23 caracteres
+   seguidos no caben a 48px: la física no negocia. Así que en vez de encogerlo
+   hasta que parezca un subtítulo, se dibuja como SVG y se estira al ancho
+   exacto del contenedor. Ocupa de borde a borde en cualquier pantalla —lee
+   como una firma, no como un título encogido— y nunca parte. */
+.sol-h{text-align:center;margin:clamp(14px,2vw,22px) 0 0}
+.sol-h svg{display:block;width:100%;height:auto;overflow:visible}
+.sol-h text{font-family:var(--sys);font-weight:900;font-size:92px;letter-spacing:-.045em;
+  fill:var(--bone);text-anchor:middle}
+.sol-h .tm{font-size:.3em;fill:var(--gold)}
 .sol-h em{display:block;font-family:var(--alma);font-style:italic;font-weight:300;
-  font-size:.42em;letter-spacing:-.02em;color:var(--gold-hi);margin-top:.34em}
+  font-size:clamp(1.02rem,2.7vw,1.62rem);letter-spacing:-.02em;color:var(--gold-hi);
+  margin-top:clamp(10px,1.4vw,16px)}
 .sol-p{text-align:center;max-width:620px;margin:clamp(18px,2.4vw,26px) auto 0;
   font-size:clamp(.92rem,2.1vw,1.05rem);color:var(--bone-mute);line-height:1.65}
 
@@ -393,14 +397,69 @@ body > *{position:relative;z-index:1}
   animation-delay:calc(var(--i,0) * 1.1s)}
 @media(prefers-reduced-motion:reduce){.fase::after{animation:none}}
 .fase-n{font-family:var(--data);font-size:.6rem;letter-spacing:.2em;color:var(--gold);
-  opacity:.7;margin-bottom:16px}
-.fase-n::before{content:"0" counter(f)}
-.fase h3{margin:0;font-size:clamp(1.5rem,3.6vw,2.05rem);letter-spacing:-.04em;font-weight:800;
-  text-transform:uppercase}
+  opacity:.75;margin-bottom:14px}
+.fase-n::before{content:"0" counter(f) " · "}
+.fase-n i{font-style:normal;text-transform:uppercase}
+.fase h3{margin:0;font-size:clamp(1.38rem,3.2vw,1.85rem);letter-spacing:-.035em;font-weight:800;
+  line-height:1.08;text-wrap:balance}
 .fase-q{display:block;margin:10px 0 14px;font-family:var(--alma);font-style:italic;
   font-weight:300;font-size:clamp(1rem,2.3vw,1.15rem);color:var(--gold-hi);line-height:1.35}
 .fase p{margin:0;font-size:clamp(.87rem,1.9vw,.95rem);line-height:1.62;color:var(--bone-mute)}
 .fase p b{color:var(--bone);font-weight:600}
+
+/* ── El bucle: un circuito no tiene principio ni fin ───────────────
+   Lemniscata (∞) tratada como una cinta física: tiene volumen, luz arriba,
+   sombra abajo, una hebra que pasa por encima de la otra en el cruce y una
+   sombra proyectada debajo. El brillo holográfico recorre la cinta despacio.
+   Cada nódulo es una persona: esfera de vidrio, no un punto plano. */
+.circo{position:relative;max-width:560px;margin:clamp(30px,4vw,48px) auto 0;
+  padding:clamp(10px,2vw,22px) 0}
+.circo::before{                      /* halo de sala: da aire y hace de fondo */
+  content:"";position:absolute;inset:-6% -4%;pointer-events:none;
+  background:radial-gradient(58% 62% at 50% 46%,#5B4A9C1f,transparent 70%);
+  filter:blur(14px)}
+.circo svg{position:relative;width:100%;height:auto;display:block;overflow:visible}
+.circo .suelo{fill:#000;opacity:.34}                 /* sombra proyectada */
+.circo .marca{fill:#0C0A16;stroke-width:1.6}
+.circo .num{font-family:var(--data);font-size:7.6px;font-weight:700;letter-spacing:.06em;
+  text-anchor:middle;dominant-baseline:middle}
+.circo .eti{font-family:var(--data);font-size:10.4px;font-weight:700;letter-spacing:.2em;
+  text-anchor:middle;dominant-baseline:middle;fill:var(--bone)}
+.circo .plata{font-family:var(--data);font-weight:700;text-anchor:middle;
+  fill:var(--gold-hi);pointer-events:none}
+.circo-pie b{color:var(--bone-mute)}
+.circo-pie{position:relative;margin:clamp(16px,2.2vw,22px) auto 0;max-width:48ch;
+  text-align:center;font-size:clamp(.84rem,1.9vw,.92rem);color:var(--bone-faint);line-height:1.5}
+
+/* ── El argumento de futuro ───────────────────────────────────────
+   No basta con que funcione hoy: hay que decir por qué funcionará mejor
+   mañana. Aquí es donde el lector proyecta y decide que no puede esperar. */
+.futuro{position:relative;overflow:hidden;margin-top:clamp(16px,2.4vw,26px);
+  border:1px solid var(--line-hard);border-radius:18px;
+  padding:clamp(26px,3.4vw,42px);background:
+    radial-gradient(120% 90% at 78% 0%,#5B4A9C24,transparent 62%),#FFFFFF04}
+.fut-t{font-family:var(--data);font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--jade);display:flex;align-items:center;gap:11px;margin-bottom:16px}
+.fut-t::before{content:"";width:26px;height:1px;background:var(--jade);opacity:.6}
+.fut-h{margin:0;font-size:clamp(1.45rem,4vw,2.3rem);letter-spacing:-.04em;
+  line-height:1.12;font-weight:800;text-wrap:balance}
+.fut-h em{font-family:var(--alma);font-style:italic;font-weight:300;color:var(--gold-hi)}
+.futuro > p{margin:16px 0 0;font-size:clamp(.92rem,2vw,1.02rem);line-height:1.65;
+  color:var(--bone-mute);max-width:62ch}
+.futuro > p b{color:var(--bone)}
+.reloj{list-style:none;margin:clamp(20px,2.6vw,28px) 0 0;padding:0;display:grid;
+  gap:clamp(10px,1.6vw,14px)}
+@media(min-width:760px){.reloj{grid-template-columns:1fr 1fr}}
+.reloj li{display:flex;gap:13px;align-items:flex-start;
+  border:1px solid var(--line);border-radius:13px;padding:15px 17px;background:#FFFFFF04}
+.reloj i{flex:none;width:7px;height:7px;border-radius:50%;margin-top:7px;
+  background:var(--jade);box-shadow:0 0 0 4px #4FB39B1f}
+.reloj b{display:block;font-size:.94rem;font-weight:700;letter-spacing:-.02em;margin-bottom:3px}
+.reloj span{display:block;font-size:.86rem;color:var(--bone-faint);line-height:1.5}
+.fut-cierre{margin:clamp(20px,2.6vw,30px) 0 0;padding-top:clamp(18px,2.4vw,24px);
+  border-top:1px solid var(--line);font-family:var(--alma);font-style:italic;font-weight:300;
+  font-size:clamp(1.05rem,2.6vw,1.4rem);line-height:1.4;color:var(--bone)}
+.fut-cierre b{font-family:var(--sys);font-style:normal;font-weight:800;color:var(--gold-hi)}
 
 /* Los ads no son una cuarta fase: son la capa que multiplica las tres. */
 .ads{position:relative;overflow:hidden;margin-top:clamp(18px,2.4vw,26px);
@@ -849,19 +908,25 @@ body > *{position:relative;z-index:1}
 .sect{padding-block:var(--sect)}
 /* Dos secciones seguidas sumaban su relleno: 92px de nada entre bloque y bloque
    en una pantalla de 275px. Al tocarse, la de abajo cede la mitad. */
-.sect + .sect{padding-top:calc(var(--sect) * .5)}
+.sect + .sect{padding-top:calc(var(--sect) * .38)}
 /* En móvil el aire interno también sobra: títulos y rejillas más pegados. */
 @media(max-width:640px){
-  .lede{margin-top:14px}
-  .h-sect{margin-top:8px}
-  .dolor{margin-top:22px}
-  .fases{margin-top:24px}
-  .sol-h{margin-top:10px}
-  .sol-nuevo{margin-top:12px}
-  .sol-p{margin-top:14px}
-  .remate{margin-top:20px}
-  .ads{margin-top:14px}
-  .faq{margin-top:18px}
+  .lede{margin-top:12px}
+  .h-sect{margin-top:6px}
+  .dolor{margin-top:18px}
+  .dol{padding:18px}
+  .fases{margin-top:18px}
+  .fase{padding:20px}
+  .sol-h{margin-top:8px}
+  .sol-nuevo{margin-top:10px}
+  .sol-p{margin-top:12px}
+  .circo{margin-top:18px}
+  .circo-pie{margin-top:10px}
+  .remate{margin-top:16px}
+  .ads{margin-top:12px;padding:20px}
+  .faq{margin-top:14px}
+  .credo{margin-top:16px}
+  .filtro{margin-top:18px}
 }
 
 /* ── Barra superior fija ────────────────────────────────────────── */
@@ -1062,8 +1127,8 @@ body > *{position:relative;z-index:1}
     </h1>
 
     <p class="hero-sub rv" style="--d:120ms">
-      Una <b>marca de referente</b> en tu sector, no más contenido.
-      La era de la atención terminó: <b>hoy gana la confianza.</b>
+      La era de la atención terminó. Hoy nadie compra por ver más contenido:
+      <b>compra por confiar.</b>
     </p>
 
     <div class="rv" style="--d:160ms;margin-top:clamp(14px,2.6vw,24px)">
@@ -1125,7 +1190,7 @@ body > *{position:relative;z-index:1}
         <div class="hito rv" style="--d:140ms">
           <div class="eyebrow">Nichos espirituales</div>
           <b><span data-count="54">0</span>+</b>
-          <span>De mentores holísticos, ya abordados</span>
+          <span>Ya abordados</span>
         </div>
       </div>
 
@@ -1155,10 +1220,10 @@ body > *{position:relative;z-index:1}
 <section class="sect">
   <div class="wrap">
     <div class="eyebrow rv">El problema</div>
-    <h2 class="h-sect rv" style="--d:60ms">Tu negocio no está roto.
-      <em class="alma">Está sobrecargado.</em></h2>
+    <h2 class="h-sect rv" style="--d:60ms">El problema no eres tú.
+      <em class="alma">Es el sistema que te enseñaron.</em></h2>
     <p class="lede rv" style="--d:120ms">Hemos abierto 220 negocios holísticos por dentro.
-      Casi todos llegaron con las mismas escenas. <b>Mira cuántas reconoces:</b></p>
+      Casi todos llegaron con las mismas escenas. <b>Cuenta cuántas reconoces:</b></p>
 
     <div class="dolor">
       <div class="dol rv" style="--d:180ms">
@@ -1270,46 +1335,151 @@ body > *{position:relative;z-index:1}
 <section class="sect banda" id="circuito">
   <div class="wrap">
     <div class="sol-marca rv">La solución</div>
-    <p class="sol-nuevo rv" style="--d:60ms">Esto no es una versión mejorada de lo anterior.
-      <b>Es otra forma de construir el negocio.</b></p>
+    <p class="sol-nuevo rv" style="--d:60ms">Todo el mercado te dice que llegues a más gente.
+      <b>Nosotros hacemos exactamente lo contrario.</b></p>
 
-    <h2 class="sol-h rv" style="--d:120ms">EL CIRCUITO DE ESCALADO
-      <em>Tres movimientos. En este orden.</em></h2>
+    <h2 class="sol-h rv" style="--d:120ms">
+      <svg viewBox="0 0 1000 104" role="img" aria-label="Circuito de Conversión">
+        <text x="500" y="84" textLength="1000" lengthAdjust="spacingAndGlyphs"
+          >CIRCUITO DE CONVERSIÓN<tspan class="tm" dy="-.62em">™</tspan></text>
+      </svg>
+      <em>Tres movimientos. Y un bucle que no se rompe.</em></h2>
 
     <p class="sol-p rv" style="--d:180ms">Cada uno hace una sola cosa y prepara al siguiente.
-      Por eso no depende de tu ánimo, de una fecha ni de que un video explote.</p>
+      No depende de tu ánimo, de una fecha ni de que un video explote.</p>
+
+    <div class="circo rv" style="--d:210ms">
+      <svg viewBox="0 0 480 320" role="img"
+           aria-label="El circuito de conversión como un bucle infinito: atraer, conectar, cerrar y vuelta a empezar. Las personas lo recorren y deciden al cruzar el centro.">
+        <defs>
+          <!-- Holograma: recorre la cinta despacio, empujado por el mismo bucle de animación -->
+          <linearGradient id="holo" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0"    stop-color="#5B4A9C"/>
+            <stop offset=".22"  stop-color="#7A66C4"/>
+            <stop offset=".44"  stop-color="#C79172"/>
+            <stop offset=".62"  stop-color="#F2D391"/>
+            <stop offset=".80"  stop-color="#4FB39B"/>
+            <stop offset="1"    stop-color="#5B4A9C"/>
+          </linearGradient>
+          <!-- Volumen del tubo: luz arriba, sombra abajo. Es lo que lo saca del plano -->
+          <linearGradient id="tubo" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0"   stop-color="#FFFFFF" stop-opacity=".46"/>
+            <stop offset=".34" stop-color="#FFFFFF" stop-opacity=".06"/>
+            <stop offset=".62" stop-color="#000000" stop-opacity="0"/>
+            <stop offset="1"   stop-color="#000000" stop-opacity=".34"/>
+          </linearGradient>
+          <!-- Filo superior: la línea de luz fina que tienen los objetos reales -->
+          <linearGradient id="filo" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0"   stop-color="#FFFFFF" stop-opacity=".72"/>
+            <stop offset=".5"  stop-color="#FFFFFF" stop-opacity="0"/>
+            <stop offset="1"   stop-color="#FFFFFF" stop-opacity="0"/>
+          </linearGradient>
+          <!-- Esfera de vidrio: reflejo arriba a la izquierda, sobre cualquier color -->
+          <radialGradient id="perla" cx=".34" cy=".28" r=".78">
+            <stop offset="0"   stop-color="#FFFFFF" stop-opacity=".92"/>
+            <stop offset=".26" stop-color="#FFFFFF" stop-opacity=".28"/>
+            <stop offset=".62" stop-color="#FFFFFF" stop-opacity="0"/>
+            <stop offset="1"   stop-color="#000000" stop-opacity=".30"/>
+          </radialGradient>
+          <filter id="resplandor" x="-60%" y="-60%" width="220%" height="220%">
+            <feGaussianBlur stdDeviation="5" result="b"/>
+            <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          <filter id="difuso" x="-40%" y="-40%" width="180%" height="180%">
+            <feGaussianBlur stdDeviation="11"/>
+          </filter>
+          <filter id="sombraSuelo" x="-30%" y="-160%" width="160%" height="420%">
+            <feGaussianBlur stdDeviation="9"/>
+          </filter>
+        </defs>
+
+        <ellipse class="suelo" cx="240" cy="268" rx="176" ry="9" filter="url(#sombraSuelo)"/>
+
+        <!-- 1 · resplandor difuso  2 · cuerpo  3 · volumen  4 · filo de luz -->
+        <path id="bucleAura"  fill="none" stroke="url(#holo)" stroke-width="26"
+              stroke-linecap="round" opacity=".26" filter="url(#difuso)"/>
+        <path id="bucleCinta" fill="none" stroke="url(#holo)" stroke-width="17" stroke-linecap="round"/>
+        <path id="bucleTubo"  fill="none" stroke="url(#tubo)" stroke-width="17" stroke-linecap="round"/>
+        <path id="bucleFilo"  fill="none" stroke="url(#filo)" stroke-width="6"  stroke-linecap="round"/>
+
+        <!-- El cruce: se abre un hueco justo en la intersección y se repinta la
+             hebra de delante encima. Solo dos capas: el hueco y la cinta, para
+             que nada pueda aclararla ni ensuciarla. -->
+        <path id="cruceCasco" fill="none" stroke="#0A0910" stroke-width="25" stroke-linecap="butt"/>
+        <path id="cruceCinta" fill="none" stroke="url(#holo)" stroke-width="17" stroke-linecap="round"/>
+
+        <g id="bucleNodos" filter="url(#resplandor)"></g>
+        <g id="bucleDinero" filter="url(#resplandor)"></g>
+        <g id="bucleMarcas"></g>
+
+      </svg>
+      <p class="circo-pie">Cada punto es una persona. Unas avanzan, otras se salen, se saltan
+        una etapa o vuelven atrás. <b>El sistema es el mismo para todas</b> — y las recoge
+        en cualquier punto, entren por donde entren.</p>
+    </div>
 
     <div class="fases">
       <div class="fase rv" style="--d:240ms;--i:0">
-        <div class="fase-n"></div>
-        <h3>Atraer</h3>
-        <span class="fase-q">Contenido de micronicho.</span>
-        <p>Dejas de hablarle a todo el mundo. Publicas para <b>un micronicho concreto</b>,
-          con sus palabras y su situación. Y te encuentra quien puede pagarte.</p>
+        <div class="fase-n"><i>Atraer</i></div>
+        <h3>Anuncios de Micronicho</h3>
+        <span class="fase-q">Tu cliente ideal te encuentra hoy, no cuando el algoritmo quiera.</span>
+        <p>Pagas por llegar <b>exactamente a quien puede pagarte</b>: por nicho, por dolor,
+          por momento. Dejas de publicar y rezar. El alcance deja de ser suerte y pasa a ser
+          una decisión tuya.</p>
       </div>
 
       <div class="fase rv" style="--d:300ms;--i:1">
-        <div class="fase-n"></div>
-        <h3>Conectar</h3>
-        <span class="fase-q">Perspectivas y filosofía del problema.</span>
-        <p>Aquí todavía no vendes. <b>Cambias cómo ven su problema.</b> Y cuando lo ven
-          como tú, solo queda un sitio donde resolverlo.</p>
+        <div class="fase-n"><i>Conectar</i></div>
+        <h3>Contenido Espejo</h3>
+        <span class="fase-q">Se ven a sí mismos en lo que dices.</span>
+        <p>No explicas lo que haces: <b>nombras lo que están viviendo.</b> Y cuando alguien
+          se reconoce en tu forma de ver el problema, deja de comparar precios
+          y empieza a buscarte a ti.</p>
       </div>
 
       <div class="fase rv" style="--d:360ms;--i:2">
-        <div class="fase-n"></div>
-        <h3>Cerrar</h3>
-        <span class="fase-q">Offer docs y gatillos mentales de venta.</span>
-        <p>La oferta llega <b>escrita y sin ambigüedad</b>, con los gatillos que hacen que
-          decidir hoy sea lo natural. No hace falta insistir. Hace falta que se entienda.</p>
+        <div class="fase-n"><i>Cerrar</i></div>
+        <h3>Sistema de Re-Impacto</h3>
+        <span class="fase-q">Nadie que te descubre se pierde.</span>
+        <p>Vuelves a aparecer delante de quien ya te vio, <b>con el mensaje que le toca</b>,
+          hasta que está listo. Y cuando lo está no llega a una llamada fría:
+          <b>llega convencido.</b></p>
       </div>
     </div>
 
-    <div class="ads rv" style="--d:420ms">
+    <div class="futuro rv" style="--d:400ms">
+      <div class="fut-t">Lo que viene</div>
+      <h2 class="fut-h">La IA acaba de volver infinito el contenido.
+        <em>Y con eso, inútil.</em></h2>
+      <p>Cualquiera puede generar mil piezas esta semana. Por eso el contenido dejó de ser
+        la ventaja: en dos años nadie va a elegir por quién publica mejor.
+        <b>Va a elegir por quién le entiende y en quién confía</b> — y eso no se genera,
+        se construye.</p>
+
+      <ul class="reloj">
+        <li><i></i><div><b>El alcance gratis se acaba</b>
+          <span>Cada año llegas a menos gente por lo mismo. Quien no sabe comprar atención
+            va a depender de la suerte.</span></div></li>
+        <li><i></i><div><b>Tu nicho se llena de ruido</b>
+          <span>Van a decir lo mismo que tú, mejor redactado. Solo se distingue quien tiene
+            una filosofía propia.</span></div></li>
+        <li><i></i><div><b>La confianza se vuelve el activo</b>
+          <span>Cuando todo suena igual, gana el que ya se ganó el criterio del que compra.</span></div></li>
+        <li><i></i><div><b>El sistema es tuyo, no alquilado</b>
+          <span>Tu micronicho, tu voz y tus datos siguen valiendo aunque cambien las
+            plataformas y los algoritmos.</span></div></li>
+      </ul>
+
+      <p class="fut-cierre">Construir esto tarda meses. Por eso el momento de empezar
+        <b>no es cuando lo necesites: es antes.</b></p>
+    </div>
+
+    <div class="ads rv" style="--d:460ms">
       <div class="ads-t"><small>Y todo esto, con esteroides</small>LOS ADS</div>
-      <p>Los tres funcionan solos. <b>Con pauta encima, funcionan a escala:</b> amplificas
-        solo lo que ya convirtió con tu dinero. El circuito deja de depender del algoritmo
-        y pasa a depender de cuánto quieras invertir.</p>
+      <p>La pauta no vive en un solo paso: <b>envuelve los tres.</b> Amplía el micronicho,
+        repite el contenido que ya movió gente y sostiene el re-impacto. Con presupuesto
+        encima, el circuito deja de depender del algoritmo y pasa a depender de
+        <b>cuánto quieras invertir.</b></p>
     </div>
   </div>
 </section>
@@ -1488,7 +1658,7 @@ body > *{position:relative;z-index:1}
 </div>
 
 <div class="barra-movil" id="barraMovil">
-  <a class="mega" href="#agenda"><b>AGENDA TU LLAMADA</b><span>Gratis · 45 min</span></a>
+  <a class="mega" href="#agenda"><b>AGENDA TU LLAMADA</b><span>Gratis</span></a>
 </div>
 
 <footer class="foot">
@@ -1961,7 +2131,219 @@ const PORTADAS = [
 
 })();
 
-/* ── Barra superior: se fija y el botón destella al desplazar ───── */
+/* ── El bucle en marcha ───────────────────────────────────────────
+   La curva sale de la lemniscata de Bernoulli y todo lo demás se coloca con
+   getPointAtLength: marcas, etiquetas, nódulos y el recorte del cruce. Ningún
+   número puesto a ojo. Guardado contra null como el resto de la página. */
+(() => {
+  const capa = $("#bucleNodos"), marcas = $("#bucleMarcas");
+  const cintas = ["bucleAura","bucleCinta","bucleTubo","bucleFilo"].map(id => $("#"+id));
+  const cruces = ["cruceCasco","cruceCinta"].map(id => $("#"+id));
+  if(!capa || !marcas || cintas.some(x => !x) || cruces.some(x => !x)) return;
+
+  const NS = "http://www.w3.org/2000/svg";
+  const CX = 240, CY = 150, A = 186;
+  const crea = (t, at) => { const e = document.createElementNS(NS, t);
+                            for(const k in at) e.setAttribute(k, at[k]); return e; };
+
+  /* El ∞ como polilínea densa: una curva exacta vale más que una bézier a ojo. */
+  let dd = "";
+  for(let k = 0; k <= 260; k++){
+    const t = k/260 * Math.PI*2, s2 = Math.sin(t)**2;
+    dd += (k ? "L" : "M")
+        + (CX + A*Math.cos(t)/(1+s2)).toFixed(2) + " "
+        + (CY + A*Math.sin(t)*Math.cos(t)/(1+s2)).toFixed(2);
+  }
+  dd += "Z";
+  cintas.forEach(c => c.setAttribute("d", dd));
+  const via = cintas[1], L = via.getTotalLength();
+
+  /* El cruce: se localiza el paso por el centro y se recorta ese trozo para
+     repintarlo encima. Eso es lo que hace que una hebra pase sobre la otra. */
+  let dCruce = 0, cerca = Infinity;
+  for(let d = 0; d < L; d += L/720){
+    const q = via.getPointAtLength(d);
+    const v = Math.hypot(q.x-CX, q.y-CY);
+    if(v < cerca){ cerca = v; dCruce = d; }
+  }
+  /* El hueco es corto —solo lo justo para cortar la hebra de atrás— y la hebra
+     de delante se repinta más larga, de modo que lo tapa por completo y sus
+     extremos mueren sobre la cinta, no sobre el hueco. */
+  const medidas = [L*0.030, L*0.082];
+  cruces.forEach((c, i) => {
+    const t = medidas[i];
+    c.setAttribute("d", dd);
+    c.setAttribute("stroke-dasharray", `${t} ${L - t}`);
+    c.setAttribute("stroke-dashoffset", -((dCruce - t/2 + L) % L));
+  });
+
+  const FASES = [
+    {n:"ATRAER",   c:"#8E79DC"},
+    {n:"CONECTAR", c:"#D8A483"},
+    {n:"CERRAR",   c:"#F2D391"},
+    {n:"RETENER",  c:"#6FBFA6"},
+  ];
+
+  /* Las cuatro esquinas reales del trazo, ordenadas según avanza el bucle y
+     rotadas para que el 01 caiga arriba a la izquierda. */
+  const halla = ([sx, sy]) => {
+    let mejor = 0, tope = -Infinity;
+    for(let d = 0; d < L; d += L/360){
+      const q = via.getPointAtLength(d);
+      const v = sx*(q.x-CX) + sy*(q.y-CY);
+      if(v > tope){ tope = v; mejor = d; }
+    }
+    return {d: mejor, arriba: sy < 0, izq: sx < 0};
+  };
+  let esq = [[-1,-1],[1,-1],[1,1],[-1,1]].map(halla).sort((a,b) => a.d - b.d);
+  const arranque = esq.findIndex(e => e.arriba && e.izq);
+  if(arranque > 0) esq = esq.slice(arranque).concat(esq.slice(0, arranque));
+
+  marcas.innerHTML = "";
+  esq.forEach((e, i) => {
+    const q = via.getPointAtLength(e.d), f = FASES[i];
+    const nx = q.x-CX, ny = q.y-CY, m = Math.hypot(nx, ny) || 1;
+    marcas.append(crea("circle", {cx:q.x, cy:q.y, r:15, fill:f.c, opacity:".18"}));
+    marcas.append(crea("circle", {class:"marca", cx:q.x, cy:q.y, r:10.5, stroke:f.c}));
+    marcas.append(Object.assign(crea("text", {class:"num", x:q.x, y:q.y+.4, fill:f.c}),
+                                {textContent:"0" + (i+1)}));
+    marcas.append(Object.assign(
+      crea("text", {class:"eti", x:q.x + nx/m*46, y:q.y + ny/m*32}), {textContent:f.n}));
+  });
+
+  /* Las personas: esfera de color con un vidriado encima, agrupadas para que
+     moverlas cueste un solo atributo por fotograma.
+
+     Nadie compra en línea recta, así que ninguna va en fila. Cada una lleva su
+     propio reloj y, cuando le toca, hace una de tres cosas: se sale del camino
+     y flota un rato antes de volver por donde le da la gana, se salta una etapa
+     cruzando por el medio, o desanda un tramo. El bucle es el sistema; el
+     recorrido de cada persona es suyo. */
+  const quieto = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const N = quieto ? 10 : 20;
+  const azar = (a, b) => a + Math.random()*(b - a);
+  capa.innerHTML = "";
+  const gente = Array.from({length:N}, (_, i) => {
+    const r = 3.6 + Math.random()*1.7;
+    const g = capa.appendChild(crea("g", {}));
+    const cuerpo = g.appendChild(crea("circle", {r, cx:0, cy:0}));
+    g.appendChild(crea("circle", {r, cx:0, cy:0, fill:"url(#perla)"}));
+    return {d: L*i/N, v: azar(0.38, 0.76), g, cuerpo, fase:-1, op:-1,
+            modo:"pista", reloj: azar(90, 900), atras:0,
+            x:0, y:0, vx:0, vy:0, paso:0, dur:1, desde:null, hasta:0};
+  });
+
+  /* El dinero. Se recicla un puñado de glifos en vez de crear y destruir:
+     al cerrar sale uno, al retener salen dos —retener paga más de una vez—. */
+  const bolsa = $("#bucleDinero");
+  const plata = Array.from({length:14}, () => ({
+    el: bolsa.appendChild(crea("text", {class:"plata", opacity:0, x:0, y:0})),
+    vida: 0, dur: 1, x:0, y:0, vx:0, vy:0,
+  }));
+  plata.forEach(m => m.el.textContent = "$");
+  const soltar = (x, y, grande) => {
+    const m = plata.find(z => z.vida <= 0);
+    if(!m) return;
+    m.x = x + azar(-6, 6); m.y = y - 4;
+    m.vx = azar(-0.24, 0.24); m.vy = azar(-0.62, -0.94);
+    m.dur = azar(52, 78); m.vida = m.dur;
+    m.el.setAttribute("font-size", (grande ? azar(13, 16) : azar(10, 13)).toFixed(1));
+  };
+
+  const aura = $("#bucleAura"), holo = $("#holo");
+  let latido = 0, giro = 0;
+  const suave = k => k < .5 ? 2*k*k : 1 - Math.pow(-2*k + 2, 2)/2;
+
+  const pinta = () => {
+    giro = (giro + 0.22) % 480;
+    holo.setAttribute("gradientTransform", `translate(${(giro-240)/480} 0)`);
+
+    for(const p of gente){
+      let x, y, opaco = 1;
+
+      if(p.modo === "pista"){
+        const previo = p.d;
+        p.d = (p.d + p.v * (p.atras > 0 ? -1 : 1) + L) % L;
+        if(p.atras > 0) p.atras--;
+        const q = via.getPointAtLength(p.d);
+        x = q.x; y = q.y;
+        if(!p.atras && previo < p.d && Math.abs(x-CX) < 7 && Math.abs(y-CY) < 7) latido = 1;
+
+        if(--p.reloj <= 0){
+          const suerte = Math.random();
+          if(suerte < 0.50){                       // se sale del camino
+            const n = Math.hypot(x-CX, y-CY) || 1;
+            p.modo = "fuera"; p.x = x; p.y = y;
+            p.vx = (x-CX)/n * azar(.45, 1.05) + azar(-.35, .35);
+            p.vy = (y-CY)/n * azar(.45, 1.05) + azar(-.35, .35);
+            p.paso = 0; p.dur = azar(90, 230);
+          } else if(suerte < 0.80){                // se salta una etapa por el medio
+            p.modo = "salto"; p.desde = {x, y};
+            p.hasta = (p.d + L*azar(.20, .46)) % L;
+            p.paso = 0; p.dur = azar(34, 60);
+          } else {                                 // desanda lo andado
+            p.atras = azar(80, 200) | 0;
+          }
+          p.reloj = azar(340, 1100);
+        }
+      }
+      else if(p.modo === "fuera"){
+        p.paso++;
+        p.x += p.vx; p.y += p.vy;
+        p.vx += (CX - p.x)*0.00042 + azar(-.05, .05);   // una correa larga: no se pierde
+        p.vy += (CY - p.y)*0.00042 + azar(-.05, .05);
+        p.vx *= 0.994; p.vy *= 0.994;
+        p.x = Math.max(46, Math.min(434, p.x));         // sin salirse del cuadro
+        p.y = Math.max(44, Math.min(258, p.y));
+        x = p.x; y = p.y; opaco = .5;
+        if(p.paso >= p.dur){                            // vuelve por donde quiere
+          p.modo = "vuelve"; p.desde = {x, y};
+          p.hasta = Math.random()*L; p.paso = 0; p.dur = azar(46, 96);
+        }
+      }
+      else {                                            // «salto» y «vuelve» viajan igual
+        p.paso++;
+        const k = Math.min(1, p.paso/p.dur), e = suave(k);
+        const q = via.getPointAtLength(p.hasta);
+        x = p.desde.x + (q.x - p.desde.x)*e;
+        y = p.desde.y + (q.y - p.desde.y)*e;
+        opaco = (p.modo === "vuelve" ? .5 : .72) + e*(p.modo === "vuelve" ? .5 : .28);
+        if(k >= 1){ p.modo = "pista"; p.d = p.hasta; }
+      }
+
+      p.g.setAttribute("transform", `translate(${x.toFixed(1)} ${y.toFixed(1)})`);
+      if(Math.abs(opaco - p.op) > .01){ p.op = opaco; p.g.setAttribute("opacity", opaco.toFixed(2)); }
+      const fase = Math.min(3, Math.floor(p.d/L*4));
+      if(fase !== p.fase){
+        /* Al entrar en CERRAR cae dinero. Al entrar en RETENER cae el doble:
+           el cliente que se queda vuelve a pagar. */
+        if(p.fase >= 0 && p.modo === "pista"){
+          if(fase === 2) soltar(x, y, false);
+          if(fase === 3){ soltar(x, y, true); soltar(x, y, true); }
+        }
+        p.fase = fase; p.cuerpo.setAttribute("fill", FASES[fase].c);
+      }
+    }
+
+    for(const m of plata){                 // el dinero sube y se desvanece
+      if(m.vida <= 0) continue;
+      m.vida--; m.x += m.vx; m.y += m.vy; m.vy *= 0.986;
+      const k = m.vida/m.dur;
+      m.el.setAttribute("x", m.x.toFixed(1));
+      m.el.setAttribute("y", m.y.toFixed(1));
+      m.el.setAttribute("opacity", (k > .72 ? (1-k)/.28 : k/.72).toFixed(2));
+    }
+
+    if(latido > 0){                      // cada llegada al centro hace respirar el halo
+      latido = Math.max(0, latido - 0.028);
+      aura.setAttribute("opacity", (0.26 + latido*0.22).toFixed(3));
+    }
+    if(!quieto) requestAnimationFrame(pinta);
+  };
+  pinta();
+})();
+
+/* ── Barra superior: se fija y el botón destella al desplazar ───── *//* ── Barra superior: se fija y el botón destella al desplazar ───── *//* ── Barra superior: se fija y el botón destella al desplazar ───── */
 (() => {
   const tope = $("#tope"), cta = $("#ctaTope");
   if(!tope) return;
