@@ -381,6 +381,18 @@ function aplicarEstructura({orden = [], ocultos = [], sellos = null} = {}){
 }
 
 /** Inserta un bloque nuevo (HTML) al final o después de otro. */
+/** Marca como borrado lo que el estudio haya quitado. No se elimina del DOM:
+    se marca, para que los índices de los hermanos no se corran y las rutas
+    guardadas de todo lo demás sigan apuntando a su sitio. Al exportar, lo
+    marcado no viaja. */
+function aplicarBorrados(rutas = []){
+  $$("[data-borrado]").forEach(e => e.removeAttribute("data-borrado"));
+  for(const r of rutas){
+    const el = porRuta(r);          // el porRuta del kit toma solo la ruta
+    if(el) el.setAttribute("data-borrado", "");
+  }
+}
+
 function insertarBloque(html, despuesDe){
   const t = document.createElement("template");
   t.innerHTML = html.trim();
@@ -631,7 +643,7 @@ window.KIT = { aplicarRecurso, listarRecursos, refrescar, resaltar, quitarResalt
                enfocar, apagar, iluminar, pintarHolo,
                redimensionar, pintarRedim,
                listarEnlaces, aplicarEnlace, listarBloques, aplicarEstructura, sellosBloques,
-               insertarBloque, modoRecursos, rutaDe, porRuta, $, $$, esc, RM };
+               insertarBloque, aplicarBorrados, modoRecursos, rutaDe, porRuta, $, $$, esc, RM };
 
 refrescar();
 document.documentElement.dataset.kitListo = "1";

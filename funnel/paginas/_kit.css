@@ -132,6 +132,8 @@ h1,h2,h3,h4{font-family:var(--sys);font-weight:800;margin:0;text-wrap:balance;le
   transition:opacity .95s var(--ease),transform .95s var(--ease),filter .95s var(--ease);
   transition-delay:var(--d,0ms);will-change:opacity,transform}
 .rv.in{opacity:1;transform:none;filter:none}
+/* Borrado desde el estudio: no se ve en la página ni viaja al exportar. */
+[data-borrado]{display:none!important}
 
 /* ── Nav ─────────────────────────────────────────────────────────── */
 

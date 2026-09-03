@@ -692,6 +692,7 @@ const esc = s => String(s).replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">"
 
 const FUENTE = JSON.parse($("#paginasFuente").textContent);   // {orden:[], paginas:{slug:{meta,html}}}
 const LS_KEY = "escalling-funnel-v1";
+const LS_POOL = LS_KEY + ":pool";
 
 /* El almacenamiento del navegador puede estar deshabilitado (incógnito, data:,
    políticas del sitio). Nunca debe tumbar el estudio. */
@@ -737,27 +738,73 @@ const guardadoInline = (() => {
   try { return JSON.parse($("#estadoGuardado").textContent); } catch { return null; }
 })();
 
+/** De dos copias de la misma imagen se queda la más ligera. La versión de este
+    navegador y la publicada pueden traer la misma foto con distinto peso —una
+    optimizada y otra no—; con la fecha sola, la vieja y pesada ganaba cada vez
+    que guardabas sin recargar, y la optimización se perdía una y otra vez. */
+function fundirRecursos(base, otro){
+  if(!otro) return base;
+  /* La biblioteca de subidas pesa tanto o más que las imágenes en uso, así que
+     entra en el mismo trato: de cada una, la copia más ligera. */
+  if(otro.pool && base.pool)
+    for(const [id, val] of Object.entries(otro.pool)){
+      const mio = base.pool[id];
+      if(val && mio && String(val).length < String(mio).length) base.pool[id] = val;
+    }
+  if(!otro.pags) return base;
+  for(const [slug, pOtro] of Object.entries(otro.pags)){
+    const pBase = base.pags[slug]; if(!pBase?.recursos) continue;
+    for(const [id, val] of Object.entries(pOtro.recursos || {})){
+      const mio = pBase.recursos[id];
+      if(!val) continue;
+      /* Solo se sustituye cuando la otra copia tiene la MISMA imagen más
+         ligera. Si aquí no hay nada, no se resucita: puede que la borraras. */
+      if(mio && String(val).length < String(mio).length) pBase.recursos[id] = val;
+    }
+  }
+  return base;
+}
+
 let ST = (() => {
   let local = null;
   try { local = JSON.parse(guarda.leer(LS_KEY) || "null"); } catch {}
-  const base = (local && guardadoInline)
+  /* El depósito de imágenes del historial se guarda aparte porque pesa cinco
+     veces más que todo lo demás y no cambia mientras escribes. */
+  if(local && !local.pool){
+    try { local.pool = JSON.parse(guarda.leer(LS_POOL) || "null") || {}; } catch { local.pool = {}; }
+  }
+  const gana   = (local && guardadoInline)
     ? (local.ts > guardadoInline.ts ? local : guardadoInline)
     : (local || guardadoInline || vacio());
-  return Object.assign(vacio(), base);
+  const pierde = gana === local ? guardadoInline : local;
+  return fundirRecursos(Object.assign(vacio(), gana), pierde);
 })();
 
 const pagEstado = slug => {
   const p = (ST.pags[slug] ||= {});
   p.recursos ||= {}; p.textos ||= {}; p.estilos ||= {};
   p.enlaces  ||= {}; p.notas  ||= []; p.estructura ||= {orden:[], ocultos:[]};
-  p.slotsNuevos ||= []; p.huellas ||= {};
+  p.slotsNuevos ||= []; p.huellas ||= {}; p.borrados ||= [];
   return p;
 };
 
-let sucio = false;
+let sucio = false, poolSucio = true, discoT = 0;
+
+/** Vuelca el estado a disco. Serializar 5 MB bloquea el hilo, así que no se
+    hace en cada tecla: se agrupa, y el depósito de imágenes solo se reescribe
+    cuando de verdad ha cambiado. */
+function volcarDisco(){
+  clearTimeout(discoT); discoT = 0;
+  const {pool, ...resto} = ST;
+  guarda.poner(LS_KEY, JSON.stringify(resto));
+  if(poolSucio){ guarda.poner(LS_POOL, JSON.stringify(pool || {})); poolSucio = false; }
+}
+addEventListener("pagehide", () => { if(discoT) volcarDisco(); });
+
 const marcar = () => {
   ST.ts = Date.now();
-  guarda.poner(LS_KEY, JSON.stringify(ST));
+  clearTimeout(discoT);
+  discoT = setTimeout(volcarDisco, 700);
   sucio = true;
   mapaPide();
   programarAuto();          // cada cambio reinicia la cuenta atrás del autoguardado
@@ -868,6 +915,24 @@ function aplicarTodo(d){
   KIT?.aplicarEstructura(st.estructura);                  // orden y visibilidad de bloques
   for(const [ruta, href] of Object.entries(st.enlaces)) KIT?.aplicarEnlace(ruta, href);
   for(const [id, val] of Object.entries(st.recursos)) if(val) KIT?.aplicarRecurso(id, val);
+  /* Poda de recursos fantasma: imágenes que quedaron guardadas de bloques que
+     ya no existen. Se exige doble prueba antes de tirar nada — que no haya
+     hueco para ellas en la página Y que la versión publicada tampoco las
+     tenga—; así una imagen recién subida, o de un bloque que aún no se ha
+     dibujado, nunca se pierde por error. */
+  (() => {
+    const publicado = guardadoInline?.pags?.[ACT]?.recursos || null;
+    if(!publicado) return;
+    const huecos = new Set([...d.querySelectorAll("[data-res]")].map(e => e.dataset.res));
+    const muertos = Object.keys(st.recursos)
+      .filter(id => st.recursos[id] && !huecos.has(id) && !publicado[id]);
+    if(!muertos.length) return;
+    muertos.forEach(id => delete st.recursos[id]);
+    marcar();
+    console.info(`[estudio] ${muertos.length} imagen(es) sin hueco, retiradas del estado`);
+  })();
+
+  KIT?.aplicarBorrados(st.borrados || []);
   for(const [ruta, txt] of Object.entries(st.textos)){
     const el = porRuta(d, ruta); if(el) el.innerHTML = limpiarEnLinea(txt);
   }
@@ -1529,6 +1594,11 @@ function avisarPendientes(){
   t.classList.toggle("avisa", faltan > 0);
 }
 
+/* El techo de resolución y la calidad viven aquí y en el optimizador del
+   repositorio con los mismos números. Si divergen, cada guardado desde el
+   navegador reintroduce imágenes más pesadas que las ya publicadas. */
+const TECHO_PX = 760, CALIDAD = .80;
+
 /** Reescala a WebP al tamaño en que se va a ver. Devuelve el data URI. */
 const NO_WEB = {tiff:"TIFF", tif:"TIFF", heic:"HEIC", heif:"HEIF",
                 psd:"Photoshop", raw:"RAW", cr2:"RAW", nef:"RAW", arw:"RAW", dng:"RAW"};
@@ -1545,14 +1615,14 @@ function procesarImagen(f, medida = 0){
       img.onerror = () => mal(new Error(
         "el navegador no puede decodificarla. Conviértela a JPG, PNG o WebP."));
       img.onload = () => {
-        const MAX = medida ? Math.min(1600, Math.max(320, medida * 2)) : 1600;
+        const MAX = medida ? Math.min(TECHO_PX, Math.max(320, medida * 2)) : TECHO_PX;
         const k = Math.min(1, MAX / Math.max(img.width, img.height));
         const c = document.createElement("canvas");
         c.width = Math.round(img.width*k); c.height = Math.round(img.height*k);
         const ctx = c.getContext("2d");
         ctx.imageSmoothingQuality = "high";
         ctx.drawImage(img, 0, 0, c.width, c.height);
-        let uri = c.toDataURL("image/webp", .82), fmt = "WebP";
+        let uri = c.toDataURL("image/webp", CALIDAD), fmt = "WebP";
         if(!uri.startsWith("data:image/webp")){ uri = c.toDataURL("image/jpeg", .84); fmt = "JPEG"; }
         const kb = Math.round(uri.length*.75/1024);
         if(kb > 2400) return mal(new Error(`pesa ${kb} KB incluso optimizada`));
@@ -1576,7 +1646,7 @@ function subirImagen(cb, medida = 0){
       img.onload = () => {
         /* No tiene sentido guardar 1600 px para un avatar de 48.
            Al doble del tamaño real basta para pantallas retina. */
-        const MAX = medida ? Math.min(1600, Math.max(320, medida * 2)) : 1600;
+        const MAX = medida ? Math.min(TECHO_PX, Math.max(320, medida * 2)) : TECHO_PX;
         const k = Math.min(1, MAX / Math.max(img.width, img.height));
         const c = document.createElement("canvas");
         c.width = Math.round(img.width*k); c.height = Math.round(img.height*k);
@@ -1586,7 +1656,7 @@ function subirImagen(cb, medida = 0){
 
         /* WebP siempre que el navegador lo sepa producir: pesa mucho menos
            y lo entienden todos los navegadores actuales. */
-        let uri = c.toDataURL("image/webp", .82);
+        let uri = c.toDataURL("image/webp", CALIDAD);
         let fmt = "WebP";
         if(!uri.startsWith("data:image/webp")){          // navegador sin WebP
           uri = c.toDataURL("image/jpeg", .84); fmt = "JPEG";
@@ -1745,8 +1815,11 @@ function onClick(e){
   if(!document.body.classList.contains("editando")) return;
   const el = e.target.closest?.(EDITABLES);
   if(!el){ deseleccionar(); return; }
+  /* Si ya está elegido y es editable, este clic es para mover el cursor dentro
+     del texto: no se intercepta. Cancelarlo era justo lo que impedía escribir. */
+  if(el === sel && el.isContentEditable){ e.stopPropagation(); return; }
   e.preventDefault(); e.stopPropagation();
-  seleccionar(el);
+  seleccionar(el, e);
 }
 
 /** Quita el recuadro y los tiradores: el bloque deja de estar seleccionado. */
@@ -1778,7 +1851,7 @@ function limpiarEnLinea(html){
   return t.innerHTML;
 }
 
-function seleccionar(el){
+function seleccionar(el, ev){
   const d = marco.contentDocument;
   $$("[data-ed-sel]", d).forEach(x => { x.removeAttribute("data-ed-sel"); x.removeAttribute("contenteditable"); });
   el.removeAttribute("data-ed-hover");
@@ -1792,12 +1865,24 @@ function seleccionar(el){
   const soloTexto = ![...el.querySelectorAll("*")].some(c => !EN_LINEA.test(c.tagName));
   if(soloTexto){
     el.contentEditable = "true";
+    /* Y se le da el foco con el cursor donde hiciste clic: sin esto el bloque
+       quedaba editable pero sin cursor, así que no se podía escribir. */
+    el.focus({preventScroll:true});
+    if(ev){
+      const d2 = el.ownerDocument, v2 = d2.defaultView;
+      const r = d2.caretRangeFromPoint?.(ev.clientX, ev.clientY);
+      const s2 = v2.getSelection();
+      if(r && el.contains(r.startContainer)){ s2.removeAllRanges(); s2.addRange(r); }
+      else { const f = d2.createRange(); f.selectNodeContents(el); f.collapse(false);
+             s2.removeAllRanges(); s2.addRange(f); }
+    }
     const ruta = rutaDe(el);
     const antes = pagEstado(ACT).textos[ruta];
     const original = el.innerHTML;
     el.addEventListener("input", onEscribe);
     el.addEventListener("blur", () => {
       el.removeEventListener("input", onEscribe);
+      volcarEdicion();          // lo tecleado entra en el estado al salir del bloque
       if(el.innerHTML === original) return;
       const despues = limpiarEnLinea(el.innerHTML);
       registrar("edición de texto",
@@ -1812,11 +1897,27 @@ function seleccionar(el){
   else pintarEditor();
 }
 
-let escT;
+let escT, escritura = null;
+
+/** El texto que estás escribiendo vive 400 ms solo en el DOM antes de pasar al
+    estado. Guardar o publicar en ese hueco publicaba la versión anterior y la
+    recarga se llevaba lo tecleado. Esto lo fuerza a estado antes de nada. */
+function volcarEdicion(){
+  clearTimeout(escT); escT = 0;
+  if(!escritura) return;
+  const {el, ruta} = escritura;
+  if(el.isConnected) pagEstado(ACT).textos[ruta] = limpiarEnLinea(el.innerHTML);
+  escritura = null;
+  ST.ts = Date.now(); sucio = true;
+  volcarDisco();
+}
+
 function onEscribe(e){
   const el = e.currentTarget, ruta = rutaDe(el);
+  escritura = {el, ruta};
   clearTimeout(escT);
   escT = setTimeout(() => {
+    escritura = null;
     pagEstado(ACT).textos[ruta] = limpiarEnLinea(el.innerHTML); marcar();
   }, 400);
 }
@@ -1830,6 +1931,39 @@ const CTRLS = [
   {k:"paddingBottom", lab:"Espacio abajo",    min:0,  max:200, paso:2,   uni:"px"},
   {k:"maxWidth",      lab:"Ancho máximo",     min:200,max:1600,paso:10,  uni:"px"},
 ];
+
+/** Borra el elemento elegido. No se saca del DOM: se marca, para no correr los
+    índices de sus hermanos y que las rutas guardadas del resto sigan valiendo. */
+function borrarElegido(){
+  if(!sel) return;
+  const ruta = rutaDe(sel), st = pagEstado(ACT);
+  if(st.borrados.includes(ruta)) return;
+  const nombre = (sel.textContent || "").replace(/\s+/g, " ").trim().slice(0, 40)
+              || "<" + sel.tagName.toLowerCase() + ">";
+  const poner = borra => {
+    const p2 = pagEstado(ACT);
+    p2.borrados = borra ? [...new Set([...p2.borrados, ruta])]
+                        : p2.borrados.filter(r => r !== ruta);
+    marco.contentWindow?.KIT?.aplicarBorrados(p2.borrados);
+    marcar(); if($(".hoja.act")?.id === "hEstructura") pintarEstructura();
+  };
+  registrar(`borrar «${nombre}»`, () => poner(false), () => poner(true));
+  poner(true);
+  deseleccionar();
+  aviso(`Borrado. Puedes deshacerlo, o restaurarlo desde «Bloques y secciones».`, "ok");
+}
+
+function restaurar(ruta){
+  const poner = borra => {
+    const p2 = pagEstado(ACT);
+    p2.borrados = borra ? [...new Set([...p2.borrados, ruta])]
+                        : p2.borrados.filter(r => r !== ruta);
+    marco.contentWindow?.KIT?.aplicarBorrados(p2.borrados);
+    marcar(); pintarEstructura();
+  };
+  registrar("restaurar elemento", () => poner(true), () => poner(false));
+  poner(false);
+}
 
 function pintarEditor(){
   const cont = $("#hEditor");
@@ -1854,6 +1988,12 @@ function pintarEditor(){
 
     <h3 class="subt">Tipografía</h3>
     ${CTRLS.slice(0,4).map(c => ctrlHTML(c, guard[c.k] ?? cs[c.k])).join("")}
+
+    <h3 class="subt">Quitar</h3>
+    <button class="chip" id="edBorrar" style="width:100%;justify-content:center;
+      border-color:#C97B6E55;color:#E4A093">Borrar este elemento</button>
+    <p style="font-size:.68rem;color:var(--ui-tx-3);margin:7px 0 4px;line-height:1.45">
+      No se publica y no aparece en el código. Se restaura desde «Bloques y secciones».</p>
 
     <h3 class="subt">Color del texto</h3>
     <div class="paleta" id="edPaleta">
@@ -1890,6 +2030,7 @@ function pintarEditor(){
     });
     r.addEventListener("change", () => cerrarGesto(c.lab.toLowerCase()));
   });
+  $("#edBorrar", cont).addEventListener("click", borrarElegido);
   $$("#edPaleta button", cont).forEach(b => b.addEventListener("click", () => {
     $$("#edPaleta button", cont).forEach(x => x.classList.remove("act"));
     b.classList.add("act"); aplicarEstilo("color", b.dataset.color);   // registra al instante
@@ -2045,6 +2186,7 @@ function htmlFinal(slug = ACT){
     e.removeAttribute("data-latido"); e.removeAttribute("data-res-vacio");
   });
   clon.querySelectorAll("[data-oculto]").forEach(e => e.remove());   // bloques ocultos: fuera
+  clon.querySelectorAll("[data-borrado]").forEach(e => e.remove());  // y lo que borraste, también
 
   /* Los huecos sin imagen no se publican: el visitante ve solo lo que hay.
      En el estudio siguen visibles para que puedas rellenarlos. */
@@ -2206,6 +2348,23 @@ function pintarEstructura(){
       </p>
     </div>
 
+    ${(() => {
+      const bo = pagEstado(ACT).borrados || [];
+      if(!bo.length) return "";
+      const d = marco.contentDocument;
+      return `<h3 class="subt">Borrados · ${bo.length}</h3>
+        <div id="listaBorrados">${bo.map(r => {
+          const el = d && porRuta(d, r);
+          const txt = (el?.textContent || "").replace(/\s+/g," ").trim().slice(0,46)
+                   || (el ? "<" + el.tagName.toLowerCase() + ">" : r);
+          return `<div class="bloque" data-ruta="${esc(r)}">
+            <span class="bloque-b"><b style="opacity:.6">${esc(txt)}</b>
+              <span class="bloque-m">no se publica</span></span>
+            <span class="bloque-acc"><button data-rest title="Restaurar">↺</button></span>
+          </div>`;
+        }).join("")}</div>`;
+    })()}
+
     <h3 class="subt">Orden de la página</h3>
     <div id="listaBloques">${bl.map((b,i) => `
       <div class="bloque${b.oculto?" oculto":""}" data-id="${esc(b.id)}">
@@ -2231,6 +2390,9 @@ function pintarEstructura(){
       Los bloques nuevos vienen con el Kit aplicado y con sus slots de recurso listos.
       Después ajústalos con «Editar texto» o pídeme el copy.
     </p>`;
+
+  $$("#listaBorrados [data-rest]", cont).forEach(b =>
+    b.addEventListener("click", () => restaurar(b.closest("[data-ruta]").dataset.ruta)));
 
   const reordenar = (id, delta) => {
     const ids = bl.map(b => String(b.id));
@@ -2470,7 +2632,8 @@ function comprimir(pags){
   for(const pg of Object.values(out))
     for(const [k, v] of Object.entries(pg.recursos || {}))
       if(typeof v === "string" && v.startsWith("data:")){
-        const c = clave(v); ST.pool[c] = v; pg.recursos[k] = "@pool:" + c;
+        const c = clave(v); if(ST.pool[c] !== v){ ST.pool[c] = v; poolSucio = true; }
+        pg.recursos[k] = "@pool:" + c;
       }
   return out;
 }
@@ -2486,7 +2649,7 @@ function limpiarPool(){
   const usadas = new Set();
   (ST.historial || []).forEach(h => JSON.stringify(h.snap).replace(
     /@pool:([a-z0-9]+)/g, (_, c) => usadas.add(c)));
-  for(const c of Object.keys(ST.pool || {})) if(!usadas.has(c)) delete ST.pool[c];
+  for(const c of Object.keys(ST.pool || {})) if(!usadas.has(c)){ delete ST.pool[c]; poolSucio = true; }
 }
 
 function resumirEstado(){
@@ -2580,6 +2743,7 @@ function verVersion(v){
     K.aplicarEstructura(est.estructura || {});
     for(const [r, hr] of Object.entries(est.enlaces || {})) K.aplicarEnlace(r, hr);
     for(const [id, val] of Object.entries(est.recursos || {})) if(val) K.aplicarRecurso(id, val);
+    K.aplicarBorrados(est.borrados || []);
     for(const [r, t] of Object.entries(est.textos || {})){
       const el = porRuta(f.contentDocument, r); if(el) el.innerHTML = limpiarEnLinea(t);
     }
@@ -2687,7 +2851,9 @@ function programarAuto(){
   if(!autoActivo() || !API) return;
   autoT = setTimeout(() => {
     /* Nunca en mitad de una frase: si estás escribiendo, se espera otro turno. */
-    if(marco.contentDocument?.querySelector("[contenteditable='true']")) return programarAuto();
+    const dEd = marco.contentDocument;
+    if(dEd?.querySelector("[contenteditable='true']") ||
+       dEd?.activeElement?.isContentEditable || escritura) return programarAuto();
     if(!sucio) return;
     $("#bGuardar").click();
   }, AUTO_ESPERA);
@@ -2696,6 +2862,7 @@ function programarAuto(){
 $("#bGuardar").addEventListener("click", async () => {
   const b = $("#bGuardar"); b.disabled = true;
   clearTimeout(autoT);
+  volcarEdicion();
   try{
     if(!API) { aviso("Guardado en este navegador. Publicar no está disponible en esta vista.", "ok"); return; }
     guardarVersion();

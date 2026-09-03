@@ -508,10 +508,40 @@ header.tope:not([data-oculto]) ~ .hero{padding-top:clamp(70px,11vw,104px)}
 
 /* El raíl y las tres paradas */
 .via-linea{position:relative;display:grid;grid-template-columns:repeat(3,1fr);
-  align-items:start;gap:0;padding-top:26px}
+  align-items:start;gap:0;padding-top:26px;
+  /* La carga viaja desde fuera del riel: sin recorte, empujaba la página 35px
+     a lo ancho. Recortada, además, entra y sale por los bordes como debe. */
+  overflow:hidden}
 .via-linea::before{                      /* el riel, a la altura de los puntos */
   content:"";position:absolute;left:16%;right:16%;top:calc(26px + 5.5px);height:2px;border-radius:2px;
   background:linear-gradient(90deg,#8E79DC,#D8A483,#F2D391)}
+/* Los ads recorren el riel de derecha a izquierda como una carga de energía,
+   con su nombre encima: sin la palabra, la luz es bonita pero no dice nada.
+   Cápsula, resplandor y estela van en un solo elemento, así la palabra no
+   puede desincronizarse nunca de su luz. */
+.via-carga{position:absolute;left:16%;right:16%;top:calc(26px + 5.5px);
+  height:0;z-index:3;pointer-events:none}
+.via-carga b{
+  position:absolute;top:0;left:106%;transform:translate(-50%,-50%);
+  font-family:var(--data);font-size:.54rem;font-weight:800;letter-spacing:.16em;
+  color:#0A0910;white-space:nowrap;padding:3.5px 8px;border-radius:999px;
+  background:linear-gradient(100deg,#F2D391,#FFFFFF 55%,#F2D391);
+  box-shadow:0 0 18px 3px #F2D391a8, 0 0 5px #FFFFFFcc;
+  animation:cargaVa 3.6s linear infinite;
+}
+.via-carga b::after{                       /* la estela, detrás del sentido de marcha */
+  content:"";position:absolute;left:100%;top:50%;width:64px;height:3px;
+  transform:translateY(-50%);border-radius:3px;
+  background:linear-gradient(90deg,#F2D391cc,transparent)}
+@keyframes cargaVa{from{left:106%} to{left:-6%}}
+@media(prefers-reduced-motion:reduce){.via-carga b{animation:none;left:50%}}
+
+/* La explicación, debajo del gráfico y en voz baja. */
+.via-nota{margin:clamp(12px,1.8vw,18px) auto 0;max-width:54ch;text-align:center;
+  font-size:clamp(.83rem,1.8vw,.92rem);line-height:1.55;color:var(--bone-faint)}
+.via-nota b{color:var(--bone-mute);font-weight:600}
+.via-nota em{font-style:normal;color:var(--gold-hi);font-weight:700}
+
 .via-p{position:relative;background:none;border:0;padding:0 4px;cursor:pointer;
   display:grid;justify-items:center;gap:8px;color:inherit;font:inherit}
 .via-punto{width:13px;height:13px;border-radius:50%;background:var(--ink);
@@ -535,27 +565,9 @@ header.tope:not([data-oculto]) ~ .hero{padding-top:clamp(70px,11vw,104px)}
 .via-hoja p{margin:0;font-size:clamp(.87rem,1.9vw,.95rem);line-height:1.6;color:var(--bone-mute)}
 .via-hoja p b{color:var(--bone);font-weight:600}
 
-/* El eje transversal: la pauta cruza los tres, no viene después */
-.via-eje{position:relative;margin-top:clamp(13px,1.8vw,18px);overflow:hidden;
-  border:1px solid #D6A54455;border-radius:14px;
-  padding:clamp(13px,1.8vw,18px) clamp(15px,2vw,22px);
-  background:linear-gradient(120deg,#D6A5441c,#5B4A9C14);
-  display:flex;align-items:center;gap:clamp(11px,1.8vw,18px)}
-.via-eje::after{content:"";position:absolute;inset:0;pointer-events:none;
-  background:linear-gradient(115deg,transparent 44%,#F2D39130 50%,transparent 56%);
-  transform:translateX(-120%);animation:deslizaLuz 5.5s var(--ease) infinite}
-@media(prefers-reduced-motion:reduce){.via-eje::after{animation:none}}
-.via-eje b{font-size:clamp(1.05rem,2.8vw,1.5rem);font-weight:900;letter-spacing:-.04em;
-  line-height:1;white-space:nowrap;flex:none}
-.via-eje b small{display:block;font-family:var(--data);font-size:.34em;font-weight:500;
-  letter-spacing:.16em;color:var(--gold);margin-bottom:.45em;white-space:normal}
-.via-eje p{margin:0;font-size:clamp(.82rem,1.8vw,.92rem);line-height:1.5;color:var(--bone-mute)}
-.via-eje p b{font-size:inherit;font-weight:700;color:var(--bone);white-space:normal}
 @media(max-width:600px){
   /* Apilado: en una columna estrecha, el rótulo al lado dejaba el texto en
      seis líneas de dos palabras. */
-  .via-eje{flex-direction:column;align-items:flex-start;gap:9px}
-  .via-eje b{white-space:normal}
   .via-t br{display:none}
   /* «02 · CONECTAR» no cabe en un tercio de 290px al cuerpo de escritorio. */
   .via-n{font-size:.5rem;letter-spacing:.08em}
@@ -1558,6 +1570,7 @@ header.tope:not([data-oculto]) ~ .hero{padding-top:clamp(70px,11vw,104px)}
           <span class="via-punto"></span><span class="via-n">03 · CERRAR</span>
           <span class="via-t">Sistema de <br>Re-Impacto</span>
         </button>
+        <span class="via-carga" aria-hidden="true"><b>ADS</b></span>
       </div>
 
       <div class="via-caja">
@@ -1577,12 +1590,10 @@ header.tope:not([data-oculto]) ~ .hero{padding-top:clamp(70px,11vw,104px)}
             a una llamada fría: <b>llega convencido</b>.</p>
         </div>
       </div>
-
-      <div class="via-eje">
-        <b><small>El eje que los cruza</small>LOS ADS</b>
-        <p>La pauta no vive en un paso: <b>envuelve los tres</b>. Con presupuesto encima, el
-          circuito deja de depender del algoritmo.</p>
-      </div>
+      <p class="via-nota"><em>Los ads son esa energía.</em> No son un cuarto paso:
+        <b>amplían el micronicho, repiten lo que ya convirtió y sostienen el re-impacto</b>.
+        Con presupuesto encima, el circuito deja de depender del algoritmo — y pasa a
+        depender de cuánto quieras invertir.</p>
     </div>
   </div>
 </section>
@@ -2429,6 +2440,23 @@ const PORTADAS = [
     m.el.setAttribute("font-size", (grande ? azar(13, 16) : azar(10, 13)).toFixed(1));
   };
 
+  /* El circuito entero hace de imán: quien se sale es atraído al punto más
+     cercano del trazo, no a un sitio fijo. Se muestrea la curva una vez y
+     luego basta con buscar el más próximo. */
+  const MUESTRAS = 96;
+  const puntos = Array.from({length:MUESTRAS}, (_, i) => {
+    const dd = L * i / MUESTRAS, q = via.getPointAtLength(dd);
+    return {d: dd, x: q.x, y: q.y};
+  });
+  const masCerca = (x, y) => {
+    let mejor = puntos[0], min = Infinity;
+    for(const q of puntos){
+      const v = (q.x - x)**2 + (q.y - y)**2;
+      if(v < min){ min = v; mejor = q; }
+    }
+    return mejor;
+  };
+
   const aura = $("#bucleAura"), holo = $("#holo");
   let latido = 0, giro = 0;
   const suave = k => k < .5 ? 2*k*k : 1 - Math.pow(-2*k + 2, 2)/2;
@@ -2452,10 +2480,12 @@ const PORTADAS = [
           const suerte = Math.random();
           if(suerte < 0.50){                       // se sale del camino
             const n = Math.hypot(x-CX, y-CY) || 1;
+            /* Un empujón de verdad hacia fuera: con el anterior apenas se
+               despegaban 36px del trazo y no se notaba que se iban. */
             p.modo = "fuera"; p.x = x; p.y = y;
-            p.vx = (x-CX)/n * azar(.45, 1.05) + azar(-.35, .35);
-            p.vy = (y-CY)/n * azar(.45, 1.05) + azar(-.35, .35);
-            p.paso = 0; p.dur = azar(90, 230);
+            p.vx = (x-CX)/n * azar(2.2, 3.4) + azar(-.5, .5);
+            p.vy = (y-CY)/n * azar(2.2, 3.4) + azar(-.5, .5);
+            p.paso = 0; p.dur = azar(120, 210);
           } else if(suerte < 0.80){                // se salta una etapa por el medio
             p.modo = "salto"; p.desde = {x, y};
             p.hasta = (p.d + L*azar(.20, .46)) % L;
@@ -2469,15 +2499,21 @@ const PORTADAS = [
       else if(p.modo === "fuera"){
         p.paso++;
         p.x += p.vx; p.y += p.vy;
-        p.vx += (CX - p.x)*0.00042 + azar(-.05, .05);   // una correa larga: no se pierde
-        p.vy += (CY - p.y)*0.00042 + azar(-.05, .05);
-        p.vx *= 0.994; p.vy *= 0.994;
-        p.x = Math.max(46, Math.min(434, p.x));         // sin salirse del cuadro
-        p.y = Math.max(44, Math.min(258, p.y));
+        /* Primero deambula suelta; luego el circuito tira de ella cada vez más.
+           Valores medidos: se aleja lo justo para que se vea, y vuelve sin rebotar. */
+        const im = masCerca(p.x, p.y);
+        const tiron = Math.max(0, p.paso/p.dur - 0.45) * 0.020;
+        p.vx += (im.x - p.x)*tiron + azar(-.05, .05);
+        p.vy += (im.y - p.y)*tiron + azar(-.05, .05);
+        p.vx *= 0.99; p.vy *= 0.99;
+        /* Rebote en vez de tope duro: con el clamp a secas se quedaban
+           arrastrándose contra un muro invisible casi la mitad del tiempo. */
+        if(p.x < 44 || p.x > 436){ p.vx *= -0.55; p.x = Math.max(44, Math.min(436, p.x)); }
+        if(p.y < 34 || p.y > 250){ p.vy *= -0.55; p.y = Math.max(34, Math.min(250, p.y)); }
         x = p.x; y = p.y; opaco = .5;
-        if(p.paso >= p.dur){                            // vuelve por donde quiere
+        if(p.paso >= p.dur){                 // entra por donde el circuito la recoge
           p.modo = "vuelve"; p.desde = {x, y};
-          p.hasta = Math.random()*L; p.paso = 0; p.dur = azar(46, 96);
+          p.hasta = masCerca(p.x, p.y).d; p.paso = 0; p.dur = azar(40, 78);
         }
       }
       else {                                            // «salto» y «vuelve» viajan igual
