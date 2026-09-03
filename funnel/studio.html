@@ -444,7 +444,19 @@ body.panel-abierto .panel{display:flex}
 .ctrl{margin-bottom:15px}
 .ctrl-l{display:flex;align-items:center;gap:8px;margin-bottom:7px}
 .ctrl-l label{font-size:.72rem;font-weight:600;color:var(--ui-tx-2)}
-.ctrl-l output{margin-left:auto;font-family:var(--ui-mono);font-size:.66rem;color:var(--oro-hi);font-variant-numeric:tabular-nums}
+/* El número es un campo, no una etiqueta: se le nota el borde y responde al
+   foco, para que se vea que ahí se puede teclear. */
+.ctrl-num{margin-left:auto;display:flex;align-items:center;gap:2px;
+  border:1px solid var(--ui-line-2);border-radius:6px;padding:2px 6px;
+  background:#FFFFFF08;transition:border-color .18s var(--e),background .18s var(--e)}
+.ctrl-num:hover{border-color:var(--oro)}
+.ctrl-num:focus-within{border-color:var(--oro);background:#FFFFFF12}
+.ctrl-v{width:4.4ch;border:0;background:none;padding:0;text-align:right;
+  font-family:var(--ui-mono);font-size:.66rem;color:var(--oro-hi);
+  font-variant-numeric:tabular-nums;-moz-appearance:textfield}
+.ctrl-v::-webkit-outer-spin-button,.ctrl-v::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.ctrl-v:focus{outline:none}
+.ctrl-num i{font-style:normal;font-family:var(--ui-mono);font-size:.62rem;color:var(--ui-tx-3)}
 input[type=range]{width:100%;-webkit-appearance:none;appearance:none;background:transparent;height:18px}
 input[type=range]::-webkit-slider-runnable-track{height:3px;background:#FFFFFF1a;border-radius:9px}
 input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;
@@ -765,6 +777,56 @@ function fundirRecursos(base, otro){
   return base;
 }
 
+/* ── Reparación de textos pegados ────────────────────────────────
+   El fallo antiguo dejaba dos versiones del mismo texto dentro de una ruta,
+   unidas por un salto cuádruple: la vieja delante y la tuya detrás. Vive en el
+   navegador de cada uno, así que limpiarlo desde fuera no sirve: hay que
+   hacerlo aquí, al cargar. Se queda la última, que es la que escribiste. */
+const PEGADO = "\n\n\n\n";
+
+/** Correcciones puntuales que viajan en lo publicado y se aplican una sola vez.
+    Tu copia local manda siempre —así no se pierde lo que estás escribiendo—,
+    pero eso también dejaba fuera cualquier arreglo de contenido hecho desde
+    fuera. Esto es la puerta estrecha: una ruta concreta, un texto concreto, y
+    solo si lo que hay sigue roto. Después queda anotado y no vuelve a tocarse. */
+function aplicarParches(est, parches){
+  if(!Array.isArray(parches) || !parches.length) return 0;
+  est.parchesHechos ||= [];
+  let n = 0;
+  for(const p of parches){
+    if(!p?.id || est.parchesHechos.includes(p.id)) continue;
+    const t = est.pags?.[p.pag]?.textos;
+    if(!t) continue;
+    /* Solo si sigue roto: si ya lo arreglaste tú, el parche se da por hecho
+       y no toca nada. */
+    const ahora = t[p.ruta];
+    if(typeof ahora === "string" && (!p.roto || ahora.includes(p.roto))){
+      t[p.ruta] = p.texto; n++;
+    }
+    est.parchesHechos.push(p.id);
+  }
+  if(n) console.info(`[estudio] ${n} corrección(es) aplicadas`);
+  return n;
+}
+
+function sanarPegados(est){
+  let n = 0;
+  for(const pg of Object.values(est.pags || {})){
+    const t = pg.textos || {};
+    for(const [r, v] of Object.entries(t)){
+      if(typeof v !== "string" || !v.includes(PEGADO)) continue;
+      const ultima = v.split(PEGADO).map(x => x.trim()).filter(Boolean).pop() || "";
+      t[r] = ultima; n++;
+    }
+    /* Y lo guardado DENTRO de un bloque que ya tiene texto propio: no se pinta
+       nunca, y solo sirve para volver a enredar las rutas. */
+    for(const r of Object.keys(t))
+      if(Object.keys(t).some(p => p !== r && r.startsWith(p + "-"))){ delete t[r]; n++; }
+  }
+  if(n) console.info(`[estudio] ${n} texto(s) reparados`);
+  return n;
+}
+
 let ST = (() => {
   let local = null;
   try { local = JSON.parse(guarda.leer(LS_KEY) || "null"); } catch {}
@@ -773,11 +835,20 @@ let ST = (() => {
   if(local && !local.pool){
     try { local.pool = JSON.parse(guarda.leer(LS_POOL) || "null") || {}; } catch { local.pool = {}; }
   }
+  /* Con el autopublicado apagado puedes corregir mucho rato sin publicar.
+     Si mientras tanto se publica desde fuera, la fecha sola haría ganar a lo
+     publicado y tus correcciones desaparecerían al recargar. Por eso manda lo
+     de este navegador siempre que tenga cambios que aún no has publicado. */
+  const sinPublicar = local && local.ts > (local.publicado || 0);
   const gana   = (local && guardadoInline)
-    ? (local.ts > guardadoInline.ts ? local : guardadoInline)
+    ? ((sinPublicar || local.ts > guardadoInline.ts) ? local : guardadoInline)
     : (local || guardadoInline || vacio());
   const pierde = gana === local ? guardadoInline : local;
-  return fundirRecursos(Object.assign(vacio(), gana), pierde);
+  const est = fundirRecursos(Object.assign(vacio(), gana), pierde);
+  /* Los parches se leen SIEMPRE de lo publicado, gane quien gane arriba. */
+  const arreglos = aplicarParches(est, guardadoInline?.parches);
+  if(sanarPegados(est) + arreglos) est.ts = Date.now();
+  return est;
 })();
 
 const pagEstado = slug => {
@@ -933,8 +1004,8 @@ function aplicarTodo(d){
   })();
 
   KIT?.aplicarBorrados(st.borrados || []);
-  for(const [ruta, txt] of Object.entries(st.textos)){
-    const el = porRuta(d, ruta); if(el) el.innerHTML = limpiarEnLinea(txt);
+  for(const ruta of textosAplicables(st.textos)){
+    const el = porRuta(d, ruta); if(el) el.innerHTML = limpiarEnLinea(st.textos[ruta]);
   }
   for(const [ruta, css] of Object.entries(st.estilos)){
     const el = porRuta(d, ruta); if(el) Object.assign(el.style, css);
@@ -1549,6 +1620,8 @@ function revisarLote(items, lista, galerias = []){
   });
 }
 
+let avisadoPeso = false;
+
 /** Cuánto pesan las imágenes incrustadas de esta página, en KB. */
 function pesoImagenes(){
   let kb = 0;
@@ -1736,11 +1809,50 @@ function ponerEstilos(ruta, obj){
   marco.contentWindow?.KIT?.pintarRedim?.();
 }
 
+/** Ordena los textos de fuera hacia dentro y descarta los que caen DENTRO de
+    otro que ya se va a aplicar. Reescribir el HTML de un bloque invalida las
+    rutas de su interior: pintarlas después pegaba el texto viejo delante del
+    nuevo en lugar de sustituirlo. Un texto solo puede pintarse una vez. */
+function textosAplicables(textos){
+  const hondura = r => r.split("-").length;
+  const puestas = [];
+  return Object.keys(textos || {})
+    .sort((a, b) => hondura(a) - hondura(b) || a.localeCompare(b))
+    .filter(r => {
+      if(puestas.some(p => r.startsWith(p + "-"))) return false;
+      puestas.push(r); return true;
+    });
+}
+
+/** Guardar el texto de un bloque tira lo guardado DENTRO de él.
+    Al reescribir su HTML, las rutas de sus hijos apuntan a nodos que ya no son
+    los mismos; si se seguían aplicando encima, el párrafo salía duplicado o
+    partido. El bloque que editas manda sobre su propio contenido. */
+function fijarTexto(ruta, txt){
+  const st = pagEstado(ACT).textos;
+  if(txt == null) delete st[ruta]; else st[ruta] = txt;
+
+  /* Si un bloque de MÁS AFUERA ya tiene texto guardado, es el que se pinta y
+     este quedaría ignorado: se recoge el HTML del de afuera —que en el DOM ya
+     incluye lo que acabas de escribir— y se guarda ahí. Así la edición manda
+     siempre, edites el bloque entero o algo de dentro. */
+  const padres = Object.keys(st)
+    .filter(r => r !== ruta && ruta.startsWith(r + "-"))
+    .sort((a, b) => a.split("-").length - b.split("-").length);
+  const raiz = padres[0] || ruta;
+  if(raiz !== ruta){
+    const el = porRuta(marco.contentDocument, raiz);
+    if(el) st[raiz] = limpiarEnLinea(el.innerHTML);
+  }
+  const dentro = raiz + "-";
+  for(const r of Object.keys(st)) if(r.startsWith(dentro)) delete st[r];
+}
+
 function ponerTexto(ruta, txt){
   const st = pagEstado(ACT).textos;
   const el = porRuta(marco.contentDocument, ruta);
-  if(txt == null) delete st[ruta]; else st[ruta] = txt;
   if(el && txt != null) el.innerHTML = limpiarEnLinea(txt);
+  fijarTexto(ruta, txt);      // después de tocar el DOM: recoge el bloque ya actualizado
   marcar();
 }
 
@@ -1775,6 +1887,7 @@ function ponerEstructura(est){
 
 function entrarEdicion(){ document.body.classList.add("editando"); armarEditor(); }
 function salirEdicion(){
+  volcarEdicion();
   document.body.classList.remove("editando");
   const d = marco.contentDocument; if(!d) return;
   $$("[contenteditable]", d).forEach(e => e.removeAttribute("contenteditable"));
@@ -1824,6 +1937,7 @@ function onClick(e){
 
 /** Quita el recuadro y los tiradores: el bloque deja de estar seleccionado. */
 function deseleccionar(){
+  volcarEdicion();
   const d = marco.contentDocument;
   if(d) $$("[data-ed-sel]", d).forEach(x => {
     x.removeAttribute("data-ed-sel"); x.removeAttribute("contenteditable");
@@ -1904,11 +2018,15 @@ let escT, escritura = null;
     recarga se llevaba lo tecleado. Esto lo fuerza a estado antes de nada. */
 function volcarEdicion(){
   clearTimeout(escT); escT = 0;
-  if(!escritura) return;
-  const {el, ruta} = escritura;
-  if(el.isConnected) pagEstado(ACT).textos[ruta] = limpiarEnLinea(el.innerHTML);
-  escritura = null;
-  ST.ts = Date.now(); sucio = true;
+  if(escritura){
+    const {el, ruta} = escritura;
+    if(el.isConnected) fijarTexto(ruta, limpiarEnLinea(el.innerHTML));
+    escritura = null;
+    ST.ts = Date.now(); sucio = true;
+  }
+  /* Siempre, aunque no hubiera nada pendiente: puede quedar una escritura a
+     disco esperando su turno, y publicar recarga el estudio y se la lleva por
+     delante. Ese era el texto que "no se guardaba". */
   volcarDisco();
 }
 
@@ -1918,7 +2036,7 @@ function onEscribe(e){
   clearTimeout(escT);
   escT = setTimeout(() => {
     escritura = null;
-    pagEstado(ACT).textos[ruta] = limpiarEnLinea(el.innerHTML); marcar();
+    fijarTexto(ruta, limpiarEnLinea(el.innerHTML)); marcar();
   }, 400);
 }
 
@@ -2018,17 +2136,42 @@ function pintarEditor(){
   `;
 
   $$("[data-ctrl]", cont).forEach(r => {
-    const k = r.dataset.ctrl, out = $(`output[data-for="${k}"]`, cont);
+    const k = r.dataset.ctrl, num = $(`input[data-num="${k}"]`, cont);
     const c = CTRLS.find(x => x.k === k);
+    /* Sin unidad para grosor e interlineado: son números pelados en CSS. */
+    const conUnidad = n => k === "fontWeight" || k === "lineHeight" ? String(n) : n + c.uni;
+
+    const poner = (n, desde) => {
+      if(!gestoRuta) abrirGesto();
+      if(desde !== "barra")  r.value   = n;
+      if(desde !== "numero") num.value = n;
+      aplicarEstilo(k, conUnidad(n), true);
+    };
+
     r.addEventListener("pointerdown", abrirGesto);
     r.addEventListener("keydown", () => { if(!gestoRuta) abrirGesto(); });
-    r.addEventListener("input", () => {
-      if(!gestoRuta) abrirGesto();
-      const v = k === "fontWeight" || k === "lineHeight" ? r.value : r.value + c.uni;
-      out.textContent = r.value + c.uni;
-      aplicarEstilo(k, v, true);
-    });
+    r.addEventListener("input",  () => poner(r.value, "barra"));
     r.addEventListener("change", () => cerrarGesto(c.lab.toLowerCase()));
+
+    /* Mientras escribes puede haber estados a medias —vacío, «-», «1.»—: no se
+       aplica nada hasta que el número está completo, para no dar saltos. */
+    num.addEventListener("input", () => {
+      const n = parseFloat(num.value);
+      if(!Number.isFinite(n)) return;
+      poner(Math.min(c.max, Math.max(c.min, n)), "numero");
+    });
+    num.addEventListener("blur", () => {
+      const n = parseFloat(num.value);
+      /* Un campo vacío o absurdo vuelve a lo que había, no a cero. */
+      if(!Number.isFinite(n)) { num.value = r.value; return; }
+      const lim = Math.min(c.max, Math.max(c.min, n));
+      if(lim !== n) num.value = lim;
+      cerrarGesto(c.lab.toLowerCase());
+    });
+    num.addEventListener("keydown", e => {
+      if(e.key === "Enter"){ e.preventDefault(); num.blur(); }
+      if(e.key === "Escape"){ num.value = r.value; num.blur(); }
+    });
   });
   $("#edBorrar", cont).addEventListener("click", borrarElegido);
   $$("#edPaleta button", cont).forEach(b => b.addEventListener("click", () => {
@@ -2097,9 +2240,16 @@ function pintarNotas(){
 
 function ctrlHTML(c, valor){
   const v = Math.round((parseFloat(valor) || 0) * 100) / 100;
+  /* El número se teclea. Antes era un <output> de solo lectura y la única
+     forma de ajustar era arrastrar, que para acertar un valor exacto —o para
+     repetirlo en otro bloque— es un suplicio. */
   return `<div class="ctrl">
-    <div class="ctrl-l"><label>${c.lab}</label><output data-for="${c.k}">${v}${c.uni}</output></div>
-    <input type="range" data-ctrl="${c.k}" min="${c.min}" max="${c.max}" step="${c.paso}" value="${v}">
+    <div class="ctrl-l"><label for="n-${c.k}">${c.lab}</label>
+      <span class="ctrl-num"><input id="n-${c.k}" class="ctrl-v" type="number" inputmode="decimal"
+        data-num="${c.k}" min="${c.min}" max="${c.max}" step="${c.paso}" value="${v}"
+        aria-label="${c.lab} en ${c.uni || "unidades"}"><i>${c.uni}</i></span></div>
+    <input type="range" data-ctrl="${c.k}" min="${c.min}" max="${c.max}" step="${c.paso}" value="${v}"
+           aria-label="${c.lab}, deslizador">
   </div>`;
 }
 
@@ -2512,7 +2662,12 @@ function pintarCodigo(){
       title="${crudo} KB en crudo · ${kb} KB ya optimizado">${
         new Date().toLocaleTimeString("es-ES",{hour:"2-digit",minute:"2-digit"})}${
         crudo>kb?` · −${crudo-kb} KB`:""}</span>`;
-  if(kb > 900) aviso(`La página pesa ${Math.round(kb/1024*10)/10} MB. Sube las imágenes a tu hosting y pega la URL en vez de incrustarlas.`, "mal");
+  /* Consejo, no fallo: la página funciona igual. Se dice una vez por sesión y
+     solo cuando el peso empieza a notarse de verdad al cargar. */
+  if(kb > 2500 && !avisadoPeso){
+    avisadoPeso = true;
+    aviso(`La página pesa ${Math.round(kb/1024*10)/10} MB. Va a cargar lenta en móvil: sube las imágenes a tu hosting y pega la URL en vez de incrustarlas.`, "ok");
+  }
   $("#bPrev").addEventListener("click", () => previsualizar(html));
   $("#bCopiar").addEventListener("click", async () => {
     try { await navigator.clipboard.writeText(html); aviso("Código copiado al portapapeles", "ok"); }
@@ -2744,8 +2899,8 @@ function verVersion(v){
     for(const [r, hr] of Object.entries(est.enlaces || {})) K.aplicarEnlace(r, hr);
     for(const [id, val] of Object.entries(est.recursos || {})) if(val) K.aplicarRecurso(id, val);
     K.aplicarBorrados(est.borrados || []);
-    for(const [r, t] of Object.entries(est.textos || {})){
-      const el = porRuta(f.contentDocument, r); if(el) el.innerHTML = limpiarEnLinea(t);
+    for(const r of textosAplicables(est.textos)){
+      const el = porRuta(f.contentDocument, r); if(el) el.innerHTML = limpiarEnLinea(est.textos[r]);
     }
     for(const [r, css] of Object.entries(est.estilos || {})){
       const el = porRuta(f.contentDocument, r); if(el) Object.assign(el.style, css);
@@ -2837,14 +2992,15 @@ async function descargar(nombre, texto){
 
 $("#bExportar").addEventListener("click", () => descargar(ACT + ".html", htmlFinal()));
 
-/* ── Autoguardado ─────────────────────────────────────────────────
-   Cada cambio ya queda en este navegador al instante (marcar()). Lo que falta
-   es publicarlo, y publicar recarga el estudio: no puede dispararse en cada
-   tecla. Así que se espera a que pares 40 segundos y entonces publica solo.
-   Si vuelves a tocar algo, el contador arranca de nuevo. */
+/* ── Autopublicado (apagado) ──────────────────────────────────────
+   Cada cambio queda en este navegador al instante (marcar()), así que nada se
+   pierde mientras corriges. Publicar es otra cosa: recarga el estudio, y hacerlo
+   solo mientras trabajas interrumpe la corrección a media frase. Por eso la
+   versión oficial la fijas tú con «Guardar» y nada más.
+   Quien lo quiera de vuelta: localStorage.setItem("funnel-auto","1"). */
 let autoT = 0;
 const AUTO_ESPERA = 40000;
-const autoActivo = () => guarda.leer("funnel-auto") !== "0";
+const autoActivo = () => guarda.leer("funnel-auto") === "1";
 
 function programarAuto(){
   clearTimeout(autoT);
@@ -2874,6 +3030,8 @@ $("#bGuardar").addEventListener("click", async () => {
        llega a recargar, se repinta aquí mismo. */
     guarda.poner("funnel-hoja", "codigo", true);
     await API.publish(doc);
+    ST.publicado = ST.ts;     // desde aquí, lo publicado y lo local coinciden
+    volcarDisco();
     aviso("Publicado. El código de esta página ya está al día — «Copiar todo».", "ok");
   } catch(err){
     const c = err?.code;

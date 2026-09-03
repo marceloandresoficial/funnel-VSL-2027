@@ -428,6 +428,12 @@ header.tope:not([data-oculto]) ~ .hero{padding-top:clamp(70px,11vw,104px)}
      está medido sobre el trozo más largo para que no roce el borde. */
   font-size:clamp(2.45rem,7vw,4.4rem);line-height:1.02;letter-spacing:-.045em}
 .sol-h b{font-weight:900;color:var(--gold-hi)}
+
+/* La cita de la reflexión: llevaba todo el estilo en línea, así que era el
+   único texto de la página que no obedecía a ninguna escala. */
+.cita{margin-inline:auto;text-align:center;max-width:26ch;
+  font-family:var(--alma);font-style:italic;font-weight:300;
+  font-size:clamp(1.5rem,4.4vw,2.6rem);line-height:1.24;color:var(--gold-hi)}
 /* La palabra que rechazamos: tachada de verdad, con una barra gruesa y limpia. */
 .sol-h s{text-decoration:none;position:relative;color:var(--bone);opacity:.34}
 .sol-h s::after{content:"";position:absolute;left:-.03em;right:-.03em;top:.53em;
@@ -1211,6 +1217,74 @@ header.tope:not([data-oculto]) ~ .hero{padding-top:clamp(70px,11vw,104px)}
 @media(prefers-reduced-motion:reduce){
   .mega,.mega::after,.holo::after,.glifo .gira{animation:none}
 }
+/* ══ ESCALA TIPOGRÁFICA MÓVIL ═══════════════════════════════════════
+   En el teléfono había cuatro tamaños distintos para lo mismo —un título de
+   sección medía 2,05rem, 2,35, 2,45 o 1,62 según dónde cayera— y eso es lo que
+   se leía como desorden y amontonamiento. Aquí cada categoría tiene UN tamaño:
+   se cambia el número una vez y cambia en toda la página.
+
+   El !important es deliberado: los tamaños que se fijan a mano desde el estudio
+   se guardan en línea y valen para todas las pantallas, así que un titular
+   puesto a 53px para escritorio llegaba a 53px al móvil. En el teléfono manda
+   esta escala.
+
+   Vale para TODAS las categorías, no solo los títulos: un párrafo puesto a mano
+   a 13px dejaba tu bio más pequeña que el resto de párrafos, que es exactamente
+   el desorden que esto viene a quitar. En el teléfono manda la escala; los
+   tamaños que fijes a mano siguen valiendo en escritorio.
+
+   Lo que NO entra aquí son los realces de verdad —las cifras grandes— que
+   siguen midiendo lo suyo porque su trabajo es justamente destacar. */
+@media(max-width:640px){
+  :root{
+    --m-titulo:1.85rem;    /* título de sección */
+    --m-sub:1.22rem;       /* subtítulo de tarjeta */
+    --m-micro:1rem;        /* micro título */
+    --m-parrafo:.95rem;    /* párrafo */
+    --m-menor:.85rem;      /* texto secundario */
+    --m-etiqueta:.58rem;   /* etiqueta en versalitas */
+    --m-cita:1.42rem;      /* cita destacada */
+  }
+
+  /* 1 · Título de sección — el mismo de «El cambio» hasta el final */
+  .titulon,.sol-h,.h-sect,.quien h2{
+    font-size:var(--m-titulo)!important;
+    line-height:1.12;letter-spacing:-.032em;
+  }
+
+  /* 1b · Cita destacada — realce con medida propia */
+  .cita{font-size:var(--m-cita)!important;line-height:1.3}
+
+  /* 2 · Subtítulo */
+  .fase h3,.vs-c h3{font-size:var(--m-sub)!important;line-height:1.2;letter-spacing:-.025em}
+
+  /* 3 · Micro título */
+  .gcaja h3,.muerto h3,.fcol h3,.nodo b,.tf-q b,.marca-t b,.via-t{
+    font-size:var(--m-micro)!important;line-height:1.28;letter-spacing:-.018em;
+  }
+
+  /* 4 · Párrafo */
+  .lede:not(.cita),.conector,.historia,.fase p,.via-hoja p,.muerto p,.par-b p{
+    font-size:var(--m-parrafo)!important;line-height:1.6;
+  }
+
+  /* 5 · Texto secundario */
+  .gcaja .sub,.hito > p,.hito > span,.pastilla span,.tf-n i{
+    font-size:var(--m-menor)!important;line-height:1.5;
+  }
+
+  /* 6 · Etiquetas */
+  .franja-h,.nota-cta,.tf-t,.mega span,.portada-c,.portada-n,.tf-q span,
+  .marca-t span,.logo span{font-size:var(--m-etiqueta)!important}
+
+  /* Aire: con todos los títulos a la misma altura, el ritmo vertical se nota
+     más que antes. Un poco de separación evita que se peguen entre sí. */
+  .titulon,.sol-h,.h-sect{margin-top:clamp(20px,5vw,30px)}
+  .eyebrow + .titulon,.eyebrow + .h-sect,.eyebrow + .sol-h{margin-top:10px}
+  /* Y por abajo: había titulares a 6px de lo siguiente, que es lo que se lee
+     como amontonado. Con margen inferior propio, ninguno puede pegarse. */
+  .titulon,.sol-h,.h-sect,.quien h2{margin-bottom:16px}
+}
 </style>
 
 <header class="tope" id="tope">
@@ -1450,9 +1524,7 @@ header.tope:not([data-oculto]) ~ .hero{padding-top:clamp(70px,11vw,104px)}
 <!-- ═══ LA REFLEXIÓN ═══ -->
 <section class="sect banda" id="reflexion">
   <div class="wrap">
-    <p class="lede center rv" style="margin-inline:auto;text-align:center;max-width:26ch;
-       font-family:var(--alma);font-style:italic;font-weight:300;
-       font-size:clamp(1.5rem,4.4vw,2.6rem);line-height:1.24;color:var(--gold-hi)">
+    <p class="lede center cita rv">
       ¿Quién te dijo que tenía que ser difícil?
     </p>
     <p class="lede center rv" style="--d:120ms;margin-inline:auto;text-align:center;margin-top:22px">
