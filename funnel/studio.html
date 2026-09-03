@@ -760,6 +760,7 @@ const marcar = () => {
   guarda.poner(LS_KEY, JSON.stringify(ST));
   sucio = true;
   mapaPide();
+  programarAuto();          // cada cambio reinicia la cuenta atrás del autoguardado
   const e = $("#estGuardado");
   if(guarda.ok){ e.textContent = "sin publicar"; e.className = "estado-guardado pend"; }
   else { e.textContent = "sin memoria"; e.className = "estado-guardado pend";
@@ -868,7 +869,7 @@ function aplicarTodo(d){
   for(const [ruta, href] of Object.entries(st.enlaces)) KIT?.aplicarEnlace(ruta, href);
   for(const [id, val] of Object.entries(st.recursos)) if(val) KIT?.aplicarRecurso(id, val);
   for(const [ruta, txt] of Object.entries(st.textos)){
-    const el = porRuta(d, ruta); if(el) el.textContent = txt;
+    const el = porRuta(d, ruta); if(el) el.innerHTML = limpiarEnLinea(txt);
   }
   for(const [ruta, css] of Object.entries(st.estilos)){
     const el = porRuta(d, ruta); if(el) Object.assign(el.style, css);
@@ -1669,7 +1670,7 @@ function ponerTexto(ruta, txt){
   const st = pagEstado(ACT).textos;
   const el = porRuta(marco.contentDocument, ruta);
   if(txt == null) delete st[ruta]; else st[ruta] = txt;
-  if(el && txt != null) el.textContent = txt;
+  if(el && txt != null) el.innerHTML = limpiarEnLinea(txt);
   marcar();
 }
 
@@ -1689,7 +1690,14 @@ function ponerEnlace(ruta, href){
 }
 
 function ponerEstructura(est){
-  pagEstado(ACT).estructura = {orden:[...(est.orden||[])], ocultos:[...(est.ocultos||[])]};
+  /* Se guardan también los nombres de los bloques. Los ids son posicionales y
+     se corren en cuanto la página gana o pierde una sección; con los nombres,
+     el kit puede reencaminar tus elecciones al bloque correcto. */
+  pagEstado(ACT).estructura = {
+    orden:   [...(est.orden   || [])],
+    ocultos: [...(est.ocultos || [])],
+    sellos:  marco.contentWindow?.KIT?.sellosBloques?.() || est.sellos || null,
+  };
   marco.contentWindow?.KIT?.aplicarEstructura(pagEstado(ACT).estructura);
   marcar();
   if($(".hoja.act")?.id === "hEstructura") pintarEstructura();
@@ -1753,6 +1761,23 @@ function deseleccionar(){
   if($(".hoja.act")?.id === "hEditor") pintarEditor();
 }
 
+/* Lo que puede vivir dentro de un texto editable sin ser un bloque aparte. */
+const EN_LINEA = /^(SPAN|B|STRONG|EM|I|SMALL|A|BR|S|U|SUP|SUB|CODE|MARK|Q|ABBR|TIME)$/;
+
+/** Deja solo etiquetas en línea y sus clases. Al escribir o pegar dentro de un
+    contenteditable el navegador cuela <div>, <font> y estilos propios; esto los
+    desenvuelve para que lo guardado siga siendo el HTML que escribimos. */
+function limpiarEnLinea(html){
+  const t = document.createElement("div");
+  t.innerHTML = html;
+  for(const el of [...t.querySelectorAll("*")]){
+    if(!EN_LINEA.test(el.tagName)){ el.replaceWith(...el.childNodes); continue; }
+    for(const a of [...el.attributes])
+      if(a.name !== "class" && a.name !== "href") el.removeAttribute(a.name);
+  }
+  return t.innerHTML;
+}
+
 function seleccionar(el){
   const d = marco.contentDocument;
   $$("[data-ed-sel]", d).forEach(x => { x.removeAttribute("data-ed-sel"); x.removeAttribute("contenteditable"); });
@@ -1760,17 +1785,21 @@ function seleccionar(el){
   el.dataset.edSel = "1";
   sel = el;
 
-  const soloTexto = ![...el.children].some(c => c.children.length || c.textContent.trim());
+  /* Antes bastaba un <span> dorado o una <b> dentro para que el bloque dejara
+     de considerarse texto y no se pudiera editar — es decir, casi todos los
+     titulares de la página. Lo que impide editar es un hijo de BLOQUE; los de
+     línea los maneja el propio contenteditable sin romper nada. */
+  const soloTexto = ![...el.querySelectorAll("*")].some(c => !EN_LINEA.test(c.tagName));
   if(soloTexto){
     el.contentEditable = "true";
     const ruta = rutaDe(el);
     const antes = pagEstado(ACT).textos[ruta];
-    const original = el.textContent;
+    const original = el.innerHTML;
     el.addEventListener("input", onEscribe);
     el.addEventListener("blur", () => {
       el.removeEventListener("input", onEscribe);
-      if(el.textContent === original) return;
-      const despues = el.textContent;
+      if(el.innerHTML === original) return;
+      const despues = limpiarEnLinea(el.innerHTML);
       registrar("edición de texto",
         () => ponerTexto(ruta, antes ?? original),
         () => ponerTexto(ruta, despues));
@@ -1787,7 +1816,9 @@ let escT;
 function onEscribe(e){
   const el = e.currentTarget, ruta = rutaDe(el);
   clearTimeout(escT);
-  escT = setTimeout(() => { pagEstado(ACT).textos[ruta] = el.textContent; marcar(); }, 400);
+  escT = setTimeout(() => {
+    pagEstado(ACT).textos[ruta] = limpiarEnLinea(el.innerHTML); marcar();
+  }, 400);
 }
 
 const CTRLS = [
@@ -1994,10 +2025,10 @@ addEventListener("message", e => {
    aquí, el export cree que la galería está vacía y la borra entera —así
    desapareció la franja de transformaciones del código—. Toda tarjeta que se
    liste en una galería tiene que figurar en CONTENIDO. */
-const CONTENIDO = ".cuenta, .portada, .tesela, .captura, .tf, .vida";
+const CONTENIDO = ".cuenta, .portada, .tesela, .captura, .tf, .vida, .collage figure";
 /* Las que son solo un hueco de imagen: sin foto, no hay nada que enseñar. */
-const SOLO_FOTO = ".cuenta, .portada, .tesela, .captura, .vida";
-const GALERIAS  = ".mq, .portadas, .capturas, .muro, .tira";
+const SOLO_FOTO = ".cuenta, .portada, .tesela, .captura, .vida, .collage figure";
+const GALERIAS  = ".mq, .portadas, .capturas, .muro, .tira, .collage";
 
 function htmlFinal(slug = ACT){
   const d = marco.contentDocument;
@@ -2257,6 +2288,11 @@ function auditarExport(html){
   if(!d) return [];
   const ex = new DOMParser().parseFromString(html, "text/html");
   const cuenta = (doc, sel) => doc.querySelectorAll(sel).length;
+  /* Lo que tú escondes a propósito no cuenta como pérdida: se descuenta el
+     bloque oculto y todo lo que vive dentro, o la auditoría gritaría en falso
+     cada vez que ocultas una sección — y una alarma que miente se ignora. */
+  const visibles = sel => [...d.querySelectorAll(sel)]
+    .filter(e => !e.closest("[data-oculto]")).length;
   const partes = [
     ["tarjetas de la franja",  ".tf",      false],
     ["cuentas de Instagram",   ".cuenta",  true ],
@@ -2264,15 +2300,17 @@ function auditarExport(html){
     ["portadas",               ".portada", true ],
     ["cifras de facturación",  ".tesela",  true ],
     ["fotos de vida",          ".vida",    true ],
+    ["piezas del collage",     ".collage figure", true ],
     ["secciones",              "section",  false],
   ];
   const fallos = [];
   for(const [nombre, sel, soloFoto] of partes){
-    const hay = cuenta(d, sel);
+    const hay = visibles(sel);
     if(!hay) continue;
     /* Lo que es solo un hueco de foto sí puede caerse: sin imagen no se publica. */
     const debidas = soloFoto
-      ? [...d.querySelectorAll(sel)].filter(e => e.querySelector("[data-res].cargada")).length
+      ? [...d.querySelectorAll(sel)].filter(e =>
+          !e.closest("[data-oculto]") && e.querySelector("[data-res].cargada")).length
       : hay;
     const salen = cuenta(ex, sel);
     if(salen < debidas) fallos.push({nombre, salen, debidas, sel});
@@ -2543,7 +2581,7 @@ function verVersion(v){
     for(const [r, hr] of Object.entries(est.enlaces || {})) K.aplicarEnlace(r, hr);
     for(const [id, val] of Object.entries(est.recursos || {})) if(val) K.aplicarRecurso(id, val);
     for(const [r, t] of Object.entries(est.textos || {})){
-      const el = porRuta(f.contentDocument, r); if(el) el.textContent = t;
+      const el = porRuta(f.contentDocument, r); if(el) el.innerHTML = limpiarEnLinea(t);
     }
     for(const [r, css] of Object.entries(est.estilos || {})){
       const el = porRuta(f.contentDocument, r); if(el) Object.assign(el.style, css);
@@ -2635,8 +2673,29 @@ async function descargar(nombre, texto){
 
 $("#bExportar").addEventListener("click", () => descargar(ACT + ".html", htmlFinal()));
 
+/* ── Autoguardado ─────────────────────────────────────────────────
+   Cada cambio ya queda en este navegador al instante (marcar()). Lo que falta
+   es publicarlo, y publicar recarga el estudio: no puede dispararse en cada
+   tecla. Así que se espera a que pares 40 segundos y entonces publica solo.
+   Si vuelves a tocar algo, el contador arranca de nuevo. */
+let autoT = 0;
+const AUTO_ESPERA = 40000;
+const autoActivo = () => guarda.leer("funnel-auto") !== "0";
+
+function programarAuto(){
+  clearTimeout(autoT);
+  if(!autoActivo() || !API) return;
+  autoT = setTimeout(() => {
+    /* Nunca en mitad de una frase: si estás escribiendo, se espera otro turno. */
+    if(marco.contentDocument?.querySelector("[contenteditable='true']")) return programarAuto();
+    if(!sucio) return;
+    $("#bGuardar").click();
+  }, AUTO_ESPERA);
+}
+
 $("#bGuardar").addEventListener("click", async () => {
   const b = $("#bGuardar"); b.disabled = true;
+  clearTimeout(autoT);
   try{
     if(!API) { aviso("Guardado en este navegador. Publicar no está disponible en esta vista.", "ok"); return; }
     guardarVersion();

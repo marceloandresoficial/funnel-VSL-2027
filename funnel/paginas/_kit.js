@@ -323,10 +323,46 @@ function listarBloques(){
 }
 
 /** Aplica orden y visibilidad de bloques. orden = ids en el orden deseado. */
-function aplicarEstructura({orden = [], ocultos = []} = {}){
+/** El nombre visible de un bloque: lo que lees en «Bloques y secciones». */
+function selloDe(el){
+  const eyebrow = $(".eyebrow", el)?.textContent.trim();
+  const titulo  = $("h1,h2,h3", el)?.textContent.trim();
+  return (el.id || eyebrow || titulo || el.className || el.tagName)
+           .replace(/\s+/g, " ").trim().slice(0, 46);
+}
+
+/** Mapa {id: nombre} para poder recuperar tus elecciones aunque cambien los ids. */
+function sellosBloques(){
+  sellarBloques();
+  const m = {};
+  for(const el of document.body.children) m[el.dataset.bloque] = selloDe(el);
+  return m;
+}
+
+function aplicarEstructura({orden = [], ocultos = [], sellos = null} = {}){
   sellarBloques();
   const body = document.body;
-  const porId = new Map([...body.children].map(el => [el.dataset.bloque, el]));
+  let porId = new Map([...body.children].map(el => [el.dataset.bloque, el]));
+
+  /* Los ids son la posición del bloque, así que en cuanto se añade o se quita
+     una sección todos se corren y tus elecciones acaban señalando al bloque de
+     al lado —así se ocultó «Antes de agendar» sin que nadie lo pidiera—. Si el
+     estado trae los nombres de cuando se guardó, se reencaminan por nombre. */
+  if(sellos){
+    const ahora = {};
+    for(const el of body.children) ahora[selloDe(el)] = el.dataset.bloque;
+    const nuevo = {};
+    let movido = false;
+    for(const [viejo, nombre] of Object.entries(sellos)){
+      const actual = ahora[nombre];
+      if(actual !== undefined && actual !== viejo){ nuevo[viejo] = actual; movido = true; }
+    }
+    if(movido){
+      const traduce = id => nuevo[String(id)] ?? String(id);
+      orden   = orden.map(traduce);
+      ocultos = ocultos.map(traduce);
+    }
+  }
   /* Un orden guardado puede traer ids que ya no existen —la página cambió desde
      que se guardó—. Reordenar solo con los que sobreviven dejaría a los bloques
      no mencionados colgando al principio, que es como el pie acababa arriba.
@@ -594,7 +630,7 @@ window.KIT = { aplicarRecurso, listarRecursos, refrescar, resaltar, quitarResalt
                galerias, crearSlot,
                enfocar, apagar, iluminar, pintarHolo,
                redimensionar, pintarRedim,
-               listarEnlaces, aplicarEnlace, listarBloques, aplicarEstructura,
+               listarEnlaces, aplicarEnlace, listarBloques, aplicarEstructura, sellosBloques,
                insertarBloque, modoRecursos, rutaDe, porRuta, $, $$, esc, RM };
 
 refrescar();

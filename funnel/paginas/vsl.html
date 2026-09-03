@@ -45,7 +45,15 @@ body > *{position:relative;z-index:1}
 /* ── Hero compacto ──────────────────────────────────────────────── */
 .hero{
   min-height:100svh;display:flex;flex-direction:column;justify-content:center;
-  padding-block:clamp(70px,11vw,104px) clamp(18px,4vw,40px);text-align:center;
+  padding-block:clamp(26px,6vw,46px) clamp(18px,4vw,40px);text-align:center;
+}
+/* El hueco de arriba existe para librar la barra fija. Si la barra no está
+   —oculta en el estudio o eliminada al exportar—, ese hueco era aire muerto. */
+header.tope:not([data-oculto]) ~ .hero{padding-top:clamp(70px,11vw,104px)}
+@media(max-width:640px){
+  /* Sin pantalla completa forzada: con el contenido más corto que el móvil,
+     centrarlo repartía cien píxeles de vacío arriba y otros cien abajo. */
+  .hero{min-height:auto;padding-block:clamp(24px,6vw,40px) clamp(26px,7vw,44px)}
 }
 .hero .wrap{width:100%}
 .h-promesa{
@@ -152,7 +160,10 @@ body > *{position:relative;z-index:1}
   font-family:var(--sys);font-weight:800;font-size:.95rem;letter-spacing:-.02em;color:var(--gold-hi);
 }
 .tf-q{display:flex;flex-direction:column;gap:1px;min-width:0}
-.tf-q b{font-size:clamp(.8rem,1.9vw,.9rem);font-weight:700;letter-spacing:-.02em;white-space:nowrap}
+.tf-q b{font-size:clamp(.8rem,1.9vw,.9rem);font-weight:700;letter-spacing:-.02em;
+  white-space:nowrap;display:inline-flex;align-items:center;gap:4px}
+/* El sello de cuenta verificada, junto al nombre. */
+.verif{width:1em;height:1em;flex:none;display:block}
 .tf-q span{font-family:var(--data);font-size:clamp(.5rem,1.4vw,.58rem);letter-spacing:.12em;
   text-transform:uppercase;color:var(--bone-faint);white-space:nowrap}
 .tf-n{display:flex;align-items:baseline;gap:7px;margin-left:clamp(6px,1.4vw,12px);white-space:nowrap}
@@ -238,24 +249,6 @@ body > *{position:relative;z-index:1}
 
 /* ── Trampas ────────────────────────────────────────────────────── */
 /* ── Qué pasa en la llamada: tres pasos, uno debajo de otro ──────── */
-.llam{display:grid;gap:clamp(12px,2vw,18px);margin-top:clamp(28px,4vw,44px)}
-@media(min-width:860px){.llam{grid-template-columns:repeat(3,1fr)}}
-.llam-p{
-  border:1px solid var(--line);border-radius:18px;padding:clamp(22px,3vw,30px);
-  background:linear-gradient(165deg,var(--card),#0E0C1A);
-  display:flex;flex-direction:column;position:relative;overflow:hidden;
-  transition:border-color .4s var(--ease),transform .4s var(--ease);
-}
-.llam-p:hover{border-color:#D6A54459;transform:translateY(-3px)}
-.llam-n{
-  font-family:var(--data);font-weight:700;letter-spacing:-.04em;
-  font-size:clamp(2.2rem,5vw,3rem);line-height:1;color:transparent;
-  background:linear-gradient(172deg,var(--bone) 24%,var(--gold));
-  -webkit-background-clip:text;background-clip:text;margin-bottom:16px;
-}
-.llam-p h3{font-size:clamp(1.06rem,2.3vw,1.28rem);font-weight:800;letter-spacing:-.03em;
-  line-height:1.16;margin:0 0 10px}
-.llam-p p{margin:0;font-size:clamp(.86rem,2vw,.94rem);color:var(--bone-mute);line-height:1.58}
 .llam-pie{
   margin-top:clamp(24px,3.4vw,34px);padding:clamp(16px,2.4vw,22px) clamp(18px,2.6vw,26px);
   border:1px solid var(--line);border-left:2px solid var(--gold);border-radius:0 14px 14px 0;
@@ -263,34 +256,58 @@ body > *{position:relative;z-index:1}
 }
 .llam-pie b{color:var(--bone)}
 
-/* ── La transición: lo que no hacemos, tachado ───────────────────── */
-.trans{padding-block:clamp(46px,7vw,86px)}
-.trans-p{
-  font-family:var(--alma);font-weight:300;line-height:1.24;letter-spacing:-.02em;
-  font-size:clamp(1.5rem,4.6vw,2.9rem);color:var(--bone-faint);
-  max-width:22ch;margin:0 auto;text-align:center;
+/* ── La tira de vida: un carrusel con profundidad ──────────────────
+   De borde a borde y sin ajuste por pasos, porque aquí el gesto es continuo:
+   la tira anda sola, y en cuanto tocas o entras con el ratón se detiene y
+   manda tu dedo. Cada foto gira sobre su eje según lo lejos que esté del
+   centro, así la del medio se te ofrece y las de los lados se retiran. */
+.tira{
+  display:flex;gap:6px;overflow-x:auto;overscroll-behavior-x:contain;
+  scrollbar-width:none;-ms-overflow-style:none;cursor:grab;
+  padding-block:clamp(30px,5vw,60px);padding-inline:0;
+  perspective:900px;perspective-origin:50% 50%;transform-style:preserve-3d;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);
+          mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);
 }
-.trans-p s{
-  text-decoration:none;position:relative;white-space:nowrap;color:#8A8072;
-}
-.trans-p s::after{
-  content:"";position:absolute;left:-2%;right:-2%;top:58%;height:1.5px;
-  background:#C97B6E;opacity:.8;transform:rotate(-1.4deg);
-}
-.trans-p.dos{color:var(--bone);margin-top:clamp(22px,3vw,34px);max-width:26ch}
-.trans-p.dos b{color:var(--gold-hi);font-family:var(--sys);font-weight:700;
-  font-size:.86em;letter-spacing:-.02em}
-
-/* ── La tira de vida ─────────────────────────────────────────────── */
-.tira{display:flex;gap:clamp(9px,1.4vw,14px);overflow-x:auto;scroll-snap-type:x mandatory;
-  scrollbar-width:none;padding:clamp(28px,4vw,44px) clamp(18px,5vw,48px) 4px}
 .tira::-webkit-scrollbar{display:none}
+.tira.tirando{cursor:grabbing}
 .tira .vida{
-  flex:none;width:clamp(150px,22vw,230px);aspect-ratio:4/5;scroll-snap-align:center;
-  border-radius:16px;overflow:hidden;border:1px solid var(--line);
-  transition:transform .45s var(--ease),border-color .45s var(--ease);
+  flex:none;width:clamp(206px,33vw,330px);aspect-ratio:4/5;position:relative;
+  border-radius:18px;overflow:hidden;border:1px solid #FFFFFF16;
+  box-shadow:0 32px 64px -34px #000;
+  will-change:transform,opacity,filter;
 }
-.tira .vida:hover{transform:translateY(-4px);border-color:#D6A54455}
+/* Esquinas de visor, dibujadas con ocho degradados: cero elementos de más. */
+.tira .vida::before{
+  content:"";position:absolute;inset:10px;z-index:3;pointer-events:none;
+  opacity:calc(.28 + (1 - var(--frio,0)) * .5);
+  background:
+    linear-gradient(var(--gold),var(--gold)) 0 0/15px 1.5px no-repeat,
+    linear-gradient(var(--gold),var(--gold)) 0 0/1.5px 15px no-repeat,
+    linear-gradient(var(--gold),var(--gold)) 100% 0/15px 1.5px no-repeat,
+    linear-gradient(var(--gold),var(--gold)) 100% 0/1.5px 15px no-repeat,
+    linear-gradient(var(--gold),var(--gold)) 0 100%/15px 1.5px no-repeat,
+    linear-gradient(var(--gold),var(--gold)) 0 100%/1.5px 15px no-repeat,
+    linear-gradient(var(--gold),var(--gold)) 100% 100%/15px 1.5px no-repeat,
+    linear-gradient(var(--gold),var(--gold)) 100% 100%/1.5px 15px no-repeat;
+}
+/* El velo frío: las de los lados son holograma, la del centro es la foto. */
+.tira .vida .velo{
+  position:absolute;inset:0;z-index:2;pointer-events:none;opacity:var(--frio,0);
+  background:
+    repeating-linear-gradient(0deg,#8FD6C71c 0 1px,transparent 1px 3px),
+    linear-gradient(170deg,#5B4A9C7a,#4FB39B47);
+}
+/* El barrido holográfico, desfasado en cada foto para que no lata a la vez. */
+.tira .vida::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(112deg,transparent 38%,#F2D3912e 47%,#4FB39B24 54%,transparent 64%);
+  transform:translateX(-120%);
+  animation:deslizaLuz 6.5s var(--ease) infinite;
+}
+.tira .vida:nth-child(2n)::after{animation-delay:-2.1s}
+.tira .vida:nth-child(3n)::after{animation-delay:-4.3s}
+@media(prefers-reduced-motion:reduce){.tira .vida::after{animation:none}}
 .tira .vida .ph{width:100%;height:100%;border-radius:0;font-size:12px}
 
 /* ── Holograma vivo: un barrido lento sobre las cajas del método ─── */
@@ -345,23 +362,44 @@ body > *{position:relative;z-index:1}
 
 @keyframes deslizaLuz{0%{transform:translateX(-120%)}58%,100%{transform:translateX(120%)}}
 
-/* ── EL PROBLEMA · tres frentes, sin una sola promesa dentro ──────── */
-.dolor{display:grid;gap:clamp(16px,2.4vw,26px);margin-top:clamp(28px,4vw,44px)}
-@media(min-width:820px){.dolor{grid-template-columns:repeat(3,1fr)}}
-.dol{border:1px solid var(--line);border-radius:16px;padding:clamp(20px,2.6vw,28px);
-  background:linear-gradient(180deg,#C97B6E0a,transparent 62%)}
-.dol-t{font-family:var(--data);font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;
-  color:#C97B6E;margin-bottom:14px}
-.dol ul{list-style:none;margin:0;padding:0;display:grid;gap:11px}
-.dol li{position:relative;padding-left:22px;font-size:clamp(.86rem,1.9vw,.94rem);
-  line-height:1.55;color:var(--bone-mute)}
-.dol li::before{content:"✕";position:absolute;left:0;top:0;font-family:var(--data);
-  font-size:.7rem;color:#C97B6E;opacity:.8}
-.dol li b{color:var(--bone);font-weight:600}
-.remate{margin-top:clamp(26px,3.6vw,40px);text-align:center;
-  font-family:var(--alma);font-weight:300;font-size:clamp(1.15rem,2.9vw,1.7rem);
-  line-height:1.45;color:var(--bone);letter-spacing:-.01em}
-.remate em{font-style:italic;color:var(--gold-hi)}
+/* ── EL CAMBIO · escala tipográfica como argumento ────────────────
+   Titulares enormes que afirman, frases pequeñas que conectan. El contraste
+   de tamaño es el que marca qué es tesis y qué es aclaración: se lee saltando
+   de titular en titular, y el detalle está ahí para quien frene. */
+.titulon{font-size:clamp(2.35rem,6.6vw,4.5rem);line-height:1.02;letter-spacing:-.045em;
+  font-weight:800;margin:0;text-wrap:balance}
+.titulon .ac{color:var(--gold-hi)}
+.conector{margin:clamp(14px,2vw,20px) 0 0;font-size:clamp(.92rem,2vw,1.02rem);
+  color:var(--bone-faint);line-height:1.6;max-width:56ch}
+.conector b{color:var(--bone)}
+
+/* Las tres cosas que se murieron: número grande, título corto, detalle chico. */
+.muertos{display:grid;gap:clamp(12px,2vw,18px);margin-top:clamp(30px,4.4vw,52px)}
+@media(min-width:860px){.muertos{grid-template-columns:repeat(3,1fr)}}
+.muerto{border:1px solid var(--line);border-radius:16px;
+  padding:clamp(20px,2.6vw,28px);background:#FFFFFF04}
+.muerto-n{font-family:var(--data);font-weight:800;letter-spacing:-.04em;
+  font-size:clamp(1.9rem,4.4vw,2.75rem);line-height:1;color:var(--gold-hi);
+  margin-bottom:clamp(14px,2vw,20px)}
+.muerto h3{margin:0 0 9px;font-size:clamp(.94rem,2vw,1.02rem);font-weight:700;
+  letter-spacing:-.02em;color:var(--bone)}
+.muerto p{margin:0;font-size:clamp(.84rem,1.8vw,.9rem);line-height:1.58;color:var(--bone-faint)}
+.muerto p b{color:var(--bone-mute);font-weight:600}
+
+/* El chip: bisagra entre lo que se murió y lo que hacemos nosotros. */
+.chip-q{display:inline-flex;align-items:center;gap:9px;
+  margin-top:clamp(34px,5vw,64px);
+  border:1px solid var(--line-hard);border-radius:999px;
+  padding:9px 17px;font-size:clamp(.8rem,1.7vw,.88rem);color:var(--bone-mute)}
+.chip-q::before{content:"";width:6px;height:6px;border-radius:50%;
+  background:var(--gold);box-shadow:0 0 0 4px #D6A5441f;flex:none}
+
+/* El giro final: lo tachado y lo que lo sustituye, ambos a tamaño de titular. */
+.titulon.tachado{color:var(--bone);opacity:.3;margin-top:clamp(16px,2.2vw,22px)}
+.titulon.tachado s{text-decoration:none;position:relative}
+.titulon.tachado s::after{content:"";position:absolute;left:-.02em;right:-.02em;top:.52em;
+  height:.075em;background:currentColor;border-radius:99px}
+.titulon.remate{margin-top:clamp(6px,1vw,10px)}
 
 /* ── LA SOLUCIÓN · el tamaño es el mensaje: esto es lo nuevo ──────── */
 /* El nombre vive en el antetítulo, pequeño y con su ™ a tamaño de texto: ahí
@@ -373,31 +411,52 @@ body > *{position:relative;z-index:1}
 .sol-marca::before{content:"";width:6px;height:6px;border-radius:50%;
   background:var(--gold);box-shadow:0 0 0 4px #D6A5441f;flex:none}
 /* El antetítulo lleva .22em de espaciado y eso empujaba el ™ lejos de la N:
-   se compensa tirando de él hacia atrás lo mismo que hereda. */
-.sol-marca sup{font-size:.7em;letter-spacing:0;vertical-align:.4em;margin-left:-.16em}
+   se compensa tirando de él hacia atrás lo mismo que hereda. Y va casi al mismo
+   cuerpo que el texto: a .7em quedaba en 7px, que no se lee. */
+.sol-marca{font-size:.72rem}
+/* El texto y su ™ van dentro de un <span>: como elementos sueltos del flex, al
+   partir en dos líneas el ™ se quedaba descolgado arriba a la derecha. */
+.sol-marca span{display:inline}
+.sol-marca sup{font-size:.86em;letter-spacing:0;vertical-align:.36em;margin-left:-.1em;
+  font-weight:800;color:var(--gold-hi)}
 
 /* Mismo sistema tipográfico que el resto de titulares, un punto por encima:
    es el más grande de la página, pero de la misma familia. */
-.sol-h{text-align:center;margin:clamp(14px,2vw,22px) 0 0;font-weight:800;
-  /* Suelo calculado sobre la línea más larga —«no un embudo.»— para que llene
-     el 92% del ancho en un móvil de 275px sin rozar el borde: 1,32× el .h-sect
-     del resto, arriba y abajo. */
-  font-size:clamp(2.7rem,7.4vw,4.6rem);line-height:1.03;letter-spacing:-.045em;
-  text-wrap:balance}
+.sol-h{text-align:center;margin:clamp(8px,1.3vw,15px) 0 0;font-weight:800;
+  /* Dos cláusulas separadas por <br>; dentro, cada una rompe donde quepa. En
+     un móvil de 275px salen cuatro líneas cortas; en escritorio, dos. El suelo
+     está medido sobre el trozo más largo para que no roce el borde. */
+  font-size:clamp(2.45rem,7vw,4.4rem);line-height:1.02;letter-spacing:-.045em}
 .sol-h b{font-weight:900;color:var(--gold-hi)}
 /* La palabra que rechazamos: tachada de verdad, con una barra gruesa y limpia. */
 .sol-h s{text-decoration:none;position:relative;color:var(--bone);opacity:.34}
 .sol-h s::after{content:"";position:absolute;left:-.03em;right:-.03em;top:.53em;
   height:.082em;background:currentColor;border-radius:99px}
-.sol-p{text-align:center;max-width:56ch;margin:clamp(16px,2.2vw,26px) auto 0;
+.sol-p{text-align:center;max-width:56ch;margin:clamp(10px,1.5vw,17px) auto 0;
   font-size:clamp(.95rem,2.1vw,1.1rem);color:var(--bone-mute);line-height:1.62}
 .sol-p b{color:var(--bone)}
-/* Rótulo que abre las tres tarjetas, para que no cuelguen del gráfico. */
-.sol-pasos{margin:clamp(28px,3.6vw,44px) 0 0;text-align:center;
-  font-family:var(--data);font-size:.62rem;letter-spacing:.24em;text-transform:uppercase;
-  color:var(--bone-faint)}
+/* Las tres claves: dos cosas que te ahorras y una que te llevas. La afirmativa
+   pesa más —fondo, borde y oro— para que el ojo caiga en ella y no en las
+   negaciones, que solo están para despejar el camino. */
+.claves{list-style:none;margin:clamp(17px,2.2vw,28px) auto 0;padding:0;
+  max-width:640px;display:grid;gap:7px}
+.claves li{display:flex;align-items:flex-start;gap:13px;
+  font-size:clamp(.92rem,2.1vw,1.04rem);line-height:1.5;
+  padding:13px 16px;border-radius:13px}
+/* El texto va dentro de un <span>: en un flex sin envolver, cada <b> suelto se
+   vuelve un elemento propio que no puede partir con el texto vecino, y el ancho
+   mínimo de la fila se disparaba a 283px en una pantalla de 239. */
+.claves li span{min-width:0}
+.claves i{flex:none;width:21px;height:21px;border-radius:50%;margin-top:1px;
+  display:grid;place-items:center;font-style:normal;font-size:.66rem;font-weight:700}
+.claves .no{color:var(--bone-faint)}
+.claves .no i{background:#C97B6E1c;color:#C97B6E}
+.claves .si{color:var(--bone);background:linear-gradient(100deg,#D6A5441c,#D6A54408);
+  border:1px solid #D6A54455;padding-block:15px}
+.claves .si i{background:var(--gold);color:#0A0910}
+.claves .si b{color:var(--gold-hi);font-weight:700}
 
-.fases{display:grid;gap:clamp(14px,2vw,20px);margin-top:clamp(34px,4.6vw,56px);counter-reset:f}
+.fases{display:grid;gap:clamp(11px,1.6vw,16px);margin-top:clamp(19px,2.6vw,34px);counter-reset:f}
 @media(min-width:880px){.fases{grid-template-columns:repeat(3,1fr)}}
 .fase{position:relative;overflow:hidden;border:1px solid var(--line-hard);border-radius:18px;
   padding:clamp(24px,3vw,34px);background:#FFFFFF05;counter-increment:f}
@@ -422,8 +481,8 @@ body > *{position:relative;z-index:1}
    sombra abajo, una hebra que pasa por encima de la otra en el cruce y una
    sombra proyectada debajo. El brillo holográfico recorre la cinta despacio.
    Cada nódulo es una persona: esfera de vidrio, no un punto plano. */
-.circo{position:relative;max-width:560px;margin:clamp(30px,4vw,48px) auto 0;
-  padding:clamp(10px,2vw,22px) 0}
+.circo{position:relative;max-width:470px;margin:clamp(15px,2vw,26px) auto 0;
+  padding:clamp(3px,.8vw,10px) 0}
 .circo::before{                      /* halo de sala: da aire y hace de fondo */
   content:"";position:absolute;inset:-6% -4%;pointer-events:none;
   background:radial-gradient(58% 62% at 50% 46%,#5B4A9C1f,transparent 70%);
@@ -438,55 +497,69 @@ body > *{position:relative;z-index:1}
 .circo .plata{font-family:var(--data);font-weight:700;text-anchor:middle;
   fill:var(--gold-hi);pointer-events:none}
 .circo-pie b{color:var(--bone-mute)}
-.circo-pie{position:relative;margin:clamp(16px,2.2vw,22px) auto 0;max-width:48ch;
+.circo-pie{position:relative;margin:clamp(8px,1.3vw,14px) auto 0;max-width:48ch;
   text-align:center;font-size:clamp(.84rem,1.9vw,.92rem);color:var(--bone-faint);line-height:1.5}
 
-/* ── El argumento de futuro ───────────────────────────────────────
-   No basta con que funcione hoy: hay que decir por qué funcionará mejor
-   mañana. Aquí es donde el lector proyecta y decide que no puede esperar. */
-.futuro{position:relative;overflow:hidden;margin-top:clamp(16px,2.4vw,26px);
-  border:1px solid var(--line-hard);border-radius:18px;
-  padding:clamp(26px,3.4vw,42px);background:
-    radial-gradient(120% 90% at 78% 0%,#5B4A9C24,transparent 62%),#FFFFFF04}
-.fut-t{font-family:var(--data);font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;
-  color:var(--jade);display:flex;align-items:center;gap:11px;margin-bottom:16px}
-.fut-t::before{content:"";width:26px;height:1px;background:var(--jade);opacity:.6}
-.fut-h{margin:0;font-size:clamp(1.45rem,4vw,2.3rem);letter-spacing:-.04em;
-  line-height:1.12;font-weight:800;text-wrap:balance}
-.fut-h em{font-family:var(--alma);font-style:italic;font-weight:300;color:var(--gold-hi)}
-.futuro > p{margin:16px 0 0;font-size:clamp(.92rem,2vw,1.02rem);line-height:1.65;
-  color:var(--bone-mute);max-width:62ch}
-.futuro > p b{color:var(--bone)}
-.reloj{list-style:none;margin:clamp(20px,2.6vw,28px) 0 0;padding:0;display:grid;
-  gap:clamp(10px,1.6vw,14px)}
-@media(min-width:760px){.reloj{grid-template-columns:1fr 1fr}}
-.reloj li{display:flex;gap:13px;align-items:flex-start;
-  border:1px solid var(--line);border-radius:13px;padding:15px 17px;background:#FFFFFF04}
-.reloj i{flex:none;width:7px;height:7px;border-radius:50%;margin-top:7px;
-  background:var(--jade);box-shadow:0 0 0 4px #4FB39B1f}
-.reloj b{display:block;font-size:.94rem;font-weight:700;letter-spacing:-.02em;margin-bottom:3px}
-.reloj span{display:block;font-size:.86rem;color:var(--bone-faint);line-height:1.5}
-.fut-cierre{margin:clamp(20px,2.6vw,30px) 0 0;padding-top:clamp(18px,2.4vw,24px);
-  border-top:1px solid var(--line);font-family:var(--alma);font-style:italic;font-weight:300;
-  font-size:clamp(1.05rem,2.6vw,1.4rem);line-height:1.4;color:var(--bone)}
-.fut-cierre b{font-family:var(--sys);font-style:normal;font-weight:800;color:var(--gold-hi)}
+/* ── La vía: los tres pasos en línea, con los ads cruzándolos ──────
+   Una sola figura en lugar de tres tarjetas apiladas y una caja aparte. Se
+   toca un paso y se abre solo ese; los demás se cierran. En móvil cabe entera
+   en una pantalla, que era el punto. */
+.via{margin-top:clamp(20px,2.8vw,36px);position:relative}
 
-/* Los ads no son una cuarta fase: son la capa que multiplica las tres. */
-.ads{position:relative;overflow:hidden;margin-top:clamp(18px,2.4vw,26px);
-  border:1px solid #D6A54455;border-radius:18px;padding:clamp(24px,3.2vw,36px);
+/* El raíl y las tres paradas */
+.via-linea{position:relative;display:grid;grid-template-columns:repeat(3,1fr);
+  align-items:start;gap:0;padding-top:26px}
+.via-linea::before{                      /* el riel, a la altura de los puntos */
+  content:"";position:absolute;left:16%;right:16%;top:calc(26px + 5.5px);height:2px;border-radius:2px;
+  background:linear-gradient(90deg,#8E79DC,#D8A483,#F2D391)}
+.via-p{position:relative;background:none;border:0;padding:0 4px;cursor:pointer;
+  display:grid;justify-items:center;gap:8px;color:inherit;font:inherit}
+.via-punto{width:13px;height:13px;border-radius:50%;background:var(--ink);
+  border:2px solid var(--tono,#D6A544);position:relative;z-index:2;
+  transition:transform .35s var(--ease),box-shadow .35s var(--ease)}
+.via-p[aria-expanded="true"] .via-punto{transform:scale(1.5);
+  background:var(--tono,#D6A544);box-shadow:0 0 0 6px color-mix(in srgb,var(--tono) 22%,transparent)}
+.via-n{font-family:var(--data);font-size:.56rem;letter-spacing:.18em;color:var(--bone-faint)}
+.via-t{font-size:clamp(.82rem,2vw,.95rem);font-weight:700;letter-spacing:-.02em;
+  line-height:1.15;text-align:center;color:var(--bone-mute);transition:color .3s var(--ease)}
+.via-p[aria-expanded="true"] .via-t{color:var(--bone)}
+
+/* El cajón: solo uno abierto a la vez */
+.via-caja{margin-top:clamp(14px,2vw,20px);border:1px solid var(--line-hard);
+  border-radius:16px;background:#FFFFFF05;overflow:hidden}
+.via-hoja{padding:clamp(18px,2.4vw,26px);display:none}
+.via-hoja.act{display:block;animation:viaEntra .45s var(--ease) both}
+@keyframes viaEntra{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.via-hoja em{display:block;font-family:var(--alma);font-style:italic;font-weight:300;
+  font-size:clamp(1rem,2.4vw,1.2rem);color:var(--gold-hi);line-height:1.3;margin-bottom:9px}
+.via-hoja p{margin:0;font-size:clamp(.87rem,1.9vw,.95rem);line-height:1.6;color:var(--bone-mute)}
+.via-hoja p b{color:var(--bone);font-weight:600}
+
+/* El eje transversal: la pauta cruza los tres, no viene después */
+.via-eje{position:relative;margin-top:clamp(13px,1.8vw,18px);overflow:hidden;
+  border:1px solid #D6A54455;border-radius:14px;
+  padding:clamp(13px,1.8vw,18px) clamp(15px,2vw,22px);
   background:linear-gradient(120deg,#D6A5441c,#5B4A9C14);
-  display:grid;gap:clamp(12px,2vw,22px);align-items:center}
-@media(min-width:820px){.ads{grid-template-columns:auto 1fr}}
-.ads::after{content:"";position:absolute;inset:0;pointer-events:none;
+  display:flex;align-items:center;gap:clamp(11px,1.8vw,18px)}
+.via-eje::after{content:"";position:absolute;inset:0;pointer-events:none;
   background:linear-gradient(115deg,transparent 44%,#F2D39130 50%,transparent 56%);
   transform:translateX(-120%);animation:deslizaLuz 5.5s var(--ease) infinite}
-@media(prefers-reduced-motion:reduce){.ads::after{animation:none}}
-.ads-t{font-size:clamp(1.7rem,5vw,2.9rem);letter-spacing:-.05em;font-weight:900;
-  line-height:.98;white-space:nowrap}
-.ads-t small{display:block;font-family:var(--data);font-size:.24em;font-weight:500;
-  letter-spacing:.2em;color:var(--gold);margin-bottom:.5em;white-space:normal}
-.ads p{margin:0;font-size:clamp(.9rem,2vw,1rem);line-height:1.6;color:var(--bone-mute)}
-.ads p b{color:var(--bone)}
+@media(prefers-reduced-motion:reduce){.via-eje::after{animation:none}}
+.via-eje b{font-size:clamp(1.05rem,2.8vw,1.5rem);font-weight:900;letter-spacing:-.04em;
+  line-height:1;white-space:nowrap;flex:none}
+.via-eje b small{display:block;font-family:var(--data);font-size:.34em;font-weight:500;
+  letter-spacing:.16em;color:var(--gold);margin-bottom:.45em;white-space:normal}
+.via-eje p{margin:0;font-size:clamp(.82rem,1.8vw,.92rem);line-height:1.5;color:var(--bone-mute)}
+.via-eje p b{font-size:inherit;font-weight:700;color:var(--bone);white-space:normal}
+@media(max-width:600px){
+  /* Apilado: en una columna estrecha, el rótulo al lado dejaba el texto en
+     seis líneas de dos palabras. */
+  .via-eje{flex-direction:column;align-items:flex-start;gap:9px}
+  .via-eje b{white-space:normal}
+  .via-t br{display:none}
+  /* «02 · CONECTAR» no cabe en un tercio de 290px al cuerpo de escritorio. */
+  .via-n{font-size:.5rem;letter-spacing:.08em}
+}
 
 /* ── El sistema en marcha ───────────────────────────────────────── */
 .flujo{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(186px,100%),1fr));
@@ -737,7 +810,11 @@ body > *{position:relative;z-index:1}
 /* ── Las capturas: un riel que se desliza con el dedo ──────────────
    Quietas a propósito. Nada de paralaje ni de rotaciones: la prueba
    se mira, no se persigue. El movimiento lo pones tú al arrastrar.  */
-.riel{position:relative;margin-top:clamp(24px,3.6vw,42px)}
+/* A sangre en móvil: el carril ocupa toda la pantalla para que la tarjeta sea
+   grande y asome la siguiente. Eso es lo que hace que el dedo quiera deslizar. */
+.riel{position:relative;margin-top:clamp(20px,3vw,36px)}
+/* Las cuentas arrancan pegadas al carril: victorias y perfiles son un bloque. */
+.cuentas-1{margin-top:clamp(16px,2.4vw,26px)}
 .riel::before,.riel::after{
   content:"";position:absolute;top:0;bottom:0;width:clamp(18px,5vw,64px);z-index:3;
   pointer-events:none;transition:opacity .35s var(--ease);
@@ -749,7 +826,8 @@ body > *{position:relative;z-index:1}
 .riel-pista{
   display:flex;gap:clamp(11px,1.8vw,18px);
   overflow-x:auto;overscroll-behavior-x:contain;
-  scroll-snap-type:x mandatory;scroll-padding-inline:2px;
+  scroll-snap-type:x mandatory;scroll-padding-inline:var(--gut);
+  padding-inline:var(--gut);
   scrollbar-width:none;-ms-overflow-style:none;
   padding-block:4px;cursor:grab;
 }
@@ -758,7 +836,7 @@ body > *{position:relative;z-index:1}
 .riel-pista.tirando .captura{pointer-events:none}
 
 .captura{
-  flex:none;width:clamp(168px,42vw,320px);scroll-snap-align:center;
+  flex:none;width:clamp(228px,62vw,360px);scroll-snap-align:center;
   position:relative;border-radius:15px;overflow:hidden;
   background:var(--card);border:1px solid var(--line);
   box-shadow:0 14px 34px -20px #000;
@@ -790,13 +868,7 @@ body > *{position:relative;z-index:1}
 .captura.foco::after{opacity:.65}
 .captura .ph{width:100%;border-radius:0;font-size:13px;display:block}
 .captura .ph:not(.cargada){aspect-ratio:9/13}
-.captura-e{
-  position:absolute;left:0;right:0;bottom:0;z-index:2;padding:30px 12px 11px;
-  background:linear-gradient(180deg,transparent,#07060Cf2 60%);
-  font-family:var(--data);font-size:.54rem;letter-spacing:.13em;text-transform:uppercase;
-  color:var(--bone-faint);opacity:0;transition:opacity .4s var(--ease);
-}
-.captura.foco .captura-e,.captura .ph:not(.cargada) + .captura-e{opacity:1}
+
 
 .riel-pie{
   display:flex;align-items:center;gap:clamp(10px,2vw,18px);
@@ -853,38 +925,63 @@ body > *{position:relative;z-index:1}
 /* ── Quién está detrás ─────────────────────────────────────────── */
 .quien{display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);
   gap:clamp(22px,4vw,52px);align-items:center}
-@media(max-width:860px){.quien{grid-template-columns:1fr}}
+@media(max-width:860px){
+  .quien{grid-template-columns:1fr}
+  /* En una sola columna manda el texto: primero quién habla y qué dice,
+     después las fotos. Al revés, el collage retrasa el mensaje. */
+  .quien > .collage{order:2;margin-top:clamp(20px,4vw,30px)}
+  .quien > :not(.collage){order:1}
+}
+
+/* Un pelo de luz entre bloque y bloque: se nota el corte sin poner una caja. */
+.separador{height:1px;border:0;margin:0;
+  background:linear-gradient(90deg,transparent,#D6A54440 32%,#D6A54470 50%,#D6A54440 68%,transparent)}
 /* La principal manda y respeta su propia proporción: nunca se recorta.
    Las dos opcionales se apilan a su lado, así el bloque no se vuelve una torre. */
-.mosaico{display:grid;grid-template-columns:1.32fr 1fr;gap:10px;align-content:start}
-.mosaico .ph{border-radius:14px}
-.mosaico .ph:first-child{grid-column:1;grid-row:1 / span 2;border-radius:18px;font-size:26px}
-.mosaico .ph:first-child:not(.cargada){aspect-ratio:4/5}
-.mosaico .ph:not(:first-child){grid-column:2;aspect-ratio:1;font-size:14px}
-@media(max-width:520px){
-  .mosaico{grid-template-columns:1fr 1fr}
-  .mosaico .ph:first-child{grid-column:1/-1;grid-row:auto}
-  .mosaico .ph:not(:first-child){grid-column:auto}
-}
-.credo{list-style:none;margin:clamp(20px,3vw,30px) 0 0;padding:0;display:grid;gap:2px}
-.credo li{display:grid;grid-template-columns:clamp(74px,13vw,104px) 1fr;gap:clamp(12px,2.4vw,20px);
-  align-items:baseline;padding:clamp(11px,2vw,15px) 0;border-top:1px solid var(--line-soft)}
-.credo li:first-child{border-top:0}
-/* Otra vez el «>»: sin él, el nowrap del número alcanzaba a cualquier <b> del
-   bloque —incluido el de la bio— y lo forzaba a una línea de 347px, que rompía
-   la rejilla entera en móvil. Solo el <b> hijo directo del li es la cifra. */
-.credo > li > b{font-family:var(--data);font-weight:700;letter-spacing:-.045em;white-space:nowrap;
-  font-size:clamp(1.15rem,3.2vw,1.72rem);line-height:1.1;font-variant-numeric:tabular-nums;
-  background:linear-gradient(175deg,var(--bone) 26%,var(--gold));
-  -webkit-background-clip:text;background-clip:text;color:transparent}
-/* Ojo con el «>»: sin él, esta regla también encogía el <span data-count>
-   que va DENTRO del número, y «$1.5M» salía partido en tres tamaños. */
-.credo > li > span{font-size:clamp(.85rem,2vw,.95rem);color:var(--bone-mute);line-height:1.5}
-.credo > li > span em{font-style:normal;color:var(--bone);font-weight:600}
-.credo > li > b span{font:inherit;letter-spacing:inherit;color:inherit;display:inline}
-.credo li.doble{grid-template-columns:1fr}
-.credo li.doble > span{font-family:var(--alma);font-style:italic;font-weight:300;
-  font-size:clamp(1rem,2.4vw,1.2rem);color:var(--gold-hi);line-height:1.45}
+/* ── El collage: tres piezas giradas, como fotos sobre una mesa ────
+   Cada pieza lleva su propia proporción fija —retrato 4:5, teléfono 9:16,
+   apaisada 4:3— y se coloca en porcentajes del contenedor. Así el montaje es
+   el mismo en cualquier pantalla y ninguna imagen puede descuadrarlo. */
+/* La altura se calcula sobre la pieza más alta —el teléfono, 9:16 al 47%—
+   más el giro, que ensancha la caja. Sin este margen, sobresalía y pisaba
+   las pastillas de abajo. */
+.collage{position:relative;aspect-ratio:1/1.2;max-width:500px;
+  margin:0 auto;width:100%}
+.collage figure{position:absolute;margin:0;border-radius:16px;overflow:hidden;
+  box-shadow:0 30px 62px -30px #000, 0 0 0 1px #FFFFFF16;
+  transition:transform .5s var(--ease)}
+.collage figure:hover{transform:rotate(0deg) scale(1.015)}
+.collage .ph{border-radius:0;width:100%}
+
+.pieza-1{left:0;top:0;width:63%;transform:rotate(-3.4deg)}
+.pieza-1 .ph{aspect-ratio:4/5;font-size:19px}
+.pieza-2{right:0;top:19%;width:47%;z-index:3;transform:rotate(4.8deg)}
+.pieza-2 .ph{aspect-ratio:9/16;font-size:12px;background-color:#07060D;
+  background-size:contain;background-repeat:no-repeat;background-position:center}
+.pieza-3{left:2%;bottom:0;width:56%;z-index:2;transform:rotate(-1.8deg)}
+.pieza-3 .ph{aspect-ratio:4/3;font-size:12px}
+@media(prefers-reduced-motion:reduce){.collage figure{transition:none}}
+
+/* ── Las cifras, en pastillas bajo el bloque entero ────────────────── */
+/* Este titular cuenta una historia en una frase, así que va más pequeño que
+   los lemas del resto: a tamaño .h-sect ocupaba cinco líneas y aplastaba todo. */
+.quien h2{font-size:clamp(1.62rem,3.5vw,2.55rem);line-height:1.14}
+.pastillas{list-style:none;display:flex;flex-wrap:wrap;justify-content:center;
+  gap:clamp(8px,1.3vw,12px);margin:clamp(26px,3.6vw,44px) 0 0;padding:0}
+.pastilla{display:flex;align-items:baseline;gap:9px;
+  border:1px solid var(--line-hard);border-radius:999px;
+  padding:clamp(10px,1.4vw,13px) clamp(15px,2vw,21px);background:#FFFFFF05}
+.pastilla b{font-family:var(--data);font-weight:800;letter-spacing:-.03em;
+  color:var(--gold-hi);font-size:clamp(.94rem,2vw,1.06rem);white-space:nowrap}
+.pastilla span{font-size:clamp(.78rem,1.7vw,.86rem);color:var(--bone-mute);line-height:1.35}
+.pie-bio{margin:clamp(18px,2.4vw,26px) auto 0;max-width:64ch;text-align:center;
+  font-family:var(--alma);font-style:italic;font-weight:300;
+  font-size:clamp(.95rem,2.1vw,1.12rem);line-height:1.5;color:var(--bone-faint)}
+.pie-bio b{font-family:var(--sys);font-style:normal;font-weight:700;color:var(--gold-hi)}
+/* Su historia, después del titular: primero por qué te entiende, luego cómo. */
+.historia{margin:clamp(14px,2vw,20px) 0 0;font-size:clamp(.94rem,2.1vw,1.04rem);
+  line-height:1.66;color:var(--bone-mute)}
+.historia b{color:var(--bone)}
 
 /* ── Filtro ─────────────────────────────────────────────────────── */
 .filtro{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);
@@ -1129,7 +1226,16 @@ body > *{position:relative;z-index:1}
 
 <!-- ═══ HERO · promesa + video + botón en una pantalla ═══ -->
 <header class="hero velo" id="top">
-  <div class="wrap">
+  <!-- El sello de verificado se define aquí una vez y se reutiliza con <use>:
+     el contorno de la roseta son 12 lóbulos y ocupa 1,3 KB. Repetirlo en las
+     38 tarjetas serían 50 KB de más en cada copia del código. -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <symbol id="sello-verif" viewBox="0 0 24 24">
+    <path fill="#3E9BF0" d="M23.9 12.0 L23.6 12.6 L22.9 13.1 L22.1 13.6 L21.4 14.0 L21.0 14.4 L21.1 15.0 L21.5 15.7 L22.0 16.5 L22.3 17.3 L22.3 17.9 L21.7 18.3 L20.9 18.5 L19.9 18.4 L19.1 18.4 L18.6 18.6 L18.4 19.1 L18.4 19.9 L18.5 20.9 L18.3 21.7 L17.9 22.3 L17.3 22.3 L16.5 22.0 L15.7 21.5 L15.0 21.1 L14.4 21.0 L14.0 21.4 L13.6 22.1 L13.1 22.9 L12.6 23.6 L12.0 23.9 L11.4 23.6 L10.9 22.9 L10.4 22.1 L10.0 21.4 L9.6 21.0 L9.0 21.1 L8.3 21.5 L7.5 22.0 L6.7 22.3 L6.1 22.3 L5.7 21.7 L5.5 20.9 L5.6 19.9 L5.6 19.1 L5.4 18.6 L4.9 18.4 L4.1 18.4 L3.1 18.5 L2.3 18.3 L1.7 17.9 L1.7 17.3 L2.0 16.5 L2.5 15.7 L2.9 15.0 L3.0 14.4 L2.6 14.0 L1.9 13.6 L1.1 13.1 L0.4 12.6 L0.2 12.0 L0.4 11.4 L1.1 10.9 L1.9 10.4 L2.6 10.0 L3.0 9.6 L2.9 9.0 L2.5 8.3 L2.0 7.5 L1.7 6.7 L1.7 6.1 L2.3 5.7 L3.1 5.5 L4.1 5.6 L4.9 5.6 L5.4 5.4 L5.6 4.9 L5.6 4.1 L5.5 3.1 L5.7 2.3 L6.1 1.7 L6.7 1.7 L7.5 2.0 L8.3 2.5 L9.0 2.9 L9.6 3.0 L10.0 2.6 L10.4 1.9 L10.9 1.1 L11.4 0.4 L12.0 0.2 L12.6 0.4 L13.1 1.1 L13.6 1.9 L14.0 2.6 L14.4 3.0 L15.0 2.9 L15.7 2.5 L16.5 2.0 L17.3 1.7 L17.9 1.7 L18.3 2.3 L18.5 3.1 L18.4 4.1 L18.4 4.9 L18.6 5.4 L19.1 5.6 L19.9 5.6 L20.9 5.5 L21.7 5.7 L22.3 6.1 L22.3 6.7 L22.0 7.5 L21.5 8.3 L21.1 9.0 L21.0 9.6 L21.4 10.0 L22.1 10.4 L22.9 10.9 L23.6 11.4Z"/>
+    <path d="M7.7 12.3l2.9 2.9 5.8-5.9" fill="none" stroke="#fff" stroke-width="2.3"
+      stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+</defs></svg>  <div class="wrap">
     <div class="mini-badge rv"><i class="dot-live"></i> Coaches · mentores · terapeutas holísticos</div>
 
     <h1 class="h-promesa rv" style="--d:60ms">
@@ -1226,95 +1332,106 @@ body > *{position:relative;z-index:1}
   </div>
 </section>
 
-<!-- ═══ EL PROBLEMA ═══ -->
-<section class="sect">
+<!-- ═══ EL CAMBIO · absorbe también la vieja transición ═══ -->
+<section class="sect" id="cambio">
   <div class="wrap">
-    <div class="eyebrow rv">El problema</div>
-    <h2 class="h-sect rv" style="--d:60ms">El problema no eres tú.
-      <em class="alma">Es el sistema que te enseñaron.</em></h2>
-    <p class="lede rv" style="--d:120ms">Hemos abierto 220 negocios holísticos por dentro.
-      Casi todos llegaron con las mismas escenas. <b>Cuenta cuántas reconoces:</b></p>
+    <div class="eyebrow rv">El cambio</div>
 
-    <div class="dolor">
-      <div class="dol rv" style="--d:180ms">
-        <div class="dol-t">Tu contenido</div>
-        <ul>
-          <li>Publicas <b>todos los días</b> y el mes que más publicaste no fue el que más facturaste.</li>
-          <li>Un reel se dispara, entran cuatrocientos seguidores <b>y ni una sola conversación de venta</b>.</li>
-          <li>Te enteras de que algo funcionó <b>cuando ya pasó</b>, y no sabes repetirlo.</li>
-          <li>Le hablas a todo el mundo, así que <b>nadie siente que le hablas a él</b>.</li>
-        </ul>
+    <h2 class="titulon rv" style="--d:60ms">El mundo de la educación online cambió,
+      y el modelo del 2020 <span class="ac">dejó de funcionar</span>.</h2>
+    <p class="conector rv" style="--d:120ms">Te enseñaron a construir para un internet que
+      ya no existe — y nadie te avisó, entre otras cosas porque
+      <b>media industria sigue cobrando por enseñártelo</b>.</p>
+
+    <div class="muertos">
+      <div class="muerto rv" style="--d:180ms">
+        <div class="muerto-n">01</div>
+        <h3>El embudo que hay que rellenar</h3>
+        <p>Entra gente por arriba, sale por abajo y cada mes vuelves a empezar.
+          Cuando la atención era barata eso se aguantaba. Hoy <b>tu cliente ya vio
+          veinte ofertas antes que la tuya</b>.</p>
       </div>
 
-      <div class="dol rv" style="--d:240ms">
-        <div class="dol-t">Tu agenda</div>
-        <ul>
-          <li>Cada mes <b>vuelves a empezar de cero</b> buscando quién compra.</li>
-          <li>Tus mejores meses son también <b>los que más te vaciaron</b>.</li>
-          <li>Si te enfermas una semana, <b>el negocio se detiene contigo</b>.</li>
-          <li>Bajas el precio para llenar el cupo y acabas atendiendo <b>a quien no debiste aceptar</b>.</li>
-        </ul>
+      <div class="muerto rv" style="--d:240ms">
+        <div class="muerto-n">02</div>
+        <h3>El sistema que se sostiene a pulso</h3>
+        <p>Catorce herramientas que no se hablan y un CRM que llenas tú.
+          <b>Cada cliente nuevo te añade trabajo en vez de quitártelo</b> — y si
+          enfermas una semana, el negocio enferma contigo.</p>
       </div>
 
-      <div class="dol rv" style="--d:300ms">
-        <div class="dol-t">Tu sistema</div>
-        <ul>
-          <li>Catorce herramientas <b>que no se hablan entre sí</b>.</li>
-          <li>Un CRM que <b>nadie llena</b> y una lista que nadie usa.</li>
-          <li>Freelancers que entienden un pedazo <b>y ninguno el todo</b>.</li>
-          <li>O una agencia que, cuando se va, <b>se lleva el sistema con ella</b>.</li>
-        </ul>
+      <div class="muerto rv" style="--d:300ms">
+        <div class="muerto-n">03</div>
+        <h3>Publicar por publicar</h3>
+        <p>Todos los días, esperando que algo prenda. Tu mejor mes no fue el que
+          más publicaste, <b>y cuando por fin funcionó no supiste repetirlo</b>.</p>
       </div>
     </div>
 
-    <p class="remate rv" style="--d:360ms">Nada de esto se arregla trabajando más.<br>
-      <em>Ese es exactamente el problema: ya estás trabajando más.</em></p>
-  </div>
-</section>
+    <h2 class="titulon rv" style="--d:60ms;margin-top:clamp(46px,6.5vw,92px)">Nosotros lo
+      construimos <span class="ac">al revés</span>.</h2>
+    <p class="conector rv" style="--d:120ms">Primero la confianza, después la oferta.
+      Cuando alguien llega a tu calendario <b>ya sabe quién eres, cómo piensas y por qué tú</b>.</p>
 
-<!-- ═══ LA TRANSICIÓN ═══ -->
-<section class="sect trans" id="transicion">
-  <div class="wrap">
-    <p class="trans-p rv">
-      No construimos <s>embudos que se vacían</s>, <s>agendas que te esclavizan</s>
-      ni <s>marcas que suenan a todas</s>.
-    </p>
-    <p class="trans-p dos rv" style="--d:140ms">
-      Construimos <em class="alma">imperios de referentes</em>. Negocios que se sostienen
-      solos. Y marcas que <b>la IA no puede copiar.</b>
-    </p>
+    <div class="chip-q rv" style="--d:180ms">¿Y eso en qué se traduce?</div>
+
+    <p class="titulon tachado rv" style="--d:220ms"><s>No te montamos un embudo.</s></p>
+    <h2 class="titulon remate rv" style="--d:260ms">Te construimos un
+      <span class="ac">imperio de referente</span>: un negocio que sigue de pie
+      cuando tú no estás.</h2>
+    <p class="conector rv" style="--d:320ms">Con una voz tan tuya que <b>la IA no puede
+      imitarla</b>, y un sistema que no se lleva nadie al irse.</p>
   </div>
 </section>
 
 <!-- ═══ QUIÉN ESTÁ DETRÁS ═══ -->
 <section class="sect">
+  <div class="wrap"><hr class="separador rv" style="margin-bottom:clamp(30px,4.6vw,60px)"></div>
   <div class="wrap quien">
-    <div class="mosaico rv">
-      <div class="ph entera" style="--hu:38" data-res="foto-marcelo" data-res-tipo="imagen"
-           data-res-label="Tu foto principal"
-           data-res-nota="Sube la que mejor te posicione: la caja se adapta a su proporción y no la recorta."><span>MARCELO</span></div>
-      <div class="ph" style="--hu:264" data-res="foto-escenario" data-res-tipo="imagen" data-res-opcional
-           data-res-label="Foto en escenario o evento" data-res-nota="Cuadrada."><span>EVENTO</span></div>
-      <div class="ph" style="--hu:20" data-res="foto-equipo" data-res-tipo="imagen" data-res-opcional
-           data-res-label="Foto con tu equipo" data-res-nota="Cuadrada."><span>EQUIPO</span></div>
+    <div class="collage rv">
+      <figure class="pieza-1">
+        <span class="ph" style="--hu:38" data-res="foto-marcelo" data-res-tipo="imagen"
+              data-res-label="Tu retrato · tu cara"
+              data-res-nota="Vertical. Se encaja en 4:5, así que evita fotos panorámicas."><span>MARCELO</span></span>
+      </figure>
+      <figure class="pieza-2">
+        <span class="ph" style="--hu:210" data-res="foto-instagram" data-res-tipo="imagen" data-res-opcional
+              data-res-label="Captura de tu perfil de Instagram"
+              data-res-nota="El perfil tal cual. Se ve entera dentro del teléfono, nunca recortada."><span>@CUENTA</span></span>
+      </figure>
+      <figure class="pieza-3">
+        <span class="ph" style="--hu:264" data-res="foto-escenario" data-res-tipo="imagen" data-res-opcional
+              data-res-label="Foto en escenario, evento o equipo"
+              data-res-nota="Apaisada 4:3. En escenario, con tu equipo o trabajando."><span>EN ESCENARIO</span></span>
+      </figure>
     </div>
 
     <div>
       <div class="eyebrow rv">Quién está detrás</div>
-      <h2 class="h-sect rv" style="--d:60ms">Marcelo <em class="alma">Andrés Proaño.</em></h2>
+      <h2 class="h-sect rv" style="--d:60ms">Soy Marcelo. Probé lanzamientos, workshops
+        y prospección en frío: <em class="alma">funcionaron</em> — hasta que dejaron de hacerlo.</h2>
 
-      <ul class="credo rv" style="--d:120ms">
-        <li><b>$<span data-count="1.5" data-dec="1" data-crudo>0.0</span>M</b>
-            <span>facturados en línea con este negocio</span></li>
-        <li><b>$<span data-count="500">0</span>K</b>
-            <span>invertidos en su propia publicidad, <em>no en teoría</em></span></li>
-        <li><b><span data-count="1500">0</span></b>
-            <span>personas en sus eventos presenciales: <em>sabe llenar salas</em></span></li>
-        <li class="doble"><span>Psicólogo. Formado con Tony Robbins, en PNL, hipnosis y Reiki
-          — y también en anuncios, CRM y cash collect.
-          <b>Casi nadie está en los dos mundos.</b></span></li>
-      </ul>
+      <p class="lede rv" style="--d:100ms">Hoy hago lo mismo con mentores, coaches y terapeutas:
+        <b>les quito el negocio de encima de la agenda</b>.</p>
+
+      <p class="historia rv" style="--d:140ms">Empecé donde estás tú: psicólogo, con un don que
+        transformaba vidas y una agenda que me tenía atrapado. Entonces dejé de perseguir clientes
+        y me puse a construir el sistema que los trae. <b>Llevo ocho años puliéndolo con mi propio
+        dinero</b> — y es el mismo que hoy instalamos en el negocio de otros. Hemos abierto 220 por
+        dentro, en más de veinte países, y cada uno nos enseñó algo que el anterior no.</p>
     </div>
+  </div>
+
+  <div class="wrap">
+    <ul class="pastillas rv" style="--d:200ms">
+      <li class="pastilla"><b>+8</b><span>Años con este sistema</span></li>
+      <li class="pastilla"><b>+220</b><span>Negocios escalados</span></li>
+      <li class="pastilla"><b>+$500K</b><span>En publicidad propia</span></li>
+      <li class="pastilla"><b>+1.500</b><span>En sus eventos</span></li>
+    </ul>
+    <p class="pie-bio rv" style="--d:260ms">Psicólogo. Formado con Tony Robbins, en PNL, hipnosis
+      y Reiki — y también en anuncios, CRM y cash collect.
+      <b>Casi nadie está en los dos mundos.</b></p>
   </div>
 </section>
 
@@ -1344,16 +1461,15 @@ body > *{position:relative;z-index:1}
 <!-- ═══ EL SISTEMA EN MARCHA ═══ -->
 <section class="sect banda" id="circuito">
   <div class="wrap">
-    <div class="sol-marca rv">El Circuito de Conversión<sup>™</sup></div>
+    <div class="sol-marca rv"><span>El Circuito de Conversión<sup>™</sup></span></div>
 
-    <h2 class="sol-h rv" style="--d:60ms">Un <b>CIRCUITO</b>,<br>no un <s>embudo</s>.</h2>
+    <h2 class="sol-h rv" style="--d:60ms">Un <b>CIRCUITO INFINITO</b>,<br>no un <s>funnel lineal</s>.</h2>
 
-    <p class="sol-p rv" style="--d:120ms">El embudo se vacía y toca volver a llenarlo.
-      <b>El circuito devuelve al cliente al principio — y trae al siguiente.</b>
-      Por eso no depende de tu ánimo, de una fecha ni de que un video explote.</p>
+    <p class="sol-p rv" style="--d:120ms">El funnel lineal se vacía y toca volver a llenarlo.
+      <b>El circuito devuelve al cliente al principio — y trae al siguiente.</b></p>
 
     <div class="circo rv" style="--d:210ms">
-      <svg viewBox="0 0 480 320" role="img"
+      <svg viewBox="0 0 480 272" role="img"
            aria-label="El circuito de conversión como un bucle infinito: atraer, conectar, cerrar y vuelta a empezar. Las personas lo recorren y deciden al cruzar el centro.">
         <defs>
           <!-- Holograma: recorre la cinta despacio, empujado por el mismo bucle de animación -->
@@ -1397,7 +1513,7 @@ body > *{position:relative;z-index:1}
           </filter>
         </defs>
 
-        <ellipse class="suelo" cx="240" cy="268" rx="176" ry="9" filter="url(#sombraSuelo)"/>
+        <ellipse class="suelo" cx="240" cy="252" rx="176" ry="8" filter="url(#sombraSuelo)"/>
 
         <!-- 1 · resplandor difuso  2 · cuerpo  3 · volumen  4 · filo de luz -->
         <path id="bucleAura"  fill="none" stroke="url(#holo)" stroke-width="26"
@@ -1417,75 +1533,56 @@ body > *{position:relative;z-index:1}
         <g id="bucleMarcas"></g>
 
       </svg>
-      <p class="circo-pie">Cada punto es una persona. Unas avanzan, otras se salen, se saltan
-        una etapa o vuelven atrás. <b>El sistema es el mismo para todas</b> — y las recoge
-        en cualquier punto, entren por donde entren.</p>
+      <p class="circo-pie">Cada punto es una persona. Unas avanzan, otras se salen o se saltan
+        etapas. <b>El sistema las recoge igual.</b></p>
     </div>
 
-    <p class="sol-pasos rv">Tres movimientos · en este orden</p>
+    <ul class="claves rv">
+      <li class="no"><i>✕</i><span>Sin depender del algoritmo orgánico</span></li>
+      <li class="no" style="--d:80ms"><i>✕</i><span>Sin perseguir leads fríos que no compran</span></li>
+      <li class="si" style="--d:160ms"><i>✓</i><span>Con una <b>Estructura Evergreen</b> de
+        Autoridad, Influencia y Monetización</span></li>
+    </ul>
 
-    <div class="fases">
-      <div class="fase rv" style="--d:240ms;--i:0">
-        <div class="fase-n"><i>Atraer</i></div>
-        <h3>Anuncios de Micronicho</h3>
-        <span class="fase-q">Tu cliente ideal te encuentra hoy, no cuando el algoritmo quiera.</span>
-        <p>Pagas por llegar <b>exactamente a quien puede pagarte</b>: por nicho, por dolor,
-          por momento. Dejas de publicar y rezar. El alcance deja de ser suerte y pasa a ser
-          una decisión tuya.</p>
+    <div class="via rv" style="--d:240ms">
+      <div class="via-linea" role="tablist" aria-label="Los tres movimientos del circuito">
+        <button class="via-p" style="--tono:#8E79DC" role="tab" aria-expanded="true" aria-controls="via-1">
+          <span class="via-punto"></span><span class="via-n">01 · ATRAER</span>
+          <span class="via-t">Anuncios de <br>Micronicho</span>
+        </button>
+        <button class="via-p" style="--tono:#D8A483" role="tab" aria-expanded="false" aria-controls="via-2">
+          <span class="via-punto"></span><span class="via-n">02 · CONECTAR</span>
+          <span class="via-t">Contenido <br>Espejo</span>
+        </button>
+        <button class="via-p" style="--tono:#F2D391" role="tab" aria-expanded="false" aria-controls="via-3">
+          <span class="via-punto"></span><span class="via-n">03 · CERRAR</span>
+          <span class="via-t">Sistema de <br>Re-Impacto</span>
+        </button>
       </div>
 
-      <div class="fase rv" style="--d:300ms;--i:1">
-        <div class="fase-n"><i>Conectar</i></div>
-        <h3>Contenido Espejo</h3>
-        <span class="fase-q">Se ven a sí mismos en lo que dices.</span>
-        <p>No explicas lo que haces: <b>nombras lo que están viviendo.</b> Y cuando alguien
-          se reconoce en tu forma de ver el problema, deja de comparar precios
-          y empieza a buscarte a ti.</p>
+      <div class="via-caja">
+        <div class="via-hoja act" id="via-1" role="tabpanel">
+          <em>Tu cliente ideal te encuentra hoy, no cuando el algoritmo quiera.</em>
+          <p>Pagas por llegar <b>exactamente a quien puede pagarte</b>: por nicho, por dolor,
+            por momento. El alcance deja de ser suerte.</p>
+        </div>
+        <div class="via-hoja" id="via-2" role="tabpanel">
+          <em>Se ven a sí mismos en lo que dices.</em>
+          <p>No explicas lo que haces: <b>nombras lo que están viviendo</b>. Quien se reconoce
+            ahí deja de comparar precios y empieza a buscarte a ti.</p>
+        </div>
+        <div class="via-hoja" id="via-3" role="tabpanel">
+          <em>Nadie que te descubre se pierde.</em>
+          <p>Vuelves a aparecer con <b>el mensaje que le toca</b>. Y cuando está listo no llega
+            a una llamada fría: <b>llega convencido</b>.</p>
+        </div>
       </div>
 
-      <div class="fase rv" style="--d:360ms;--i:2">
-        <div class="fase-n"><i>Cerrar</i></div>
-        <h3>Sistema de Re-Impacto</h3>
-        <span class="fase-q">Nadie que te descubre se pierde.</span>
-        <p>Vuelves a aparecer delante de quien ya te vio, <b>con el mensaje que le toca</b>,
-          hasta que está listo. Y cuando lo está no llega a una llamada fría:
-          <b>llega convencido.</b></p>
+      <div class="via-eje">
+        <b><small>El eje que los cruza</small>LOS ADS</b>
+        <p>La pauta no vive en un paso: <b>envuelve los tres</b>. Con presupuesto encima, el
+          circuito deja de depender del algoritmo.</p>
       </div>
-    </div>
-
-    <div class="futuro rv" style="--d:400ms">
-      <div class="fut-t">Lo que viene</div>
-      <h2 class="fut-h">La IA acaba de volver infinito el contenido.
-        <em>Y con eso, inútil.</em></h2>
-      <p>Cualquiera puede generar mil piezas esta semana. Por eso el contenido dejó de ser
-        la ventaja: en dos años nadie va a elegir por quién publica mejor.
-        <b>Va a elegir por quién le entiende y en quién confía</b> — y eso no se genera,
-        se construye.</p>
-
-      <ul class="reloj">
-        <li><i></i><div><b>El alcance gratis se acaba</b>
-          <span>Cada año llegas a menos gente por lo mismo. Quien no sabe comprar atención
-            va a depender de la suerte.</span></div></li>
-        <li><i></i><div><b>Tu nicho se llena de ruido</b>
-          <span>Van a decir lo mismo que tú, mejor redactado. Solo se distingue quien tiene
-            una filosofía propia.</span></div></li>
-        <li><i></i><div><b>La confianza se vuelve el activo</b>
-          <span>Cuando todo suena igual, gana el que ya se ganó el criterio del que compra.</span></div></li>
-        <li><i></i><div><b>El sistema es tuyo, no alquilado</b>
-          <span>Tu micronicho, tu voz y tus datos siguen valiendo aunque cambien las
-            plataformas y los algoritmos.</span></div></li>
-      </ul>
-
-      <p class="fut-cierre">Construir esto tarda meses. Por eso el momento de empezar
-        <b>no es cuando lo necesites: es antes.</b></p>
-    </div>
-
-    <div class="ads rv" style="--d:460ms">
-      <div class="ads-t"><small>Y todo esto, con esteroides</small>LOS ADS</div>
-      <p>La pauta no vive en un solo paso: <b>envuelve los tres.</b> Amplía el micronicho,
-        repite el contenido que ya movió gente y sostiene el re-impacto. Con presupuesto
-        encima, el circuito deja de depender del algoritmo y pasa a depender de
-        <b>cuánto quieras invertir.</b></p>
     </div>
   </div>
 </section>
@@ -1494,27 +1591,19 @@ body > *{position:relative;z-index:1}
 <section class="sect" id="prueba">
   <div class="wrap">
     <div class="eyebrow center rv" style="justify-content:center">La prueba</div>
-    <h2 class="h-sect rv" style="--d:60ms;text-align:center">Gente real. <em class="alma">Cuentas reales.</em></h2>
-    <p class="lede center rv" style="--d:100ms"><b>Búscalos en Instagram y pregúntales.</b>
-      Es lo mejor que puedes hacer antes de decidir.</p>
-
+    <h2 class="h-sect rv" style="--d:60ms;text-align:center">Victorias de clientes.
+      <em class="alma">Todas las semanas.</em></h2>
+    <p class="lede center rv" style="--d:100ms">Ventas de <b>$1.000 a $5.000</b> entrando
+      con el Circuito de Conversión.</p>
   </div>
 
-  <div class="mq mq-holo" style="--sp:74s"><div class="mq-t" id="fila1" data-galeria="cuentas" data-galeria-titulo="Cuentas de Instagram"></div></div>
-  <div class="mq mq-holo" style="--sp:92s;margin-top:11px"><div class="mq-t" id="fila2"></div></div>
-</section>
-
-<!-- ═══ CAPTURAS ═══ -->
-<section class="sect" id="capturas">
+  <!-- Las capturas van a sangre: la tarjeta casi llena la pantalla y asoma la
+       siguiente, que es lo que invita al dedo. -->
+  <div class="riel rv" style="--d:140ms" id="riel">
+    <div class="riel-pista" id="gridCapturas" data-galeria="capturas"
+      data-galeria-titulo="Capturas de resultados"></div>
+  </div>
   <div class="wrap">
-    <div class="eyebrow center rv" style="justify-content:center">Sin retoque</div>
-    <h2 class="h-sect rv" style="--d:60ms;text-align:center">Las capturas, <em class="alma">tal cual llegaron.</em></h2>
-    <p class="lede center rv" style="--d:100ms">Ventas, mensajes de clientes y paneles reales.
-      <b>Desliza para verlas todas.</b></p>
-    <div class="riel rv" style="--d:140ms" id="riel">
-      <div class="riel-pista" id="gridCapturas" data-galeria="capturas"
-        data-galeria-titulo="Capturas de resultados"></div>
-    </div>
     <div class="riel-pie rv" style="--d:200ms">
       <span class="riel-ay" aria-hidden="true">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 12h16M9 7l-5 5 5 5M15 7l5 5-5 5"/></svg>
@@ -1524,6 +1613,10 @@ body > *{position:relative;z-index:1}
       <span class="riel-n" id="rielN">01 / 08</span>
     </div>
   </div>
+
+  <!-- Y debajo, sin titular ni explicación: las cuentas siguen el mismo hilo. -->
+  <div class="mq mq-holo cuentas-1" style="--sp:74s"><div class="mq-t" id="fila1" data-galeria="cuentas" data-galeria-titulo="Cuentas de Instagram"></div></div>
+  <div class="mq mq-holo" style="--sp:92s;margin-top:11px"><div class="mq-t" id="fila2"></div></div>
 </section>
 
 <!-- ═══ MAPA ═══ -->
@@ -1552,30 +1645,7 @@ body > *{position:relative;z-index:1}
     <p class="lede center rv" style="--d:120ms;margin-inline:auto;text-align:center">
       No venimos a convencerte. Abrimos tu negocio y te decimos qué encontramos.</p>
 
-    <div class="llam">
-      <article class="llam-p rv">
-        <div class="llam-n">01</div>
-        <h3>El diagnóstico completo</h3>
-        <p>Dónde se te va el dinero. Dónde se te va el tiempo. Y <b>qué parte de lo que
-          haces hoy te está desgastando</b> sin que lo veas.</p>
-      </article>
-
-      <article class="llam-p rv" style="--d:110ms">
-        <div class="llam-n">02</div>
-        <h3>La estrategia, paso a paso</h3>
-        <p>Qué instalaríamos, <b>en qué orden y en qué día</b>. La ruta concreta para tu
-          negocio, no una promesa general.</p>
-      </article>
-
-      <article class="llam-p rv" style="--d:220ms">
-        <div class="llam-n">03</div>
-        <h3>El programa por dentro</h3>
-        <p>La plataforma, los agentes y las sesiones en vivo.
-          <b>Ves lo que recibes</b> antes de decidir nada.</p>
-      </article>
-    </div>
-
-    <p class="llam-pie rv" style="--d:300ms">Si no encajamos, te lo decimos ahí mismo y te
+    <p class="llam-pie rv" style="--d:180ms">Si no encajamos, te lo decimos ahí mismo y te
       llevas el diagnóstico igual. <b>Preferimos decirte que no hoy, que fallarte en seis meses.</b></p>
   </div>
 </section>
@@ -2061,16 +2131,16 @@ const PORTADAS = [
   pon("#fila2", CUENTAS.slice(mitad).map(tarjeta).join(""));
 
   /* Capturas de resultados */
-  const ETIQUETAS = ["Stripe · $7.000 recibidos","Stripe · $4.308,60 recibidos",
-    "Panel de Stripe · 8.850 US$ hoy","Mensaje de cliente","Cierre por WhatsApp",
-    "Publicación con el resultado","Transferencia recibida","Agenda llena"];
+  /* Sin pie: el rótulo era fijo y dejaba de describir la imagen en cuanto
+     subías otra —decía «$7.000» sobre una captura de «+57.000»—. La captura ya
+     lleva su cifra dentro; el texto sobraba y además mentía. */
+  const CAPTURAS = 8;
   /* Riel: una sola fila, quieta. El movimiento lo da el dedo. */
-  pon("#gridCapturas", ETIQUETAS.map((e,i) => `
-    <article class="captura">
+  pon("#gridCapturas", Array.from({length:CAPTURAS}, (_, i) => `
+    <article class="captura" title="Captura de resultado ${i+1}">
       <span class="ph entera" style="--hu:${(i*43+200)%360}" data-res="captura-r${i+1}" data-res-tipo="imagen" data-res-opcional
-        data-res-label="Captura ${i+1} · ${esc(e)}"
+        data-res-label="Captura ${i+1}"
         data-res-nota="Súbela tal cual, sin recortar. Conserva su tamaño original."><span>${i+1}</span></span>
-      <div class="captura-e">${esc(e)}</div>
     </article>`).join(""));
 
   /* B · portadas con el monto */
@@ -2112,9 +2182,15 @@ const PORTADAS = [
       <span class="ph" style="--hu:${(i*47+20)%360}" data-res="vida-${i+1}" data-res-tipo="imagen" data-res-opcional
         data-res-label="Foto de vida ${i+1} · ${esc(que)}"
         data-res-nota="Vertical 4:5. Nada de poses corporativas: la vida que el sistema te devuelve."><span>${esc(que)}</span></span>
+      <i class="velo"></i>
     </figure>`).join(""));
 
-  /* La franja de transformaciones, bajo el botón del hero */
+  /* La franja de transformaciones, bajo el botón del hero.
+     El sello va en una constante: son 38 tarjetas y el SVG se repite en todas. */
+  /* El viewBox va también en el <svg> que usa el símbolo: sin él el elemento
+     se queda sin proporción propia y el navegador lo dibuja a cero de ancho. */
+  const SELLO = `<svg class="verif" viewBox="0 0 24 24" role="img"
+      aria-label="Cuenta verificada"><use href="#sello-verif"/></svg>`;
   const inicial = n => (n.trim()[0] || "·").toUpperCase();
   const clave   = n => n.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"")
                         .replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
@@ -2123,7 +2199,7 @@ const PORTADAS = [
       <span class="tf-foto ph" data-res="cara-${clave(nom)}" data-res-tipo="imagen" data-res-opcional
         data-res-label="Cara de ${esc(nom)}"
         data-res-nota="Cuadrada. Sin foto se muestra su inicial."><span>${esc(inicial(nom))}</span></span>
-      <div class="tf-q"><b>${esc(nom)}</b><span>${esc(rol)}</span></div>
+      <div class="tf-q"><b>${esc(nom)}${SELLO}</b><span>${esc(rol)}</span></div>
       <div class="tf-n">${desde ? `<i>${esc(desde)}</i>
         <svg class="flecha" viewBox="0 0 20 12" fill="none" stroke="currentColor" stroke-width="2"
           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 6h16M13 2l4 4-4 4"/></svg>` : ""}
@@ -2135,6 +2211,92 @@ const PORTADAS = [
   pon("#gridPortadas", PORTADAS.slice(0,mitadP).map(tarjetaP).join(""));
   pon("#gridPortadas2", PORTADAS.slice(mitadP).map((d,i) => tarjetaP(d, i+mitadP)).join(""));
 
+})();
+
+/* ── La vía: un paso abierto a la vez ─────────────────────────────
+   Se abre solo el que tocas. Y si no tocas nada, va rotando sola cada seis
+   segundos para que se vea que hay tres — pero se detiene en cuanto eliges,
+   que a partir de ahí mandas tú. */
+(() => {
+  const pasos = $$(".via-p"), hojas = $$(".via-hoja");
+  if(!pasos.length || pasos.length !== hojas.length) return;
+
+  let elegido = false, ronda = 0;
+  const abrir = i => {
+    pasos.forEach((p, n) => p.setAttribute("aria-expanded", n === i ? "true" : "false"));
+    hojas.forEach((h, n) => h.classList.toggle("act", n === i));
+    ronda = i;
+  };
+  pasos.forEach((p, i) => p.addEventListener("click", () => { elegido = true; abrir(i); }));
+
+  if(!matchMedia("(prefers-reduced-motion: reduce)").matches){
+    setInterval(() => { if(!elegido) abrir((ronda + 1) % pasos.length); }, 6000);
+  }
+})();
+
+/* ── La tira de vida: anda sola y obedece al dedo ─────────────────
+   Bucle continuo duplicando el contenido —el mismo truco de las marquesinas—
+   y giro en 3D calculado por fotograma según la distancia al centro. Se para
+   sola en cuanto la tocas: el movimiento invita, el dedo manda. */
+(() => {
+  const t = $("#tira");
+  if(!t || !t.children.length) return;
+  if(!t.dataset.dup){ t.dataset.dup = "1"; t.innerHTML += t.innerHTML; }
+
+  const quieto = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let pausa = false, tirando = false, x0 = 0, s0 = 0, sueltaT = 0;
+
+  /* Con el dedo basta el scroll del navegador; el ratón necesita arrastre. */
+  t.addEventListener("pointerdown", e => {
+    pausa = true; clearTimeout(sueltaT);
+    if(e.pointerType !== "mouse") return;
+    tirando = true; x0 = e.clientX; s0 = t.scrollLeft;
+    t.classList.add("tirando"); t.setPointerCapture(e.pointerId);
+  });
+  t.addEventListener("pointermove", e => {
+    if(tirando) t.scrollLeft = s0 - (e.clientX - x0);
+  });
+  const soltar = () => {
+    tirando = false; t.classList.remove("tirando");
+    clearTimeout(sueltaT); sueltaT = setTimeout(() => pausa = false, 1400);
+  };
+  t.addEventListener("pointerup", soltar);
+  t.addEventListener("pointercancel", soltar);
+  t.addEventListener("pointerenter", e => { if(e.pointerType === "mouse") pausa = true; });
+  t.addEventListener("pointerleave", () => { if(!tirando) soltar(); });
+
+  const paso = () => {
+    const mitad = t.scrollWidth / 2;
+    if(mitad > 0){
+      if(!pausa) t.scrollLeft += 0.42;
+      if(t.scrollLeft >= mitad) t.scrollLeft -= mitad;
+      else if(t.scrollLeft <= 0) t.scrollLeft = mitad - 1;
+    }
+    const c = t.getBoundingClientRect(), cx = c.left + c.width/2;
+    /* La referencia es el ancho de la foto, no el del contenedor: si midiera el
+       contenedor, en un móvil donde solo cabe una tarjeta el giro saltaría de
+       0° a 24° de golpe. Así la inclinación por foto es la misma en cualquier
+       pantalla, y el paso entre una y otra queda suave. */
+    const ref = (t.firstElementChild?.getBoundingClientRect().width || 240) * 1.7;
+    for(const f of t.children){
+      const r = f.getBoundingClientRect();
+      if(r.right < c.left - 120 || r.left > c.right + 120) continue;  // fuera de vista
+      const k = Math.max(-1, Math.min(1, (r.left + r.width/2 - cx) / ref));
+      const lejos = Math.abs(k), cerca = 1 - lejos;
+      /* La del centro se adelanta y recupera su color; las de los lados se
+         retiran, pierden saturación y se cubren de velo: son el holograma. */
+      f.style.transform = `translateZ(${(cerca*78).toFixed(0)}px) `
+                        + `rotateY(${(-k*30).toFixed(1)}deg) scale(${(1 - lejos*0.1).toFixed(3)})`;
+      f.style.filter = `saturate(${(0.12 + cerca*0.88).toFixed(2)}) `
+                     + `brightness(${(0.6 + cerca*0.4).toFixed(2)}) `
+                     + `contrast(${(0.9 + cerca*0.1).toFixed(2)})`;
+      f.style.opacity = (0.44 + cerca*0.56).toFixed(2);
+      f.style.setProperty("--frio", (lejos*0.92).toFixed(2));
+      f.style.zIndex = String(50 - Math.round(lejos*50));
+    }
+    if(!quieto) requestAnimationFrame(paso);
+  };
+  paso();
 })();
 
 /* ── El bucle en marcha ───────────────────────────────────────────
@@ -2360,7 +2522,7 @@ const PORTADAS = [
   pinta();
 })();
 
-/* ── Barra superior: se fija y el botón destella al desplazar ───── *//* ── Barra superior: se fija y el botón destella al desplazar ───── *//* ── Barra superior: se fija y el botón destella al desplazar ───── */
+/* ── Barra superior: se fija y el botón destella al desplazar ───── */
 (() => {
   const tope = $("#tope"), cta = $("#ctaTope");
   if(!tope) return;
@@ -2622,7 +2784,8 @@ const PORTADAS = [
     const t = el.closest(".portada, .tesela, .cuenta, .captura");
     if(!t) return {n:"", s:""};
     if(t.classList.contains("cuenta")) return {n: t.title || "", s: ""};
-    const n = t.querySelector(".portada-n, .tesela-v b, .captura-e")?.textContent.trim() || "";
+    const n = t.querySelector(".portada-n, .tesela-v b")?.textContent.trim()
+              || t.getAttribute("title") || "";
     const s = t.querySelector(".portada-c, .tesela-v span")?.textContent.trim() || "";
     return {n, s};
   };
