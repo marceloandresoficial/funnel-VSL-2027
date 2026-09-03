@@ -128,6 +128,92 @@ $$('a[href^="#"]').forEach(a => a.addEventListener("click", e => {
   scrollTo({top: el.getBoundingClientRect().top + scrollY - 74, behavior: RM ? "auto" : "smooth"});
 }));
 
+/** Movimiento continuo + arrastre. Antes lo hacía una animación de CSS sobre
+    `transform`, que se ve bien pero no se puede tocar: el dedo no la mueve y no
+    hay forma de volver atrás a mirar una cuenta. Ahora se desplaza la caja, así
+    que el gesto nativo funciona y el bucle sigue siendo infinito porque el
+    contenido está duplicado: al pasar la mitad, se resta la mitad. */
+const animarMarquesinas = () => $$(".mq").forEach(caja => {
+  if(caja.dataset.desliz) return;
+  caja.dataset.desliz = "1";
+  const pista = $(".mq-t", caja); if(!pista) return;
+
+  const hueco = () => parseFloat(getComputedStyle(pista).columnGap) || 0;
+  const mitad = () => (pista.scrollWidth + hueco()) / 2;
+  const segs  = parseFloat(getComputedStyle(caja).getPropertyValue("--sp")) || 52;
+  const atras = pista.classList.contains("rev");
+
+  let quieto = 0, previo = 0, tirando = false, x0 = 0, s0 = 0, ultimoX = 0, vel = 0;
+  /* La posición se acumula aparte: el navegador redondea scrollLeft a píxel
+     entero, así que a poca velocidad sumar sobre él no avanza nunca. */
+  let pos = caja.scrollLeft;
+
+  const envolver = () => {
+    const m = mitad(); if(m <= 0) return;
+    if(caja.scrollLeft >= m) caja.scrollLeft -= m;
+    else if(caja.scrollLeft < 0) caja.scrollLeft += m;
+  };
+
+  let ultimoTiron = 0;
+  const paso = t => {
+    const dt = previo ? Math.min(64, t - previo) : 16;
+    previo = t;
+    /* Si seguimos «arrastrando» pero hace rato que nadie mueve el dedo, es que
+       se perdió el final del gesto: se suelta sola. */
+    if(tirando && Date.now() - ultimoTiron > 2500) soltar();
+    if(quieto > 0){ quieto -= dt; }
+    else if(Math.abs(vel) > 0.02){        // inercia tras soltar
+      caja.scrollLeft -= vel * dt / 16;
+      vel *= 0.94;
+      envolver();
+    } else if(!tirando){
+      const m = mitad();
+      if(Math.abs(caja.scrollLeft - Math.round(pos)) > 2) pos = caja.scrollLeft;
+      pos += (atras ? -1 : 1) * (m / segs) * (dt / 1000);
+      if(m > 0){
+        if(pos >= m) pos -= m;
+        else if(pos < 0) pos += m;
+      }
+      caja.scrollLeft = pos;
+    }
+    requestAnimationFrame(paso);
+  };
+
+  caja.addEventListener("pointerdown", e => {
+    tirando = true; vel = 0; quieto = 0; ultimoTiron = Date.now();
+    x0 = ultimoX = e.clientX; s0 = caja.scrollLeft;
+    caja.classList.add("tirando");
+    try { caja.setPointerCapture(e.pointerId); } catch {}
+  });
+  caja.addEventListener("pointermove", e => {
+    if(!tirando) return;
+    ultimoTiron = Date.now();
+    vel = e.clientX - ultimoX; ultimoX = e.clientX;
+    caja.scrollLeft = s0 - (e.clientX - x0);
+    envolver();
+  });
+  const soltar = () => {
+    if(!tirando) return;
+    tirando = false;
+    caja.classList.remove("tirando");
+    quieto = 900;                    // un respiro antes de volver a andar solo
+  };
+  caja.addEventListener("pointerup", soltar);
+  caja.addEventListener("pointercancel", soltar);
+  /* La pausa al pasar por encima dura lo justo y se renueva mientras el ratón
+     se mueve de verdad por encima. Con una pausa larga bastaba un `mouseleave`
+     perdido —al salir por el borde, al cambiar de pestaña— para dejar la fila
+     parada el resto de la visita. */
+  caja.addEventListener("mouseenter", () => { quieto = Math.max(quieto, 1500); });
+  caja.addEventListener("mousemove",  () => { quieto = Math.max(quieto, 1500); });
+  caja.addEventListener("mouseleave", () => { if(!tirando) quieto = 0; });
+  /* El desplazamiento por rueda o por gesto táctil también cuenta como tocar. */
+  caja.addEventListener("touchstart", () => { quieto = 1400; }, {passive:true});
+
+  if(!matchMedia("(prefers-reduced-motion: reduce)").matches)
+    requestAnimationFrame(paso);
+});
+
 /* ── Marquesinas: duplica el contenido para el bucle infinito ────── */
 const armarMarquesinas = () => $$(".mq-t").forEach(t => {
   if(t.dataset.dup) return;
@@ -151,8 +237,15 @@ const MARCA = "\u00b7cargado";
 function pintarReglas(){
   let st = document.getElementById("__recursos");
   if(!st){ st = document.createElement("style"); st.id = "__recursos"; document.head.append(st); }
+  /* `:root` delante sube la especificidad: una clase del bloque que declare su
+     propio `background` —como el círculo de la franja— ganaba por ir después en
+     el documento y la foto no llegaba a verse. Y va el tamaño explícito porque
+     esa forma abreviada además lo reinicia a `auto`, que deja la imagen a su
+     tamaño natural dentro de un círculo de 30 píxeles. */
   st.textContent = [...reglasImg].map(([id, url]) =>
-    `[data-res="${id}"]{background-image:url("${url}")}`).join("\n");
+    `:root [data-res="${id}"]{background-image:url("${url}");` +
+    `background-size:cover;background-position:center;background-repeat:no-repeat}`)
+    .join("\n");
 }
 
 /** Aplica un valor a un slot de recurso. tipo: imagen|video|link|contador|texto */
@@ -240,6 +333,7 @@ function refrescar(){
   armarPlayers();                 // los players son del estudio: siempre
   if(SIN_KIT) return;             // la página trae sus propios comportamientos
   armarMarquesinas();
+  animarMarquesinas();     // y que se puedan empujar con el dedo
   observeRevs();
   observeCounts();
 }
@@ -371,6 +465,10 @@ function aplicarEstructura({orden = [], ocultos = [], sellos = null} = {}){
   const pedidos = orden.map(String).filter(id => porId.has(id));
   const resto   = [...porId.keys()].filter(id => !pedidos.includes(id));
   [...pedidos, ...resto].forEach(id => body.append(porId.get(id)));
+  /* La hoja de estilos de la página no es un bloque: reordenar la mandaba al
+     final y, en la página exportada, eso es un parpadeo sin estilos al cargar.
+     Vuelve la primera, antes de nada que pintar. */
+  $$("body > style").reverse().forEach(h => body.prepend(h));
   porId.forEach((el, id) => {
     const esconder = ocultos.map(String).includes(String(id));
     el.toggleAttribute("data-oculto", esconder);

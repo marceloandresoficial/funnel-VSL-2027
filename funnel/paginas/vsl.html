@@ -1,5 +1,5 @@
 <!--PAGINA {"nombre":"VSL","slug":"vsl","icono":"▶","paso":1,"descripcion":"Tráfico frío. Promesa, video y agenda en la primera pantalla.","estado":"listo"} -->
-<style>
+<style data-bloque="0">
 /* ═══════════════════════════════════════════════════════════════════
    VSL · tráfico frío. Sin nav, sin salidas.
    Móvil primero: promesa + video + botón en la primera pantalla.
@@ -14,7 +14,12 @@
 }
 
 /* Capturas: se ven enteras. Recortarlas mata la prueba. */
-.ph.entera{background-size:contain!important;background-color:#0C0A16}
+/* Entera = se ve completa, sin recortar. Con `contain` sobra sitio cuando la
+   proporción de la imagen no coincide con la de la caja, y por defecto el
+   navegador rellena ese hueco REPITIENDO la imagen: eso es lo que salía como
+   un reflejo encima y debajo de cada captura. El sobrante lo cubre el fondo. */
+.ph.entera{background-size:contain!important;background-repeat:no-repeat!important;
+  background-color:#0C0A16}
 
 /* ── Fondo vivo: aurora + constelación ──────────────────────────── */
 /* La página pinta su propio suelo en tres capas, para que al pegar el
@@ -833,6 +838,14 @@ header.tope:not([data-oculto]) ~ .hero{padding-top:clamp(70px,11vw,104px)}
 .riel{position:relative;margin-top:clamp(20px,3vw,36px)}
 /* Las cuentas arrancan pegadas al carril: victorias y perfiles son un bloque. */
 .cuentas-1{margin-top:clamp(16px,2.4vw,26px)}
+/* En el teléfono las fichas ocupaban casi toda la pantalla y solo se veía una:
+   a este tamaño entran dos y media, que es lo que hace que se lea como un
+   muro de gente y no como una sola tarjeta. */
+@media(max-width:640px){
+  .cuenta{width:clamp(150px,42vw,190px)}
+  .cuenta .ph:not(.cargada){aspect-ratio:1.15}
+  .mq-holo .mq-t{gap:8px}
+}
 .riel::before,.riel::after{
   content:"";position:absolute;top:0;bottom:0;width:clamp(18px,5vw,64px);z-index:3;
   pointer-events:none;transition:opacity .35s var(--ease);
@@ -844,10 +857,16 @@ header.tope:not([data-oculto]) ~ .hero{padding-top:clamp(70px,11vw,104px)}
 .riel-pista{
   display:flex;gap:clamp(11px,1.8vw,18px);
   overflow-x:auto;overscroll-behavior-x:contain;
-  scroll-snap-type:x mandatory;scroll-padding-inline:var(--gut);
+  /* «proximity» en vez de «mandatory»: el anclaje rígido frenaba el dedo a
+     media pasada y daba sensación de pesado. */
+  scroll-snap-type:x proximity;scroll-padding-inline:var(--gut);
   padding-inline:var(--gut);
   scrollbar-width:none;-ms-overflow-style:none;
   padding-block:4px;cursor:grab;
+  /* Cada captura mide lo que mide su imagen. Estirándolas todas a la más alta
+     —lo que hace flex por defecto— quedaba un zócalo vacío bajo las cortas. */
+  align-items:flex-start;
+  -webkit-overflow-scrolling:touch;
 }
 .riel-pista::-webkit-scrollbar{display:none}
 .riel-pista.tirando{cursor:grabbing;scroll-snap-type:none;scroll-behavior:auto}
@@ -904,24 +923,22 @@ header.tope:not([data-oculto]) ~ .hero{padding-top:clamp(70px,11vw,104px)}
 @media(hover:hover){.riel-ay{display:none}}
 
 /* ── Mapa ───────────────────────────────────────────────────────── */
-.mapa-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(20px,3.5vw,50px);align-items:center;margin-top:clamp(26px,4vw,44px)}
-@media(max-width:860px){.mapa-grid{grid-template-columns:1fr;gap:26px}}
-.mapa-lienzo{position:relative;display:grid;place-items:center}
-.mapa-lienzo canvas{width:100%;max-width:480px;aspect-ratio:1;cursor:crosshair}
+/* Sin la lista de países al lado, el globo manda solo y va centrado. */
+.mapa-grid{display:grid;place-items:center;margin-top:clamp(22px,3.4vw,38px)}
+.mapa-lienzo{position:relative;display:grid;place-items:center;width:100%}
+.mapa-lienzo canvas{width:100%;max-width:min(560px,86vw);aspect-ratio:1;
+  cursor:grab;touch-action:none;user-select:none}
+.mapa-lienzo canvas.tirando{cursor:grabbing}
 .mapa-tip{position:absolute;pointer-events:none;transform:translate(-50%,-130%);
   background:#0A0910f2;border:1px solid var(--line-hard);border-radius:9px;padding:6px 11px;
   font-family:var(--data);font-size:.64rem;color:var(--gold-hi);white-space:nowrap;
   opacity:0;transition:opacity .18s var(--ease);z-index:5}
 .mapa-tip.ver{opacity:1}
-.rank-i{display:grid;grid-template-columns:20px 1fr auto;gap:11px;align-items:center;
-  padding:7px 0;border-bottom:1px solid var(--line-soft)}
-.rank-n{font-family:var(--data);font-size:.58rem;color:var(--bone-ghost)}
-.rank-b b{display:block;font-size:.82rem;font-weight:600;letter-spacing:-.015em}
-.rank-barra{height:3px;border-radius:9px;background:#F4EFE614;margin-top:5px;overflow:hidden}
-.rank-barra i{display:block;height:100%;background:linear-gradient(90deg,var(--gold-deep),var(--gold));
-  border-radius:9px;width:0;transition:width 1.1s var(--ease)}
-.rank-i.in .rank-barra i{width:var(--w)}
-.rank-c{font-family:var(--data);font-size:.86rem;font-weight:700;color:var(--gold-hi);font-variant-numeric:tabular-nums}
+/* Pista de que se puede girar; se apaga en cuanto lo tocas. */
+.mapa-pista{margin:10px 0 0;text-align:center;font-family:var(--data);
+  font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--bone-ghost);transition:opacity .5s var(--ease)}
+.mapa-pista.fuera{opacity:0}
 
 /* ── Acompañamiento ─────────────────────────────────────────────── */
 .agenda-sem{display:grid;grid-template-columns:repeat(auto-fit,minmax(112px,1fr));gap:1px;
@@ -945,10 +962,11 @@ header.tope:not([data-oculto]) ~ .hero{padding-top:clamp(70px,11vw,104px)}
   gap:clamp(22px,4vw,52px);align-items:center}
 @media(max-width:860px){
   .quien{grid-template-columns:1fr}
-  /* En una sola columna manda el texto: primero quién habla y qué dice,
-     después las fotos. Al revés, el collage retrasa el mensaje. */
-  .quien > .collage{order:2;margin-top:clamp(20px,4vw,30px)}
-  .quien > :not(.collage){order:1}
+  /* En una sola columna: primero la cara, después el nombre y la historia.
+     La foto entra antes que cualquier frase, y el titular «Quién está detrás»
+     llega justo debajo, ya con la persona delante. */
+  .quien > .collage{order:1;margin-bottom:clamp(18px,3.4vw,28px)}
+  .quien > :not(.collage){order:2}
 }
 
 /* Un pelo de luz entre bloque y bloque: se nota el corte sin poner una caja. */
@@ -1012,9 +1030,15 @@ header.tope:not([data-oculto]) ~ .hero{padding-top:clamp(70px,11vw,104px)}
 .fcol.si h3 em{background:var(--gold);color:#150F02}
 .fcol.no h3 em{background:#F4EFE614;color:var(--bone-faint)}
 .fcol ul{list-style:none;margin:0;padding:0;display:grid;gap:13px}
-.fcol li{display:grid;grid-template-columns:15px 1fr;gap:11px;align-items:start;
+/* Era una rejilla de dos columnas, así que CADA hijo del <li> ocupaba su
+   propia celda: un <b> en mitad de la frase se salía del párrafo y aterrizaba
+   en la columna del icono, partiendo el texto en escalera. Con el icono en
+   posición absoluta, la frase vuelve a ser una frase. */
+.fcol li{position:relative;padding-left:26px;
   font-size:clamp(.86rem,2vw,.93rem);line-height:1.5;color:var(--bone-mute)}
-.fcol li::before{content:"";width:15px;height:15px;border-radius:50%;margin-top:.22em;
+.fcol li b{font-weight:700;color:var(--bone)}
+.fcol li::before{content:"";position:absolute;left:0;top:.22em;
+  width:15px;height:15px;border-radius:50%;
   background:no-repeat center/9px 9px}
 .fcol.si li::before{
   background-color:#D6A5441F;box-shadow:inset 0 0 0 1px #D6A54455;
@@ -1217,6 +1241,239 @@ header.tope:not([data-oculto]) ~ .hero{padding-top:clamp(70px,11vw,104px)}
 @media(prefers-reduced-motion:reduce){
   .mega,.mega::after,.holo::after,.glifo .gira{animation:none}
 }
+/* ══ EN NUESTRO NEGOCIO · transferencias como avisos ════════════════
+   La idea: una venta no llega en una tabla, llega como un aviso en el
+   móvil. Cada captura va dentro de una notificación —icono, título y
+   hora— y el conjunto se lee como el buzón de un día bueno.
+
+   En escritorio se reparten en columnas con inclinaciones distintas, que
+   es lo que hace que parezca un collage y no una lista. En el móvil se
+   apilan rectas, una debajo de otra: ahí un collage inclinado es ruido. */
+.burbujas{
+  margin-top:clamp(22px,3.6vw,40px);
+  column-count:3;column-gap:clamp(12px,1.8vw,20px);
+}
+@media(max-width:900px){ .burbujas{column-count:2} }
+
+.burb{
+  break-inside:avoid;margin:0 0 clamp(12px,1.8vw,20px);
+  border-radius:16px;overflow:hidden;position:relative;isolation:isolate;
+  border:1px solid #FFFFFF1c;
+  background:linear-gradient(158deg,#16132499,#0C0A18e6);
+  backdrop-filter:blur(14px) saturate(1.2);
+  box-shadow:0 20px 44px -26px #000, inset 0 1px 0 #FFFFFF14;
+  transform:rotate(var(--r,0deg));
+  transition:transform .5s var(--ease),border-color .5s var(--ease),box-shadow .5s var(--ease);
+}
+.burb:hover{
+  transform:rotate(0deg) translateY(-4px);
+  border-color:#4FB39B66;
+  box-shadow:0 28px 60px -26px #000, 0 0 34px -18px #4FB39B88, inset 0 1px 0 #FFFFFF1f;
+}
+/* La inclinación se queda, más suave: en columna estrecha una torcedura de
+   dos grados ya es suficiente para que no parezca una tabla. */
+@media(max-width:640px){
+  .burb{transform:rotate(calc(var(--r,0deg) * .55))}
+  .burb:hover{transform:translateY(-2px)}
+}
+
+.burb-h{
+  display:flex;align-items:center;gap:9px;
+  padding:10px 13px;border-bottom:1px solid #FFFFFF12;
+  background:linear-gradient(180deg,#FFFFFF0a,transparent);
+}
+.burb-app{
+  width:24px;height:24px;flex:none;border-radius:7px;display:grid;place-items:center;
+  background:linear-gradient(150deg,#5FCBA9,#3E9B84);color:#04160F;
+  box-shadow:0 0 14px -4px #4FB39Baa;
+}
+.burb-app svg{width:13px;height:13px}
+.burb-h b{
+  font-size:.74rem;font-weight:700;letter-spacing:-.01em;color:var(--bone);
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.burb-t{
+  margin-left:auto;flex:none;font-family:var(--data);font-size:.55rem;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--bone-ghost);
+}
+.burb .ph{width:100%;border-radius:0;display:block;font-size:13px}
+.burb .ph:not(.cargada){aspect-ratio:4/3}
+
+/* El pulso verde del borde superior: el aviso «acaba de entrar». */
+.burb::after{
+  content:"";position:absolute;top:0;left:0;right:0;height:1px;z-index:3;
+  background:linear-gradient(90deg,transparent,#5FCBA9,transparent);
+  opacity:.5;animation:avisa 4.6s ease-in-out infinite;animation-delay:var(--d,0ms);
+}
+@keyframes avisa{0%,72%,100%{opacity:.16}80%{opacity:.85}}
+@media(prefers-reduced-motion:reduce){.burb::after{animation:none;opacity:.3}}
+
+/* En el móvil también van a dos columnas: apiladas en una sola perdían el
+   efecto de buzón —que es lo que hace que se lea como muchas entradas— y la
+   sección se estiraba el doble. Todo lo de dentro encoge en proporción. */
+@media(max-width:640px){
+  .burbujas{column-count:2;column-gap:7px}
+  .burb{margin-bottom:7px;border-radius:12px}
+  .burb-h{padding:6px 8px;gap:6px}
+  .burb-app{width:17px;height:17px;border-radius:5px}
+  .burb-app svg{width:9px;height:9px}
+  .burb-h b{font-size:.58rem;letter-spacing:-.02em}
+  .burb-t{font-size:.44rem;letter-spacing:.1em}
+}
+
+
+/* ══ AJUSTES DE ESTA RONDA ═══════════════════════════════════════════
+   Van al final a propósito: a igualdad de peso manda la última regla, y
+   así estos retoques no pelean con lo que hay más arriba. */
+
+/* 1 · La franja de testimonios: fichas más chicas para que quepan más */
+@media(max-width:640px){
+  /* Acortar recortando el nombre fue un error: un testimonio sin nombre no
+     prueba nada. La ficha se acorta quitando el plazo —«al mes», «en 90
+     días»—, que es lo único prescindible: la cifra ya se entiende sola. */
+  .tf{gap:8px;padding:8px 11px;border-radius:12px}
+  .tf-foto{width:30px;height:30px;font-size:.74rem}
+  .tf-t{display:none}
+  .tf-n{margin-left:7px;gap:5px}
+}
+
+/* 2 · Las cuatro cifras de la historia, en dos filas de dos */
+@media(max-width:640px){
+  .pastillas{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .pastilla{justify-content:center;padding:10px 8px;gap:6px;text-align:center}
+  .pastilla b{font-size:1.05rem}
+}
+
+/* 3 · Las fotos de vida: más grandes, más juntas y con geometría sagrada.
+   El patrón es un solo degradado cónico repetido —seis ejes, como una
+   semilla de la vida— dibujado en el hueco entre fotos, no encima. */
+.tira{gap:clamp(2px,.6vw,5px);position:relative}
+.tira .vida{width:clamp(250px,74vw,420px)}
+@media(min-width:900px){ .tira .vida{width:clamp(300px,34vw,420px)} }
+.tira .vida::after{
+  content:"";position:absolute;inset:0;z-index:4;pointer-events:none;
+  opacity:calc(.10 + (1 - var(--frio,0)) * .16);
+  background:
+    repeating-conic-gradient(from 0deg at 50% 50%,
+      #D6A5440e 0deg 2deg, transparent 2deg 60deg),
+    radial-gradient(circle at 50% 50%, transparent 38%, #D6A5441a 38.6%, transparent 39.6%),
+    radial-gradient(circle at 50% 50%, transparent 55%, #8FD6C716 55.5%, transparent 56.5%);
+  mix-blend-mode:screen;
+}
+/* La señal de que se desliza */
+.tira-pista{
+  display:flex;align-items:center;justify-content:center;gap:9px;
+  margin:clamp(6px,1.2vw,12px) 0 0;font-family:var(--data);
+  font-size:clamp(.54rem,1.5vw,.6rem);letter-spacing:.22em;text-transform:uppercase;
+  color:var(--bone-ghost);transition:opacity .55s var(--ease);
+}
+.tira-pista.fuera{opacity:0}
+.tira-pista svg{width:34px;height:9px;color:var(--gold);opacity:.75}
+.tira-pista svg path{animation:vaiven 2.4s ease-in-out infinite}
+@keyframes vaiven{0%,100%{transform:translateX(-3px)}50%{transform:translateX(3px)}}
+@media(prefers-reduced-motion:reduce){.tira-pista svg path{animation:none}}
+
+/* La reflexión se ordena por `order` para que la señal de deslizar quede bajo
+   las fotos sin haber tenido que insertarla ahí en el HTML. */
+#reflexion{display:flex;flex-direction:column}
+#reflexion > .wrap{order:1}
+#reflexion > .tira{order:2}
+#reflexion > .tira-pista{order:3}
+#reflexion > .lede{order:4}
+#reflexion > .umbral{order:5}
+
+/* 4 · El umbral hacia el Circuito */
+.umbral{
+  display:grid;place-items:center;gap:0;text-decoration:none;
+  margin:clamp(20px,3.4vw,34px) auto 0;width:44px;
+}
+.umbral-hilo{
+  display:block;width:1px;height:clamp(38px,6vw,64px);position:relative;overflow:hidden;
+  background:linear-gradient(180deg,transparent,#D6A54455 40%,#D6A54488);
+}
+/* La chispa que baja por el hilo: es el «hay algo debajo» sin decirlo. */
+.umbral-hilo i{
+  position:absolute;left:-1px;width:3px;height:16px;border-radius:2px;
+  background:linear-gradient(180deg,transparent,var(--gold-hi),transparent);
+  filter:blur(.4px);animation:caer 2.8s cubic-bezier(.4,0,.5,1) infinite;
+}
+@keyframes caer{0%{top:-18px;opacity:0}18%{opacity:1}82%{opacity:1}100%{top:100%;opacity:0}}
+.umbral-anillo{
+  width:44px;height:44px;display:grid;place-items:center;border-radius:50%;
+  background:radial-gradient(circle at 50% 40%,#D6A5441f,transparent 70%);
+  transition:transform .4s var(--ease);
+}
+.umbral-anillo svg{width:44px;height:44px;fill:none;stroke:var(--gold);
+  stroke-width:1.2;stroke-linecap:round;stroke-linejoin:round;overflow:visible}
+.umbral-anillo svg circle{opacity:.34;stroke-dasharray:3 5;
+  animation:girarAnillo 14s linear infinite;transform-origin:50% 50%}
+.umbral-anillo svg path{stroke-width:1.7;filter:drop-shadow(0 0 5px #D6A54488)}
+@keyframes girarAnillo{to{transform:rotate(360deg)}}
+.umbral:hover .umbral-anillo{transform:translateY(3px)}
+@media(prefers-reduced-motion:reduce){
+  .umbral-hilo i,.umbral-anillo svg circle{animation:none}
+  .umbral-hilo i{top:40%}
+}
+
+/* 5 · Capturas más contenidas: la imagen manda, la tarjeta la sigue */
+.captura{width:clamp(190px,52vw,290px)}
+
+/* 6 · Cuentas: la segunda fila va al revés, y un barrido de luz en algunas */
+.mq-t.rev{direction:ltr}
+.cuenta:nth-child(4n+1)::before{
+  content:"";position:absolute;inset:0;z-index:3;pointer-events:none;
+  background:linear-gradient(105deg,transparent 34%,#F4EFE61c 48%,#D6A5442e 52%,transparent 66%);
+  transform:translateX(-120%);animation:barrido 7s ease-in-out infinite;
+}
+@keyframes barrido{0%,62%{transform:translateX(-120%)}86%,100%{transform:translateX(120%)}}
+@media(prefers-reduced-motion:reduce){.cuenta:nth-child(4n+1)::before{animation:none;opacity:0}}
+
+/* 7 · El filtro: verde para quien encaja, apagado para quien no.
+   Mismo tamaño de letra en los dos —la diferencia la marca el color, no
+   la legibilidad: el que no encaja también tiene que poder leerlo. */
+.fcol{position:relative;isolation:isolate}
+.fcol::before{
+  content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:
+    repeating-linear-gradient(0deg,#FFFFFF06 0 1px,transparent 1px 4px),
+    linear-gradient(158deg,var(--tinte,#4FB39B18),transparent 62%);
+}
+.fcol.si{--tinte:#4FB39B22}
+.fcol.no{--tinte:#8B7BD814}
+.fcol.si h3{color:#8FE0C6}
+.fcol.si h3 em{background:linear-gradient(150deg,#5FCBA9,#3E9B84);color:#04160F;
+  box-shadow:0 0 16px -4px #4FB39B99}
+.fcol.si li::before{
+  background-color:#4FB39B1F;box-shadow:inset 0 0 0 1px #4FB39B66;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none' stroke='%235FCBA9' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2 6.4l2.6 2.6L10 3.4'/%3E%3C/svg%3E")}
+.fcol.si li b{color:#B8EFDC}
+.fcol.si li{color:#DCEFE9}
+.fcol.no h3{color:var(--bone-faint)}
+.fcol.no li{color:var(--bone-mute);opacity:.82}
+
+/* 8 · La barra flotante: más alta y con vida propia */
+.barra-movil{
+  padding:13px 14px calc(15px + env(safe-area-inset-bottom));
+  background:linear-gradient(180deg,#0A091000,#0A0910e8 30%,#0A0910fa);
+  backdrop-filter:blur(10px);
+}
+.barra-movil .mega{
+  padding:17px 18px;border-radius:15px;animation:latir 3.4s ease-in-out infinite;
+  box-shadow:0 -2px 30px -8px #D6A54466, 0 12px 32px -14px #000000aa,
+             inset 0 1px 0 #F2D3915e;
+}
+
+/* 9 · Y el botón grande: brillo que cruza, sin pasarse */
+.mega::before{
+  content:"";position:absolute;inset:0;z-index:1;pointer-events:none;border-radius:inherit;
+  background:linear-gradient(100deg,transparent 38%,#FFFFFF4a 47%,#FFF7E0a6 50%,#FFFFFF4a 53%,transparent 62%);
+  transform:translateX(-130%);animation:lustre 5.2s cubic-bezier(.5,0,.3,1) infinite;
+}
+.mega > *{position:relative;z-index:2}
+@keyframes lustre{0%,58%{transform:translateX(-130%)}82%,100%{transform:translateX(130%)}}
+.mega:hover::before{animation-duration:2.4s}
+@media(prefers-reduced-motion:reduce){.mega::before{animation:none;opacity:0}}
+
 /* ══ ESCALA TIPOGRÁFICA MÓVIL ═══════════════════════════════════════
    En el teléfono había cuatro tamaños distintos para lo mismo —un título de
    sección medía 2,05rem, 2,35, 2,45 o 1,62 según dónde cayera— y eso es lo que
@@ -1287,7 +1544,7 @@ header.tope:not([data-oculto]) ~ .hero{padding-top:clamp(70px,11vw,104px)}
 }
 </style>
 
-<header class="tope" id="tope">
+<header class="tope" id="tope" data-bloque="1">
   <div class="wrap tope-in">
     <a class="marca" href="#top">
       <svg class="sigilo" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.05" aria-hidden="true">
@@ -1306,12 +1563,12 @@ header.tope:not([data-oculto]) ~ .hero{padding-top:clamp(70px,11vw,104px)}
   </div>
 </header>
 
-<div id="progreso" aria-hidden="true"></div>
-<nav class="puntos" id="puntos" aria-label="Secciones"></nav>
-<div id="fondo" aria-hidden="true"><canvas id="aurora"></canvas></div>
+<div id="progreso" aria-hidden="true" data-bloque="2"></div>
+<nav class="puntos" id="puntos" aria-label="Secciones" data-bloque="3"></nav>
+<div id="fondo" aria-hidden="true" data-bloque="4"><canvas id="aurora"></canvas></div>
 
 <!-- ═══ HERO · promesa + video + botón en una pantalla ═══ -->
-<header class="hero velo" id="top">
+<header class="hero velo" id="top" data-bloque="5">
   <!-- El sello de verificado se define aquí una vez y se reutiliza con <use>:
      el contorno de la roseta son 12 lóbulos y ocupa 1,3 KB. Repetirlo en las
      38 tarjetas serían 50 KB de más en cada copia del código. -->
@@ -1365,14 +1622,18 @@ header.tope:not([data-oculto]) ~ .hero{padding-top:clamp(70px,11vw,104px)}
 <!-- ═══ LA FRANJA · prueba social inmediata ═══ -->
 <!-- Sin data-si-vacio: las tarjetas llevan nombre, cifra y plazo. Las caras
      son opcionales y caen a la inicial, así que la franja nunca está vacía. -->
-<section class="franja">
+<section class="franja" data-bloque="6">
   <p class="franja-h">Algunos de los que ya lo lograron</p>
   <div class="mq" style="--sp:88s"><div class="mq-t" id="franja"
     data-galeria="caras" data-galeria-titulo="Caras de la franja"></div></div>
+  <!-- La lista viaja aquí dentro. Sin esto, la página publicada se repintaba
+       con los nombres del código al cargar: fuera del estudio no hay nadie que
+       le pase la lista buena, y borraba la que traía. -->
+  <script type="application/json" id="franja-datos"></script>
 </section>
 
 <!-- ═══ LOS HITOS ═══ -->
-<section class="sect" id="hitos" style="padding-block:0">
+<section class="sect" id="hitos" style="padding-block:0" data-bloque="7">
   <div class="wrap">
     <div class="hitos">
 
@@ -1419,7 +1680,7 @@ header.tope:not([data-oculto]) ~ .hero{padding-top:clamp(70px,11vw,104px)}
 </section>
 
 <!-- ═══ EL CAMBIO · absorbe también la vieja transición ═══ -->
-<section class="sect" id="cambio">
+<section class="sect" id="cambio" data-bloque="8">
   <div class="wrap">
     <div class="eyebrow rv">El cambio</div>
 
@@ -1471,7 +1732,7 @@ header.tope:not([data-oculto]) ~ .hero{padding-top:clamp(70px,11vw,104px)}
 </section>
 
 <!-- ═══ QUIÉN ESTÁ DETRÁS ═══ -->
-<section class="sect">
+<section class="sect" data-bloque="9">
   <div class="wrap"><hr class="separador rv" style="margin-bottom:clamp(30px,4.6vw,60px)"></div>
   <div class="wrap quien">
     <div class="collage rv">
@@ -1522,7 +1783,7 @@ header.tope:not([data-oculto]) ~ .hero{padding-top:clamp(70px,11vw,104px)}
 </section>
 
 <!-- ═══ LA REFLEXIÓN ═══ -->
-<section class="sect banda" id="reflexion">
+<section class="sect banda" id="reflexion" data-bloque="10">
   <div class="wrap">
     <p class="lede center cita rv">
       ¿Quién te dijo que tenía que ser difícil?
@@ -1540,10 +1801,32 @@ header.tope:not([data-oculto]) ~ .hero{padding-top:clamp(70px,11vw,104px)}
     <b class="mark">Un negocio que se adapta a tu vida.</b> No una vida que se adapta
     a tu negocio.
   </p>
+
+  <!-- El umbral: cierra la reflexión y anuncia el Circuito. Un hilo de luz que
+       cae y una chispa que lo recorre; nada más, para que sea un respiro y no
+       otro elemento compitiendo. -->
+  <a class="umbral rv" href="#circuito" aria-label="Ir al Circuito de Conversión">
+    <span class="umbral-hilo"><i></i></span>
+    <span class="umbral-anillo">
+      <svg viewBox="0 0 44 44" aria-hidden="true">
+        <circle cx="22" cy="22" r="20.4"/>
+        <path d="M15.6 19.4 22 26l6.4-6.6"/>
+      </svg>
+    </span>
+  </a>
+
+  <!-- Va la última en el HTML a propósito: colarla entre las fotos y el texto
+       habría corrido el índice del párrafo que ya tiene texto guardado. Se
+       coloca en su sitio con `order`. -->
+  <p class="tira-pista">
+    <svg viewBox="0 0 34 9" fill="none" stroke="currentColor" stroke-width="1.4"
+         stroke-linecap="round" aria-hidden="true"><path d="M2 4.5h30M27 1l3.4 3.5L27 8"/></svg>
+    Desliza
+  </p>
 </section>
 
 <!-- ═══ EL SISTEMA EN MARCHA ═══ -->
-<section class="sect banda" id="circuito">
+<section class="sect banda" id="circuito" data-bloque="11">
   <div class="wrap">
     <div class="sol-marca rv"><span>El Circuito de Conversión<sup>™</sup></span></div>
 
@@ -1670,8 +1953,27 @@ header.tope:not([data-oculto]) ~ .hero{padding-top:clamp(70px,11vw,104px)}
   </div>
 </section>
 
+<!-- ═══ EN NUESTRO NEGOCIO ═══
+     La prueba propia, separada de la de los clientes: son dos cosas distintas
+     y juntas se leían como una sola pila de capturas. Aquí van transferencias
+     presentadas como avisos del móvil —el formato en el que de verdad llega
+     una venta— y abajo, en su propio bloque, las victorias de clientes.
+     Índice 25: los demás están fijados, así que nada se corre. -->
+<section class="sect" id="nuestro" data-bloque="25">
+  <div class="wrap">
+    <div class="eyebrow center rv" style="justify-content:center">En nuestro negocio</div>
+    <h2 class="h-sect rv" style="--d:60ms;text-align:center">Lo aplicamos
+      <em class="alma">en el nuestro primero.</em></h2>
+    <p class="lede center rv" style="--d:100ms">Antes de instalártelo, lo probamos
+      con nuestro propio dinero.</p>
+
+    <div class="burbujas rv" style="--d:140ms" id="burbujas"
+         data-galeria="transferencias" data-galeria-titulo="Transferencias recibidas"></div>
+  </div>
+</section>
+
 <!-- ═══ LA PRUEBA ═══ -->
-<section class="sect" id="prueba">
+<section class="sect" id="prueba" data-bloque="12">
   <div class="wrap">
     <div class="eyebrow center rv" style="justify-content:center">La prueba</div>
     <h2 class="h-sect rv" style="--d:60ms;text-align:center">Victorias de clientes.
@@ -1697,16 +1999,27 @@ header.tope:not([data-oculto]) ~ .hero{padding-top:clamp(70px,11vw,104px)}
     </div>
   </div>
 
-  <!-- Y debajo, sin titular ni explicación: las cuentas siguen el mismo hilo. -->
+</section>
+
+<!-- ═══ LAS CUENTAS ═══
+     Bloque aparte de las victorias: son dos pruebas distintas —una son
+     resultados, la otra son personas— y mezcladas no se leía ninguna.
+     Índice 24: los anteriores están fijados, así que nada se corre. -->
+<section class="sect" id="cuentas" data-bloque="24">
+  <div class="wrap">
+    <div class="eyebrow center rv" style="justify-content:center">Quiénes ya lo aplican</div>
+    <h2 class="h-sect rv" style="--d:60ms;text-align:center">Negocios reales,
+      <em class="alma">cuentas reales.</em></h2>
+  </div>
   <div class="mq mq-holo cuentas-1" style="--sp:74s"><div class="mq-t" id="fila1" data-galeria="cuentas" data-galeria-titulo="Cuentas de Instagram"></div></div>
-  <div class="mq mq-holo" style="--sp:92s;margin-top:11px"><div class="mq-t" id="fila2"></div></div>
+  <div class="mq mq-holo" style="--sp:92s;margin-top:11px"><div class="mq-t rev" id="fila2"></div></div>
 </section>
 
 <!-- ═══ MAPA ═══ -->
-<section class="sect banda" id="mapa">
+<section class="sect banda" id="mapa" data-bloque="13">
   <div class="wrap">
     <div class="eyebrow center rv" style="justify-content:center">Casos en el mundo</div>
-    <h2 class="h-sect rv" style="--d:60ms;text-align:center">Funciona en <em class="alma">20 países.</em></h2>
+    <h2 class="h-sect rv" style="--d:60ms;text-align:center">Funciona en <em class="alma">33 países.</em></h2>
 
     <div class="mapa-grid">
       <div class="mapa-lienzo rv" style="--d:140ms">
@@ -1714,13 +2027,13 @@ header.tope:not([data-oculto]) ~ .hero{padding-top:clamp(70px,11vw,104px)}
           aria-label="Globo con los países donde hay casos de éxito"></canvas>
         <div class="mapa-tip" id="mapaTip"></div>
       </div>
-      <div class="rv" style="--d:200ms" id="ranking"></div>
+      <p class="mapa-pista">Arrastra para girar</p>
     </div>
   </div>
 </section>
 
 <!-- ═══ QUÉ PASA EN LA LLAMADA ═══ -->
-<section class="sect velo" id="llamada">
+<section class="sect velo" id="llamada" data-bloque="14">
   <div class="wrap">
     <div class="eyebrow center rv" style="justify-content:center">La llamada</div>
     <h2 class="h-sect rv" style="--d:60ms;text-align:center">45 minutos.
@@ -1734,7 +2047,7 @@ header.tope:not([data-oculto]) ~ .hero{padding-top:clamp(70px,11vw,104px)}
 </section>
 
 <!-- ═══ FILTRO ═══ -->
-<section class="sect banda">
+<section class="sect banda" data-bloque="15">
   <div class="wrap">
     <div class="eyebrow rv">Antes de agendar</div>
     <h2 class="h-sect rv" style="--d:60ms">Trabajo con pocos. <em class="alma">Este es el filtro.</em></h2>
@@ -1765,7 +2078,7 @@ header.tope:not([data-oculto]) ~ .hero{padding-top:clamp(70px,11vw,104px)}
 </section>
 
 <!-- ═══ FAQ ═══ -->
-<section class="sect" id="faq">
+<section class="sect" id="faq" data-bloque="16">
   <div class="wrap">
     <div class="eyebrow rv">Preguntas</div>
     <h2 class="h-sect rv" style="--d:60ms">Sin vueltas.</h2>
@@ -1786,7 +2099,7 @@ header.tope:not([data-oculto]) ~ .hero{padding-top:clamp(70px,11vw,104px)}
 </section>
 
 <!-- ═══ AGENDA ═══ -->
-<section class="sect velo" id="agenda" style="border-top:1px solid var(--line)">
+<section class="sect velo" id="agenda" style="border-top:1px solid var(--line)" data-bloque="17">
   <div class="wrap" style="text-align:center">
     <div class="mini-badge rv"><i class="dot-live"></i> Quedan pocos cupos esta semana</div>
     <h2 class="h-sect rv" style="--d:60ms">Elige tu horario <em class="alma">y hablamos.</em></h2>
@@ -1809,18 +2122,18 @@ header.tope:not([data-oculto]) ~ .hero{padding-top:clamp(70px,11vw,104px)}
   </div>
 </section>
 
-<div class="lupa" id="lupa" role="dialog" aria-modal="true" aria-label="Ver la prueba en grande">
+<div class="lupa" id="lupa" role="dialog" aria-modal="true" aria-label="Ver la prueba en grande" data-bloque="18">
   <button class="lupa-x" id="lupaX" aria-label="Cerrar">×</button>
   <button class="lupa-nav izq" id="lupaAnt" aria-label="Anterior">‹</button>
   <button class="lupa-nav der" id="lupaSig" aria-label="Siguiente">›</button>
   <div class="lupa-marco"><img id="lupaImg" alt=""><div class="lupa-pie" id="lupaPie"></div></div>
 </div>
 
-<div class="barra-movil" id="barraMovil">
+<div class="barra-movil" id="barraMovil" data-bloque="19">
   <a class="mega" href="#agenda"><b>AGENDA TU LLAMADA</b><span>Gratis</span></a>
 </div>
 
-<footer class="foot">
+<footer class="foot" data-bloque="20">
   <div class="wrap">
     <div class="foot-in">
       <div>2026 © Edume Global™ · Escalling™ · Todos los derechos reservados</div>
@@ -1845,25 +2158,101 @@ header.tope:not([data-oculto]) ~ .hero{padding-top:clamp(70px,11vw,104px)}
   </div>
 </footer>
 
-<script src="https://app.iclosed.io/assets/widget.js" async></script>
-<script>
+<script src="https://app.iclosed.io/assets/widget.js" async data-bloque="21"></script>
+<script data-bloque="22">
 var s = document.createElement("script");
 s.src = "https://scripts.converteai.net/22e63508-186f-4fb1-ab7b-224d58134d00/players/6681df0e08bf60000baed8e1/v4/player.js";
 s.async = true;
 document.head.appendChild(s);
 </script>
 
-<script>
+<script data-bloque="23">
 /* ═══════════════════════════════════════════════════════════════════
    DATOS EDITABLES · casos de éxito por país
    De MUESTRA: suman 220 pero no son un censo real. Cámbialos.
    ═══════════════════════════════════════════════════════════════════ */
+/* Silueta de los continentes en [lat, lon]. Grosera a propósito: el globo la
+   dibuja con puntos, no con fronteras, así que basta con que se reconozca. */
+const TIERRA = [
+  /* Sudamérica */
+  [[12,-71],[10,-64],[8,-60],[5,-52],[1,-50],[-1,-44],[-5,-35],[-9,-35],[-13,-38],[-18,-39],
+   [-23,-42],[-27,-48],[-33,-53],[-38,-57],[-42,-63],[-47,-66],[-52,-68],[-55,-67],[-53,-72],
+   [-47,-74],[-41,-74],[-33,-72],[-25,-70],[-18,-70],[-14,-76],[-8,-79],[-4,-81],[0,-80],
+   [4,-77],[8,-77],[10,-75],[12,-71]],
+  /* Centroamérica y México */
+  [[9,-79],[10,-83],[13,-86],[15,-88],[18,-88],[21,-87],[22,-90],[25,-97],[26,-97],
+   [29,-101],[31,-106],[31,-113],[29,-113],[24,-108],[19,-105],[17,-101],[16,-95],
+   [14,-92],[13,-88],[11,-85],[9,-83],[9,-79]],
+  /* Baja California */
+  [[32,-115],[32,-117],[27,-114],[23,-110],[24,-111],[29,-114],[32,-115]],
+  /* Norteamérica */
+  [[26,-97],[29,-90],[30,-84],[25,-81],[31,-81],[36,-76],[40,-74],[44,-69],[47,-65],
+   [48,-59],[52,-56],[56,-61],[60,-65],[62,-78],[57,-79],[55,-85],[58,-94],[62,-95],
+   [68,-95],[69,-113],[70,-128],[69,-141],[60,-140],[59,-152],[56,-160],[59,-165],
+   [65,-167],[70,-161],[71,-157],[69,-135],[66,-120],[62,-110],[58,-102],[49,-96],
+   [46,-84],[43,-79],[45,-75],[47,-68],[45,-64],[42,-71],[39,-75],[35,-77],[31,-81],
+   [30,-85],[29,-95],[26,-97]],
+  /* Europa · anillo limpio; el trazado anterior volvía sobre sí mismo en el
+     Adriático y cruzaba el Mediterráneo */
+  [[36,-6],[39,-9],[43,-9],[46,-2],[48,-5],[51,2],[54,8],[58,6],[62,6],[66,14],
+   [70,21],[71,28],[69,33],[66,40],[60,42],[55,44],[50,45],[45,42],[42,42],
+   [41,35],[41,29],[40,24],[38,23],[40,19],[43,17],[45,13],[46,12],[44,8],
+   [43,4],[41,1],[39,-1],[36,-6]],
+  /* Italia */
+  [[46,8],[46,13],[44,12],[42,14],[40,17],[38,16],[40,15],[42,11],[44,10],[46,8]],
+  /* Islas Británicas */
+  [[50,-5],[53,-5],[55,-6],[58,-5],[58,-3],[54,-1],[51,1],[50,-5]],
+  /* África */
+  [[37,10],[33,11],[31,20],[31,25],[27,34],[22,37],[15,40],[11,43],[8,48],[2,45],
+   [-4,40],[-11,40],[-17,37],[-22,35],[-26,33],[-34,26],[-34,19],[-29,17],[-23,14],
+   [-17,12],[-10,13],[-5,12],[0,9],[4,9],[5,3],[6,-2],[5,-8],[8,-13],[13,-17],
+   [16,-16],[20,-17],[24,-15],[28,-11],[32,-9],[35,-6],[37,3],[37,10]],
+  /* Madagascar */
+  [[-12,49],[-16,50],[-22,48],[-25,47],[-22,44],[-16,45],[-12,49]],
+  /* Asia */
+  [[41,28],[45,30],[46,34],[45,38],[41,42],[38,49],[42,52],[46,53],[45,62],[42,70],
+   [45,78],[50,85],[52,95],[53,108],[50,120],[53,127],[48,135],[43,132],[40,128],
+   [37,126],[35,129],[39,122],[41,121],[38,118],[32,121],[27,121],[22,113],[21,108],
+   [16,108],[11,109],[9,105],[13,100],[8,99],[6,100],[12,98],[16,95],[21,92],
+   [22,89],[20,86],[16,81],[9,79],[13,74],[20,73],[23,68],[25,62],[26,57],[24,52],
+   [21,58],[18,55],[13,45],[16,42],[21,39],[27,35],[30,32],[33,36],[36,36],[37,40],
+   [37,45],[40,50],[36,53],[38,58],[37,66],[35,62],[30,62],[25,66],[24,68],[26,60],
+   [30,50],[30,48],[37,49],[40,50],[41,42],[41,28]],
+  /* Rusia norte */
+  [[66,32],[69,33],[68,44],[73,70],[76,95],[73,110],[71,128],[70,145],[66,170],
+   [62,179],[60,163],[54,140],[50,140],[53,127],[53,108],[52,95],[50,85],[55,80],
+   [60,70],[64,60],[67,45],[66,32]],
+  /* India */
+  [[8,77],[13,74],[20,73],[23,69],[27,71],[30,76],[28,84],[26,90],[22,89],[20,86],
+   [16,81],[11,79],[8,77]],
+  /* Indonesia */
+  [[5,95],[2,99],[-3,102],[-6,105],[-8,114],[-9,124],[-6,132],[-2,132],[0,120],
+   [2,117],[4,108],[5,95]],
+  /* Australia */
+  [[-11,131],[-12,137],[-16,141],[-11,143],[-15,145],[-20,149],[-25,153],[-32,153],
+   [-37,150],[-38,145],[-35,138],[-32,134],[-34,124],[-34,116],[-31,115],[-26,113],
+   [-22,114],[-18,122],[-14,127],[-11,131]],
+  /* Nueva Zelanda */
+  [[-35,173],[-38,178],[-41,175],[-44,171],[-46,168],[-44,170],[-40,173],[-35,173]],
+  /* Japón */
+  [[45,142],[43,145],[40,141],[36,141],[34,136],[33,131],[31,130],[34,132],[37,138],
+   [41,140],[45,142]],
+  /* Groenlandia */
+  [[83,-30],[80,-20],[75,-20],[70,-22],[65,-40],[70,-52],[76,-60],[80,-65],[83,-40],[83,-30]],
+];
+
 const PAISES = [
   ["México",29,23,-102],["Colombia",28,4,-73],["Argentina",24,-34,-64],["España",19,40,-3],
   ["Chile",17,-33,-71],["Perú",14,-10,-76],["Ecuador",13,-1,-78],["Estados Unidos",12,38,-97],
   ["Venezuela",10,8,-66],["Brasil",9,-14,-51],["Uruguay",7,-33,-56],["Guatemala",6,15,-90],
   ["Costa Rica",6,10,-84],["R. Dominicana",5,19,-70],["Panamá",5,9,-80],["Bolivia",4,-17,-64],
   ["Paraguay",4,-23,-58],["Puerto Rico",3,18,-66],["El Salvador",3,14,-89],["Canadá",2,56,-106],
+  /* Hasta 33. Estos trece los rellené yo para que el globo cuadre con la cifra:
+     revisa los nombres y cámbialos por los que sean de verdad. */
+  ["Honduras",2,15,-86],["Nicaragua",2,13,-85],["Cuba",2,22,-79],["Italia",2,42,12],
+  ["Alemania",1,51,10],["Reino Unido",1,54,-2],["Francia",1,47,2],["Portugal",1,39,-8],
+  ["Suiza",1,47,8],["Andorra",1,42,1],["Marruecos",1,32,-6],["Australia",1,-25,134],
+  ["Emiratos Árabes",1,24,54],
 ];
 
 (() => {
@@ -1994,43 +2383,61 @@ const esc = t => String(t).replace(/[&<>"]/g, m => ({"&":"&amp;","<":"&lt;",">":
     pista.addEventListener(ev, () => { tocado = true; clearInterval(auto); auto = null; }, {passive:true, once:true}));
 })();
 
-/* ── Ranking de países ──────────────────────────────────────────── */
+/* El listado de países con sus nombres se retiró: el mapa ya lo cuenta, y
+   catorce nombres en columna competían con el globo en vez de acompañarlo. */
 const tope = Math.max(...PAISES.map(p => p[1]));
-pon("#ranking", PAISES.slice(0,8).map(([n,c],i) => `
-  <div class="rank-i" data-pais="${esc(n)}" style="--w:${Math.round(c/tope*100)}%">
-    <span class="rank-n">${String(i+1).padStart(2,"0")}</span>
-    <span class="rank-b"><b>${esc(n)}</b><span class="rank-barra"><i></i></span></span>
-    <span class="rank-c">${c}</span>
-  </div>`).join("") +
-  `<p style="margin:14px 0 0;font-size:.76rem;color:var(--bone-faint);line-height:1.5">
-     y ${PAISES.length-8} países más · <b style="color:var(--gold-hi)">${PAISES.reduce((a,p)=>a+p[1],0)} casos</b> en total</p>`);
 
-const rankIO = new IntersectionObserver((es,o) => es.forEach(e => {
-  if(e.isIntersecting){ e.target.classList.add("in"); o.unobserve(e.target); }
-}), {threshold:.4});
-$$(".rank-i").forEach(el => rankIO.observe(el));
+/* La señal de «desliza» de las fotos de vida: se apaga en cuanto lo haces,
+   porque a partir de ahí ya sobra. */
+(() => {
+  const t = $("#tira"), p = $(".tira-pista");
+  if(!t || !p) return;
+  const fuera = () => {
+    p.classList.add("fuera");
+    ["pointerdown","wheel","touchstart","scroll"].forEach(e => t.removeEventListener(e, fuera));
+  };
+  ["pointerdown","wheel","touchstart","scroll"].forEach(e =>
+    t.addEventListener(e, fuera, {passive:true}));
+})();
 
 /* ── Globo ──────────────────────────────────────────────────────── */
 (() => {
   const c = $("#mapaMundo"); if(!c) return;
   const ctx = c.getContext("2d");
   const W = c.width, H = c.height, R = W*.40, CX = W/2, CY = H/2, OFF = 3.4;
-  const N = 1200, pts = [], gr = Math.PI*(3-Math.sqrt(5));
-  for(let i=0;i<N;i++){
-    const y = 1-(i/(N-1))*2, r = Math.sqrt(1-y*y), th = gr*i;
-    pts.push([Math.cos(th)*r, y, Math.sin(th)*r]);
+  /* Los puntos ya no se reparten por toda la esfera: solo caen donde hay
+     tierra, así que el globo dibuja el mundo en vez de una bola de confeti.
+     Se calcula una vez, al arrancar. */
+  const dentro = (la, lo, poly) => {
+    let hit = false;
+    for(let i=0, j=poly.length-1; i<poly.length; j=i++){
+      const [ai,oi] = poly[i], [aj,oj] = poly[j];
+      if((oi > lo) !== (oj > lo) &&
+         la < (aj-ai)*(lo-oi)/(oj-oi) + ai) hit = !hit;
+    }
+    return hit;
+  };
+  const pts = [];
+  for(let la = -84; la <= 84; la += 2.1){
+    const cos = Math.cos(la*Math.PI/180);
+    const paso = 2.1 / Math.max(.18, cos);        // separación pareja en el globo
+    for(let lo = -180; lo < 180; lo += paso){
+      if(!TIERRA.some(poly => dentro(la, lo, poly))) continue;
+      const p = la*Math.PI/180, l = lo*Math.PI/180;
+      pts.push([Math.cos(p)*Math.cos(l), Math.sin(p), Math.cos(p)*Math.sin(l)]);
+    }
   }
   const marcas = PAISES.map(([n,casos,lat,lon]) => {
     const p = lat*Math.PI/180, l = lon*Math.PI/180;
     return {n, casos, v:[Math.cos(p)*Math.cos(l), Math.sin(p), Math.cos(p)*Math.sin(l)], x:0, y:0, z:-1};
   });
   const girar = v => a => [v[0]*Math.cos(a)+v[2]*Math.sin(a), v[1], -v[0]*Math.sin(a)+v[2]*Math.cos(a)];
-  let t0 = null, pausa = false, ang = OFF;
+  let t0 = null, pausa = false, ang = OFF, OFFm = OFF;
   const tip = $("#mapaTip");
 
   const cuadro = t => {
     if(t0 === null) t0 = t;
-    if(!pausa && !RM) ang = ((t-t0)/40000)*Math.PI*2 + OFF;
+    if(!pausa && !girando && !RM) ang = ((t-t0)/40000)*Math.PI*2 + OFFm;
     ctx.clearRect(0,0,W,H);
     const g = ctx.createRadialGradient(CX,CY,R*.5,CX,CY,R*1.35);
     g.addColorStop(0,"rgba(139,123,216,.20)"); g.addColorStop(1,"rgba(139,123,216,0)");
@@ -2038,10 +2445,11 @@ $$(".rank-i").forEach(el => rankIO.observe(el));
 
     for(const p of pts){
       const [x,y,z] = girar(p)(ang);
-      if(z < -.05) continue;
+      if(z < -.02) continue;
       const d = (z+1)/2;
-      ctx.globalAlpha = .10+d*.40; ctx.fillStyle = "#F4EFE6";
-      ctx.beginPath(); ctx.arc(CX+x*R, CY-y*R, 1.2+d*2.1, 0, 6.283); ctx.fill();
+      /* Cuanto más de cara, más nítido: da volumen sin dibujar sombras. */
+      ctx.globalAlpha = .06 + d*d*.62; ctx.fillStyle = "#F4EFE6";
+      ctx.beginPath(); ctx.arc(CX+x*R, CY-y*R, .7+d*1.7, 0, 6.283); ctx.fill();
     }
     const pulso = RM ? .6 : (Math.sin(t/700)*.5+.5);
     for(const m of marcas){
@@ -2070,7 +2478,33 @@ $$(".rank-i").forEach(el => rankIO.observe(el));
   }, {threshold:.15});
   io.observe(c);
 
+  /* Girar el globo con el dedo o el ratón. Sin esto el mapa era una postal
+     animada: no se podía llevar a tu país a mirarlo de frente. */
+  let girando = false, gx = 0, ang0 = 0, arrastre = 0;
+  const pista = $(".mapa-pista");
+  c.addEventListener("pointerdown", e => {
+    girando = true; arrastre = 0; gx = e.clientX; ang0 = ang;
+    t0 = null;                       // la vuelta automática arranca desde aquí
+    c.classList.add("tirando");
+    pista?.classList.add("fuera");
+    try { c.setPointerCapture(e.pointerId); } catch {}
+  });
+  const soltarGiro = () => {
+    if(!girando) return;
+    girando = false; c.classList.remove("tirando");
+    t0 = null; OFFm = ang;            // continúa desde donde lo dejaste
+  };
+  c.addEventListener("pointerup", soltarGiro);
+  c.addEventListener("pointercancel", soltarGiro);
+
   c.addEventListener("pointermove", e => {
+    if(girando){
+      const d = e.clientX - gx;
+      arrastre = Math.abs(d);
+      ang = ang0 + d * 0.008;
+      OFFm = ang; t0 = null;
+      return;
+    }
     const r = c.getBoundingClientRect();
     const px = (e.clientX-r.left)*(W/r.width), py = (e.clientY-r.top)*(H/r.height);
     let cerca = null, mejor = 46*46;
@@ -2080,8 +2514,6 @@ $$(".rank-i").forEach(el => rankIO.observe(el));
       if(d < mejor){ mejor = d; cerca = m; }
     }
     pausa = !!cerca;
-    $$(".rank-i").forEach(el => el.style.borderBottomColor =
-      (cerca && el.dataset.pais === cerca.n) ? "var(--gold)" : "");
     if(cerca){
       tip.textContent = `${cerca.n} · ${cerca.casos} casos`;
       tip.style.left = (cerca.x/W*r.width)+"px";
@@ -2091,7 +2523,6 @@ $$(".rank-i").forEach(el => rankIO.observe(el));
   });
   c.addEventListener("pointerleave", () => {
     pausa = false; tip.classList.remove("ver");
-    $$(".rank-i").forEach(el => el.style.borderBottomColor = "");
   });
 })();
 
@@ -2217,6 +2648,25 @@ const PORTADAS = [
   /* Sin pie: el rótulo era fijo y dejaba de describir la imagen en cuanto
      subías otra —decía «$7.000» sobre una captura de «+57.000»—. La captura ya
      lleva su cifra dentro; el texto sobraba y además mentía. */
+  /* Las transferencias: avisos del móvil con la captura dentro. Los huecos se
+     rellenan desde el panel de Recursos, igual que las capturas de clientes. */
+  const TRANSFERS = 6;
+  pon("#burbujas", Array.from({length:TRANSFERS}, (_, i) => `
+    <article class="burb" style="--r:${(i%2?1:-1)*(1.1+(i%3)*.7)}deg;--d:${120+i*90}ms">
+      <header class="burb-h">
+        <span class="burb-app" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round"><path d="M4 14h16M14 8l6 6-6 6"/></svg>
+        </span>
+        <b>Transferencia recibida</b>
+        <span class="burb-t">ahora</span>
+      </header>
+      <span class="ph entera" style="--hu:${(i*57+150)%360}" data-res="transfer-${i+1}"
+        data-res-tipo="imagen" data-res-opcional
+        data-res-label="Transferencia ${i+1}"
+        data-res-nota="La captura tal cual, sin recortar. Tapa lo que no quieras enseñar antes de subirla."><span>${i+1}</span></span>
+    </article>`).join(""));
+
   const CAPTURAS = 8;
   /* Riel: una sola fila, quieta. El movimiento lo da el dedo. */
   pon("#gridCapturas", Array.from({length:CAPTURAS}, (_, i) => `
@@ -2277,7 +2727,11 @@ const PORTADAS = [
   const inicial = n => (n.trim()[0] || "·").toUpperCase();
   const clave   = n => n.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"")
                         .replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
-  pon("#franja", TRANSFORMACIONES.map(([nom, rol, desde, hasta, plazo]) => `
+  /* La lista deja de estar clavada en el código: se pinta desde fuera para
+     que el estudio pueda cambiar nombres, añadir gente o quitarla. Y como la
+     marquesina duplica las tarjetas, hay que repintar entera cada vez —editar
+     una copia a mano dejaba la otra con el texto viejo. */
+  const fichaFranja = ([nom, rol, desde, hasta, plazo]) => `
     <article class="tf">
       <span class="tf-foto ph" data-res="cara-${clave(nom)}" data-res-tipo="imagen" data-res-opcional
         data-res-label="Cara de ${esc(nom)}"
@@ -2288,7 +2742,27 @@ const PORTADAS = [
           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 6h16M13 2l4 4-4 4"/></svg>` : ""}
         <b>${esc(hasta)}</b></div>
       <span class="tf-t">${esc(plazo)}</span>
-    </article>`).join(""));
+    </article>`;
+
+  window.pintarFranja = (filas) => {
+    const lista = Array.isArray(filas) && filas.length ? filas : TRANSFORMACIONES;
+    const caja = $("#franja");
+    if(!caja) return 0;
+    caja.removeAttribute("data-dup");            // que la marquesina vuelva a duplicar
+    caja.innerHTML = lista.map(fichaFranja).join("");
+    /* Se deja escrita para que sobreviva al exportar. */
+    const dep = $("#franja-datos");
+    if(dep) dep.textContent = JSON.stringify(lista);
+    window.KIT?.refrescar?.();
+    return lista.length;
+  };
+  window.FRANJA_BASE = TRANSFORMACIONES;
+
+  const guardadas = (() => {
+    try { return JSON.parse($("#franja-datos")?.textContent || "null"); }
+    catch { return null; }
+  })();
+  window.pintarFranja(guardadas);
 
   const mitadP = Math.ceil(PORTADAS.length/2);
   pon("#gridPortadas", PORTADAS.slice(0,mitadP).map(tarjetaP).join(""));
@@ -2327,33 +2801,60 @@ const PORTADAS = [
   if(!t.dataset.dup){ t.dataset.dup = "1"; t.innerHTML += t.innerHTML; }
 
   const quieto = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  let pausa = false, tirando = false, x0 = 0, s0 = 0, sueltaT = 0;
+  /* Ninguna pausa dura para siempre. Todo intento de «se para mientras pasa
+     algo» acaba en una tira muerta: el evento que debía reanudarla —el
+     `pointerleave`, el `pointerup`— falta más de lo que uno cree. Al abrir el
+     selector de archivo, al soltar fuera de la ventana, al cambiar de pestaña.
+     Así que la parada es siempre un plazo corto que se renueva mientras la
+     tocas de verdad, y vence sola. */
+  let tirando = false, x0 = 0, s0 = 0, tocadoHasta = 0;
+  const tocar = (ms = 2200) => { tocadoHasta = Date.now() + ms; };
+  /* La posición se lleva en una variable propia, no sumando sobre scrollLeft.
+     El navegador redondea scrollLeft a píxel entero: sumarle 0,42 y volver a
+     leerlo devolvía el mismo número, así que el avance no cuajaba nunca y la
+     tira se quedaba clavada. Aquí la fracción se acumula aparte y solo se
+     escribe cuando ya vale un píxel. */
+  let pos = t.scrollLeft;
 
   /* Con el dedo basta el scroll del navegador; el ratón necesita arrastre. */
   t.addEventListener("pointerdown", e => {
-    pausa = true; clearTimeout(sueltaT);
+    tocar(2500);
     if(e.pointerType !== "mouse") return;
     tirando = true; x0 = e.clientX; s0 = t.scrollLeft;
-    t.classList.add("tirando"); t.setPointerCapture(e.pointerId);
+    t.classList.add("tirando");
+    try { t.setPointerCapture(e.pointerId); } catch {}
   });
   t.addEventListener("pointermove", e => {
-    if(tirando) t.scrollLeft = s0 - (e.clientX - x0);
+    if(!tirando) return;
+    t.scrollLeft = s0 - (e.clientX - x0);
+    tocar(2500);                                 // mientras arrastras, se renueva
   });
   const soltar = () => {
     tirando = false; t.classList.remove("tirando");
-    clearTimeout(sueltaT); sueltaT = setTimeout(() => pausa = false, 1400);
+    tocar(1400);                                 // un respiro y sigue sola
   };
   t.addEventListener("pointerup", soltar);
   t.addEventListener("pointercancel", soltar);
-  t.addEventListener("pointerenter", e => { if(e.pointerType === "mouse") pausa = true; });
-  t.addEventListener("pointerleave", () => { if(!tirando) soltar(); });
+  t.addEventListener("touchstart", () => tocar(), {passive:true});
+  t.addEventListener("wheel", () => tocar(), {passive:true});
 
   const paso = () => {
     const mitad = t.scrollWidth / 2;
     if(mitad > 0){
-      if(!pausa) t.scrollLeft += 0.42;
-      if(t.scrollLeft >= mitad) t.scrollLeft -= mitad;
-      else if(t.scrollLeft <= 0) t.scrollLeft = mitad - 1;
+      /* Si el plazo venció y seguimos «arrastrando», es que se perdió el
+         pointerup: se suelta sola. Sin este seguro, un clic cuyo final no
+         llega deja la tira parada para el resto de la visita. */
+      if(tirando && Date.now() > tocadoHasta) soltar();
+      const parada = tirando || Date.now() < tocadoHasta;
+      /* Si la moviste tú —dedo, rueda, teclado—, el acumulador se pone al día
+         antes de seguir; si no, se quedaría peleando con tu gesto. */
+      if(parada || Math.abs(t.scrollLeft - Math.round(pos)) > 2) pos = t.scrollLeft;
+      if(!parada){
+        pos += 0.42;
+        if(pos >= mitad) pos -= mitad;
+        else if(pos < 0) pos += mitad;
+        t.scrollLeft = pos;
+      }
     }
     const c = t.getBoundingClientRect(), cx = c.left + c.width/2;
     /* La referencia es el ancho de la foto, no el del contenedor: si midiera el
@@ -2809,27 +3310,47 @@ const PORTADAS = [
   const pista = $("#gridCapturas"), riel = $("#riel");
   const barra = $("#rielBarra"), cuenta = $("#rielN");
   if(!pista || !riel) return;
+  /* Se duplica el contenido para que el bucle no tenga costura: al pasar la
+     mitad se resta la mitad y la vuelta es invisible. */
+  if(!pista.dataset.dup && pista.children.length){
+    pista.dataset.dup = "1";
+    pista.innerHTML += pista.innerHTML;
+  }
   const tarjetas = () => [...pista.querySelectorAll(".captura")];
+  const REALES = Math.max(1, tarjetas().length / 2);
 
   /* Arrastrar con el ratón, como en el móvil */
   let tirando = false, x0 = 0, s0 = 0, movido = 0;
   pista.addEventListener("pointerdown", e => {
     if(e.pointerType === "touch") return;          // el táctil ya funciona solo
     tirando = true; movido = 0;
-    x0 = e.clientX; s0 = pista.scrollLeft;
+    x0 = ultimoX = e.clientX; s0 = pista.scrollLeft; vel = 0;
     pista.classList.add("tirando");
     pista.setPointerCapture(e.pointerId);
   });
+  /* Un gesto mueve algo más que su propia distancia: arrastrando 1:1 hacen
+     falta tres pasadas para ver ocho capturas y se siente pesado. */
+  const EMPUJE = 1.7;
+  let ultimoX = 0, vel = 0;
   pista.addEventListener("pointermove", e => {
     if(!tirando) return;
-    const d = e.clientX - x0;
+    const d = (e.clientX - x0) * EMPUJE;
+    vel = (e.clientX - ultimoX) * EMPUJE; ultimoX = e.clientX;
     movido = Math.max(movido, Math.abs(d));
     pista.scrollLeft = s0 - d;
   });
+  /* Y al soltar sigue corriendo un poco, como en el móvil. */
+  const frenar = () => {
+    if(Math.abs(vel) < .4) return;
+    pista.scrollLeft -= vel;
+    vel *= 0.93;
+    requestAnimationFrame(frenar);
+  };
   const soltar = () => {
     if(!tirando) return;
     tirando = false;
     pista.classList.remove("tirando");
+    requestAnimationFrame(frenar);
     marcar();
   };
   pista.addEventListener("pointerup", soltar);
@@ -2850,16 +3371,48 @@ const PORTADAS = [
     });
     /* En los extremos manda el borde: con tres a la vista, la primera y la
        última nunca llegan a estar centradas, y el contador se quedaba en 02/08. */
-    const max = pista.scrollWidth - pista.clientWidth;
-    if(pista.scrollLeft < 4) cerca = 0;
-    else if(pista.scrollLeft > max - 4) cerca = t.length - 1;
+    /* Con el bucle no hay principio ni final: la cuenta y la barra se calculan
+       sobre la mitad real, y los degradados de los bordes se quedan siempre
+       —al otro lado del borde SIEMPRE hay más—. */
     t[cerca].classList.add("foco");
-    if(barra)  barra.style.width = (max > 1 ? (pista.scrollLeft / max) * 100 : 100) + "%";
+    const mitad = pista.scrollWidth / 2;
+    const pos = mitad > 0 ? (pista.scrollLeft % mitad) / mitad : 0;
+    if(barra)  barra.style.width = (pos * 100).toFixed(1) + "%";
     if(cuenta) cuenta.textContent =
-      String(cerca+1).padStart(2,"0") + " / " + String(t.length).padStart(2,"0");
-    riel.toggleAttribute("data-ini", pista.scrollLeft < 4);
-    riel.toggleAttribute("data-fin", pista.scrollLeft > max - 4);
+      String((cerca % REALES) + 1).padStart(2,"0") + " / " + String(REALES).padStart(2,"0");
+    riel.removeAttribute("data-ini");
+    riel.removeAttribute("data-fin");
   };
+
+  /* Movimiento continuo, no a saltos: un collage que se desliza. Solo se
+     detiene mientras lo tocas. Nada de pausar al pasar el ratón por encima —un
+     `mouseenter` sin su `mouseleave` dejaba el carrusel muerto el resto de la
+     visita, y eso pasa más de lo que parece. */
+  const RM_ = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let quieta = 0;
+  const pausar = (ms = 2200) => { quieta = Date.now() + ms; };
+  ["pointerdown","wheel","touchstart","keydown"].forEach(ev =>
+    pista.addEventListener(ev, () => pausar(), {passive:true}));
+
+  /* Misma cuenta aparte que en la tira: sumar fracciones sobre scrollLeft no
+     avanza, porque el navegador lo redondea a píxel entero. */
+  let posR = pista.scrollLeft;
+  const deslizar = () => {
+    const mitad = pista.scrollWidth / 2;
+    if(tirando && Date.now() > quieta + 2500) soltar();
+    const parada = tirando || Date.now() < quieta;
+    if(mitad > 0){
+      if(parada || Math.abs(pista.scrollLeft - Math.round(posR)) > 2) posR = pista.scrollLeft;
+      if(!parada){
+        posR += 0.55;
+        if(posR >= mitad) posR -= mitad;
+        else if(posR < 0) posR += mitad;
+        pista.scrollLeft = posR;
+      }
+    }
+    requestAnimationFrame(deslizar);
+  };
+  if(!RM_) requestAnimationFrame(deslizar);
 
   let pedido = false;
   pista.addEventListener("scroll", () => {

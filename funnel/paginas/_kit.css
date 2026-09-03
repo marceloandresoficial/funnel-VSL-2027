@@ -181,6 +181,15 @@ h1,h2,h3,h4{font-family:var(--sys);font-weight:800;margin:0;text-wrap:balance;le
   background:linear-gradient(150deg,#FFFFFF08,transparent 55%)}
 .ph>span{position:relative;font-family:var(--data);font-weight:700;font-size:.8em;letter-spacing:.06em;color:#F4EFE6;opacity:.5}
 .ph.cargada::before,.ph.cargada>span{display:none}
+/* El rótulo de un hueco —«Con el equipo», «@CUENTA», «EN ESCENARIO»— es una
+   nota para quien monta la página, no contenido para quien la lee. Se veía en
+   la publicada, y encima de la propia foto cuando ya estaba puesta. Ahora solo
+   existe dentro del estudio, y solo mientras el hueco siga vacío. */
+.ph > span{display:none}
+/* Excepción: la inicial de una persona sin foto SÍ es contenido —la ficha
+   nunca queda con un círculo hueco—, así que esa se queda. */
+.tf-foto:not(.cargada) > span{display:block}
+:root[data-estudio] .ph:not(.cargada) > span{display:block}
 .ph-48{width:48px;height:48px;font-size:14px;border-radius:10px}
 .ph-64{width:64px;height:64px;font-size:17px;border-radius:50%}
 .ph-sq{width:100%;aspect-ratio:4/5;border-radius:16px;font-size:34px}
@@ -213,13 +222,18 @@ h1,h2,h3,h4{font-family:var(--sys);font-weight:800;margin:0;text-wrap:balance;le
 
 /* ── Marquesinas ─────────────────────────────────────────────────── */
 
-.mq{overflow:hidden;position:relative;
+/* La marquesina ya no se mueve con una animación de CSS sino desplazando la
+   caja: así el dedo y el ratón pueden empujarla, frenarla y devolverla, que
+   con `transform` era imposible. El movimiento continuo lo pone el kit. */
+.mq{overflow-x:auto;overflow-y:hidden;position:relative;
+  overscroll-behavior-x:contain;touch-action:pan-x;cursor:grab;
+  scrollbar-width:none;-ms-overflow-style:none;
   mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);
   -webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent)}
-.mq-t{display:flex;width:max-content;gap:14px;animation:mq var(--sp,52s) linear infinite}
-.mq-t.rev{animation-direction:reverse}
-.mq:hover .mq-t{animation-play-state:paused}
-@keyframes mq{to{transform:translateX(calc(-50% - 7px))}}
+.mq::-webkit-scrollbar{display:none}
+.mq.tirando{cursor:grabbing}
+.mq.tirando *{pointer-events:none}
+.mq-t{display:flex;width:max-content;gap:14px}
 .mq-head{font-family:var(--data);font-size:.63rem;letter-spacing:.22em;text-transform:uppercase;color:var(--bone-faint);text-align:center;margin:0 0 20px}
 
 /* ── Tarjeta de caso ─────────────────────────────────────────────── */
@@ -311,6 +325,17 @@ h1,h2,h3,h4{font-family:var(--sys);font-weight:800;margin:0;text-wrap:balance;le
 }
 
 /* Slots de recurso sin cargar, en modo recursos */
+/* Dentro del estudio, un hueco vacío se ve como lo que es: un sitio donde
+   cargar una imagen. Fuera del estudio esto no existe, así que el visitante
+   nunca ve una invitación a subir nada. */
+/* Todo recurso es pulsable dentro del estudio. El vacío se anuncia con línea
+   de puntos —«aquí falta algo»—; el lleno no lleva adorno hasta que pasas por
+   encima, para no ensuciar la vista con recuadros sobre cada foto. */
+:root[data-estudio] [data-res]{cursor:pointer;transition:outline-color .2s ease,background-color .2s ease}
+:root[data-estudio] [data-res]:not(.cargada){outline:1px dashed #D6A54455;outline-offset:2px}
+:root[data-estudio] [data-res]:not(.cargada):hover{outline:1.5px dashed var(--gold);background-color:#D6A5441a}
+:root[data-estudio] [data-res].cargada:hover{outline:2px solid var(--gold);outline-offset:2px}
+
 :root[data-modo-recursos] [data-res]{cursor:pointer!important}
 :root[data-modo-recursos] [data-res-vacio]{
   outline:1px dashed var(--gold);outline-offset:3px;border-radius:6px;

@@ -316,6 +316,20 @@ body.editando .modo-edit{display:flex}
   transition:border-color .2s var(--e),background .2s var(--e)}
 .bloque:hover{border-color:var(--acento);background:#FFFFFF08}
 .bloque.oculto{opacity:.42}
+/* Las tarjetas de dos piezas —borrados y librería— no tienen número, así que
+   con tres columnas el texto caía en la de 26px y salía en vertical. */
+.bloque.dos{grid-template-columns:1fr auto}
+.plegado{margin:14px 0 4px;border-top:1px solid var(--ui-line);padding-top:12px}
+.plegado > summary{cursor:pointer;list-style:none;display:flex;align-items:baseline;gap:8px;
+  font-family:var(--ui-mono);font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ui-tx-3);padding:4px 0;user-select:none}
+.plegado > summary::-webkit-details-marker{display:none}
+.plegado > summary span{margin-left:auto;color:var(--oro);font-size:.58rem}
+.plegado[open] > summary span::after{content:""}
+.plegado > summary:hover{color:var(--ui-tx-2)}
+.plegado[open] > summary span{color:var(--ui-tx-3)}
+#listaBorrados{margin-top:8px}
+
 .bloque-n{width:26px;height:26px;border-radius:7px;display:grid;place-items:center;
   background:#FFFFFF0d;font-family:var(--ui-mono);font-size:.62rem;color:var(--acento-hi)}
 .bloque-b{min-width:0}
@@ -351,6 +365,9 @@ body.editando .modo-edit{display:flex}
 .res.lleno{border-color:#63C08A44;background:#63C08A0a}
 .res:hover{border-color:var(--acento)}
 .res{cursor:default;transition:border-color .2s var(--e)}
+/* Cuando llegas a un recurso desde el lienzo, se señala un momento para que
+   sepas cuál de todos es el que venías a tocar. */
+.res.apuntado{border-color:var(--oro);box-shadow:0 0 0 3px #D6A5442e,0 0 26px -6px #D6A54488}
 .res-ir{margin-left:auto;font-family:var(--ui-mono);font-size:.52rem;letter-spacing:.1em;
   text-transform:uppercase;color:var(--acento-hi);opacity:0;transition:opacity .2s var(--e)}
 .res:hover .res-ir{opacity:.9}
@@ -441,6 +458,38 @@ body.panel-abierto .panel{display:flex}
 .ed-sel .tag{font-family:var(--ui-mono);font-size:.6rem;letter-spacing:.1em;color:var(--oro-hi);text-transform:uppercase}
 .ed-sel .txt{font-size:.75rem;color:var(--ui-tx-2);margin-top:5px;line-height:1.45;
   display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+/* Qué diseño se está tocando. Sin esto no hay forma de saber si un cambio irá
+   al móvil o al escritorio, y es justo lo que se presta a confusión. */
+.per{border:1px solid var(--ui-line);border-radius:10px;background:var(--ui-raise);
+  margin-bottom:6px;padding:0 11px}
+.per > summary{cursor:pointer;list-style:none;display:flex;align-items:baseline;gap:9px;
+  padding:10px 0;user-select:none}
+.per > summary::-webkit-details-marker{display:none}
+.per > summary b{font-size:.78rem;font-weight:700;letter-spacing:-.02em;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.per > summary span{margin-left:auto;flex:none;font-family:var(--ui-mono);
+  font-size:.58rem;color:var(--oro-hi)}
+.per[open]{border-color:var(--oro);padding-bottom:11px}
+.per[open] > summary{border-bottom:1px solid var(--ui-line);margin-bottom:10px}
+
+.franja-ed{border:1px solid var(--ui-line-2);border-radius:11px;padding:12px;
+  margin-bottom:14px;background:#FFFFFF05}
+.fr-c{display:block;margin-bottom:8px}
+.fr-c > span{display:block;font-size:.66rem;color:var(--ui-tx-3);margin-bottom:4px}
+.fr-c .inp{width:100%}
+.fr-acc{display:flex;flex-wrap:wrap;gap:5px;margin-top:11px}
+.fr-acc .mini{flex:0 0 auto}
+.fr-acc [data-fr-nueva]{flex:1 1 auto;border-color:var(--oro);color:var(--oro-hi)}
+
+.ed-vista{display:flex;flex-wrap:wrap;gap:5px;align-items:baseline;
+  margin:10px 0 16px;padding:7px 10px;border-radius:7px;
+  border:1px solid var(--ui-line-2);background:#FFFFFF06;
+  font-size:.68rem;color:var(--ui-tx-3)}
+.ed-vista b{color:var(--oro-hi);font-weight:700}
+.ed-vista.mov{border-color:#3E9BF055;background:#3E9BF00f}
+.ed-vista.mov b{color:#8FC4F5}
+.ed-vista span{font-size:.64rem}
+
 .ctrl{margin-bottom:15px}
 .ctrl-l{display:flex;align-items:center;gap:8px;margin-bottom:7px}
 .ctrl-l label{font-size:.72rem;font-weight:600;color:var(--ui-tx-2)}
@@ -795,6 +844,20 @@ function aplicarParches(est, parches){
   let n = 0;
   for(const p of parches){
     if(!p?.id || est.parchesHechos.includes(p.id)) continue;
+
+    /* Colocar una sección nueva. Tu orden guardado enumera los bloques uno a
+       uno, así que uno que no esté en la lista se va al final por muy arriba
+       que esté en el HTML. Esto lo mete en su sitio, una sola vez. */
+    if(p.tipo === "orden"){
+      const e2 = est.pags?.[p.pag]?.estructura;
+      if(e2?.orden?.length && !e2.orden.includes(String(p.meter))){
+        const i = e2.orden.indexOf(String(p.antesDe));
+        if(i >= 0){ e2.orden.splice(i, 0, String(p.meter)); n++; }
+      }
+      est.parchesHechos.push(p.id);
+      continue;
+    }
+
     const t = est.pags?.[p.pag]?.textos;
     if(!t) continue;
     /* Solo si sigue roto: si ya lo arreglaste tú, el parche se da por hecho
@@ -856,6 +919,10 @@ const pagEstado = slug => {
   p.recursos ||= {}; p.textos ||= {}; p.estilos ||= {};
   p.enlaces  ||= {}; p.notas  ||= []; p.estructura ||= {orden:[], ocultos:[]};
   p.slotsNuevos ||= []; p.huellas ||= {}; p.borrados ||= [];
+  /* Escritorio y móvil son dos diseños, no uno escalado: cada uno guarda sus
+     tamaños y tocar uno no mueve el otro. */
+  p.estilosMovil ||= {};
+  p.datos ||= {};            // listas que la página pinta: la franja, de momento
   return p;
 };
 
@@ -1010,7 +1077,125 @@ function aplicarTodo(d){
   for(const [ruta, css] of Object.entries(st.estilos)){
     const el = porRuta(d, ruta); if(el) Object.assign(el.style, css);
   }
+  pintarMovil();
+  /* Marca de que la página está dentro del estudio: la usa el kit para
+     enseñar los huecos vacíos como zonas donde soltar una imagen. No viaja
+     al exportar. */
+  d.documentElement.dataset.estudio = "1";
+  const filas = pagEstado(ACT).datos?.franja;
+  if(filas?.length){
+    marco.contentWindow?.pintarFranja?.(filas);
+    recolocarRecursos();          // las caras vuelven a su sitio tras repintar
+  }
+  d.addEventListener("click", clicEnHueco, true);
   KIT?.refrescar();
+}
+
+/* ── La franja: personas que se pueden cambiar, añadir y quitar ────
+   Las fichas se generan de una lista, y la marquesina las duplica: por eso
+   escribir encima de una no servía —la copia seguía con el texto viejo—. Se
+   edita la lista y se repinta entera. */
+const CAMPOS_FRANJA = [
+  {k:0, lab:"Nombre",       ph:"Nombre y apellido"},
+  {k:1, lab:"Qué hace",     ph:"Coach Fitness, Terapeuta…"},
+  {k:2, lab:"Antes",        ph:"$3K — vacío si no aplica"},
+  {k:3, lab:"Ahora",        ph:"$25K"},
+  {k:4, lab:"Plazo",        ph:"en 90 días · al mes"},
+];
+
+/** La lista viva: la tuya si la has tocado, si no la que trae la página. */
+/** Vuelve a colocar todas las imágenes de la página. Repintar un trozo crea
+    elementos nuevos y vacíos: las fotos que ya estaban puestas se quedaban en
+    el estado pero desaparecían de la pantalla. */
+function recolocarRecursos(){
+  const KIT = marco.contentWindow?.KIT; if(!KIT) return;
+  const st = pagEstado(ACT).recursos;
+  for(const [id, val] of Object.entries(st)) if(val) KIT.aplicarRecurso(id, val);
+}
+
+/** Misma normalización que usa la página para nombrar el hueco de cada cara. */
+const claveCara = n => "cara-" + String(n).toLowerCase().normalize("NFD")
+  .replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+
+function filasFranja(){
+  const st = pagEstado(ACT);
+  if(!st.datos.franja?.length)
+    st.datos.franja = (marco.contentWindow?.FRANJA_BASE || []).map(f => [...f]);
+  return st.datos.franja;
+}
+
+/** El hueco de la cara se llama por el nombre, así que al renombrar a alguien
+    su foto quedaba huérfana bajo el nombre viejo. Se muda con ella. */
+function mudarCara(nombreViejo, nombreNuevo){
+  const st = pagEstado(ACT).recursos;
+  const viejo = claveCara(nombreViejo), nuevo = claveCara(nombreNuevo);
+  if(viejo === nuevo || !st[viejo]) return;
+  st[nuevo] = st[viejo];
+  delete st[viejo];
+}
+
+function guardarFranja(filas, etiqueta, foco = -1){
+  const antes = filasFranja().map(f => [...f]);
+  const focoAntes = Math.min(foco, antes.length - 1);
+  /* Repintar la franja destruye la tarjeta elegida, y con ella el panel: sin
+     volver a señalar a la misma persona, el botón de «añadir» desaparecía
+     justo después de tocarlo. */
+  const poner = (lista, iFoco) => {
+    pagEstado(ACT).datos.franja = lista.map(f => [...f]);
+    marco.contentWindow?.pintarFranja?.(lista);
+    recolocarRecursos();
+    marcar();
+    const d = marco.contentDocument;
+    const t = iFoco >= 0 && d ? $$("#franja .tf", d)[iFoco] : null;
+    if(t) seleccionar(t);
+    else { sel = null; pintarEditor(); }
+    if($(".hoja.act")?.id === "hRecursos") pintarRecursos();
+  };
+  registrar(etiqueta, () => poner(antes, focoAntes), () => poner(filas, foco));
+  poner(filas, foco);
+}
+
+/** Índice de la ficha a la que pertenece el elemento elegido. */
+function indiceFranja(el){
+  const ficha = el?.closest?.(".tf");
+  if(!ficha) return -1;
+  const nom = $(".tf-q b", ficha)?.textContent.replace(/\s+/g," ").trim();
+  return filasFranja().findIndex(f => f[0] === nom);
+}
+
+/** Clic directo sobre el hueco de una imagen: abre el selector de archivo.
+    Hasta ahora el hueco solo cambiaba el cursor —una invitación sin nada
+    detrás— y había que ir al panel de Recursos a buscarlo por su nombre. */
+function clicEnHueco(e){
+  const hueco = e.target.closest?.("[data-res]");
+  if(!hueco) return;
+  e.preventDefault(); e.stopPropagation();
+  const id = hueco.dataset.res;
+  const nombre = hueco.dataset.resLabel || id;
+
+  /* Vídeos, agendas y contadores no son un archivo: se pegan por URL o se
+     escriben. Para esos, el clic lleva al panel con el recurso ya delante. */
+  if((hueco.dataset.resTipo || "imagen") !== "imagen"){
+    abrirHoja("recursos");
+    setTimeout(() => {
+      const caja = $(`#hRecursos .res[data-id="${CSS.escape(id)}"]`);
+      if(!caja) return;
+      caja.scrollIntoView({block:"center", behavior:"smooth"});
+      caja.classList.add("apuntado");
+      setTimeout(() => caja.classList.remove("apuntado"), 1800);
+      $("[data-campo]", caja)?.focus();
+    }, 260);
+    return;
+  }
+
+  /* Cualquier imagen, esté vacía o ya puesta: el clic abre el selector para
+     cambiarla. Dentro del estudio eso es lo que uno quiere hacer con una
+     foto; verla grande sigue funcionando en la página publicada. */
+  const medida = Math.round(hueco.getBoundingClientRect().width) || 0;
+  subirImagen(uri => {
+    ponerRecurso(id, uri);
+    aviso(`«${nombre}» ${hueco.classList.contains("cargada") ? "cambiada" : "cargada"}`, "ok");
+  }, medida);
 }
 
 /* ═══ RIEL IZQUIERDO ════════════════════════════════════════════════ */
@@ -1120,6 +1305,10 @@ $$(".tool[data-vista]").forEach(b => b.addEventListener("click", () => {
   $$(".tool[data-vista]").forEach(x => x.classList.remove("act"));
   b.classList.add("act");
   $("#lienzo").dataset.vista = b.dataset.vista;
+  /* El panel pasa a mostrar los valores del otro diseño, y las reglas del
+     móvil se repintan según se vean o no en esta vista. */
+  pintarMovil();
+  if(sel) pintarEditor();
   requestAnimationFrame(medirAncho);
   mapaPide(320);
 }));
@@ -1237,6 +1426,31 @@ function pintarRecursos(){
       </p>
     </div>
 
+    ${(() => {
+      /* Las personas de la franja se gestionan aquí, que es donde se las busca:
+         el panel ya lista sus caras, así que esperar el resto en otro sitio era
+         mandarte a adivinar. */
+      if(!marco.contentWindow?.pintarFranja) return "";
+      const filas = filasFranja();
+      return `<h3 class="subt" style="margin-top:0">Personas de la franja · ${filas.length}</h3>
+      <div id="listaPersonas">${filas.map((f, i) => `
+        <details class="per" data-per="${i}">
+          <summary><b>${esc(f[0] || "(sin nombre)")}</b>
+            <span>${esc(f[3] || "")}${f[4] ? " · " + esc(f[4]) : ""}</span></summary>
+          ${CAMPOS_FRANJA.map(c => `
+            <label class="fr-c"><span>${c.lab}</span>
+              <input class="inp" data-pc="${i}" data-pk="${c.k}" value="${esc(f[c.k] || "")}"
+                     placeholder="${esc(c.ph)}"></label>`).join("")}
+          <div class="fr-acc">
+            <button class="mini" data-pmov="-1" title="Subir">↑</button>
+            <button class="mini" data-pmov="1" title="Bajar">↓</button>
+            <button class="mini rojo" data-pquitar style="margin-left:auto">Quitar</button>
+          </div>
+        </details>`).join("")}</div>
+      <button class="mini" id="perNueva" style="width:100%;margin:0 0 12px;padding:10px;
+        border-color:var(--oro);color:var(--oro-hi)">+ Añadir persona</button>`;
+    })()}
+
     <button class="mini" id="bLote" style="width:100%;margin-bottom:7px;padding:11px;
       border-color:var(--acento);color:var(--acento-hi)">
       ⇪ Subir varias imágenes a la vez
@@ -1256,6 +1470,45 @@ function pintarRecursos(){
     }).join("")}</div>
 
     <div id="resLista"></div>`;
+
+  /* Personas de la franja */
+  $$("[data-pc]", cont).forEach(inp => {
+    const i = +inp.dataset.pc, k = +inp.dataset.pk;
+    inp.addEventListener("change", () => {
+      const filas = filasFranja().map(f => [...f]);
+      if(filas[i][k] === inp.value) return;
+      if(k === 0) mudarCara(filas[i][0], inp.value);
+      filas[i][k] = inp.value;
+      guardarFranja(filas, "dato de la franja");
+    });
+    inp.addEventListener("keydown", e => { if(e.key === "Enter") inp.blur(); });
+  });
+  $$("[data-pmov]", cont).forEach(b => b.addEventListener("click", () => {
+    const i = +b.closest("[data-per]").dataset.per, j = i + (+b.dataset.pmov);
+    const filas = filasFranja().map(f => [...f]);
+    if(j < 0 || j >= filas.length) return;
+    [filas[i], filas[j]] = [filas[j], filas[i]];
+    guardarFranja(filas, "persona movida");
+  }));
+  $$("[data-pquitar]", cont).forEach(b => b.addEventListener("click", () => {
+    const i = +b.closest("[data-per]").dataset.per;
+    const filas = filasFranja().map(f => [...f]);
+    const quien = filas[i][0];
+    filas.splice(i, 1);
+    guardarFranja(filas, "persona quitada");
+    aviso(`«${quien}» fuera de la franja. Puedes deshacerlo.`, "ok");
+  }));
+  $("#perNueva", cont)?.addEventListener("click", () => {
+    const filas = filasFranja().map(f => [...f]);
+    filas.push(["Nombre y apellido","Qué hace","","$0K","al mes"]);
+    guardarFranja(filas, "persona añadida");
+    aviso("Persona añadida al final de la lista. Ábrela y rellena sus campos.", "ok");
+    setTimeout(() => {
+      const ult = $("#listaPersonas .per:last-child");
+      if(ult){ ult.open = true; ult.scrollIntoView({block:"center", behavior:"smooth"});
+               $("input", ult)?.focus(); }
+    }, 120);
+  });
 
   $("#bLote", cont)?.addEventListener("click", subirVarias);
   $("#bAdelgazar", cont)?.addEventListener("click", adelgazar);
@@ -1795,7 +2048,56 @@ function rehacer(){
 /* ── Aplicadores en caliente ─────────────────────────────────────── */
 const kebab = k => k.replace(/[A-Z]/g, m => "-" + m.toLowerCase());
 
-function ponerEstilos(ruta, obj){
+/* La vista del lienzo decide dónde se guarda. En «Versión móvil» los ajustes
+   van al cajón del móvil; en PC y tablet, al de escritorio. */
+const enMovil = () => $("#lienzo")?.dataset.vista === "movil";
+const cajaEstilos = () => enMovil() ? pagEstado(ACT).estilosMovil : pagEstado(ACT).estilos;
+
+/** Reescribe la hoja de estilos del móvil dentro del lienzo.
+    No se tocan los `style=` de los elementos: eso es de escritorio. Va como
+    regla dentro de la media query, apuntada por `data-r`, y con !important
+    para poder ganarle a la escala tipográfica general. */
+/** Las reglas del móvil para un documento dado. Sin envolver sirven para verlas
+    en el lienzo; envueltas en la media query, para publicar. */
+function reglasMovil(d, mapa, envolver){
+  const reglas = [];
+  for(const [ruta, css] of Object.entries(mapa || {})){
+    const el = porRuta(d, ruta); if(!el) continue;
+    el.setAttribute("data-r", ruta);
+    const cuerpo = Object.entries(css || {})
+      .map(([k, v]) => `${kebab(k)}:${v}!important`).join(";");
+    /* `:root` delante sube la especificidad: sin eso, la escala tipográfica de
+       la página —también !important y con el mismo peso— ganaba por ir después
+       en el documento, y tu ajuste no se veía. */
+    if(cuerpo) reglas.push(`:root [data-r="${ruta}"]{${cuerpo}}`);
+  }
+  if(!reglas.length) return "";
+  return envolver ? `@media(max-width:640px){${reglas.join("")}}` : reglas.join("");
+}
+
+/** El lienzo del estudio en «Versión móvil» no llega a estrecharse hasta los
+    640px, así que una media query no se activaría y estarías ajustando a
+    ciegas. Mientras editas en esa vista las reglas van sin envolver —se ven—;
+    al publicar se envuelven, que es donde tienen que valer solo en el móvil. */
+function pintarMovil(){
+  const d = marco.contentDocument; if(!d?.head) return;
+  let hoja = d.getElementById("__movil");
+  if(!hoja){ hoja = d.createElement("style"); hoja.id = "__movil"; d.head.appendChild(hoja); }
+  hoja.textContent = reglasMovil(d, pagEstado(ACT).estilosMovil, !enMovil());
+}
+
+function ponerEstilos(ruta, obj, movil = false){
+  if(movil){
+    const st = pagEstado(ACT).estilosMovil;
+    if(obj && Object.keys(obj).length) st[ruta] = {...obj}; else delete st[ruta];
+    pintarMovil(); marcar();
+    if(sel && rutaDe(sel) === ruta) pintarEditor();
+    return;
+  }
+  return ponerEstilosPC(ruta, obj);
+}
+
+function ponerEstilosPC(ruta, obj){
   const st = pagEstado(ACT).estilos;
   const previas = st[ruta] || {};
   const el = porRuta(marco.contentDocument, ruta);
@@ -2096,12 +2398,37 @@ function pintarEditor(){
   }
   const cs = marco.contentWindow.getComputedStyle(sel);
   const num = v => parseFloat(v) || 0;
-  const guard = pagEstado(ACT).estilos[rutaDe(sel)] || {};
+  const guard = cajaEstilos()[rutaDe(sel)] || {};
 
   cont.innerHTML = `
     <div class="ed-sel">
       <div class="tag">&lt;${sel.tagName.toLowerCase()}&gt;${sel.className ? " ." + String(sel.className).split(" ").filter(Boolean).slice(0,2).join(".") : ""}</div>
       <div class="txt">${esc((sel.textContent || "").trim().slice(0,120) || "(bloque sin texto)")}</div>
+    </div>
+
+    ${(() => {
+      const i = indiceFranja(sel);
+      if(i < 0) return "";
+      const f = filasFranja()[i];
+      return `<div class="franja-ed">
+        <h3 class="subt" style="margin-top:0">Persona ${i+1} de ${filasFranja().length}</h3>
+        ${CAMPOS_FRANJA.map(c => `
+          <label class="fr-c"><span>${c.lab}</span>
+            <input class="inp" data-fr="${c.k}" value="${esc(f[c.k] || "")}"
+                   placeholder="${esc(c.ph)}"></label>`).join("")}
+        <div class="fr-acc">
+          <button class="mini" data-fr-antes title="Mover antes">↑</button>
+          <button class="mini" data-fr-despues title="Mover después">↓</button>
+          <button class="mini" data-fr-nueva>+ Añadir persona</button>
+          <button class="mini rojo" data-fr-quitar>Quitar</button>
+        </div>
+        <p class="kit-nota">La foto se cambia pulsando el círculo de la ficha.</p>
+      </div>`;
+    })()}
+
+    <div class="ed-vista${enMovil() ? " mov" : ""}">
+      Ajustando <b>${enMovil() ? "móvil" : "escritorio"}</b>
+      <span>· el otro diseño no se toca</span>
     </div>
 
     <h3 class="subt">Tipografía</h3>
@@ -2173,6 +2500,44 @@ function pintarEditor(){
       if(e.key === "Escape"){ num.value = r.value; num.blur(); }
     });
   });
+  /* Campos de la franja */
+  const iFr = indiceFranja(sel);
+  if(iFr >= 0){
+    $$("[data-fr]", cont).forEach(inp => {
+      const k = +inp.dataset.fr;
+      inp.addEventListener("change", () => {
+        const filas = filasFranja().map(f => [...f]);
+        if(filas[iFr][k] === inp.value) return;
+        if(k === 0) mudarCara(filas[iFr][0], inp.value);
+        filas[iFr][k] = inp.value;
+        guardarFranja(filas, "dato de la franja", iFr);
+      });
+      inp.addEventListener("keydown", e => { if(e.key === "Enter") inp.blur(); });
+    });
+    const mover = paso => {
+      const filas = filasFranja().map(f => [...f]);
+      const j = iFr + paso;
+      if(j < 0 || j >= filas.length) return;
+      [filas[iFr], filas[j]] = [filas[j], filas[iFr]];
+      guardarFranja(filas, "persona movida", j);
+    };
+    $("[data-fr-antes]", cont).addEventListener("click", () => mover(-1));
+    $("[data-fr-despues]", cont).addEventListener("click", () => mover(+1));
+    $("[data-fr-nueva]", cont).addEventListener("click", () => {
+      const filas = filasFranja().map(f => [...f]);
+      filas.splice(iFr + 1, 0, ["Nombre y apellido","Qué hace","","$0K","al mes"]);
+      guardarFranja(filas, "persona añadida", iFr + 1);
+      aviso("Persona añadida. Rellena sus campos y pulsa la ficha para verla.", "ok");
+    });
+    $("[data-fr-quitar]", cont).addEventListener("click", () => {
+      const filas = filasFranja().map(f => [...f]);
+      const quien = filas[iFr][0];
+      filas.splice(iFr, 1);
+      guardarFranja(filas, "persona quitada", Math.min(iFr, filas.length - 1));
+      aviso(`«${quien}» fuera de la franja. Puedes deshacerlo.`, "ok");
+    });
+  }
+
   $("#edBorrar", cont).addEventListener("click", borrarElegido);
   $$("#edPaleta button", cont).forEach(b => b.addEventListener("click", () => {
     $$("#edPaleta button", cont).forEach(x => x.classList.remove("act"));
@@ -2197,7 +2562,7 @@ function pintarEditor(){
   pintarNotas();
   $("#edReset", cont).addEventListener("click", () => {
     const ruta = rutaDe(sel), st = pagEstado(ACT);
-    delete st.estilos[ruta]; delete st.textos[ruta];
+    delete st.estilos[ruta]; delete st.estilosMovil[ruta]; delete st.textos[ruta];
     marcar(); marco.srcdoc = documentoDe(ACT); sel = null;
     aviso("Elemento restaurado", "ok");
   });
@@ -2255,30 +2620,35 @@ function ctrlHTML(c, valor){
 
 /* Un arrastre de deslizador = UNA entrada de historial, no cien. */
 let gestoAntes = null, gestoRuta = null;
+let gestoMovil = false;
 function abrirGesto(){
   if(!sel) return;
   gestoRuta = rutaDe(sel);
-  const st = pagEstado(ACT).estilos;
+  gestoMovil = enMovil();
+  const st = cajaEstilos();
   gestoAntes = st[gestoRuta] ? {...st[gestoRuta]} : null;
 }
 function cerrarGesto(etiqueta){
   if(!gestoRuta) return;
-  const ruta = gestoRuta, antes = gestoAntes;
-  const despues = {...(pagEstado(ACT).estilos[ruta] || {})};
+  const ruta = gestoRuta, antes = gestoAntes, mov = gestoMovil;
+  const caja = mov ? pagEstado(ACT).estilosMovil : pagEstado(ACT).estilos;
+  const despues = {...(caja[ruta] || {})};
   gestoRuta = null; gestoAntes = null;
   if(JSON.stringify(antes) === JSON.stringify(despues)) return;
-  registrar(etiqueta,
-    () => ponerEstilos(ruta, antes),
-    () => ponerEstilos(ruta, despues));
+  registrar(etiqueta + (mov ? " (móvil)" : ""),
+    () => ponerEstilos(ruta, antes, mov),
+    () => ponerEstilos(ruta, despues, mov));
 }
 
 /** Aplica en vivo. Si `gesto` es false, registra la entrada al instante. */
 function aplicarEstilo(k, v, gesto = false){
   if(!sel) return;
-  const ruta = rutaDe(sel), st = pagEstado(ACT).estilos;
+  const ruta = rutaDe(sel), st = cajaEstilos();
   if(!gesto) abrirGesto();
   (st[ruta] ||= {})[k] = v;
-  sel.style[k] = v;
+  /* En móvil no se toca el style= del elemento: ahí manda la hoja aparte, y
+     así el tamaño de escritorio se queda como estaba. */
+  if(enMovil()) pintarMovil(); else sel.style[k] = v;
   marcar();
   marco.contentWindow?.KIT?.pintarRedim?.();
   if(!gesto) cerrarGesto("cambio de " + k);
@@ -2326,11 +2696,16 @@ function htmlFinal(slug = ACT){
   if(slug !== ACT || !d) return documentoDe(slug);
   const clon = d.documentElement.cloneNode(true);
   clon.querySelector("#__ed")?.remove();
+  /* Lo que se publica lleva SIEMPRE las reglas del móvil dentro de su media
+     query, aunque en el lienzo se estuvieran viendo sin envolver. */
+  const hm = clon.querySelector("#__movil");
+  if(hm) hm.textContent = reglasMovil(clon, pagEstado(slug).estilosMovil, true);
   clon.querySelectorAll("[data-ed-sel],[data-ed-hover],[contenteditable]").forEach(e => {
     e.removeAttribute("data-ed-sel"); e.removeAttribute("data-ed-hover"); e.removeAttribute("contenteditable");
   });
   clon.removeAttribute("data-kit-listo");           // marcas de runtime, no van en el export
   clon.removeAttribute("data-modo-recursos");
+  clon.removeAttribute("data-estudio");
   clon.querySelectorAll("[data-dup],[data-armado],[data-latido],[data-res-vacio]").forEach(e => {
     e.removeAttribute("data-dup"); e.removeAttribute("data-armado");
     e.removeAttribute("data-latido"); e.removeAttribute("data-res-vacio");
@@ -2498,23 +2873,6 @@ function pintarEstructura(){
       </p>
     </div>
 
-    ${(() => {
-      const bo = pagEstado(ACT).borrados || [];
-      if(!bo.length) return "";
-      const d = marco.contentDocument;
-      return `<h3 class="subt">Borrados · ${bo.length}</h3>
-        <div id="listaBorrados">${bo.map(r => {
-          const el = d && porRuta(d, r);
-          const txt = (el?.textContent || "").replace(/\s+/g," ").trim().slice(0,46)
-                   || (el ? "<" + el.tagName.toLowerCase() + ">" : r);
-          return `<div class="bloque" data-ruta="${esc(r)}">
-            <span class="bloque-b"><b style="opacity:.6">${esc(txt)}</b>
-              <span class="bloque-m">no se publica</span></span>
-            <span class="bloque-acc"><button data-rest title="Restaurar">↺</button></span>
-          </div>`;
-        }).join("")}</div>`;
-    })()}
-
     <h3 class="subt">Orden de la página</h3>
     <div id="listaBloques">${bl.map((b,i) => `
       <div class="bloque${b.oculto?" oculto":""}" data-id="${esc(b.id)}">
@@ -2530,9 +2888,29 @@ function pintarEstructura(){
         </span>
       </div>`).join("")}</div>
 
+    ${(() => {
+      const bo = pagEstado(ACT).borrados || [];
+      if(!bo.length) return "";
+      const d = marco.contentDocument;
+      /* Plegado y al final: veintitrés tarjetas de cosas borradas empujaban la
+         lista de orden fuera de la pantalla, y mover un bloque era imposible
+         sin recorrer media hoja. Lo que se usa va arriba. */
+      return `<details class="plegado"><summary>Borrados · ${bo.length}<span>ver</span></summary>
+        <div id="listaBorrados">${bo.map(r => {
+          const el = d && porRuta(d, r);
+          const txt = (el?.textContent || "").replace(/\s+/g," ").trim().slice(0,46)
+                   || (el ? "<" + el.tagName.toLowerCase() + ">" : r);
+          return `<div class="bloque dos" data-ruta="${esc(r)}">
+            <span class="bloque-b"><b style="opacity:.6">${esc(txt)}</b>
+              <span class="bloque-m">no se publica</span></span>
+            <span class="bloque-acc"><button data-rest title="Restaurar">↺</button></span>
+          </div>`;
+        }).join("")}</div></details>`;
+    })()}
+
     <h3 class="subt">Agregar un bloque</h3>
     <div id="libreria">${LIBRERIA.map((l,i) => `
-      <div class="bloque" data-lib="${i}" style="grid-template-columns:1fr auto;cursor:pointer">
+      <div class="bloque dos" data-lib="${i}" style="cursor:pointer">
         <span class="bloque-b"><b>${esc(l.n)}</b><span class="bloque-m">${esc(l.d)}</span></span>
         <span class="bloque-acc"><button data-add title="Agregar al final">+</button></span>
       </div>`).join("")}</div>
@@ -2548,7 +2926,11 @@ function pintarEstructura(){
     const ids = bl.map(b => String(b.id));
     const i = ids.indexOf(String(id)), j = i + delta;
     if(i < 0 || j < 0 || j >= ids.length) return;
-    const antes = {orden:[...(st.orden||[])], ocultos:[...st.ocultos]};
+    /* Si nunca has reordenado, el orden guardado está vacío: como «estado
+       anterior» eso no dice nada y Deshacer dejaba el bloque donde lo pusiste.
+       Se guarda el orden que hay ahora mismo, que sí es el de antes. */
+    const antes = {orden: st.orden?.length ? [...st.orden] : [...ids],
+                   ocultos:[...st.ocultos]};
     [ids[i], ids[j]] = [ids[j], ids[i]];
     const despues = {orden: ids, ocultos:[...st.ocultos]};
     ponerEstructura(despues);
@@ -2904,6 +3286,19 @@ function verVersion(v){
     }
     for(const [r, css] of Object.entries(est.estilos || {})){
       const el = porRuta(f.contentDocument, r); if(el) Object.assign(el.style, css);
+    }
+    /* Y los ajustes propios del móvil, que van en su hoja, no en cada style=. */
+    const dv = f.contentDocument, mv = est.estilosMovil || {}, rr = [];
+    for(const [r, css] of Object.entries(mv)){
+      const el = porRuta(dv, r); if(!el) continue;
+      el.setAttribute("data-r", r);
+      const cuerpo = Object.entries(css || {}).map(([k, v]) => `${kebab(k)}:${v}!important`).join(";");
+      if(cuerpo) rr.push(`[data-r="${r}"]{${cuerpo}}`);
+    }
+    if(rr.length){
+      const h = dv.createElement("style"); h.id = "__movil";
+      h.textContent = `@media(max-width:640px){${rr.join("")}}`;
+      dv.head.appendChild(h);
     }
     K.refrescar();
   }, {once:true});
