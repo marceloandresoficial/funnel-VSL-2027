@@ -128,10 +128,18 @@ h1,h2,h3,h4{font-family:var(--sys);font-weight:800;margin:0;text-wrap:balance;le
 
 /* ── Revelado al scroll ──────────────────────────────────────────── */
 
-.rv{opacity:0;transform:translateY(20px);filter:blur(7px);
-  transition:opacity .95s var(--ease),transform .95s var(--ease),filter .95s var(--ease);
-  transition-delay:var(--d,0ms);will-change:opacity,transform}
-.rv.in{opacity:1;transform:none;filter:none}
+/* La aparición de cada bloque. Llevaba un desenfoque de 7px animado: son 72
+   bloques y desenfocar es de lo más caro que se le puede pedir a un móvil —el
+   navegador tiene que volver a pintar la capa entera en cada fotograma—. Con
+   opacidad y desplazamiento el efecto se lee igual y sale gratis. Y la entrada
+   es más corta: .95s se sentía perezoso. */
+.rv{opacity:0;transform:translateY(18px);
+  transition:opacity .6s var(--ease),transform .6s var(--ease);
+  transition-delay:var(--d,0ms)}
+.rv.in{opacity:1;transform:none}
+/* `will-change` solo mientras hace falta: dejarlo puesto en 72 elementos
+   mantiene 72 capas en memoria toda la visita. */
+.rv:not(.in){will-change:opacity,transform}
 /* Borrado desde el estudio: no se ve en la página ni viaja al exportar. */
 [data-borrado]{display:none!important}
 

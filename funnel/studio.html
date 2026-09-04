@@ -848,6 +848,20 @@ function aplicarParches(est, parches){
     /* Colocar una sección nueva. Tu orden guardado enumera los bloques uno a
        uno, así que uno que no esté en la lista se va al final por muy arriba
        que esté en el HTML. Esto lo mete en su sitio, una sola vez. */
+    /* Devolver a la vida algo que borraste. Se usa cuando el cambio que traigo
+       necesita un elemento que ya no está: sin esto, el texto nuevo se
+       escribiría en un sitio que no se pinta. */
+    if(p.tipo === "restaurar"){
+      const bo = est.pags?.[p.pag]?.borrados;
+      if(Array.isArray(bo)){
+        const antes = bo.length;
+        est.pags[p.pag].borrados = bo.filter(r => !p.rutas.includes(r));
+        if(est.pags[p.pag].borrados.length !== antes) n++;
+      }
+      est.parchesHechos.push(p.id);
+      continue;
+    }
+
     if(p.tipo === "orden"){
       const e2 = est.pags?.[p.pag]?.estructura;
       if(e2?.orden?.length && !e2.orden.includes(String(p.meter))){
@@ -1005,16 +1019,21 @@ function documentoDe(slug){
   const tokens = Object.entries(ST.tokens).map(([k,v]) => `${k}:${v}`).join(";");
   return [
     "<!doctype html>",
-    '<html lang="es"' + (sinKit ? " data-sin-kit" : "") + ">",
+    '<html lang="es" data-estudio="1"' + (sinKit ? " data-sin-kit" : "") + ">",
     "<head>",
     '<meta charset="utf-8">',
     '<meta name="viewport" content="width=device-width, initial-scale=1">',
+    "</head><body>",
+    /* Fuentes, estilos y tokens van DENTRO del cuerpo, no en la cabecera.
+       Muchos constructores de páginas —Go High Level entre ellos— pegan solo
+       el contenido del <body> y tiran la cabecera entera: se perdían las
+       fuentes, el CSS del kit y, con él, todas las imágenes. Un <style> y un
+       <link> dentro del cuerpo son válidos y se aplican a todo el documento. */
     '<link rel="preconnect" href="https://fonts.googleapis.com">',
     '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>',
     '<link rel="stylesheet" href="' + FUENTE.fuentes + '">',
     sinKit ? "" : "<style>" + FUENTE.kitCss + "</style>",
     tokens ? "<style>:root{" + tokens + "}</style>" : "",
-    "</head><body>",
     html,
     "<script>" + FUENTE.kitJs + "<\/script>",
     "</body></html>",
@@ -1081,7 +1100,6 @@ function aplicarTodo(d){
   /* Marca de que la página está dentro del estudio: la usa el kit para
      enseñar los huecos vacíos como zonas donde soltar una imagen. No viaja
      al exportar. */
-  d.documentElement.dataset.estudio = "1";
   const filas = pagEstado(ACT).datos?.franja;
   if(filas?.length){
     marco.contentWindow?.pintarFranja?.(filas);

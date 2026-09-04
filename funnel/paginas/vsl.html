@@ -130,7 +130,10 @@ header.tope:not([data-oculto]) ~ .hero{padding-top:clamp(70px,11vw,104px)}
 @keyframes latir{0%,100%{box-shadow:0 12px 32px -14px #00000099,0 1px 0 #6E5930,inset 0 1px 0 #E9D6A82e}
                  50%{box-shadow:0 14px 40px -12px #8F7340aa,0 1px 0 #6E5930,inset 0 1px 0 #E9D6A83d}}
 .mega b{font-size:clamp(1rem,3.3vw,1.42rem);font-weight:900;letter-spacing:-.03em;line-height:1.05}
-.mega span{font-family:var(--data);font-size:clamp(.52rem,1.5vw,.6rem);letter-spacing:.15em;text-transform:uppercase;opacity:.74}
+/* Una sola línea, siempre. El texto es largo, así que el espaciado entre
+   letras baja de .15em a .08em: con el ancho de un móvil, esos siete
+   centésimos eran la diferencia entre caber y recortarse. */
+.mega span{white-space:nowrap;max-width:100%;font-family:var(--data);font-size:clamp(.5rem,1.4vw,.58rem);letter-spacing:.08em;text-transform:uppercase;opacity:.74}
 .nota-cta{font-family:var(--data);font-size:clamp(.52rem,1.5vw,.62rem);letter-spacing:.13em;
   text-transform:uppercase;color:var(--bone-faint);margin:11px 0 0}
 
@@ -830,47 +833,17 @@ header.tope:not([data-oculto]) ~ .hero{padding-top:clamp(70px,11vw,104px)}
 .muro:hover .tesela:not(:hover){opacity:.48}
 @media(max-width:560px){.muro{grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:7px}}
 
-/* ── Las capturas: un riel que se desliza con el dedo ──────────────
-   Quietas a propósito. Nada de paralaje ni de rotaciones: la prueba
-   se mira, no se persigue. El movimiento lo pones tú al arrastrar.  */
-/* A sangre en móvil: el carril ocupa toda la pantalla para que la tarjeta sea
-   grande y asome la siguiente. Eso es lo que hace que el dedo quiera deslizar. */
-.riel{position:relative;margin-top:clamp(20px,3vw,36px)}
-/* Las cuentas arrancan pegadas al carril: victorias y perfiles son un bloque. */
+/* ── Las capturas y las cuentas ────────────────────────────────── */
 .cuentas-1{margin-top:clamp(16px,2.4vw,26px)}
-/* En el teléfono las fichas ocupaban casi toda la pantalla y solo se veía una:
-   a este tamaño entran dos y media, que es lo que hace que se lea como un
-   muro de gente y no como una sola tarjeta. */
+/* En el teléfono las fichas de cuenta ocupaban casi toda la pantalla y solo se
+   veía una: a este tamaño entran dos y media, que es lo que hace que se lea
+   como un muro de gente y no como una sola tarjeta. */
 @media(max-width:640px){
   .cuenta{width:clamp(150px,42vw,190px)}
   .cuenta .ph:not(.cargada){aspect-ratio:1.15}
   .mq-holo .mq-t{gap:8px}
 }
-.riel::before,.riel::after{
-  content:"";position:absolute;top:0;bottom:0;width:clamp(18px,5vw,64px);z-index:3;
-  pointer-events:none;transition:opacity .35s var(--ease);
-}
-.riel::before{left:0;background:linear-gradient(90deg,var(--ink),transparent)}
-.riel::after{right:0;background:linear-gradient(270deg,var(--ink),transparent)}
-.riel[data-ini]::before{opacity:0}
-.riel[data-fin]::after{opacity:0}
-.riel-pista{
-  display:flex;gap:clamp(11px,1.8vw,18px);
-  overflow-x:auto;overscroll-behavior-x:contain;
-  /* «proximity» en vez de «mandatory»: el anclaje rígido frenaba el dedo a
-     media pasada y daba sensación de pesado. */
-  scroll-snap-type:x proximity;scroll-padding-inline:var(--gut);
-  padding-inline:var(--gut);
-  scrollbar-width:none;-ms-overflow-style:none;
-  padding-block:4px;cursor:grab;
-  /* Cada captura mide lo que mide su imagen. Estirándolas todas a la más alta
-     —lo que hace flex por defecto— quedaba un zócalo vacío bajo las cortas. */
-  align-items:flex-start;
-  -webkit-overflow-scrolling:touch;
-}
-.riel-pista::-webkit-scrollbar{display:none}
-.riel-pista.tirando{cursor:grabbing;scroll-snap-type:none;scroll-behavior:auto}
-.riel-pista.tirando .captura{pointer-events:none}
+.captura{pointer-events:none}
 
 .captura{
   flex:none;width:clamp(228px,62vw,360px);scroll-snap-align:center;
@@ -1241,6 +1214,18 @@ header.tope:not([data-oculto]) ~ .hero{padding-top:clamp(70px,11vw,104px)}
 @media(prefers-reduced-motion:reduce){
   .mega,.mega::after,.holo::after,.glifo .gira{animation:none}
 }
+/* ══ FLUIDEZ ════════════════════════════════════════════════════════
+   Las pistas que se mueven se promueven a su propia capa: así el navegador
+   las desplaza sin repintar lo que tienen detrás. */
+#tira,#gridCapturas,.mq-t{will-change:transform}
+.tira .vida{backface-visibility:hidden}
+
+/* Las secciones de más abajo no se calculan hasta que se acercan. La medida
+   aproximada evita que la barra de desplazamiento pegue saltos al llegar. */
+#prueba,#cuentas,#mapa,#llamada,#faq,#agenda{
+  content-visibility:auto;contain-intrinsic-size:1px 900px;
+}
+
 /* ══ EN NUESTRO NEGOCIO · transferencias como avisos ════════════════
    La idea: una venta no llega en una tabla, llega como un aviso en el
    móvil. Cada captura va dentro de una notificación —icono, título y
@@ -1415,8 +1400,12 @@ header.tope:not([data-oculto]) ~ .hero{padding-top:clamp(70px,11vw,104px)}
   .umbral-hilo i{top:40%}
 }
 
-/* 5 · Capturas más contenidas: la imagen manda, la tarjeta la sigue */
-.captura{width:clamp(190px,52vw,290px)}
+/* 5 · Las capturas viven ahora en dos filas deslizantes, como las cuentas.
+   El ancho decide cuántas se ven de una vez: tres en escritorio, dos en el
+   móvil. La altura la sigue poniendo cada imagen. */
+.capturas-1{margin-top:clamp(20px,3vw,34px)}
+.captura{width:clamp(150px,44vw,300px)}
+@media(min-width:900px){ .captura{width:clamp(240px,30vw,340px)} }
 
 /* 6 · Cuentas: la segunda fila va al revés, y un barrido de luz en algunas */
 .mq-t.rev{direction:ltr}
@@ -1542,6 +1531,14 @@ header.tope:not([data-oculto]) ~ .hero{padding-top:clamp(70px,11vw,104px)}
      como amontonado. Con margen inferior propio, ninguno puede pegarse. */
   .titulon,.sol-h,.h-sect,.quien h2{margin-bottom:16px}
 }
+
+/* En un móvil estrecho —los de 320px siguen existiendo— el subtexto del botón
+   no cabía en una línea y se recortaba. Aquí encoge lo justo. Lleva
+   !important porque la escala tipográfica le fija el tamaño con la misma
+   arma, y esto es una excepción deliberada, no un descuido. */
+@media(max-width:380px){
+  .mega span{font-size:.46rem!important;letter-spacing:.05em}
+}
 </style>
 
 <header class="tope" id="tope" data-bloque="1">
@@ -1612,7 +1609,7 @@ header.tope:not([data-oculto]) ~ .hero{padding-top:clamp(70px,11vw,104px)}
          data-res-label="Destino del botón principal"
          data-res-nota="Por defecto baja al calendario de esta página.">
         <b>AGENDA TU LLAMADA</b>
-        <span>Gratis · 45 min · cupos limitados</span>
+        <span>Solo para Mentores y Terapeutas Holísticos…</span>
       </a>
       <p class="nota-cta">Solo si ya facturas +$1.000 USD al mes</p>
     </div>
@@ -1624,7 +1621,7 @@ header.tope:not([data-oculto]) ~ .hero{padding-top:clamp(70px,11vw,104px)}
      son opcionales y caen a la inicial, así que la franja nunca está vacía. -->
 <section class="franja" data-bloque="6">
   <p class="franja-h">Algunos de los que ya lo lograron</p>
-  <div class="mq" style="--sp:88s"><div class="mq-t" id="franja"
+  <div class="mq" style="--vel:80"><div class="mq-t" id="franja"
     data-galeria="caras" data-galeria-titulo="Caras de la franja"></div></div>
   <!-- La lista viaja aquí dentro. Sin esto, la página publicada se repintaba
        con los nombres del código al cargar: fuera del estudio no hay nadie que
@@ -1984,20 +1981,12 @@ header.tope:not([data-oculto]) ~ .hero{padding-top:clamp(70px,11vw,104px)}
 
   <!-- Las capturas van a sangre: la tarjeta casi llena la pantalla y asoma la
        siguiente, que es lo que invita al dedo. -->
-  <div class="riel rv" style="--d:140ms" id="riel">
-    <div class="riel-pista" id="gridCapturas" data-galeria="capturas"
-      data-galeria-titulo="Capturas de resultados"></div>
-  </div>
-  <div class="wrap">
-    <div class="riel-pie rv" style="--d:200ms">
-      <span class="riel-ay" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 12h16M9 7l-5 5 5 5M15 7l5 5-5 5"/></svg>
-        Desliza
-      </span>
-      <div class="riel-barra"><i id="rielBarra"></i></div>
-      <span class="riel-n" id="rielN">01 / 08</span>
-    </div>
-  </div>
+  <!-- Dos filas que se deslizan en sentidos opuestos, el mismo sistema que
+       las cuentas de «referentes reales». En escritorio entran tres capturas
+       a la vista y en el móvil dos; el resto va pasando. -->
+  <div class="mq mq-holo capturas-1" style="--vel:58"><div class="mq-t" id="gridCapturas"
+    data-galeria="capturas" data-galeria-titulo="Capturas de resultados"></div></div>
+  <div class="mq mq-holo" style="--vel:48;margin-top:12px"><div class="mq-t rev" id="gridCapturas2"></div></div>
 
 </section>
 
@@ -2011,8 +2000,8 @@ header.tope:not([data-oculto]) ~ .hero{padding-top:clamp(70px,11vw,104px)}
     <h2 class="h-sect rv" style="--d:60ms;text-align:center">Negocios reales,
       <em class="alma">cuentas reales.</em></h2>
   </div>
-  <div class="mq mq-holo cuentas-1" style="--sp:74s"><div class="mq-t" id="fila1" data-galeria="cuentas" data-galeria-titulo="Cuentas de Instagram"></div></div>
-  <div class="mq mq-holo" style="--sp:92s;margin-top:11px"><div class="mq-t rev" id="fila2"></div></div>
+  <div class="mq mq-holo cuentas-1" style="--vel:52"><div class="mq-t" id="fila1" data-galeria="cuentas" data-galeria-titulo="Cuentas de Instagram"></div></div>
+  <div class="mq mq-holo" style="--vel:44;margin-top:11px"><div class="mq-t rev" id="fila2"></div></div>
 </section>
 
 <!-- ═══ MAPA ═══ -->
@@ -2130,7 +2119,7 @@ header.tope:not([data-oculto]) ~ .hero{padding-top:clamp(70px,11vw,104px)}
 </div>
 
 <div class="barra-movil" id="barraMovil" data-bloque="19">
-  <a class="mega" href="#agenda"><b>AGENDA TU LLAMADA</b><span>Gratis</span></a>
+  <a class="mega" href="#agenda"><b>AGENDA TU LLAMADA</b><span>Solo para Mentores y Terapeutas Holísticos…</span></a>
 </div>
 
 <footer class="foot" data-bloque="20">
@@ -2667,14 +2656,41 @@ const PORTADAS = [
         data-res-nota="La captura tal cual, sin recortar. Tapa lo que no quieras enseñar antes de subirla."><span>${i+1}</span></span>
     </article>`).join(""));
 
-  const CAPTURAS = 8;
-  /* Riel: una sola fila, quieta. El movimiento lo da el dedo. */
-  pon("#gridCapturas", Array.from({length:CAPTURAS}, (_, i) => `
+  /* Dieciséis, repartidas en dos filas de ocho. Con cuatro por fila la copia
+     del bucle entraba en pantalla junto al original y se veía la misma captura
+     dos veces; con ocho, la vuelta queda fuera de la vista. Las que dejes
+     vacías no se publican: al exportar, una tarjeta que solo es un hueco de
+     foto se retira sola. */
+  const CAPTURAS = 16;
+  const fichaCaptura = i => `
     <article class="captura" title="Captura de resultado ${i+1}">
       <span class="ph entera" style="--hu:${(i*43+200)%360}" data-res="captura-r${i+1}" data-res-tipo="imagen" data-res-opcional
         data-res-label="Captura ${i+1}"
         data-res-nota="Súbela tal cual, sin recortar. Conserva su tamaño original."><span>${i+1}</span></span>
-    </article>`).join(""));
+    </article>`;
+  /* Fuera del estudio, un hueco vacío no es un hueco: es una tarjeta en negro
+     en mitad de la prueba social. Se sabe cuáles tienen imagen mirando la hoja
+     que el kit deja escrita, y las que no, ni se dibujan. Dentro del estudio se
+     dibujan todas, que para eso están: para que las llenes. */
+  const enEstudio = document.documentElement.hasAttribute("data-estudio");
+  const hojaRec = document.getElementById("__recursos")?.textContent || "";
+  const tieneFoto = i => enEstudio || hojaRec.includes(`[data-res="captura-r${i+1}"]`);
+  const vivas = Array.from({length:CAPTURAS}, (_, i) => i).filter(tieneFoto);
+  /* Se reparten alternando, no por mitades. Partiendo por la mitad, con ocho
+     llenas y ocho vacías, la segunda fila salía entera vacía y la limpieza del
+     exportado se la llevaba con las capturas dentro. Alternando, las que tienes
+     caen siempre en las dos filas. */
+  const filaA = vivas.filter((_, i) => i % 2 === 0);
+  const filaB = vivas.filter((_, i) => i % 2 === 1);
+  const caja2 = $("#gridCapturas2");
+  if(caja2 && filaB.length){
+    pon("#gridCapturas",  filaA.map(fichaCaptura).join(""));
+    pon("#gridCapturas2", filaB.map(fichaCaptura).join(""));
+  } else {
+    /* Si la segunda fila no sobrevivió al exportado, todo va a la primera:
+       antes se perdían por el camino las capturas que le tocaban. */
+    pon("#gridCapturas", vivas.map(fichaCaptura).join(""));
+  }
 
   /* B · portadas con el monto */
   const tarjetaP = ([nom,rol,monto],i) => {
@@ -2816,6 +2832,15 @@ const PORTADAS = [
      escribe cuando ya vale un píxel. */
   let pos = t.scrollLeft;
 
+  /* Posición y ancho de cada foto dentro de la tira. No cambian al desplazarse
+     ni al transformarlas, solo si cambia el tamaño de la ventana. */
+  let medidas = [];
+  const medir = () => {
+    medidas = [...t.children].map(el => ({el, x: el.offsetLeft, w: el.offsetWidth}));
+  };
+  medir();
+  addEventListener("resize", () => { medir(); }, {passive:true});
+
   /* Con el dedo basta el scroll del navegador; el ratón necesita arrastre. */
   t.addEventListener("pointerdown", e => {
     tocar(2500);
@@ -2850,22 +2875,33 @@ const PORTADAS = [
          antes de seguir; si no, se quedaría peleando con tu gesto. */
       if(parada || Math.abs(t.scrollLeft - Math.round(pos)) > 2) pos = t.scrollLeft;
       if(!parada){
-        pos += 0.42;
+        pos += 1.05;                             // paso más vivo
         if(pos >= mitad) pos -= mitad;
         else if(pos < 0) pos += mitad;
         t.scrollLeft = pos;
       }
     }
-    const c = t.getBoundingClientRect(), cx = c.left + c.width/2;
+    /* Antes se pedía la posición real de cada foto en cada fotograma: dieciséis
+       lecturas de layout sesenta veces por segundo, y cada una obliga al
+       navegador a recalcular la página entera. Ahora se miden una vez y se
+       calculan por aritmética; solo se vuelven a medir si cambia el tamaño.
+       Ahí estaba el tirón. */
+    if(medidas.length !== t.children.length) medir();
+    const anchoCaja = t.clientWidth, cx = anchoCaja / 2;
     /* La referencia es el ancho de la foto, no el del contenedor: si midiera el
        contenedor, en un móvil donde solo cabe una tarjeta el giro saltaría de
-       0° a 24° de golpe. Así la inclinación por foto es la misma en cualquier
-       pantalla, y el paso entre una y otra queda suave. */
-    const ref = (t.firstElementChild?.getBoundingClientRect().width || 240) * 1.7;
-    for(const f of t.children){
-      const r = f.getBoundingClientRect();
-      if(r.right < c.left - 120 || r.left > c.right + 120) continue;  // fuera de vista
-      const k = Math.max(-1, Math.min(1, (r.left + r.width/2 - cx) / ref));
+       0° a 24° de golpe. */
+    const ref = (medidas[0]?.w || 240) * 1.7;
+    const desp = t.scrollLeft;
+    for(let i = 0; i < medidas.length; i++){
+      const m = medidas[i], f = m.el;
+      const izq = m.x - desp, der = izq + m.w;
+      if(der < -120 || izq > anchoCaja + 120){       // fuera de vista: ni se toca
+        if(f.dataset.off !== "1"){ f.dataset.off = "1"; f.style.visibility = "hidden"; }
+        continue;
+      }
+      if(f.dataset.off === "1"){ f.dataset.off = ""; f.style.visibility = ""; }
+      const k = Math.max(-1, Math.min(1, (izq + m.w/2 - cx) / ref));
       const lejos = Math.abs(k), cerca = 1 - lejos;
       /* La del centro se adelanta y recupera su color; las de los lados se
          retiran, pierden saturación y se cubren de velo: son el holograma. */
@@ -3302,138 +3338,6 @@ const PORTADAS = [
       a.style.strokeDashoffset = 0; }, i*130)); }}, {threshold:.3}).observe(svg);
 })();
 
-/* ── El riel de capturas: arrastrar, señalar y contar ─────────────
-   El deslizamiento táctil lo da el navegador (scroll-snap). Aquí se
-   añade el arrastre con ratón, el foco de la que está centrada y el
-   contador de abajo.                                                */
-(() => {
-  const pista = $("#gridCapturas"), riel = $("#riel");
-  const barra = $("#rielBarra"), cuenta = $("#rielN");
-  if(!pista || !riel) return;
-  /* Se duplica el contenido para que el bucle no tenga costura: al pasar la
-     mitad se resta la mitad y la vuelta es invisible. */
-  if(!pista.dataset.dup && pista.children.length){
-    pista.dataset.dup = "1";
-    pista.innerHTML += pista.innerHTML;
-  }
-  const tarjetas = () => [...pista.querySelectorAll(".captura")];
-  const REALES = Math.max(1, tarjetas().length / 2);
-
-  /* Arrastrar con el ratón, como en el móvil */
-  let tirando = false, x0 = 0, s0 = 0, movido = 0;
-  pista.addEventListener("pointerdown", e => {
-    if(e.pointerType === "touch") return;          // el táctil ya funciona solo
-    tirando = true; movido = 0;
-    x0 = ultimoX = e.clientX; s0 = pista.scrollLeft; vel = 0;
-    pista.classList.add("tirando");
-    pista.setPointerCapture(e.pointerId);
-  });
-  /* Un gesto mueve algo más que su propia distancia: arrastrando 1:1 hacen
-     falta tres pasadas para ver ocho capturas y se siente pesado. */
-  const EMPUJE = 1.7;
-  let ultimoX = 0, vel = 0;
-  pista.addEventListener("pointermove", e => {
-    if(!tirando) return;
-    const d = (e.clientX - x0) * EMPUJE;
-    vel = (e.clientX - ultimoX) * EMPUJE; ultimoX = e.clientX;
-    movido = Math.max(movido, Math.abs(d));
-    pista.scrollLeft = s0 - d;
-  });
-  /* Y al soltar sigue corriendo un poco, como en el móvil. */
-  const frenar = () => {
-    if(Math.abs(vel) < .4) return;
-    pista.scrollLeft -= vel;
-    vel *= 0.93;
-    requestAnimationFrame(frenar);
-  };
-  const soltar = () => {
-    if(!tirando) return;
-    tirando = false;
-    pista.classList.remove("tirando");
-    requestAnimationFrame(frenar);
-    marcar();
-  };
-  pista.addEventListener("pointerup", soltar);
-  pista.addEventListener("pointercancel", soltar);
-  /* Un arrastre no debe abrir la lupa */
-  pista.addEventListener("click", e => { if(movido > 6) e.stopPropagation(); }, true);
-
-  /* La que esté centrada manda: se ilumina y marca el contador */
-  const marcar = () => {
-    const t = tarjetas(); if(!t.length) return;
-    const c = pista.scrollLeft + pista.clientWidth / 2;
-    let cerca = 0, dif = Infinity;
-    t.forEach((el,i) => {
-      const m = el.offsetLeft + el.offsetWidth / 2;
-      const d = Math.abs(m - c);
-      if(d < dif){ dif = d; cerca = i; }
-      el.classList.toggle("foco", false);
-    });
-    /* En los extremos manda el borde: con tres a la vista, la primera y la
-       última nunca llegan a estar centradas, y el contador se quedaba en 02/08. */
-    /* Con el bucle no hay principio ni final: la cuenta y la barra se calculan
-       sobre la mitad real, y los degradados de los bordes se quedan siempre
-       —al otro lado del borde SIEMPRE hay más—. */
-    t[cerca].classList.add("foco");
-    const mitad = pista.scrollWidth / 2;
-    const pos = mitad > 0 ? (pista.scrollLeft % mitad) / mitad : 0;
-    if(barra)  barra.style.width = (pos * 100).toFixed(1) + "%";
-    if(cuenta) cuenta.textContent =
-      String((cerca % REALES) + 1).padStart(2,"0") + " / " + String(REALES).padStart(2,"0");
-    riel.removeAttribute("data-ini");
-    riel.removeAttribute("data-fin");
-  };
-
-  /* Movimiento continuo, no a saltos: un collage que se desliza. Solo se
-     detiene mientras lo tocas. Nada de pausar al pasar el ratón por encima —un
-     `mouseenter` sin su `mouseleave` dejaba el carrusel muerto el resto de la
-     visita, y eso pasa más de lo que parece. */
-  const RM_ = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  let quieta = 0;
-  const pausar = (ms = 2200) => { quieta = Date.now() + ms; };
-  ["pointerdown","wheel","touchstart","keydown"].forEach(ev =>
-    pista.addEventListener(ev, () => pausar(), {passive:true}));
-
-  /* Misma cuenta aparte que en la tira: sumar fracciones sobre scrollLeft no
-     avanza, porque el navegador lo redondea a píxel entero. */
-  let posR = pista.scrollLeft;
-  const deslizar = () => {
-    const mitad = pista.scrollWidth / 2;
-    if(tirando && Date.now() > quieta + 2500) soltar();
-    const parada = tirando || Date.now() < quieta;
-    if(mitad > 0){
-      if(parada || Math.abs(pista.scrollLeft - Math.round(posR)) > 2) posR = pista.scrollLeft;
-      if(!parada){
-        posR += 0.55;
-        if(posR >= mitad) posR -= mitad;
-        else if(posR < 0) posR += mitad;
-        pista.scrollLeft = posR;
-      }
-    }
-    requestAnimationFrame(deslizar);
-  };
-  if(!RM_) requestAnimationFrame(deslizar);
-
-  let pedido = false;
-  pista.addEventListener("scroll", () => {
-    if(pedido) return; pedido = true;
-    requestAnimationFrame(() => { pedido = false; marcar(); });
-  }, {passive:true});
-
-  /* Con el teclado también */
-  pista.tabIndex = 0;
-  pista.addEventListener("keydown", e => {
-    const t = tarjetas(); if(!t.length) return;
-    if(e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
-    e.preventDefault();
-    const paso = t[0].offsetWidth + 16;
-    pista.scrollBy({left: e.key === "ArrowRight" ? paso : -paso, behavior:"smooth"});
-  });
-
-  new IntersectionObserver(e => { if(e[0].isIntersecting) marcar(); }, {threshold:0}).observe(riel);
-  addEventListener("resize", marcar);
-  marcar();
-})();
 
 /* ── Lupa: cualquier prueba, a tamaño completo ──────────────────── */
 (() => {

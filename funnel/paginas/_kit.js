@@ -140,6 +140,11 @@ const animarMarquesinas = () => $$(".mq").forEach(caja => {
 
   const hueco = () => parseFloat(getComputedStyle(pista).columnGap) || 0;
   const mitad = () => (pista.scrollWidth + hueco()) / 2;
+  /* La velocidad se puede dar de dos formas. `--vel` son píxeles por segundo y
+     no cambia aunque añadas tarjetas; `--sp` son segundos en recorrer la fila
+     entera, y con ella cada imagen nueva ralentiza el conjunto. Se prefiere la
+     primera; la segunda queda por compatibilidad. */
+  const velFija = parseFloat(getComputedStyle(caja).getPropertyValue("--vel")) || 0;
   const segs  = parseFloat(getComputedStyle(caja).getPropertyValue("--sp")) || 52;
   const atras = pista.classList.contains("rev");
 
@@ -169,7 +174,8 @@ const animarMarquesinas = () => $$(".mq").forEach(caja => {
     } else if(!tirando){
       const m = mitad();
       if(Math.abs(caja.scrollLeft - Math.round(pos)) > 2) pos = caja.scrollLeft;
-      pos += (atras ? -1 : 1) * (m / segs) * (dt / 1000);
+      const px = velFija || (m / segs);          // píxeles por segundo
+      pos += (atras ? -1 : 1) * px * (dt / 1000);
       if(m > 0){
         if(pos >= m) pos -= m;
         else if(pos < 0) pos += m;
@@ -229,6 +235,10 @@ const armarMarquesinas = () => $$(".mq-t").forEach(t => {
    style= por elemento: si la foto se usa 16 veces (marquesinas
    duplicadas), el dato viaja una sola vez. */
 const reglasImg = new Map();
+/* Proporción real de cada imagen. Viaja en la hoja junto a la propia foto: sin
+   ella, fuera del estudio la caja se quedaba con altura cero —la foto puesta,
+   pero invisible— porque quien la mide es el estudio al aplicarla. */
+const razones = new Map();
 /* Los valores largos (imágenes en base64, códigos de incrustación) viven
    aquí y NO en el atributo del elemento: si el recurso se usa 8 veces,
    el dato se guardaba 8 veces y multiplicaba el peso de la página. */
@@ -236,7 +246,13 @@ const valores = new Map();
 const MARCA = "\u00b7cargado";
 function pintarReglas(){
   let st = document.getElementById("__recursos");
-  if(!st){ st = document.createElement("style"); st.id = "__recursos"; document.head.append(st); }
+  /* Al PRINCIPIO del cuerpo, no en la cabecera ni al final. En la cabecera se
+     perdía con los constructores que solo pegan el cuerpo. Al final llegaba
+     tarde: la página consulta esta hoja mientras se dibuja para saber qué
+     huecos tienen foto, y encontrándola vacía se dejaba capturas fuera y
+     pintaba la inicial encima de cada cara. La cascada no sufre: las reglas
+     llevan `:root` delante y ganan por especificidad, no por posición. */
+  if(!st){ st = document.createElement("style"); st.id = "__recursos"; document.body.prepend(st); }
   /* `:root` delante sube la especificidad: una clase del bloque que declare su
      propio `background` —como el círculo de la franja— ganaba por ir después en
      el documento y la foto no llegaba a verse. Y va el tamaño explícito porque
@@ -244,7 +260,8 @@ function pintarReglas(){
      tamaño natural dentro de un círculo de 30 píxeles. */
   st.textContent = [...reglasImg].map(([id, url]) =>
     `:root [data-res="${id}"]{background-image:url("${url}");` +
-    `background-size:cover;background-position:center;background-repeat:no-repeat}`)
+    `background-size:cover;background-position:center;background-repeat:no-repeat` +
+    (razones.has(id) ? `;aspect-ratio:${razones.get(id)}` : "") + "}")
     .join("\n");
 }
 
@@ -256,7 +273,7 @@ function aplicarRecurso(id, valor){
     const tipo = el.dataset.resTipo;
     if(valor) valores.set(id, valor); else valores.delete(id);
     el.dataset.resValor = !valor ? "" : (valor.length > 300 ? MARCA : valor);
-    if(!valor){ el.classList.remove("cargada"); reglasImg.delete(id); return; }
+    if(!valor){ el.classList.remove("cargada"); reglasImg.delete(id); razones.delete(id); return; }
     if(tipo === "imagen"){
       if(el.tagName === "IMG"){ el.src = valor; el.loading = "lazy"; el.decoding = "async"; }
       else {
@@ -266,7 +283,13 @@ function aplicarRecurso(id, valor){
         /* La caja adopta la proporción real: sin franjas ni recortes. */
         if(el.classList.contains("entera") || el.hasAttribute("data-res-ajusta")){
           const im = new Image();
-          im.onload = () => el.style.aspectRatio = im.naturalWidth + " / " + im.naturalHeight;
+          im.onload = () => {
+            const r = im.naturalWidth + " / " + im.naturalHeight;
+            el.style.aspectRatio = r;
+            /* Y se guarda para que la proporción viaje en la hoja: en la página
+               publicada nadie vuelve a medir la imagen. */
+            if(razones.get(id) !== r){ razones.set(id, r); pintarReglas(); }
+          };
           im.src = valor;
         }
       }
@@ -327,7 +350,22 @@ function pieAlFinal(){
 }
 
 /** Re-arma todo después de que el estudio inyecta o edita contenido. */
+/** En la página publicada nadie llama a `aplicarRecurso`: las imágenes llegan
+    ya escritas en la hoja que dejó el estudio. Sin la marca de «cargada», el
+    hueco seguía creyéndose vacío y su rótulo —la inicial de la persona— se
+    dibujaba encima de su propia foto. */
+function marcarCargadas(){
+  const hoja = document.getElementById("__recursos");
+  if(!hoja) return;
+  const txt = hoja.textContent;
+  for(const el of $$("[data-res]")){
+    if(!el.classList.contains("cargada") && txt.includes(`[data-res="${el.dataset.res}"]`))
+      el.classList.add("cargada");
+  }
+}
+
 function refrescar(){
+  marcarCargadas();
   pieAlFinal();                   // pase lo que pase, el pie cierra
   sellarBloques();                // ids estables de bloque para el estudio
   armarPlayers();                 // los players son del estudio: siempre
