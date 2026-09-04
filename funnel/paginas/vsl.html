@@ -1434,7 +1434,17 @@ header.tope:not([data-oculto]) ~ .hero{padding-top:clamp(70px,11vw,104px)}
   max-width:78ch;
 }
 @media(max-width:640px){ .disclaimer{font-size:.8rem;line-height:1.68;padding-top:18px} }
-.foot-legal a{color:var(--bone-faint)}
+
+/* El resto del pie tenía el mismo mal: el copyright iba al 20 % de opacidad
+   —contraste 1,7 a 1, invisible en un móvil— y los enlaces legales al 40 %,
+   que es 3,4 y se queda corto. Un pie discreto no es un pie borrado: la marca
+   registrada y los enlaces obligatorios tienen que poder leerse. */
+.foot{color:#F4EFE68f}
+/* Con `.foot .foot-legal a`, no con `.foot-legal a`: el kit trae `.foot a` con
+   el mismo peso, y a igualdad de peso manda el orden. Un punto más de
+   especificidad quita la duda para siempre. */
+.foot .foot-legal a{color:#F4EFE6a6;transition:color .3s var(--ease)}
+.foot .foot-legal a:hover{color:var(--bone)}
 
 /* 0 · Victorias de clientes: banda de altura única, sin negro y sin recortes.
    La tarjeta tenía ancho fijo y se estiraba a la altura de la más alta de la
