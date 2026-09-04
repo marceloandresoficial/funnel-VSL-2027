@@ -61,15 +61,42 @@ header.tope:not([data-oculto]) ~ .hero{padding-top:clamp(70px,11vw,104px)}
   .hero{min-height:auto;padding-block:clamp(24px,6vw,40px) clamp(26px,7vw,44px)}
 }
 .hero .wrap{width:100%}
+/* El titular tiene tres cosas que decir y antes las decía todas al mismo
+   volumen: la premisa (lo que ya eres), la promesa (la cifra) y el método (el
+   Circuito). Cuatro líneas del mismo tamaño no son un titular, son un párrafo
+   grande. Ahora cada una tiene su altura: la premisa entra pequeña y en tono
+   apagado, la promesa manda, y el método cierra abajo en versalita dorada. */
 .h-promesa{
-  font-size:clamp(1.72rem,5.6vw,3.9rem);font-weight:900;letter-spacing:-.04em;line-height:1.04;
-  /* 23ch, no 20: con la promesa corta cabía en tres líneas; con el Circuito
-     dentro se iba a cinco, y cinco líneas de 62 px empujan el vídeo fuera de
-     la primera pantalla. Medido: 23ch lo deja en cuatro y no crece más por
-     ensanchar. */
-  max-width:23ch;margin:0 auto;text-wrap:balance;
+  font-size:clamp(1.02rem,2.5vw,1.62rem);font-weight:700;letter-spacing:-.01em;
+  line-height:1.3;color:var(--bone-mute);
+  /* El ancho no puede colgar de esta línea: `ch` se mide contra la letra
+     actual, y con la premisa pequeña el titular entero se estrangulaba a 285 px
+     mientras la promesa, tres veces mayor, se partía dentro. La medida va donde
+     manda el tamaño: en la propia promesa. */
+  max-width:min(100%,46rem);margin:0 auto;text-wrap:balance;
 }
-.h-promesa .alma{font-size:1.05em;line-height:.96}
+.h-promesa .alma{
+  display:block;font-size:2.24em;line-height:1.0;letter-spacing:-.035em;
+  color:var(--bone);margin:.34em auto 0;font-style:italic;
+  max-width:19ch;                     /* 19ch de SU tamaño: dos líneas justas */
+}
+/* La cifra es el único dato del titular: va en el oro de la casa y sin
+   inclinar, para que se lea como número y no como frase. */
+.h-promesa .cifra{
+  font-family:var(--data);font-style:normal;font-weight:700;
+  font-size:.92em;letter-spacing:-.02em;color:var(--gold-hi);
+}
+/* Y el método, debajo: pequeño, en mayúsculas espaciadas. Ocupa el lugar de la
+   firma —lo que sostiene la cifra—, no el de otro titular. */
+.h-promesa .metodo{
+  display:block;font-family:var(--data);font-style:normal;font-weight:500;
+  /* Con `em` puro caía a 8,6 px en un móvil: versalita espaciada a ese tamaño
+     no se lee, se adivina. El suelo de 10,5 px la mantiene legible sin robarle
+     protagonismo a la cifra. */
+  font-size:clamp(10.5px,.235em,15px);letter-spacing:.16em;text-transform:uppercase;
+  color:var(--gold);margin-top:1.1em;line-height:1.5;
+}
+.h-promesa .metodo sup{font-size:.72em;vertical-align:.5em;letter-spacing:0}
 .hero-sub{
   font-size:clamp(.9rem,2.3vw,1.12rem);color:var(--bone-mute);line-height:1.55;
   max-width:56ch;margin:clamp(12px,2.2vw,20px) auto 0;
@@ -1341,10 +1368,20 @@ header.tope:not([data-oculto]) ~ .hero{padding-top:clamp(70px,11vw,104px)}
    Y la línea de alivio va dentro del párrafo, en su propio renglón: dice lo
    que el visitante teme —embudos, lanzamientos— para quitárselo de encima
    antes de que lo piense. Al 65 % de opacidad se lee sin competir. */
-.h-promesa sup{font-size:.5em;vertical-align:.7em;letter-spacing:0;margin-left:.02em}
 .hero-alivio{
   display:block;margin-top:clamp(9px,1.4vw,14px);
   color:#F4EFE6a6;font-size:.86em;line-height:1.5;
+}
+/* El «Sin» se queda quieto y solo cambia lo que viene detrás: así el ojo no
+   tiene que releer la frase entera cada vez, solo la objeción nueva. La caja
+   reserva el alto de una línea para que el párrafo no dé saltos al cambiar. */
+.alivio-rueda{display:inline-block;position:relative;vertical-align:baseline}
+.alivio-txt{display:inline-block;color:#F4EFE6d1;
+  transition:opacity .34s var(--ease), transform .34s var(--ease)}
+.alivio-rueda.muda .alivio-txt{opacity:0;transform:translateY(-6px)}
+@media(prefers-reduced-motion:reduce){
+  .alivio-txt{transition:none}
+  .alivio-rueda.muda .alivio-txt{opacity:1;transform:none}
 }
 @media(max-width:640px){ .hero-alivio{font-size:.9em;margin-top:9px} }
 
@@ -1743,14 +1780,13 @@ header.tope:not([data-oculto]) ~ .hero{padding-top:clamp(70px,11vw,104px)}
     <div class="mini-badge rv"><i class="dot-live"></i> Coaches · mentores · terapeutas holísticos</div>
 
     <h1 class="h-promesa rv" style="--d:60ms">
-      Tu don ya cambia vidas. <em class="alma">Ahora escálalo a $10K–$30K/USD al mes
-      instalando un Circuito de Conversión<sup>™</sup>.</em>
+      Tu don ya cambia vidas.<em class="alma">Ahora escálalo a <b class="cifra">$10K–$30K/USD</b> al mes<small class="metodo">instalando un Circuito de Conversión<sup>™</sup></small></em>
     </h1>
 
     <p class="hero-sub rv" style="--d:120ms">
       La era de la atención terminó. Hoy nadie compra por ver más contenido:
       <b>compra por confiar.</b>
-      <span class="hero-alivio">Sin funnels complejos ni lanzamientos agotadores.</span>
+      <span class="hero-alivio">Sin <span class="alivio-rueda"><span class="alivio-txt">funnels complejos ni lanzamientos agotadores</span></span>.</span>
     </p>
 
     <div class="rv" style="--d:160ms;margin-top:clamp(14px,2.6vw,24px)">
@@ -2461,6 +2497,36 @@ const enPantalla = (el, margen = "300px") => {
                            {rootMargin: margen}).observe(el);
   return () => visible && !document.hidden;
 };
+
+/* ── Las objeciones, una detrás de otra ──────────────────────────
+   Una sola línea fija dice «no hace falta X». Varias, rotando, dicen «no hace
+   falta nada de lo que estás pensando». Cada visitante llega con un miedo
+   distinto —publicar a diario, bajar precios, perseguir por mensaje— y en seis
+   segundos ve el suyo escrito. Se detiene cuando la sección no está a la
+   vista: el mismo trato que el resto de la página. */
+(() => {
+  const rueda = $(".alivio-rueda"), texto = $(".alivio-txt");
+  if(!rueda || !texto) return;
+  const FRASES = [
+    "funnels complejos ni lanzamientos agotadores",
+    "publicar todos los días",
+    "bajar tus precios para que te digan que sí",
+    "perseguir a nadie por mensaje directo",
+    "vivir pegado al móvil",
+  ];
+  if(matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const seVe = enPantalla(rueda, "0px");
+  let i = 0;
+  setInterval(() => {
+    if(!seVe()) return;                     // fuera de pantalla no se gasta nada
+    rueda.classList.add("muda");
+    setTimeout(() => {
+      i = (i + 1) % FRASES.length;
+      texto.textContent = FRASES[i];
+      rueda.classList.remove("muda");
+    }, 340);                                 // lo que dura el desvanecido
+  }, 3200);
+})();
 
 /* ── Fondo: aurora holística + constelación ─────────────────────── */
 (() => {
