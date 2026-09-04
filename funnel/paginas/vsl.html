@@ -1351,22 +1351,6 @@ header.tope:not([data-oculto]) ~ .hero{padding-top:clamp(70px,11vw,104px)}
    Y la línea de alivio va dentro del párrafo, en su propio renglón: dice lo
    que el visitante teme —embudos, lanzamientos— para quitárselo de encima
    antes de que lo piense. Al 65 % de opacidad se lee sin competir. */
-.hero-alivio{
-  display:block;margin-top:clamp(9px,1.4vw,14px);
-  color:#F4EFE6a6;font-size:.86em;line-height:1.5;
-}
-/* El «Sin» se queda quieto y solo cambia lo que viene detrás: así el ojo no
-   tiene que releer la frase entera cada vez, solo la objeción nueva. La caja
-   reserva el alto de una línea para que el párrafo no dé saltos al cambiar. */
-.alivio-rueda{display:inline-block;position:relative;vertical-align:baseline}
-.alivio-txt{display:inline-block;color:#F4EFE6d1;
-  transition:opacity .34s var(--ease), transform .34s var(--ease)}
-.alivio-rueda.muda .alivio-txt{opacity:0;transform:translateY(-6px)}
-@media(prefers-reduced-motion:reduce){
-  .alivio-txt{transition:none}
-  .alivio-rueda.muda .alivio-txt{opacity:1;transform:none}
-}
-@media(max-width:640px){ .hero-alivio{font-size:.9em;margin-top:9px} }
 
 /* 0 ter · El botón de agendar, en champán mate ───────────────────
    Tenía cuatro amarillos en degradado, dos destellos cruzándolo en bucle y un
@@ -1769,7 +1753,6 @@ header.tope:not([data-oculto]) ~ .hero{padding-top:clamp(70px,11vw,104px)}
     <p class="hero-sub rv" style="--d:120ms">
       La era de la atención terminó. Hoy nadie compra por ver más contenido:
       <b>compra por confiar.</b>
-      <span class="hero-alivio">Sin <span class="alivio-rueda"><span class="alivio-txt">funnels complejos ni lanzamientos agotadores</span></span>.</span>
     </p>
 
     <div class="rv" style="--d:160ms;margin-top:clamp(14px,2.6vw,24px)">
@@ -2480,36 +2463,6 @@ const enPantalla = (el, margen = "300px") => {
                            {rootMargin: margen}).observe(el);
   return () => visible && !document.hidden;
 };
-
-/* ── Las objeciones, una detrás de otra ──────────────────────────
-   Una sola línea fija dice «no hace falta X». Varias, rotando, dicen «no hace
-   falta nada de lo que estás pensando». Cada visitante llega con un miedo
-   distinto —publicar a diario, bajar precios, perseguir por mensaje— y en seis
-   segundos ve el suyo escrito. Se detiene cuando la sección no está a la
-   vista: el mismo trato que el resto de la página. */
-(() => {
-  const rueda = $(".alivio-rueda"), texto = $(".alivio-txt");
-  if(!rueda || !texto) return;
-  const FRASES = [
-    "funnels complejos ni lanzamientos agotadores",
-    "publicar todos los días",
-    "bajar tus precios para que te digan que sí",
-    "perseguir a nadie por mensaje directo",
-    "vivir pegado al móvil",
-  ];
-  if(matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  const seVe = enPantalla(rueda, "0px");
-  let i = 0;
-  setInterval(() => {
-    if(!seVe()) return;                     // fuera de pantalla no se gasta nada
-    rueda.classList.add("muda");
-    setTimeout(() => {
-      i = (i + 1) % FRASES.length;
-      texto.textContent = FRASES[i];
-      rueda.classList.remove("muda");
-    }, 340);                                 // lo que dura el desvanecido
-  }, 3200);
-})();
 
 /* ── Fondo: aurora holística + constelación ─────────────────────── */
 (() => {
