@@ -66,14 +66,20 @@ header.tope:not([data-oculto]) ~ .hero{padding-top:clamp(70px,11vw,104px)}
   max-width:23ch;margin:0 auto;text-wrap:balance;
 }
 .h-promesa .alma{font-size:1.05em;line-height:.96}
-/* El nombre del método, en la monoespaciada de la casa y sin inclinar: dentro
-   de una frase en cursiva, lo recto se lee como marca —una pieza con nombre
-   propio— y no como una palabra más de la promesa. */
-.h-promesa .marca-circuito{
-  font-family:var(--data);font-style:normal;font-weight:700;
-  font-size:.84em;letter-spacing:-.03em;color:var(--gold-hi);
+/* El método, en su propio renglón bajo la promesa. Va dentro del titular y no
+   como hermano nuevo de la sección: las rutas guardadas cuentan hijos por
+   posición, y un elemento más en medio correría las del botón —que tiene
+   tamaño propio guardado— y las del párrafo de abajo.
+   En monoespaciada y sin inclinar: dentro de un encabezado en cursiva, lo
+   recto se lee como el nombre de una pieza, no como otra frase. El tamaño no
+   puede colgar del titular en `em` —en un móvil caería a seis píxeles—, así
+   que va en su propia escala con suelo y techo. */
+.h-promesa .bajo-titular{
+  display:block;font-family:var(--data);font-style:normal;font-weight:500;
+  font-size:clamp(12px,1.05vw,15.5px);letter-spacing:.08em;line-height:1.5;
+  color:var(--gold);margin-top:clamp(12px,1.6vw,18px);
 }
-.h-promesa .marca-circuito sup{font-size:.6em;vertical-align:.6em;letter-spacing:0;margin-left:.04em}
+.h-promesa .bajo-titular sup{font-size:.7em;vertical-align:.5em;letter-spacing:0;margin-left:.05em}
 .hero-sub{
   font-size:clamp(.9rem,2.3vw,1.12rem);color:var(--bone-mute);line-height:1.55;
   max-width:56ch;margin:clamp(12px,2.2vw,20px) auto 0;
@@ -1757,8 +1763,7 @@ header.tope:not([data-oculto]) ~ .hero{padding-top:clamp(70px,11vw,104px)}
     <div class="mini-badge rv"><i class="dot-live"></i> Coaches · mentores · terapeutas holísticos</div>
 
     <h1 class="h-promesa rv" style="--d:60ms">
-      Tu don ya cambia vidas. <em class="alma">Ahora escálalo a $10K–$30K/USD al mes
-      instalando un <span class="marca-circuito">Circuito de Conversión<sup>™</sup></span>.</em>
+      Tu don ya cambia vidas. <em class="alma">Ahora escálalo a $10K–$30K/USD al mes.</em><small class="bajo-titular">Instalando un Circuito de Conversión<sup>™</sup></small>
     </h1>
 
     <p class="hero-sub rv" style="--d:120ms">
