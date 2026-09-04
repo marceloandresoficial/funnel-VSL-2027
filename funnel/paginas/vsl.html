@@ -63,7 +63,11 @@ header.tope:not([data-oculto]) ~ .hero{padding-top:clamp(70px,11vw,104px)}
 .hero .wrap{width:100%}
 .h-promesa{
   font-size:clamp(1.72rem,5.6vw,3.9rem);font-weight:900;letter-spacing:-.04em;line-height:1.04;
-  max-width:20ch;margin:0 auto;text-wrap:balance;
+  /* 23ch, no 20: con la promesa corta cabía en tres líneas; con el Circuito
+     dentro se iba a cinco, y cinco líneas de 62 px empujan el vídeo fuera de
+     la primera pantalla. Medido: 23ch lo deja en cuatro y no crece más por
+     ensanchar. */
+  max-width:23ch;margin:0 auto;text-wrap:balance;
 }
 .h-promesa .alma{font-size:1.05em;line-height:.96}
 .hero-sub{
@@ -1331,6 +1335,19 @@ header.tope:not([data-oculto]) ~ .hero{padding-top:clamp(70px,11vw,104px)}
    Van al final a propósito: a igualdad de peso manda la última regla, y
    así estos retoques no pelean con lo que hay más arriba. */
 
+/* 0 quater · Las dos piezas nuevas del encabezado ────────────────
+   La marca registrada en un titular de 60 px no puede ir a tamaño de texto:
+   se sube y se encoge, como en «El Circuito de Conversión™» de más abajo.
+   Y la línea de alivio va dentro del párrafo, en su propio renglón: dice lo
+   que el visitante teme —embudos, lanzamientos— para quitárselo de encima
+   antes de que lo piense. Al 65 % de opacidad se lee sin competir. */
+.h-promesa sup{font-size:.5em;vertical-align:.7em;letter-spacing:0;margin-left:.02em}
+.hero-alivio{
+  display:block;margin-top:clamp(9px,1.4vw,14px);
+  color:#F4EFE6a6;font-size:.86em;line-height:1.5;
+}
+@media(max-width:640px){ .hero-alivio{font-size:.9em;margin-top:9px} }
+
 /* 0 ter · El botón de agendar, en champán mate ───────────────────
    Tenía cuatro amarillos en degradado, dos destellos cruzándolo en bucle y un
    latido permanente en la sombra. Tres reclamos a la vez no dan urgencia: dan
@@ -1726,12 +1743,14 @@ header.tope:not([data-oculto]) ~ .hero{padding-top:clamp(70px,11vw,104px)}
     <div class="mini-badge rv"><i class="dot-live"></i> Coaches · mentores · terapeutas holísticos</div>
 
     <h1 class="h-promesa rv" style="--d:60ms">
-      Tu don ya cambia vidas. <em class="alma">Ahora escálalo a $10K–$30K al mes.</em>
+      Tu don ya cambia vidas. <em class="alma">Ahora escálalo a $10K–$30K/USD al mes
+      instalando un Circuito de Conversión<sup>™</sup>.</em>
     </h1>
 
     <p class="hero-sub rv" style="--d:120ms">
       La era de la atención terminó. Hoy nadie compra por ver más contenido:
       <b>compra por confiar.</b>
+      <span class="hero-alivio">Sin funnels complejos ni lanzamientos agotadores.</span>
     </p>
 
     <div class="rv" style="--d:160ms;margin-top:clamp(14px,2.6vw,24px)">
