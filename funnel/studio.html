@@ -2188,6 +2188,17 @@ function ponerTexto(ruta, txt){
 }
 
 function ponerRecurso(id, val){
+  /* Un hueco espera un enlace, una imagen o el trozo de código de un vídeo.
+     Si lo que llega es una página entera —pasa al copiar el código exportado y
+     pegarlo aquí por error—, el estudio la metería dentro de la caja y toda la
+     página se vería descolocada, con otra página dentro. Se avisa y no se
+     guarda: recuperar de eso cuesta más que evitarlo. */
+  const texto = String(val || "");
+  if(/^\s*<!doctype/i.test(texto) || /<html[\s>]/i.test(texto)){
+    aviso("Eso es una página entera, no un recurso. En este hueco va el trozo "
+        + "de código del vídeo o del calendario, no el código exportado.", "mal");
+    return;
+  }
   const st = pagEstado(ACT).recursos;
   if(val) st[id] = val; else delete st[id];
   marco.contentWindow?.KIT?.aplicarRecurso(id, val || "");
