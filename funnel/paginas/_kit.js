@@ -133,9 +133,15 @@ $$('a[href^="#"]').forEach(a => a.addEventListener("click", e => {
     hay forma de volver atrás a mirar una cuenta. Ahora se desplaza la caja, así
     que el gesto nativo funciona y el bucle sigue siendo infinito porque el
     contenido está duplicado: al pasar la mitad, se resta la mitad. */
+/* Quién ya tiene motor. Antes se marcaba con un atributo en el elemento, y al
+   exportar la página ese atributo viajaba dentro del HTML: al pegarlo, el motor
+   se encontraba la marca puesta, se daba por enganchado y no arrancaba nunca.
+   Las fotos se veían y nada se movía. Un WeakSet vive solo en memoria. */
+const conMotor = new WeakSet();
 const animarMarquesinas = () => $$(".mq").forEach(caja => {
-  if(caja.dataset.desliz) return;
-  caja.dataset.desliz = "1";
+  if(conMotor.has(caja)) return;
+  conMotor.add(caja);
+  caja.removeAttribute("data-desliz");   // resto de versiones anteriores
   const pista = $(".mq-t", caja); if(!pista) return;
 
   const hueco = () => parseFloat(getComputedStyle(pista).columnGap) || 0;
@@ -159,8 +165,18 @@ const animarMarquesinas = () => $$(".mq").forEach(caja => {
     else if(caja.scrollLeft < 0) caja.scrollLeft += m;
   };
 
+  /* Fuera de pantalla no se mueve nada: la fila sigue viva, pero no toca el
+     scroll ni obliga a repintar. Con margen, para que ya vaya lanzada cuando
+     asome por abajo. */
+  let aLaVista = false;
+  if("IntersectionObserver" in window)
+    new IntersectionObserver(es => { aLaVista = es[0].isIntersecting; },
+                             {rootMargin:"300px"}).observe(caja);
+  else aLaVista = true;
+
   let ultimoTiron = 0;
   const paso = t => {
+    if(!aLaVista || document.hidden){ previo = 0; requestAnimationFrame(paso); return; }
     const dt = previo ? Math.min(64, t - previo) : 16;
     previo = t;
     /* Si seguimos «arrastrando» pero hace rato que nadie mueve el dedo, es que

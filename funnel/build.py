@@ -142,6 +142,10 @@ def main():
         "kitJs":   (PAGS / "_kit.js").read_text(encoding="utf-8"),
         "fuentes": FUENTES,
         "esbozo":  plantilla_esbozo(),
+        # Dónde vive cada imagen en el CDN del cliente. Se editan incrustadas
+        # —el visor no deja cargar de fuera— y se publican como enlace.
+        "enlaces": json.loads((RAIZ / "enlaces-ghl.json").read_text(encoding="utf-8"))
+                   if (RAIZ / "enlaces-ghl.json").exists() else {},
     }
 
     # </script> dentro de un <script type="application/json"> cerraría la etiqueta.

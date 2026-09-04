@@ -24,3 +24,8 @@ Nuevo Sitio Web Edume Global 2027/index.html
 
 # Registro de la sincronización automática
 .sync.log
+
+# También generados: la vista previa la arma vista.py, y las imágenes para
+# subir salen de estado.json. Ambos se rehacen con un comando.
+funnel/vista-final.html
+funnel/subir-a-ghl/

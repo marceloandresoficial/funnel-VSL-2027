@@ -838,7 +838,7 @@ const PEGADO = "\n\n\n\n";
     pero eso también dejaba fuera cualquier arreglo de contenido hecho desde
     fuera. Esto es la puerta estrecha: una ruta concreta, un texto concreto, y
     solo si lo que hay sigue roto. Después queda anotado y no vuelve a tocarse. */
-function aplicarParches(est, parches){
+function aplicarParches(est, parches, publicado){
   if(!Array.isArray(parches) || !parches.length) return 0;
   est.parchesHechos ||= [];
   let n = 0;
@@ -858,6 +858,17 @@ function aplicarParches(est, parches){
         est.pags[p.pag].borrados = bo.filter(r => !p.rutas.includes(r));
         if(est.pags[p.pag].borrados.length !== antes) n++;
       }
+      est.parchesHechos.push(p.id);
+      continue;
+    }
+
+    /* Devolver imágenes a como están publicadas. Hace falta porque la fusión
+       se queda con la copia más corta de cada una, y un enlace siempre es más
+       corto que la foto entera: sin esto, no habría forma de volver atrás. */
+    if(p.tipo === "recursos"){
+      const dest = est.pags?.[p.pag]?.recursos, fte = publicado?.pags?.[p.pag]?.recursos;
+      if(dest && fte) for(const k of (p.claves || Object.keys(fte)))
+        if(fte[k] && dest[k] !== fte[k]){ dest[k] = fte[k]; n++; }
       est.parchesHechos.push(p.id);
       continue;
     }
@@ -923,7 +934,7 @@ let ST = (() => {
   const pierde = gana === local ? guardadoInline : local;
   const est = fundirRecursos(Object.assign(vacio(), gana), pierde);
   /* Los parches se leen SIEMPRE de lo publicado, gane quien gane arriba. */
-  const arreglos = aplicarParches(est, guardadoInline?.parches);
+  const arreglos = aplicarParches(est, guardadoInline?.parches, guardadoInline);
   if(sanarPegados(est) + arreglos) est.ts = Date.now();
   return est;
 })();
@@ -2724,9 +2735,18 @@ function htmlFinal(slug = ACT){
   clon.removeAttribute("data-kit-listo");           // marcas de runtime, no van en el export
   clon.removeAttribute("data-modo-recursos");
   clon.removeAttribute("data-estudio");
-  clon.querySelectorAll("[data-dup],[data-armado],[data-latido],[data-res-vacio]").forEach(e => {
+  /* Marcas que el kit se pone a sí mismo mientras corre. Si viajan en el código
+     exportado, la página pegada cree que ya hizo lo que aún no ha hecho. */
+  clon.querySelectorAll("[data-dup],[data-armado],[data-latido],[data-res-vacio],[data-desliz],[data-off]").forEach(e => {
     e.removeAttribute("data-dup"); e.removeAttribute("data-armado");
     e.removeAttribute("data-latido"); e.removeAttribute("data-res-vacio");
+    e.removeAttribute("data-desliz"); e.removeAttribute("data-off");
+  });
+  /* La tira esconde y gira sus fotos por fotograma; congelar ese instante en el
+     export dejaba media tira invisible hasta que el bucle la alcanzaba. */
+  clon.querySelectorAll(".tira > *").forEach(e => {
+    e.style.removeProperty("visibility"); e.style.removeProperty("transform");
+    e.style.removeProperty("z-index"); e.style.removeProperty("opacity");
   });
   clon.querySelectorAll("[data-oculto]").forEach(e => e.remove());   // bloques ocultos: fuera
   clon.querySelectorAll("[data-borrado]").forEach(e => e.remove());  // y lo que borraste, también
@@ -2750,6 +2770,19 @@ function htmlFinal(slug = ACT){
      mejor nada que un titular colgando sobre el vacío. */
   clon.querySelectorAll("section[data-si-vacio]").forEach(sec => {
     if(!sec.querySelector(".cargada")) sec.remove();
+  });
+
+  /* Las fotos se editan incrustadas para poder verlas dentro del estudio, pero
+     lo que se pega en la web las pide al CDN: la página baja de megas a kilos. */
+  const enlaces = FUENTE.enlaces || {};
+  const hojaRec = clon.querySelector("#__recursos");
+  if(hojaRec && Object.keys(enlaces).length){
+    hojaRec.textContent = hojaRec.textContent.replace(
+      /\[data-res="([^"]+)"\]\{background-image:url\("([^"]+)"\)/g,
+      (todo, id, url) => enlaces[id] ? todo.replace(url, enlaces[id]) : todo);
+  }
+  clon.querySelectorAll("img[data-res]").forEach(im => {
+    const u = enlaces[im.dataset.res]; if(u) im.setAttribute("src", u);
   });
 
   const head = clon.querySelector("head");

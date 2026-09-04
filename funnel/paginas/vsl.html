@@ -283,7 +283,9 @@ header.tope:not([data-oculto]) ~ .hero{padding-top:clamp(70px,11vw,104px)}
   flex:none;width:clamp(206px,33vw,330px);aspect-ratio:4/5;position:relative;
   border-radius:18px;overflow:hidden;border:1px solid #FFFFFF16;
   box-shadow:0 32px 64px -34px #000;
-  will-change:transform,opacity,filter;
+  /* `filter` en will-change obliga al navegador a mantener dieciséis capas con
+     tubería de filtro abierta todo el rato. El giro se hace con transform. */
+  will-change:transform;
 }
 /* Esquinas de visor, dibujadas con ocho degradados: cero elementos de más. */
 .tira .vida::before{
@@ -1222,9 +1224,15 @@ header.tope:not([data-oculto]) ~ .hero{padding-top:clamp(70px,11vw,104px)}
 
 /* Las secciones de más abajo no se calculan hasta que se acercan. La medida
    aproximada evita que la barra de desplazamiento pegue saltos al llegar. */
-#prueba,#cuentas,#mapa,#llamada,#faq,#agenda{
-  content-visibility:auto;contain-intrinsic-size:1px 900px;
+#prueba,#cuentas,#mapa,#llamada,#faq,#agenda,
+#nuestro,#circuito,#cambio,#reflexion{
+  content-visibility:auto;
+  contain-intrinsic-size:1px 900px;      /* para navegadores antiguos */
+  contain-intrinsic-size:auto 900px;     /* recuerda la altura real: no da saltos */
 }
+/* A «quién está detrás» no se le pone: su tira mide las fotos una sola vez al
+   arrancar, y si en ese momento la sección está sin calcular, las medidas
+   salen a cero y el giro en 3D se queda plano. */
 
 /* ══ EN NUESTRO NEGOCIO · transferencias como avisos ════════════════
    La idea: una venta no llega en una tabla, llega como un aviso en el
@@ -1297,8 +1305,20 @@ header.tope:not([data-oculto]) ~ .hero{padding-top:clamp(70px,11vw,104px)}
    efecto de buzón —que es lo que hace que se lea como muchas entradas— y la
    sección se estiraba el doble. Todo lo de dentro encoge en proporción. */
 @media(max-width:640px){
-  .burbujas{column-count:2;column-gap:7px}
-  .burb{margin-bottom:7px;border-radius:12px}
+  /* Rejilla, no columnas de flujo. Las columnas reparten por altura y en una
+     pantalla estrecha eso deja cuatro tarjetas de un lado y dos del otro. La
+     rejilla las coloca de dos en dos: tres por lado, siempre. */
+  .burbujas{column-count:auto;display:grid;grid-template-columns:1fr 1fr;
+            gap:11px;align-items:start}
+  /* Seis desenfoques de fondo en marcha mientras el dedo desplaza es de lo más
+     caro que se le puede pedir a un móvil, y el efecto no se aprecia en una
+     tarjeta de 160 px. Se cambia por un fondo sólido del mismo tono. */
+  .burb{backdrop-filter:none;-webkit-backdrop-filter:none;
+        background:linear-gradient(158deg,#191527,#0C0A18)}
+  /* La torcedura se queda: es lo que hace que se lea como buzón y no como
+     tabla. Lo que estaba mal era el reparto, no la inclinación. Y el giro no
+     ocupa sitio —es transform—, así que la rejilla sigue cuadrando. */
+  .burb{margin:0;border-radius:12px}
   .burb-h{padding:6px 8px;gap:6px}
   .burb-app{width:17px;height:17px;border-radius:5px}
   .burb-app svg{width:9px;height:9px}
@@ -1310,6 +1330,123 @@ header.tope:not([data-oculto]) ~ .hero{padding-top:clamp(70px,11vw,104px)}
 /* ══ AJUSTES DE ESTA RONDA ═══════════════════════════════════════════
    Van al final a propósito: a igualdad de peso manda la última regla, y
    así estos retoques no pelean con lo que hay más arriba. */
+
+/* 0 ter · El botón de agendar, en champán mate ───────────────────
+   Tenía cuatro amarillos en degradado, dos destellos cruzándolo en bucle y un
+   latido permanente en la sombra. Tres reclamos a la vez no dan urgencia: dan
+   desconfianza, que es lo contrario de lo que uno quiere justo antes de dejar
+   sus datos. Lo caro es lo callado.
+
+   La pieza pasa a metal claro —champán, casi platino cálido— con tinta negra
+   encima: en una página oscura, un botón claro y sólido es lo que más pesa sin
+   levantar la voz. El movimiento se reserva para cuando lo tocas. */
+.mega{
+  /* Oro claro de la casa (#F2D391, el de los titulares), pero como metal y no
+     como color plano. Un metal no es un degradado suave: es un salto brusco de
+     luz a media altura —la banda especular— con la parte alta clara, la baja
+     en sombra y un rebote cálido en el filo inferior, que es la luz que sube
+     del suelo. Esos cuatro acentos son lo que el ojo lee como volumen real.
+     Sin borde: el relieve lo dan la luz y la sombra, no un contorno. */
+  background:
+    /* Capa 1 · el grano. Micro-cepillado a 112°, líneas de un píxel y medio con
+       tres por ciento de luz y de sombra: de cerca no se ve, de lejos es lo que
+       apaga el reflejo. Un metal mate no brilla, se aterciopela. */
+    repeating-linear-gradient(112deg,
+      #FFFFFF14 0 1px, #0000000f 1px 2.5px),
+    /* Capa 2 · el metal, con el rango tonal aplanado: donde antes había un
+       salto especular de 22 puntos ahora hay una zona de luz ancha y suave.
+       Ese aplanado es la diferencia entre pulido y satinado. */
+    linear-gradient(177deg,
+      #F6E2B6 0%,      /* filo alto: la luz llega difusa, no puntual */
+      #F1D9A5 22%,
+      #EBCE90 48%,     /* zona de luz ancha, sin corte */
+      #E3C17D 62%,
+      #D8B268 88%,
+      #E2BE7C 100%);   /* rebote cálido del filo inferior */
+  /* El grano se funde con el metal en vez de dibujarse encima: soft-light
+     conserva el color y solo altera el micro-relieve. */
+  background-blend-mode:soft-light, normal;
+  /* Espresso, no negro puro. Sobre metal claro, el negro absoluto se lee como
+     tinta impresa; un marrón muy oscuro se lee como grabado. Es lo que hace la
+     joyería cuando marca sobre oro. Sigue en 9,4 de contraste. */
+  color:#2B1D08;
+  border:0;
+  border-radius:16px;
+  box-shadow:
+    inset 0 1px 0 #FFF4D999,          /* canto superior: apenas insinuado */
+    inset 0 -2px 4px #8A6A2933,
+    inset 0 -1px 0 #FFEBC240,         /* el filo de abajo devuelve algo de luz */
+    0 14px 38px -16px #000000d9,      /* se despega del fondo */
+    /* El resplandor en tres radios. Una sola sombra difusa se lee como niebla;
+       tres capas con caídas distintas se leen como luz de verdad: el halo
+       cerrado que abraza el canto, el medio que llena, y el amplio que apenas
+       tiñe el aire. */
+    0 0 30px -10px #F2D39199,
+    0 0 78px -16px #F2D3918f,
+    0 0 180px -48px #F2D39166;
+  animation:none;                      /* fuera el latido */
+  transition:transform .32s cubic-bezier(.22,.61,.36,1),
+             box-shadow .32s cubic-bezier(.22,.61,.36,1),
+             background .32s var(--ease);
+}
+/* Los dos destellos que lo cruzaban, retirados. */
+.mega::before, .mega::after{display:none}
+.mega:hover{
+  transform:translateY(-2px);
+  background:
+    repeating-linear-gradient(112deg,#FFFFFF14 0 1px,#0000000f 1px 2.5px),
+    linear-gradient(177deg,#FCEBC6 0%,#F7E2B3 22%,#F2D79E 48%,#EACB8B 62%,
+                    #E0BC76 88%,#E9C88B 100%);
+  box-shadow:
+    inset 0 1px 0 #FFFBF0e6, inset 0 -2px 3px #8A6A2926, inset 0 -1px 0 #FFF0CC66,
+    0 20px 48px -16px #000000d9,
+    0 0 38px -8px #F2D391b3,
+    0 0 96px -14px #F2D391a6,
+    0 0 210px -44px #F2D39180;
+}
+.mega:active{transform:translateY(0) scale(.988);
+  box-shadow:inset 0 2px 8px #6B4F1c33, inset 0 -1px 0 #FFE9B833,
+             0 6px 18px -10px #000000bf, 0 0 30px -16px #F2D39166}
+.mega:focus-visible{outline:2px solid #F2D391;outline-offset:3px}
+.mega b{letter-spacing:-.022em}
+.mega span{color:#5A4116;opacity:1;font-weight:500}
+/* En la barra fija, la misma pieza: sombra hacia arriba para despegarla del
+   borde de la pantalla, y ni un destello. */
+.barra-movil .mega{
+  animation:none;
+  box-shadow:inset 0 1px 0 #FFF4D999, inset 0 -2px 4px #8A6A2933,
+             0 -1px 24px -12px #00000099, 0 12px 30px -14px #000000d9,
+             0 0 30px -10px #F2D39199, 0 0 80px -18px #F2D3918f;
+}
+
+/* 0 bis · El descargo legal, legible. Iba al 20 % de opacidad y 11,5 px: sobre
+   el fondo negro daba un contraste de 1,9 a 1 —invisible en un móvil— y por eso
+   parecía que el pie no lo traía. Un descargo que no se lee no descarga nada.
+   Sube a 55 % y a 12,5 px: sigue siendo letra pequeña, pero se lee. */
+/* Un descargo de responsabilidad no es letra de relleno: es lo que sostiene
+   legalmente las cifras de toda la página. Iba al 20 % de opacidad —contraste
+   1,9:1, invisible—; al 55 % ya se leía, pero seguía pareciendo un pie de foto.
+   Ahora es un bloque con su línea de separación y contraste de 9:1: se lee sin
+   buscarlo y sin robarle peso al resto. */
+.disclaimer{
+  color:#F4EFE6bf;font-size:.82rem;line-height:1.72;
+  margin-top:30px;padding-top:22px;border-top:1px solid var(--line);
+  max-width:78ch;
+}
+@media(max-width:640px){ .disclaimer{font-size:.8rem;line-height:1.68;padding-top:18px} }
+.foot-legal a{color:var(--bone-faint)}
+
+/* 0 · Victorias de clientes: banda de altura única, sin negro y sin recortes.
+   La tarjeta tenía ancho fijo y se estiraba a la altura de la más alta de la
+   fila, mientras la captura conservaba su forma: debajo de las anchas quedaba
+   un rectángulo negro de hasta 123 px. Se invierte el mando: manda la altura
+   —igual para las dieciséis— y el ancho lo pone cada captura. Es lo que hace
+   una galería justificada: todas alineadas arriba y abajo, ninguna cortada, y
+   las anchas ocupan lo que merecen dentro de una fila que ya se desliza. */
+#gridCapturas .captura, #gridCapturas2 .captura{width:auto}
+#gridCapturas .captura .ph, #gridCapturas2 .captura .ph{
+  height:clamp(140px,36vw,215px);width:auto;
+}
 
 /* 1 · La franja de testimonios: fichas más chicas para que quepan más */
 @media(max-width:640px){
@@ -2156,6 +2293,33 @@ document.head.appendChild(s);
 </script>
 
 <script data-bloque="23">
+/* ── Al recargar, se empieza por el principio ─────────────────────
+   El navegador guarda dónde estabas y te devuelve ahí al recargar. En una
+   aplicación tiene sentido; en una página de venta no: quien recarga quiere
+   volver a verla desde arriba, no aparecer a mitad de la prueba social. Se
+   apaga la restauración y se sube del todo cuando termina de cargar. */
+try { history.scrollRestoration = "manual"; } catch(e) {}
+if(!location.hash){
+  /* Apagar la restauración no siempre basta: el constructor de la página puede
+     devolver la posición él mismo, y lo hace después de cargar. Así que se
+     insiste en tres momentos —al analizar, al cargar y un pelín después—, pero
+     solo mientras el visitante no haya tocado nada: en cuanto rueda, toca o
+     usa el teclado, manda él y no se le mueve la página bajo el dedo. */
+  let tocado = false;
+  const manda = () => { tocado = true; };
+  addEventListener("wheel", manda, {passive:true, once:true});
+  addEventListener("touchstart", manda, {passive:true, once:true});
+  addEventListener("keydown", manda, {once:true});
+  const arriba = () => { if(!tocado) scrollTo(0, 0); };
+  arriba();
+  addEventListener("DOMContentLoaded", arriba, {once:true});
+  addEventListener("load", () => {
+    arriba();
+    requestAnimationFrame(arriba);
+    setTimeout(arriba, 350);
+  }, {once:true});
+}
+
 /* ═══════════════════════════════════════════════════════════════════
    DATOS EDITABLES · casos de éxito por país
    De MUESTRA: suman 220 pero no son un censo real. Cámbialos.
@@ -2255,6 +2419,20 @@ const txt = (sel, t)    => { const el = $(sel); if(el) el.textContent = t;    re
 const RM = matchMedia("(prefers-reduced-motion: reduce)").matches;
 const esc = t => String(t).replace(/[&<>"]/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]));
 
+/* ── Portero de los bucles ────────────────────────────────────────
+   Cuatro animaciones de esta página y cinco del kit pintaban sesenta veces por
+   segundo aunque su sección estuviera a diez pantallas de distancia. En un
+   móvil eso es la batería y el tirón. Ahora cada bucle pregunta antes: si no
+   se ve, deja pasar el fotograma sin trabajar. Con 300 px de margen, para que
+   ya esté en marcha cuando asome. */
+const enPantalla = (el, margen = "300px") => {
+  if(!el || !("IntersectionObserver" in window)) return () => true;
+  let visible = false;
+  new IntersectionObserver(es => { visible = es[0].isIntersecting; },
+                           {rootMargin: margen}).observe(el);
+  return () => visible && !document.hidden;
+};
+
 /* ── Fondo: aurora holística + constelación ─────────────────────── */
 (() => {
   const c = $("#aurora"); if(!c) return;
@@ -2267,17 +2445,28 @@ const esc = t => String(t).replace(/[&<>"]/g, m => ({"&":"&amp;","<":"&lt;",">":
     {x:.10, y:.92, r:.40, col:[139,123,216], v:.00011, f:1.2},
   ];
   const medir = () => {
-    const dpr = Math.min(devicePixelRatio || 1, 2);
+    /* En un móvil, pintar a 3× un fondo difuso no se nota y cuesta el triple. */
+    const movil = matchMedia("(max-width:640px)").matches;
+    const dpr = Math.min(devicePixelRatio || 1, movil ? 1.5 : 2);
     W = innerWidth; H = innerHeight;
     c.width = W*dpr; c.height = H*dpr;
     ctx.setTransform(dpr,0,0,dpr,0,0);
-    const n = Math.round(W*H/52000);   // constelación discreta
+    const n = Math.round(W*H/(movil ? 80000 : 52000));   // constelación discreta
     estrellas = Array.from({length:n}, () => ({
       x:Math.random()*W, y:Math.random()*H,
       s:Math.random()*1.1+.25, p:Math.random()*6.283, v:.4+Math.random()*.8,
     }));
   };
+  /* El aurora va fijo a pantalla completa, así que siempre «se ve» y no hay
+     sección de la que esconderse. Lo que sí se puede es bajarle el pulso: sus
+     manchas avanzan a 0,0001 por milisegundo —una vuelta entera tarda horas—,
+     de modo que pintarlo sesenta veces por segundo es gastar por gastar. A
+     veinte, o a doce en el móvil, se ve exactamente igual y cuesta un tercio. */
+  const PULSO = matchMedia("(max-width:640px)").matches ? 1000/12 : 1000/20;
+  let ultimo = -1e9;
   const pinta = t => {
+    if(document.hidden || t - ultimo < PULSO){ raf = requestAnimationFrame(pinta); return; }
+    ultimo = t;
     ctx.clearRect(0,0,W,H);
     const D = Math.max(W,H);
     for(const m of manchas){
@@ -2424,7 +2613,9 @@ const tope = Math.max(...PAISES.map(p => p[1]));
   let t0 = null, pausa = false, ang = OFF, OFFm = OFF;
   const tip = $("#mapaTip");
 
+  const seVeMapa = enPantalla(c);
   const cuadro = t => {
+    if(!seVeMapa()){ requestAnimationFrame(cuadro); return; }
     if(t0 === null) t0 = t;
     if(!pausa && !girando && !RM) ang = ((t-t0)/40000)*Math.PI*2 + OFFm;
     ctx.clearRect(0,0,W,H);
@@ -2863,7 +3054,9 @@ const PORTADAS = [
   t.addEventListener("touchstart", () => tocar(), {passive:true});
   t.addEventListener("wheel", () => tocar(), {passive:true});
 
+  const seVeTira = enPantalla(t);
   const paso = () => {
+    if(!seVeTira()){ requestAnimationFrame(paso); return; }
     const mitad = t.scrollWidth / 2;
     if(mitad > 0){
       /* Si el plazo venció y seguimos «arrastrando», es que se perdió el
@@ -3070,7 +3263,9 @@ const PORTADAS = [
   let latido = 0, giro = 0;
   const suave = k => k < .5 ? 2*k*k : 1 - Math.pow(-2*k + 2, 2)/2;
 
+  const seVeCircuito = enPantalla(holo?.closest("section") || aura);
   const pinta = () => {
+    if(!seVeCircuito()){ requestAnimationFrame(pinta); return; }
     giro = (giro + 0.22) % 480;
     holo.setAttribute("gradientTransform", `translate(${(giro-240)/480} 0)`);
 
