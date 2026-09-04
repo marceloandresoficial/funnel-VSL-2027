@@ -61,42 +61,19 @@ header.tope:not([data-oculto]) ~ .hero{padding-top:clamp(70px,11vw,104px)}
   .hero{min-height:auto;padding-block:clamp(24px,6vw,40px) clamp(26px,7vw,44px)}
 }
 .hero .wrap{width:100%}
-/* El titular tiene tres cosas que decir y antes las decía todas al mismo
-   volumen: la premisa (lo que ya eres), la promesa (la cifra) y el método (el
-   Circuito). Cuatro líneas del mismo tamaño no son un titular, son un párrafo
-   grande. Ahora cada una tiene su altura: la premisa entra pequeña y en tono
-   apagado, la promesa manda, y el método cierra abajo en versalita dorada. */
 .h-promesa{
-  font-size:clamp(1.02rem,2.5vw,1.62rem);font-weight:700;letter-spacing:-.01em;
-  line-height:1.3;color:var(--bone-mute);
-  /* El ancho no puede colgar de esta línea: `ch` se mide contra la letra
-     actual, y con la premisa pequeña el titular entero se estrangulaba a 285 px
-     mientras la promesa, tres veces mayor, se partía dentro. La medida va donde
-     manda el tamaño: en la propia promesa. */
-  max-width:min(100%,46rem);margin:0 auto;text-wrap:balance;
+  font-size:clamp(1.72rem,5.6vw,3.9rem);font-weight:900;letter-spacing:-.04em;line-height:1.04;
+  max-width:23ch;margin:0 auto;text-wrap:balance;
 }
-.h-promesa .alma{
-  display:block;font-size:2.24em;line-height:1.0;letter-spacing:-.035em;
-  color:var(--bone);margin:.34em auto 0;font-style:italic;
-  max-width:19ch;                     /* 19ch de SU tamaño: dos líneas justas */
-}
-/* La cifra es el único dato del titular: va en el oro de la casa y sin
-   inclinar, para que se lea como número y no como frase. */
-.h-promesa .cifra{
+.h-promesa .alma{font-size:1.05em;line-height:.96}
+/* El nombre del método, en la monoespaciada de la casa y sin inclinar: dentro
+   de una frase en cursiva, lo recto se lee como marca —una pieza con nombre
+   propio— y no como una palabra más de la promesa. */
+.h-promesa .marca-circuito{
   font-family:var(--data);font-style:normal;font-weight:700;
-  font-size:.92em;letter-spacing:-.02em;color:var(--gold-hi);
+  font-size:.84em;letter-spacing:-.03em;color:var(--gold-hi);
 }
-/* Y el método, debajo: pequeño, en mayúsculas espaciadas. Ocupa el lugar de la
-   firma —lo que sostiene la cifra—, no el de otro titular. */
-.h-promesa .metodo{
-  display:block;font-family:var(--data);font-style:normal;font-weight:500;
-  /* Con `em` puro caía a 8,6 px en un móvil: versalita espaciada a ese tamaño
-     no se lee, se adivina. El suelo de 10,5 px la mantiene legible sin robarle
-     protagonismo a la cifra. */
-  font-size:clamp(10.5px,.235em,15px);letter-spacing:.16em;text-transform:uppercase;
-  color:var(--gold);margin-top:1.1em;line-height:1.5;
-}
-.h-promesa .metodo sup{font-size:.72em;vertical-align:.5em;letter-spacing:0}
+.h-promesa .marca-circuito sup{font-size:.6em;vertical-align:.6em;letter-spacing:0;margin-left:.04em}
 .hero-sub{
   font-size:clamp(.9rem,2.3vw,1.12rem);color:var(--bone-mute);line-height:1.55;
   max-width:56ch;margin:clamp(12px,2.2vw,20px) auto 0;
@@ -1780,7 +1757,8 @@ header.tope:not([data-oculto]) ~ .hero{padding-top:clamp(70px,11vw,104px)}
     <div class="mini-badge rv"><i class="dot-live"></i> Coaches · mentores · terapeutas holísticos</div>
 
     <h1 class="h-promesa rv" style="--d:60ms">
-      Tu don ya cambia vidas.<em class="alma">Ahora escálalo a <b class="cifra">$10K–$30K/USD</b> al mes<small class="metodo">instalando un Circuito de Conversión<sup>™</sup></small></em>
+      Tu don ya cambia vidas. <em class="alma">Ahora escálalo a $10K–$30K/USD al mes
+      instalando un <span class="marca-circuito">Circuito de Conversión<sup>™</sup></span>.</em>
     </h1>
 
     <p class="hero-sub rv" style="--d:120ms">
